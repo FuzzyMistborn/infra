@@ -1,0 +1,12 @@
+---
+target_os: ubuntu
+hostname: honor
+
+### Install packages with grog.package
+package_list:
+  - name: curl
+  - name: htop
+  - name: net-tools
+  - name: sudo
+  - name: wget
+  - name: wireguard

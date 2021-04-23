@@ -1,0 +1,261 @@
+---
+
+- name: create config directories
+  file:
+    path: /home/{{ main_username }}/{{ item }}
+    state: directory
+    owner: "{{ main_username }}"
+    group: "{{ main_groupname }}"
+  loop:
+    - .config/catt
+    - docker
+    - docker/diun
+    - scripts
+
+### SSH
+- name: SSH Keys - Add HASS SSH Key
+  authorized_key:
+    user: "{{ main_username }}"
+    state: present
+    key: "{{ secret_hass_ssh }}"
+
+#### Scripts
+
+- name: Generate commute image bash script
+  copy:
+    dest: /home/{{ main_username }}/scripts/traffic.sh
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: +x
+    content: |
+      #!/bin/bash
+      {{ secret_traffic_code }}
+
+- name: Generate weather cast bash file
+  copy:
+    dest: /home/{{ main_username }}/scripts/cast_weather.sh
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: +x
+    content: "{{ secret_catt_weather }}"
+
+- name: Create traffic cast bash file
+  copy:
+    dest: /home/{{ main_username }}/scripts/cast_traffic.sh
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: +x
+    content: "{{ secret_catt_traffic }}"
+
+- name: Copy scripts
+  copy:
+    src: scripts/{{item.path}}
+    dest: /home/{{ main_username }}/scripts/{{item.path}}
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: "{{item.mode}}"
+  with_items:
+    - { path: "auth_commands.sh", mode: "+x" }
+    - { path: "rtl2mqtt.py", mode: "0664" }
+
+- name: Copy backup script templates
+  template:
+    src: "{{item.src}}"
+    dest: /home/{{ main_username }}/scripts/{{item.dest}}
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: +x
+  with_items:
+    - { src: 'media_backup.sh.j2', dest: 'media_backup.sh' }
+    - { src: 'cast_frontdoor.sh.j2', dest: 'cast_frontdoor.sh' }
+    - { src: 'cast_media.sh.j2', dest: 'cast_media.sh' }
+    - { src: 'cast_stop.sh.j2', dest: 'cast_stop.sh' }
+
+### CATT
+
+- name: Install CATT python package
+  command: pip3 install catt
+
+- name: Set CATT Defaults
+  copy:
+    dest: /home/{{main_username}}/.config/catt/catt.cfg
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0644
+    content: |
+      [options]
+      device = Kitchen Hub
+
+      [aliases]
+
+#### RTL_433
+
+- name: Install paho-mqtt
+  command: pip3 install paho-mqtt
+
+- name: Copy RTL_433 script
+  template:
+    src: rtl_433.sh.j2
+    dest: /home/{{ main_username }}/rtl_433.sh
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: +x
+
+- name: Copy rtl2mqtt config template
+  template:
+    src: config.py.j2
+    dest: /home/{{ main_username }}/scripts/config.py
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+
+- name: Run RTL433 script
+  command: /bin/bash ./rtl_433.sh
+  args:
+    chdir: "/home/{{main_username}}"
+
+- name: Remove RTL433 script
+  file:
+    path: /home/{{ main_username }}/rtl_433.sh
+    state: absent
+
+- name: Copy RTL433 service file
+  template:
+    src: "{{item.src}}"
+    dest: /etc/systemd/system/{{item.dest}}
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0644
+  with_items:
+    - { src: 'rtl433.service.j2', dest: 'rtl433.service' }
+
+- name: Enable RTL433 service
+  systemd:
+    enabled: true
+    daemon-reload: true
+    name: "{{item}}"
+    state: started
+  loop:
+    - rtl433
+
+#### DIUN
+- name: Copy DIUN Config Template
+  template:
+    src: diun_config.yml.j2
+    dest: /home/{{ main_username }}/docker/diun/config.yml
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+
+### Telegraf
+- name: Install Telegraf
+  apt:
+    deb: https://dl.influxdata.com/telegraf/releases/telegraf_{{telegraf_ver}}-1_amd64.deb
+- name: Copy Telegraf config
+  template:
+    src: telegraf.conf.j2
+    dest: /etc/telegraf/telegraf.conf
+    owner: root
+    group: root
+    mode: 0644
+- name: Add Telegraf user to docker group
+  user:
+    name: telegraf
+    groups: docker
+    append: yes
+- name: Enable/Start Telegraf
+  systemd:
+    enabled: true
+    daemon-reload: true
+    state: restarted
+    name: telegraf
+
+#### HASS Git
+
+- name: Clone HASS GitHub Repo
+  git:
+    repo: git@github.com:FuzzyMistborn/hass-docker.git
+    dest: /home/{{ main_username }}/hass_docker
+    accept_hostkey: true
+    key_file: /home/{{main_username}}/.ssh/github
+  when: clone_git == "true"
+
+- name: Clone NodeRed GitHub Repo
+  git:
+    repo: git@github.com:FuzzyMistborn/hass-nodered.git
+    dest: /home/{{ main_username }}/docker/nodered
+    accept_hostkey: true
+    key_file: /home/{{main_username}}/.ssh/github
+  when: clone_git == "true"
+
+### Restic
+- name: Add Synology SSH Key
+  copy:
+    dest: /home/{{ main_username }}/.ssh/synology_restic
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0600
+    content: "{{ secret_synology_restic_key }}"
+
+- name: Check that Synology not already in SSH config
+  shell: grep -c "Host synology" /home/{{main_username}}/.ssh/config || true
+  register: synology_ssh
+
+- name: Add ssh config for Synology
+  lineinfile:
+    path: /home/{{ main_username }}/.ssh/config
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0664
+    line: |
+      Host synology
+        HostName 192.168.30.25
+        User {{main_username}}
+        IdentityFile ~/.ssh/synology_restic
+    create: true
+  when: synology_ssh.stdout == "0" or synology_ssh.stdout == ""
+
+- name: Update Restic to latest version
+  command: "/usr/bin/restic self-update"
+
+- name: Install Autorestic
+  shell: curl -s https://raw.githubusercontent.com/CupCakeArmy/autorestic/master/install.sh | sudo bash
+  
+- name: Copy Autorestic Config Template
+  template:
+    src: autorestic.yml.j2
+    dest: /home/{{ main_username }}/.autorestic.yml
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+
+### Backup Restore
+- name: Restore folders from backup
+  command: "/usr/local/bin/autorestic restore -f -l {{item.name}} --from {{item.src}} --to {{item.dest}}"
+  with_items:
+    - { name: "docker", src: 'synology_docker', dest: '/home/{{main_username}}/docker' }
+    - { name: "hass_docker", src: 'synology_hass_docker', dest: '/home/{{main_username}}/hass_docker' }
+    - { name: "hass_docker_beta", src: 'synology_hass_docker_beta', dest: '/home/{{main_username}}/hass_docker_beta' }
+  when: pull_backup == "true"
+
+### Fail2ban Enable
+- name: Enable Fail2ban
+  lineinfile:
+    path: /etc/fail2ban/jail.d/{{item}}.local
+    regexp: "^enabled*"
+    line: "enabled = true"
+  with_items:
+    - ha
+
+### Cronjobs
+- name: "Main User Cronjobs"
+  cron:
+    user: "{{ main_username }}"
+    name: "{{ item.name }}"
+    job: "{{ item.job }}"
+    hour: "{{ item.hour }}"
+    minute: "{{ item.minute }}"
+    weekday: "{{ item.weekday }}"
+    state: present
+  loop:
+    - { job: "~/scripts/traffic.sh", name: "Traffic AM", hour: "7-8,16-18", minute: "*/10", weekday: "1-5" }
+    - { job: "~/scripts/traffic.sh", name: "Traffic PM", hour: "9-15", minute: "*/30", weekday: "1-5" }
+    - { job: "~/docker/nodered/github_cron.sh", name: "NodeRed Github", hour: "23", minute: "0", weekday: "*" }
+    - { job: "/home/{{ main_username }}/scripts/media_backup.sh", name: "Media Backup", hour: "0", minute: "0", weekday: "*" }

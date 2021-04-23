@@ -1,0 +1,13 @@
+roles:
+- src: ironicbadger.ansible_role_docker_compose_generator
+- src: ironicbadger.ansible_role_proxmox_nag_removal
+- src: ironicbadger.ansible_role_snapraid
+- src: grog.package
+- src: geerlingguy.docker
+- src: geerlingguy.ntp
+- src: geerlingguy.pip
+- src: geerlingguy.samba
+
+collections:
+- community.general
+- community.docker

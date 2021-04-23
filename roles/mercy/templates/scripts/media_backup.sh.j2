@@ -1,0 +1,7 @@
+#!/bin/bash
+
+autorestic backup -a
+
+autorestic forget -a -- prune
+
+curl --retry 3 {{secret_hc_mercy_media}}

@@ -1,0 +1,22 @@
+backends:
+  synology_db:
+    type: sftp
+    path: {{main_username}}@synology:/Restic/preservation
+    key: {{ secret_restic_repo_password }}
+    env: {}
+  b2_db:
+    type: b2
+    path: '{{ secret_restic_b2_bucket }}:/preservation'
+    key: {{ secret_restic_repo_password }}
+    env:
+      B2_ACCOUNT_ID: {{ secret_restic_b2_account_id }}
+      B2_ACCOUNT_KEY: {{ secret_restic_b2_account_key }}
+locations:
+  db_backups:
+    from: '~/db_backups'
+    to: 
+      - synology_db
+      - b2_db
+    options:
+      forget:
+        keep-last: 15

@@ -1,0 +1,77 @@
+# One-way sync a telegram channel to hangouts
+
+# Installation
+# git clone --recursive https://github.com/kenorb-contrib/tg; cd tg; sudo apt-get install libreadline-dev libconfig-dev libssl-dev lua5.2 liblua5.2-dev libevent-dev libjansson-dev libpython-dev make; ./configure --enable-python; make
+
+# Run
+# bin/telegram-cli --python-script tg_ho.py
+
+# Example hangout: https://hangouts.google.com/group/S2uV2Ol3qbRIBnKm2
+
+import tgl
+from functools import partial
+import requests
+import base64
+from datetime import datetime, timedelta
+import time
+
+target_channel = "{{ secret_ho_name }}"
+url = "https://localhost:31338/"
+target_hos = ["{{ secret_ho_id }}"]
+last_request = datetime.now()
+last_sync = datetime.now()
+peer = None
+
+def send_message(text, success=True, file_path=None):
+  if not text:
+    text = ""
+  payload = {
+      'echo': text
+  }
+  print(text)
+  if file_path:
+    print(file_path)
+    with open(file_path, "rb") as image_file:
+      encoded_string = base64.b64encode(image_file.read())
+    payload["image"] = { "base64encoded": encoded_string.decode('ascii') }
+  headers = {'content-type': 'application/json'}
+  for ho in target_hos:
+    print(ho)
+    requests.post(url + ho, json=payload, headers=headers, verify=False)
+
+def on_msg(msg):
+  print(msg)
+  if msg.src.name == target_channel:
+    if msg.media and msg.media['type'] == 'photo':
+      msg.load_photo(partial(send_message, msg.media.get('caption')))
+    else:
+      send_message(msg.text)
+  else:
+    print("ignoring message from {}, doesn't match {}".format(msg.src.name, target_channel))
+
+def history_callback(success, msgs):
+  global last_sync
+  for msg in msgs:
+    if msg.date > last_sync:
+      on_msg(msg)
+  last_sync = datetime.now()
+
+def got_dl(success, dialog_list):
+  global peer
+  for d in dialog_list:
+    if d['peer'].name == target_channel:
+      print("Found target peer")
+      peer = d['peer']
+      peer.history(0, 3, history_callback)
+
+#tgl.set_on_msg_receive(on_msg)
+tgl.get_dialog_list(got_dl)
+
+def on_loop():
+  global last_request
+  if peer and last_request + timedelta(seconds=60) < datetime.now():
+    print(str(datetime.now()) + ": requested history")
+    peer.history(0, 10, history_callback)
+    last_request = datetime.now()
+
+tgl.set_on_loop(on_loop)

@@ -1,0 +1,105 @@
+backends:
+  synology_docker:
+    type: sftp
+    path: {{main_username}}@synology:/Restic/adonalsium
+    key: {{ secret_restic_repo_password }}
+    env: {}
+  synology_photos:
+    type: sftp
+    path: {{main_username}}@synology:/Restic/media/photos
+    key: {{ secret_restic_repo_password }}
+    env: {}
+  synology_music:
+    type: sftp
+    path: {{main_username}}@synology:/Restic/media/music
+    key: {{ secret_restic_repo_password }}
+    env: {}
+  synology_audiobooks:
+    type: sftp
+    path: {{main_username}}@synology:/Restic/media/audiobooks
+    key: {{ secret_restic_repo_password }}
+    env: {}
+  synology_files:
+    type: sftp
+    path: {{main_username}}@synology:/Restic/media/files
+    key: {{ secret_restic_repo_password }}
+    env: {}
+  b2_docker:
+    type: b2
+    path: '{{ secret_restic_b2_bucket }}:/adonalsium'
+    key: {{ secret_restic_repo_password }}
+    env:
+      B2_ACCOUNT_ID: {{ secret_restic_b2_account_id }}
+      B2_ACCOUNT_KEY: {{ secret_restic_b2_account_key }}
+  b2_photos:
+    type: b2
+    path: '{{ secret_media_b2_bucket }}:/photos'
+    key: {{ secret_restic_repo_password }}
+    env:
+      B2_ACCOUNT_ID: {{ secret_media_b2_account_id }}
+      B2_ACCOUNT_KEY: {{ secret_media_b2_account_key }}
+  b2_music:
+    type: b2
+    path: '{{ secret_media_b2_bucket }}:/music'
+    key: {{ secret_restic_repo_password }}
+    env:
+      B2_ACCOUNT_ID: {{ secret_media_b2_account_id }}
+      B2_ACCOUNT_KEY: {{ secret_media_b2_account_key }}
+  b2_audiobooks:
+    type: b2
+    path: '{{ secret_media_b2_bucket }}:/audiobooks'
+    key: {{ secret_restic_repo_password }}
+    env:
+      B2_ACCOUNT_ID: {{ secret_media_b2_account_id }}
+      B2_ACCOUNT_KEY: {{ secret_media_b2_account_key }}
+  b2_files:
+    type: b2
+    path: '{{ secret_media_b2_bucket }}:/files'
+    key: {{ secret_restic_repo_password }}
+    env:
+      B2_ACCOUNT_ID: {{ secret_media_b2_account_id }}
+      B2_ACCOUNT_KEY: {{ secret_media_b2_account_key }}
+locations:
+  docker:
+    from: '~/docker'
+    to: 
+      - synology_docker
+      - b2_docker
+    options:
+      forget:
+        keep-last: 30
+  photos:
+    from: '/mnt/Media/Photos'
+    to: 
+      - synology_docker
+      - b2_docker
+    options:
+      forget:
+        keep-last: 30
+  music:
+    from: '/mnt/Media/Music'
+    to: 
+      - synology_docker
+      - b2_docker
+    options:
+      forget:
+        keep-last: 30
+  audiobooks:
+    from: '/mnt/Media/Audiobooks'
+    to: 
+      - synology_docker
+      - b2_docker
+    options:
+      forget:
+        keep-last: 30
+  files:
+    from: '/mnt/Media/Files'
+    to: 
+      - synology_docker
+      - b2_docker
+    options:
+      backup:
+        exclude:
+          - 'Takeout'
+      forget:
+        keep-last: 30

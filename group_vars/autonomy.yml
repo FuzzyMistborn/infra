@@ -1,0 +1,241 @@
+---
+target_os: ubuntu
+hostname: autonomy
+
+### Install packages with grog.package
+package_list:
+  - name: automake
+  - name: cmake
+  - name: curl
+  - name: cutycapt
+  - name: git
+  - name: htop
+  - name: librtlsdr-dev
+  - name: libtool
+  - name: lm-sensors
+  - name: net-tools
+  - name: nut
+  - name: fail2ban
+  - name: python
+  - name: restic
+  - name: rtl-sdr
+  - name: sudo
+  - name: wget
+  - name: xvfb
+
+clone_git: false
+pull_backup: false
+
+### Docker-Compose with ironicbadger.docker_compose_generator
+appdata_path: "/home/{{ main_username }}/docker"
+containers:
+  ###
+  - service_name: diun
+    container_name: diun
+    active: true
+    image: crazymax/diun:latest
+    restart: always
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    volumes:
+      - "{{ appdata_path }}/diun/data:/data"
+      - "{{ appdata_path }}/diun/config.yml:/diun.yml:ro"
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - LOG_LEVEL=info
+      - LOG_JSON=false
+    hostname:  "{{ hostname }}"
+    include_global_env_vars: true
+  ###
+  - service_name: homeassistant
+    container_name: HASS
+    active: true
+    image: homeassistant/home-assistant:stable
+    restart: always
+    ports:
+      - 5315:5315
+    network_mode: host
+    volumes:
+      - "/home/{{ main_username }}/hass_docker:/config"
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /mnt/Media:/mnt/Media:ro
+    depends_on:
+      - mqtt
+    include_global_env_vars: false
+  ###
+  - service_name: hass-beta
+    container_name: HASS_Beta
+    active: true
+    image: homeassistant/home-assistant:beta
+    restart: always
+    ports:
+      - 5316:5316
+    network_mode: host
+    volumes:
+      - "/home/{{ main_username }}/hass_docker_beta:/config"
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - mqtt
+    include_global_env_vars: false
+  ###
+  - service_name: zwavejs
+    container_name: zwavejs
+    active: true
+    image: zwavejs/zwavejs2mqtt:latest
+    restart: always
+    ports:
+      - 8091:8091
+      - 3001:3000
+    volumes:
+      - "{{ appdata_path }}/zwavejs:/usr/src/app/store"
+    devices:
+      - /dev/serial/by-id/usb-0658_0200-if00:/dev/zwave
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    environment:
+      - TZ={{ ntp_timezone }}
+    include_global_env_vars: false
+  ###
+  - service_name: deconz
+    container_name: deconz
+    active: true
+    image: marthoc/deconz:stable
+    restart: always
+    ports:
+      - 5316:5316
+    network_mode: host
+    devices:
+      - /dev/serial/by-id/usb-dresden_elektronik_ingenieurtechnik_GmbH_ConBee_II_DE2152697-if00:/dev/ttyACM1
+    volumes:
+      - "{{ appdata_path }}/deconz:/root/.local/share/dresden-elektronik/deCONZ"
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    environment:
+      - DECONZ_WEB_PORT=100
+      - DECONZ_WS_PORT=460
+      - DECONZ_DEVICE=/dev/ttyACM1
+      - TZ={{ ntp_timezone }}
+    include_global_env_vars: false
+  ###
+  - service_name: iobroker
+    container_name: iobroker
+    active: true
+    image: buanet/iobroker:latest
+    restart: always
+    ports:
+      - 8081:8081 # Main
+      - 1881:1881
+      - 8082:8082 # Web Server
+      - 8087:8087 # Rest API
+    volumes:
+      - "{{ appdata_path }}/iobroker:/opt/iobroker"
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    environment:
+      - LANGUAGE="en_US:en"
+    include_global_env_vars: false
+  ###
+  - service_name: mqtt
+    container_name: MQTT
+    active: true
+    image: eclipse-mosquitto
+    restart: always
+    ports:
+      - 1883:1883
+    volumes:
+      - "{{ appdata_path }}/mqtt/config:/mosquitto/config/"
+      - "{{ appdata_path }}/mqtt/data:/mosquitto/data/"
+      - "{{ appdata_path }}/mqtt/log:/mosquitto/log/"
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false
+  ###
+  - service_name: nodered
+    container_name: nodered
+    active: true
+    image: nodered/node-red
+    restart: always
+    ports:
+      - 1880:1880
+    volumes:
+      - "{{ appdata_path }}/nodered:/data"
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ={{ ntp_timezone }}
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    depends_on:
+      - homeassistant
+    include_global_env_vars: false
+  ###
+  - service_name: tasmota
+    container_name: tasmota
+    active: true
+    image: raymondmm/tasmoadmin
+    restart: always
+    ports:
+      - 5555:80
+    volumes:
+      - "{{ appdata_path }}/tasmota:/data"
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false
+  ###
+  - service_name: deepstack
+    container_name: deepstack
+    active: true
+    image: deepquestai/deepstack:latest
+    restart: always
+    ports:
+      - 5001:5000
+    volumes:
+      - "{{ appdata_path }}/deepstack:/datastore"
+    environment:
+      - VISION-DETECTION=True
+      - VISION-FACE=True
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false
+  ###
+  - service_name: deepstack_ui
+    container_name: deepstack_ui
+    active: true
+    image: robmarkcole/deepstack-ui:latest
+    restart: always
+    ports:
+      - 8501:8501
+    environment:
+      - DEEPSTACK_IP=192.168.30.12
+      - DEEPSTACK_PORT=5001
+      - DEEPSTACK_API_KEY="{{secret_deepstack_api}}"
+      - DEEPSTACK_TIMEOUT=20
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false
+  ###
+  - service_name: portainer_agent
+    container_name: portainer_agent
+    active: true
+    image: portainer/agent
+    restart: always
+    ports:
+      - 9001:9001
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    environment:
+      - AGENT_SECRET={{secret_portainer_key}}
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false

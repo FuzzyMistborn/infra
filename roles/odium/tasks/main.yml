@@ -1,0 +1,55 @@
+---
+
+### Basic Setup
+
+- name: Remove enterprise repo
+  file:
+    state: absent
+    path: /etc/apt/sources.list.d/pve-enterprise.list
+- name: Switch to community repo
+  apt_repository:
+    repo: 'deb http://download.proxmox.com/debian/pve buster pve-no-subscription'
+    state: present
+       
+- name: Install Proxmoxer
+  pip:
+    name: proxmoxer
+
+- name: Ensure user groups exists
+  group:
+    name: "{{ main_username }}"
+    state: present
+
+- name: Add main user
+  user:
+    name: "{{ main_username }}"
+    password: "{{ secret_main_user_pass }}"
+    groups:
+      - "{{ main_username }}"
+    shell: /bin/bash
+
+- name: create main user directories
+  file:
+    path: /home/{{ main_username }}/{{ item }}
+    state: directory
+    owner: "{{ main_username }}"
+    group: "{{ main_groupname }}"
+  loop:
+    - docker
+    - docker/diun
+
+### DIUN
+- name: Copy DIUN Config Template
+  template:
+    src: diun_config.yml.j2
+    dest: /home/{{ main_username }}/docker/diun/config.yml
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+
+- name: Update pveam
+  command: pveam update
+
+- name: Download container templates
+  command: pveam download local {{item}}
+  with_items:
+    - ubuntu-20.04-standard_20.04-1_amd64.tar.gz

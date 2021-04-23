@@ -1,0 +1,240 @@
+---
+target_os: ubuntu
+hostname: cultivation
+
+### Install packages with grog.package
+package_list:
+  - name: curl
+  - name: git
+  - name: htop
+  - name: lm-sensors
+  - name: net-tools
+  - name: fail2ban
+  - name: python
+  - name: restic
+  - name: sudo
+  - name: wget
+  
+pull_backup: false
+
+### Docker-Compose with ironicbadger.docker_compose_generator
+appdata_path: "/home/{{ main_username }}/docker"
+containers:
+  ###
+  - service_name: diun
+    container_name: diun
+    active: true
+    image: crazymax/diun:latest
+    restart: always
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    volumes:
+      - "{{ appdata_path }}/diun/data:/data"
+      - "{{ appdata_path }}/diun/config.yml:/diun.yml:ro"
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - LOG_LEVEL=info
+      - LOG_JSON=false
+    hostname:  "{{ hostname }}"
+    include_global_env_vars: true
+  ###
+  - service_name: bitwarden
+    container_name: bitwarden
+    active: true
+    image: bitwardenrs/server:latest
+    restart: always
+    ports:
+      - 6482:80
+    volumes:
+      - "{{ appdata_path }}/bitwarden/data:/data"
+    environment:
+      - SMTP_HOST={{ secret_snapraid_smtp_host }}
+      - SMTP_FROM={{ secret_bitwarden_email }}
+      - SMTP_PORT=587
+      - SMTP_SSL=true
+      - SMTP_USERNAME={{ secret_snapraid_email_address }}
+      - SMTP_PASSWORD={{ secret_snapraid_email_pass }}
+      - ADMIN_TOKEN={{ secret_bitwarden_token }}
+      - WEBSOCKET_ENABLED=true # Required to use websockets
+      - SIGNUPS_ALLOWED=false # set to false to disable signups
+      - LOG_FILE=/data/bitwarden.log
+      - DATABASE_URL={{ secret_bitwarden_db_url }}
+      - ENABLE_DB_WAL=false
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false
+  ###
+  - service_name: freshrss
+    container_name: freshrss
+    active: true
+    image: linuxserver/freshrss
+    restart: always
+    ports:
+      - 8010:80
+    volumes:
+      - "{{ appdata_path }}/freshrss:/config"
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: true
+  ###
+  - service_name: wallabag
+    container_name: wallabag
+    active: true
+    image: wallabag/wallabag
+    restart: always
+    ports:
+      - 300:80
+    environment:
+      - MYSQL_ROOT_PASSWORD={{ secret_db_root_pass }}
+      - SYMFONY__ENV__DATABASE_DRIVER=pdo_mysql
+      - SYMFONY__ENV__DATABASE_HOST=192.168.30.14
+      - SYMFONY__ENV__DATABASE_PORT=3309
+      - SYMFONY__ENV__DATABASE_NAME=symfony
+      - SYMFONY__ENV__DATABASE_PASSWORD={{ secret_db_root_pass }}
+      - SYMFONY__ENV__FOSUSER_REGISTRATION=false
+      - SYMFONY__ENV__FOSUSER_CONFIRMATION=false
+      - SYMFONY__ENV__DOMAIN_NAME={{ secret_wallabag_url }}
+    volumes:
+      - "{{ appdata_path }}/wallabag/images:/var/www/wallabag/web/assets/images"
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: true
+  ###
+  - service_name: nginx
+    container_name: nginx
+    active: true
+    image: nginx:stable-alpine
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - "{{ appdata_path }}/nginx:/etc/nginx"
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false
+  ###
+  - service_name: nginx-ui
+    container_name: nginx-ui
+    active: true
+    image: schenkd/nginx-ui:latest
+    restart: always
+    ports:
+      - 8090:8080
+    volumes:
+      - "{{ appdata_path }}/nginx:/etc/nginx"
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false
+  ###
+  - service_name: collabora
+    container_name: collabora
+    active: true
+    image: collabora/code
+    restart: always
+    ports:
+      - 9980:9980
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    cap_add:
+      - MKNOD
+    environment:
+      - domain={{ secret_collabora_url }}
+    mem_limit: 1000M      
+    include_global_env_vars: false
+  ###
+  - service_name: organizr
+    container_name: organizr
+    active: true
+    image: organizr/organizr:latest
+    restart: always
+    ports:
+      - 5100:80
+    volumes:
+      - "{{ appdata_path }}/organizr:/config"
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: true
+  ###
+  - service_name: unifi-controller
+    container_name: unifi-controller
+    active: true
+    image: linuxserver/unifi-controller
+    restart: always
+    ports:
+      - 3478:3478/udp
+      - 10001:10001/udp
+      - 8080:8080
+      - 8443:8443
+      - 8843:8843 #optional
+      - 8880:8880 #optional
+      - 6789:6789 #optional
+      - 5514:5514 #optional
+    volumes:
+      - "{{ appdata_path }}/unifi:/config"
+    environment:
+      - MEM_LIMIT=1024M #optional
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: true
+  ###
+  - service_name: snapdrop
+    container_name: snapdrop
+    active: true
+    image: linuxserver/snapdrop
+    restart: always
+    ports:
+      - 85:80
+      - 450:443
+    volumes:
+      - "{{ appdata_path }}/snapdrop:/config"
+    environment:
+      - MEM_LIMIT=1024M #optional
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: true
+  ###
+  - service_name: remote-api
+    container_name: remote-api
+    active: true
+    image: kekru/docker-remote-api-tls:v0.3.0
+    restart: always
+    ports:
+      - 2376:443
+    volumes:
+      - "{{ appdata_path }}/docker-api:/data/certs"
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+     - CREATE_CERTS_WITH_PW={{ secret_docker_api_tls }}
+     - CERT_HOSTNAME=docker-remote.local
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false
+  ###
+  - service_name: portainer_agent
+    container_name: portainer_agent
+    active: true
+    image: portainer/agent
+    restart: always
+    ports:
+      - 9001:9001
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    environment:
+      - AGENT_SECRET={{secret_portainer_key}}
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false

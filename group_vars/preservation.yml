@@ -1,0 +1,160 @@
+---
+target_os: ubuntu
+hostname: preservation
+
+### Install packages with grog.package
+package_list:
+  - name: curl
+  - name: htop
+  - name: net-tools
+  - name: sudo
+  - name: restic
+  - name: wget
+
+nfs_mountpoints:
+  - { path: "/mnt/Backup", source: "192.168.30.25:/volume1/Backup/Adonalsium/preservation", fs: nfs, opts: "rw,sync" }
+
+pull_backup: false
+
+### Docker-Compose with ironicbadger.docker_compose_generator
+appdata_path: "/home/{{ main_username }}/docker"
+containers:
+  ###
+  - service_name: hass-db
+    container_name: hass-db
+    active: true
+    image: mariadb
+    restart: always
+    ports:
+      - 3307:3306
+    volumes:
+      - "{{ appdata_path }}/hass_db:/var/lib/mysql"
+    environment:
+      - MYSQL_ROOT_PASSWORD={{ secret_db_root_pass }}
+      - MYSQL_DATABASE=homeassistant
+      - MYSQL_USER=hass
+      - MYSQL_PASSWORD={{ secret_hass_db_pass }}
+    mem_limist: 300M
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false
+  ###
+  - service_name: influx-db
+    container_name: influx-db
+    active: true
+    image: influxdb
+    restart: always
+    ports:
+      - 8086:8086
+    volumes:
+      - "{{ appdata_path }}/influx_db/data:/root/.influxdb2/"
+      - "{{ appdata_path }}/influx_db/config.yml:/etc/influxdb2/config.yml:ro"
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    mem_limit: 500M
+    include_global_env_vars: false
+  ###
+  - service_name: bitwarden-db
+    container_name: bitwarden-db
+    active: true
+    image: mariadb
+    restart: always
+    ports:
+      - 3308:3306
+    volumes:
+      - "{{ appdata_path }}/bitwarden_db:/var/lib/mysql"
+    environment:
+      - MYSQL_ROOT_PASSWORD={{ secret_db_root_pass }}
+      - MYSQL_DATABASE=bitwarden_rs
+      - MYSQL_USER=bitwarden
+      - MYSQL_PASSWORD={{ secret_bitwarden_db_pass }}
+    mem_limit: 300M
+    include_global_env_vars: false
+  ###
+  - service_name: nextcloud-db
+    container_name: nextcloud-db
+    active: true
+    image: mariadb
+    restart: always
+    ports:
+      - 3306:3306
+    volumes:
+      - "{{ appdata_path }}/nextcloud_db:/var/lib/mysql"
+    environment:
+      - MYSQL_ROOT_PASSWORD={{ secret_db_root_pass }}
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER={{ main_username }}
+      - MYSQL_PASSWORD={{ secret_nextcloud_db_pass }}
+    mem_limit: 300M
+    include_global_env_vars: false
+  ###
+  - service_name: wallabag-db
+    container_name: wallabag-db
+    active: true
+    image: mariadb
+    restart: always
+    ports:
+      - 3309:3306
+    volumes:
+      - "{{ appdata_path }}/wallabag_db:/var/lib/mysql"
+    environment:
+      - MYSQL_ROOT_PASSWORD={{ secret_db_root_pass }}
+      - MYSQL_DATABASE=symfony
+    mem_limit: 300M
+    include_global_env_vars: false
+  ###
+  - service_name: remote-api
+    container_name: remote-api
+    active: true
+    image: kekru/docker-remote-api-tls:v0.3.0
+    restart: always
+    ports:
+      - 2376:443
+    volumes:
+      - "{{ appdata_path }}/docker-api:/data/certs"
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+     - CREATE_CERTS_WITH_PW={{ secret_docker_api_tls }}
+     - CERT_HOSTNAME=docker-remote.local
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false
+  ###
+  - service_name: diun
+    container_name: diun
+    active: true
+    image: crazymax/diun:latest
+    restart: always
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    volumes:
+      - "{{ appdata_path }}/diun/data:/data"
+      - "{{ appdata_path }}/diun/config.yml:/diun.yml:ro"
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - LOG_LEVEL=info
+      - LOG_JSON=false
+    hostname:  "{{ hostname }}"
+    include_global_env_vars: true
+  ###
+  - service_name: portainer_agent
+    container_name: portainer_agent
+    active: true
+    image: portainer/agent
+    restart: always
+    ports:
+      - 9001:9001
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    environment:
+      - AGENT_SECRET={{secret_portainer_key}}
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false
+    

@@ -1,0 +1,22 @@
+backends:
+  synology_docker:
+    type: sftp
+    path: {{main_username}}@synology:/Restic/endowment
+    key: {{ secret_restic_repo_password }}
+    env: {}
+  b2_docker:
+    type: b2
+    path: '{{ secret_restic_b2_bucket }}:/endowment'
+    key: {{ secret_restic_repo_password }}
+    env:
+      B2_ACCOUNT_ID: {{ secret_restic_b2_account_id }}
+      B2_ACCOUNT_KEY: {{ secret_restic_b2_account_key }}
+locations:
+  docker:
+    from: '~/docker'
+    to: 
+      - synology_docker
+      - b2_docker
+    options:
+      forget:
+        keep-last: 30

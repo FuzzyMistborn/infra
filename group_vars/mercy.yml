@@ -1,0 +1,30 @@
+---
+target_os: ubuntu
+hostname: mercy
+
+### Install packages with grog.package
+package_list:
+  - name: curl
+  - name: htop
+  - name: git
+  - name: net-tools
+  - name: sudo
+  - name: wget
+  - name: libreadline-dev
+  - name: libconfig-dev
+  - name: libssl-dev
+  - name: lua5.2
+  - name: liblua5.2-dev
+  - name: libevent-dev
+  - name: libjansson-dev
+  - name: libpython-dev
+  - name: libpython3-dev
+  - name: libgcrypt-dev
+  - name: zlib1g-dev
+  - name: lua-lgi
+  - name: make
+  - name: python
+  - name: python-pip
+  - name: restic
+
+pull_backup: false

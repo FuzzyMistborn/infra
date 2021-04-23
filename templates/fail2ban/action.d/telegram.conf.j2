@@ -1,0 +1,9 @@
+[Definition]
+actionstart = /etc/fail2ban/scripts/send_telegram_notif.sh -a start 
+actionstop = /etc/fail2ban/scripts/send_telegram_notif.sh -a stop
+actioncheck = 
+actionban = /etc/fail2ban/scripts/send_telegram_notif.sh -b <ip>
+actionunban = /etc/fail2ban/scripts/send_telegram_notif.sh -u <ip>
+ 
+[Init]
+init = 123

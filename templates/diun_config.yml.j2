@@ -1,0 +1,20 @@
+watch:
+  workers: 20
+  schedule: "0 */6 * * *"
+
+providers:
+  docker:
+    watchByDefault: false
+    watchStopped: false
+
+notif:
+  telegram:
+    token: "{{ secret_diun_tg_api }}"
+    chatIDs:
+      - "{{ secret_diun_tg_chat }}"
+
+regopts:
+  - name: "docker.io"
+    selector: image
+    username: fuzzymistborn
+    password: "{{ secret_diun_docker_pass }}"

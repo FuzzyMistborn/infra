@@ -1,0 +1,21 @@
+## adonalsium samba configuration
+
+[global]
+  workgroup = cosmere
+  server string = adonalsium
+  security = user
+  guest ok = yes
+  map to guest = bad user
+
+  log file = /var/log/samba/%m.log
+  max log size = 50
+  printcap name = /dev/null
+  load printers = no
+
+[media]
+  comment = Media on adonalsium
+  public = yes
+  writeable = yes
+  path = /mnt/Media
+  force user = {{main_username}}
+  force group = {{main_username}}

@@ -1,0 +1,13 @@
+[Unit]
+Description=RTL 433 to MQTT
+After=network-online.target
+
+[Service]
+User={{main_username}}
+ExecStart=python3 /home/{{main_username}}/scripts/rtl2mqtt.py
+
+Restart=always
+RestartSec=15
+
+[Install]
+WantedBy=multi-user.target

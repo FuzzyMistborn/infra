@@ -1,0 +1,49 @@
+---
+
+- name: Clone Ansible GitHub Repo
+  git:
+    repo: git@github.com:FuzzyMistborn/infra.git
+    dest: /home/{{ main_username }}/infra
+    accept_hostkey: true
+    key_file: /home/{{main_username}}/.ssh/github
+
+- name: Add Linode SSH Key
+  copy:
+    dest: /home/{{ main_username }}/.ssh/linode
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0600
+    content: "{{ secret_linode_ssh }}"
+
+- name: Add Gitea SSH Key
+  copy:
+    dest: /home/{{ main_username }}/.ssh/gitea
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0600
+    content: "{{ secret_gitea_ssh }}"
+
+- name: Add ansible SSH Key
+  copy:
+    dest: /home/{{ main_username }}/.ssh/ansible_user
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0600
+    content: "{{ secret_ansible_key }}"
+
+- name: Add ssh config
+  copy:
+    dest: /home/{{ main_username }}/.ssh/config
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0664
+    content: |
+      Host github.com
+        IdentityFile ~/.ssh/github
+      Host gitea
+        HostName {{ secret_linode_ip }}
+        Port {{ secret_gitea_port }}
+        IdentityFile ~/.ssh/gitea
+      Host linode
+        HostName {{ secret_linode_ip }}
+        IdentityFile ~/.ssh/linode

@@ -1,0 +1,28 @@
+---
+
+- hosts: "{{host}}"
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+  vars_prompt:
+    - name: host
+      prompt: Which host?
+      private: no
+    - name: containers_to_update
+      prompt: Which containers?
+      private: no
+  tasks:
+    - name: Docker Pull
+      command: "docker-compose pull {{containers_to_update}}"
+      args:
+        chdir: /home/{{main_username}}/
+
+    - name: Docker Update
+      command: "docker-compose up -d {{containers_to_update}}"
+      args:
+        chdir: /home/{{main_username}}/
+
+    - name: Docker prune
+      command: "docker image prune -f"
+  roles:
+    - role: ironicbadger.ansible_role_docker_compose_generator

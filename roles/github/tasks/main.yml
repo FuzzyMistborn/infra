@@ -1,0 +1,32 @@
+---
+  - name: Add GitHub SSH Key
+    copy:
+      dest: /home/{{ main_username }}/.ssh/github
+      owner: "{{ main_username }}"
+      group: "{{ main_username }}"
+      mode: 0600
+      content: "{{ secret_github_ssh }}"
+  - name: Copy Github script
+    template:
+      src: github.sh.j2
+      dest: /home/{{ main_username }}/github.sh
+      owner: "{{ main_username }}"
+      group: "{{ main_username }}"
+      mode: +x
+  - name: Add ssh config
+    copy:
+      dest: /home/{{ main_username }}/.ssh/config
+      owner: "{{ main_username }}"
+      group: "{{ main_username }}"
+      mode: 0664
+      content: |
+        Host github.com
+          IdentityFile ~/.ssh/github
+  - name: Run Github Script
+    command: /bin/bash ./github.sh
+    args:
+      chdir: "/home/{{main_username}}"
+  - name: Remove Github script
+    file:
+      path: /home/{{ main_username }}/github.sh
+      state: absent

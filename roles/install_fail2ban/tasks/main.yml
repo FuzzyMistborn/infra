@@ -1,0 +1,41 @@
+- name: Create F2B Scripts Directory
+  file:
+    path: /etc/fail2ban/scripts
+    state: directory
+    mode: 0775
+    
+- name: Copy F2B config
+  template:
+    src: fail2ban/{{item.src}}
+    dest: /etc/fail2ban/{{item.dest}}
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: 'jail.conf.j2', dest: 'jail.conf' }
+    - { src: 'jail.local.j2', dest: 'jail.local' }
+    - { src: 'action.d/cloudflare-apiv4.conf.j2', dest: 'action.d/cloudflare-apiv4.conf' }
+    - { src: 'action.d/telegram.conf.j2', dest: 'action.d/telegram.conf' }
+    - { src: 'filter.d/bitwarden.conf.j2', dest: 'filter.d/bitwarden.conf' }
+    - { src: 'filter.d/jellyfin.conf.j2', dest: 'filter.d/jellyfin.conf' }
+    - { src: 'filter.d/ha.conf.j2', dest: 'filter.d/ha.conf' }
+    - { src: 'filter.d/nextcloud.conf.j2', dest: 'filter.d/nextcloud.conf' }
+    - { src: 'filter.d/sonarr.conf.j2', dest: 'filter.d/sonarr.conf' }
+    - { src: 'filter.d/radarr.conf.j2', dest: 'filter.d/radarr.conf' }
+    - { src: 'jail.d/bitwarden.local.j2', dest: 'jail.d/bitwarden.local' }
+    - { src: 'jail.d/jellyfin.local.j2', dest: 'jail.d/jellyfin.local' }
+    - { src: 'jail.d/ha.local.j2', dest: 'jail.d/ha.local' }
+    - { src: 'jail.d/nextcloud.local.j2', dest: 'jail.d/nextcloud.local' }
+    - { src: 'jail.d/sonarr.local.j2', dest: 'jail.d/sonarr.local' }
+    - { src: 'jail.d/radarr.local.j2', dest: 'jail.d/radarr.local' }
+    - { src: 'scripts/send_telegram_notif.sh.j2', dest: 'scripts/send_telegram_notif.sh' }
+
+- name: Make F2B TG script executable
+  file:
+    path: /etc/fail2ban/scripts/send_telegram_notif.sh
+    mode: +x
+
+- name: Restart F2B
+  service:
+    name: fail2ban
+    state: restarted

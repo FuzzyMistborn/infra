@@ -1,0 +1,42 @@
+---
+
+- name: make sure disks unmounted
+  mount:
+    path: "{{ item.path }}"
+    state: unmounted
+  with_items:
+    - "{{ data_disks }}"
+    - "{{ smb_mountpoints }}"
+
+- name: create /mnt points
+  file:
+    dest: "{{ item.path }}"
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: 0777
+  with_items: 
+    - "{{ data_disks }}"
+    - "{{ smb_mountpoints }}"
+
+- name: Add smbcredentials
+  copy:
+    dest: /home/{{main_username}}/.smbcredentials
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0600
+    content: |
+      password={{secret_samba_pass}}
+      domain=cosmere
+
+- name: mount disks
+  mount:
+    path: "{{ item.path }}"
+    src: "{{ item.source }}"
+    fstype: "{{ item.fs }}"
+    opts: "{{ item.opts }}"
+    # change to 'mounted' to auto mount versus 'present' for just loaded into fstab
+    state: mounted
+  with_items:
+    - "{{ data_disks }}"
+    - "{{ smb_mountpoints }}"

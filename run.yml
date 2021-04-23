@@ -1,0 +1,163 @@
+---
+  - hosts: all
+    become: true
+    tasks:
+      - name: Set timezone
+        timezone:
+          name: "{{ ntp_timezone }}"
+        when: ansible_distribution == 'Ubuntu'
+      - name: Remove Ubuntu motd spam
+        file:
+          path: "/etc/update-motd.d/{{ item }}"
+          state: absent
+        loop:
+          - 80-livepatch
+          - 95-hwe-eol
+          - 50-motd-news
+          - 10-help-text
+        when: ansible_distribution == 'Ubuntu'
+
+  - hosts: adonalsium
+    become: true
+    vars_files:
+    - 'vars/vault.yaml'
+    pre_tasks:
+      - name: Remove enterprise repo
+        file:
+          state: absent
+          path: /etc/apt/sources.list.d/pve-enterprise.list
+      - name: Switch to community repo
+        apt_repository:
+          repo: 'deb http://download.proxmox.com/debian/pve buster pve-no-subscription'
+          state: present
+      - name: Apt update
+        apt:
+          upgrade: 'yes'
+          update_cache: yes
+          cache_valid_time: 3600
+    roles:
+      - role: ironicbadger.ansible_role_proxmox_nag_removal
+      - role: grog.package
+      - role: install_fail2ban
+      - role: geerlingguy.pip
+      - role: geerlingguy.samba
+      - role: adonalsium
+      - role: geerlingguy.docker
+      - role: geerlingguy.ntp
+      - role: ironicbadger.ansible_role_docker_compose_generator
+      - role: ironicbadger.ansible_role_snapraid
+
+  - hosts: dominion
+    become: true
+    vars_files:
+    - 'vars/vault.yaml'
+    roles:
+      - role: grog.package
+      - role: github
+      - role: dominion
+#      - role: geerlingguy.ntp
+
+  - hosts: endowment
+    become: true
+    vars_files:
+    - 'vars/vault.yaml'
+    roles:
+      - role: grog.package
+      - role: geerlingguy.samba
+      - role: endowment
+      - role: install_fail2ban
+      - role: geerlingguy.docker
+      - role: geerlingguy.pip
+#      - role: geerlingguy.ntp
+      - role: ironicbadger.ansible_role_docker_compose_generator
+
+  - hosts: autonomy
+    become: true
+    vars_files:
+      - 'vars/vault.yaml'
+    roles:
+      - role: grog.package
+      - role: github
+      - role: geerlingguy.docker
+      - role: geerlingguy.pip
+      - role: autonomy
+      - role: install_fail2ban
+#      - role: geerlingguy.ntp
+      - role: ironicbadger.ansible_role_docker_compose_generator
+
+  - hosts: cultivation
+    become: true
+    vars_files:
+      - 'vars/vault.yaml'
+    roles:
+      - role: grog.package
+      - role: cultivation
+      - role: install_fail2ban
+      - role: geerlingguy.docker
+      - role: geerlingguy.pip
+#      - role: geerlingguy.ntp
+      - role: ironicbadger.ansible_role_docker_compose_generator
+
+  - hosts: preservation
+    become: true
+    vars_files:
+      - 'vars/vault.yaml'
+    roles:
+      - role: grog.package
+      - role: geerlingguy.docker
+      - role: geerlingguy.pip
+      - role: ironicbadger.ansible_role_docker_compose_generator
+      - role: preservation
+#      - role: geerlingguy.ntp
+
+  - hosts: honor
+    become: true
+    vars_files:
+      - 'vars/vault.yaml'
+    roles:
+      - role: grog.package
+      - role: honor
+#      - role: geerlingguy.ntp
+
+  - hosts: valor
+    become: true
+    vars_files:
+      - 'vars/vault.yaml'
+    roles:
+      - role: grog.package
+      - role: valor
+      - role: install_fail2ban
+#      - role: geerlingguy.ntp
+
+  - hosts: mercy
+    become: true
+    vars_files:
+      - 'vars/vault.yaml'
+    roles:
+      - role: grog.package
+      - role: geerlingguy.pip
+      - role: mercy
+#      - role: geerlingguy.ntp
+
+  - hosts: omada
+    become: true
+    vars_files:
+      - 'vars/vault.yaml'
+    roles:
+      - role: grog.package
+      - role: geerlingguy.pip
+      - role: geerlingguy.docker
+      - role: omada
+      - role: ironicbadger.ansible_role_docker_compose_generator
+
+  - hosts: odium
+    become: true
+    vars_files:
+      - 'vars/vault.yaml'
+    roles:
+      - role: ironicbadger.ansible_role_proxmox_nag_removal
+      - role: grog.package
+      - role: geerlingguy.pip
+      - role: odium
+      - role: geerlingguy.docker
+      - role: ironicbadger.ansible_role_docker_compose_generator

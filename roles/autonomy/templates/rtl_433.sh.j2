@@ -1,0 +1,10 @@
+#!/bin/sh
+
+cd /home/{{ main_username }}
+git clone https://github.com/merbanan/rtl_433.git
+cd rtl_433/
+mkdir build
+cd build
+cmake ../
+make
+make install

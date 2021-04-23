@@ -1,0 +1,28 @@
+- name: Install pve-headers
+  apt:
+    name: pve-headers
+    state: latest
+
+- name: Add backport repo to sources
+  apt_repository:
+    repo: 'deb http://deb.debian.org/debian buster-backports main'
+    state: present
+
+- name: Install wireguard
+  apt:
+    name: wireguard-dkms
+    default_release: buster-backports
+    update_cache: yes
+    state: latest
+
+- name: Reboot Proxmox
+  reboot:
+    post_reboot_delay: 15
+    reboot_timeout: 90
+
+- name: Add wireguard to modprobe
+  modprobe:
+    name: wireguard
+
+- name: Add wireguard to modules.conf
+  shell: echo "wireguard" >> /etc/modules-load.d/modules.conf

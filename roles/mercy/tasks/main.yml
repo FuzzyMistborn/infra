@@ -1,0 +1,182 @@
+---
+
+- name: create config directories
+  file:
+    path: /home/{{ main_username }}/{{ item }}
+    state: directory
+    owner: "{{ main_username }}"
+    group: "{{ main_groupname }}"
+  loop:
+    - scripts
+    - tg
+    - '.local/share'
+
+### Install TG bot
+- name: Clone TG CLI GitHub Repo
+  git:
+    repo: https://github.com/kenorb-contrib/tg.git
+    dest: /home/{{ main_username }}/tg
+    accept_hostkey: true
+    force: true
+  become: yes
+
+- name: Install requests python package
+  pip:
+    name: 
+      - requests
+      - python-dateutil
+      - pytz
+      - parsedatetime
+    executable: /usr/bin/pip3
+
+- name: set TG folder permissions
+  file:
+    path: /home/{{ main_username }}/tg
+    state: directory
+    recurse: true
+    owner: "{{ main_username }}"
+    group: "{{ main_groupname }}"
+
+- name: Make TG CLI
+  shell: ./configure --enable-python && make
+  args:
+    chdir: "/home/{{main_username}}/tg"
+
+### Install HO bot
+- name: Clone HO Bot GitHub Repo
+  git:
+    repo: https://github.com/hangoutsbot/hangoutsbot.git
+    dest: /home/{{ main_username }}/hangoutsbot
+    accept_hostkey: true
+    force: true
+
+- name: set hangoutsbot folder permissions
+  file:
+    path: /home/{{ main_username }}/hangoutsbot
+    state: directory
+    recurse: true
+    owner: "{{ main_username }}"
+    group: "{{ main_groupname }}"
+
+- name: Install Requirements
+  command: pip3 install -r requirements.txt
+  args:
+    chdir: "/home/{{main_username}}/hangoutsbot"
+  become: yes
+  become_user: root
+
+- name: Copy systemd service files
+  template:
+    src: "{{item.src}}"
+    dest: /etc/systemd/system/{{item.dest}}
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0644
+  with_items:
+    - { src: 'systemd/bar.service.j2', dest: 'bar.service' }
+    - { src: 'systemd/math.service.j2', dest: 'math.service' }
+    - { src: 'systemd/phantom.service.j2', dest: 'phantom.service' }
+    - { src: 'systemd/tg-sync.service.j2', dest: 'tg-sync.service' }
+
+- name: Copy scripts files
+  template:
+    src: "{{item.src}}"
+    dest: /home/{{ main_username }}/{{item.dest}}
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: +x
+  with_items:
+    - { src: 'scripts/RunBARBot.sh.j2', dest: 'scripts/RunBARBot.sh' }
+    - { src: 'scripts/RunMATHBot.sh.j2', dest: 'scripts/RunMATHBot.sh' }
+    - { src: 'scripts/RunPhantomBot.sh.j2', dest: 'scripts/RunPhantomBot.sh' }
+    - { src: 'scripts/media_backup.sh.j2', dest: 'scripts/media_backup.sh' }
+    - { src: 'scripts/run.sh.j2', dest: 'scripts/run.sh' }
+    - { src: 'scripts/tg_ho.py.j2', dest: 'scripts/tg_ho.py' }
+
+### Restic
+- name: Add Synology SSH Key
+  copy:
+    dest: /home/{{ main_username }}/.ssh/synology_restic
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0600
+    content: "{{ secret_synology_restic_key }}"
+
+- name: Check that Synology not already in SSH config
+  shell: grep -c "Host synology" /home/{{main_username}}/.ssh/config || true
+  register: synology_ssh
+
+- name: Add ssh config for Synology
+  lineinfile:
+    path: /home/{{ main_username }}/.ssh/config
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0664
+    line: |
+      Host synology
+        HostName 192.168.30.25
+        User {{main_username}}
+        IdentityFile ~/.ssh/synology_restic
+    create: true
+  when: synology_ssh.stdout == "0" or synology_ssh.stdout == ""
+
+- name: Update Restic to latest version
+  command: "/usr/bin/restic self-update"
+
+- name: Install Autorestic
+  shell: curl -s https://raw.githubusercontent.com/CupCakeArmy/autorestic/master/install.sh | sudo bash
+
+- name: Copy Autorestic Config Template
+  template:
+    src: autorestic.yml.j2
+    dest: /home/{{ main_username }}/.autorestic.yml
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+
+### Backup Restore
+- name: Restore folders from backup
+  command: "/usr/local/bin/autorestic restore -f -l {{item.name}} --from {{item.src}} --to {{item.dest}}"
+  with_items:
+    - { name: "plugins", src: 'synology_plugins', dest: '/home/{{main_username}}/hangoutsbot/hangupsbot/plugins' }
+    - { name: "local", src: 'synology_local', dest: '/home/{{main_username}}/.local/share/hangupsbot' }
+    - { name: "telegram", src: 'synology_telegram', dest: '/home/{{main_username}}/' }
+  when: pull_backup == "true"
+
+- name: Enable bot services
+  systemd:
+    enabled: true
+    daemon-reload: true
+    state: started
+    name: "{{item}}"
+  loop:
+    - bar
+    - phantom
+    - math
+    - tg-sync
+
+- name: Main User Cronjobs
+  cron:
+    user: "{{ main_username }}"
+    name: "{{ item.name }}"
+    job: "{{ item.job }}"
+    hour: "{{ item.hour }}"
+    minute: "{{ item.minute }}"
+    weekday: "{{ item.weekday }}"
+    state: present
+  with_items:
+    - { job: "/home/{{ main_username }}/scripts/media_backup.sh", name: "Backup Media", hour: "2", minute: "59", weekday: "*" }
+
+- name: Root Cronjobs
+  cron:
+    user: root
+    name: "{{ item.name }}"
+    job: "{{ item.job }}"
+    hour: "{{ item.hour }}"
+    minute: "{{ item.minute }}"
+    weekday: "{{ item.weekday }}"
+    state: present
+  with_items:
+    - { job: "systemctl restart bar.service && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_bar}}", name: "Restart BARbot", hour: "3", minute: "0", weekday: "*" }
+    - { job: "systemctl restart math.service && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_math}}", name: "Restart MATHBot", hour: "3", minute: "1", weekday: "*" }
+    - { job: "systemctl restart phantom.service && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_phantom}}", name: "Restart PhantomBot", hour: "3", minute: "2", weekday: "*" }
+    - { job: "systemctl restart tg-sync.service && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_tg}}", name: "Restart TG Sync", hour: "3", minute: "3", weekday: "*" }

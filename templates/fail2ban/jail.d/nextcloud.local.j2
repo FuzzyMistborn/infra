@@ -1,0 +1,16 @@
+[nextcloud]
+backend = auto
+enabled = false
+action   = cloudflare-apiv4
+           iptables-allports
+           telegram
+port = 80,443
+protocol = tcp
+filter = nextcloud
+#Number of retrys before to ban
+maxretry = 3
+#time in seconds
+bantime = 3600
+findtime = 3600
+#Log path, on Ubuntu usually following
+logpath = /home/{{ main_username }}/docker/nextcloud_docker/data/nextcloud.log

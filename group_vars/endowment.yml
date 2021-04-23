@@ -1,0 +1,199 @@
+---
+target_os: ubuntu
+hostname: endowment
+
+### Install packages with grog.package
+package_list:
+  - name: curl
+  - name: cifs-utils
+  - name: fail2ban
+  - name: git
+  - name: htop
+  - name: lm-sensors
+  - name: net-tools
+  - name: python
+  - name: restic
+  - name: sudo
+  - name: wget
+
+smb_mountpoints:
+  - { path: "/mnt/Media", source: "//192.168.30.10/Media", fs: cifs, opts: "defaults,uid=1000,gid=1000,credentials=/home/{{main_username}}/.smbcredentials" }
+
+data_disks:
+  - { path: /mnt/scratch, source: /dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1-part1, fs: ext4, opts: defaults, content: true }
+
+pull_backup: false
+
+### Docker-Compose with ironicbadger.docker_compose_generator
+appdata_path: "/home/{{ main_username }}/docker"
+containers:
+  ###
+  - service_name: diun
+    container_name: diun
+    active: true
+    image: crazymax/diun:latest
+    restart: always
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    volumes:
+      - "{{ appdata_path }}/diun/data:/data"
+      - "{{ appdata_path }}/diun/config.yml:/diun.yml:ro"
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - LOG_LEVEL=info
+      - LOG_JSON=false
+    hostname:  "{{ hostname }}"
+    include_global_env_vars: true
+  ###
+  - service_name: radarr
+    container_name: radarr
+    active: true
+    image: linuxserver/radarr
+    restart: always
+    ports:
+      - 7878:7878
+    volumes:
+      - "{{ appdata_path }}/radarr:/config"
+      - /mnt/Media/Movies:/movies
+      - /mnt/Media/Kids Movies:/kids_movies
+      - /mnt/Media/Parents Movies:/parents_movies
+      - "/mnt/scratch/complete:/downloads"
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: true
+  ###
+  - service_name: radarr_uhd
+    container_name: radarr_uhd
+    active: true
+    image: linuxserver/radarr
+    restart: always
+    ports:
+      - 7879:7878
+    volumes:
+      - "{{ appdata_path }}/radarr_uhd:/config"
+      - /mnt/Media/UHD:/uhd
+      - "/mnt/scratch/complete:/downloads"
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: true
+  ###
+  - service_name: sonarr
+    container_name: sonarr
+    active: true
+    image: linuxserver/sonarr
+    restart: always
+    ports:
+      - 8989:8989
+    volumes:
+      - "{{ appdata_path }}/sonarr:/config"
+      - /mnt/Media/TV Shows:/tv
+      - /mnt/Media/Kids TV:/kids_tv
+      - /mnt/Media/Parents TV:/parents_tv
+      - "/mnt/scratch/complete:/downloads"
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: true
+  ###
+  - service_name: hydra2
+    container_name: hydra2
+    active: true
+    image: linuxserver/nzbhydra2
+    restart: always
+    ports:
+      - 5076:5076
+    volumes:
+      - "{{ appdata_path }}/hydra:/config"
+      - "/mnt/scratch/complete:/downloads"
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: true
+  ###
+  - service_name: sabnzbd
+    container_name: sabnzbd
+    active: true
+    image: linuxserver/sabnzbd
+    restart: always
+    ports:
+      - 8060:8080
+      - 9080:9090
+    volumes:
+      - "{{ appdata_path }}/sabnzb:/config"
+      - "/mnt/scratch/complete:/downloads"
+      - "/mnt/scratch/incomplete:/incomplete-downloads"
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: true
+  ###
+  - service_name: lms
+    container_name: logitech_media_server
+    active: true
+    image: fuzzymistborn/lms:latest
+    restart: always
+    network_mode: host
+    volumes:
+      - "{{ appdata_path }}/lms/data:/var/lib/squeezeboxserver"
+      - "{{ appdata_path }}/lms/logs:/var/log/squeezeboxserver"
+      - "{{ appdata_path }}/lms/playlists:/mnt/playlists"
+      - /mnt/Media/Music:/mnt/Media/Music:ro
+    include_global_env_vars: false
+  ###
+  - service_name: nextcloud
+    container_name: nextcloud
+    active: true
+    image: nextcloud
+    restart: always
+    ports:
+      - 3491:80
+      - 3492:443
+    volumes:
+      - "{{ appdata_path }}/nextcloud_docker/apps:/var/www/html/apps"
+      - "{{ appdata_path }}/nextcloud_docker/html:/var/www/html"
+      - "{{ appdata_path }}/nextcloud_docker/config:/var/www/html/config"
+      - "{{ appdata_path }}/nextcloud_docker/data:/var/www/html/data"
+      - /mnt/Media/:/mnt/Media/
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    mem_limit: 1000M
+    include_global_env_vars: true
+  ###
+  - service_name: remote-api
+    container_name: remote-api
+    active: true
+    image: kekru/docker-remote-api-tls:v0.3.0
+    restart: always
+    ports:
+      - 2376:443
+    volumes:
+      - "{{ appdata_path }}/docker-api:/data/certs"
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+     - CREATE_CERTS_WITH_PW={{ secret_docker_api_tls }}
+     - CERT_HOSTNAME=docker-remote.local
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false
+  ###
+  - service_name: portainer_agent
+    container_name: portainer_agent
+    active: true
+    image: portainer/agent
+    restart: always
+    ports:
+      - 9001:9001
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    environment:
+      - AGENT_SECRET={{secret_portainer_key}}
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false

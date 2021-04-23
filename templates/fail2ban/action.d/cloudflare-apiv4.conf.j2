@@ -1,0 +1,74 @@
+#
+# Author: Gilbn from https://technicalramblings.com
+# Adapted Source: https://github.com/fail2ban/fail2ban/blob/master/config/action.d/cloudflare.conf and https://guides.wp-bullet.com/integrate-fail2ban-cloudflare-api-v4-guide/
+#
+# To get your Cloudflare API key: https://dash.cloudflare.com/profile use the Global API Key
+#
+
+[Definition]
+
+# Option:  actionstart
+# Notes.:  command executed once at the start of Fail2Ban.
+# Values:  CMD
+#
+actionstart =
+
+# Option:  actionstop
+# Notes.:  command executed once at the end of Fail2Ban
+# Values:  CMD
+#
+actionstop =
+
+# Option:  actioncheck
+# Notes.:  command executed once before each actionban command
+# Values:  CMD
+#
+actioncheck =
+
+# Option:  actionban
+# Notes.:  command executed when banning an IP. Take care that the
+#          command is executed with Fail2Ban user rights.
+# Tags:      IP address
+#            number of failures
+#            unix timestamp of the ban time
+# Values:  CMD
+
+actionban = curl -s -X POST "https://api.cloudflare.com/client/v4/user/firewall/access_rules/rules" \
+            -H "X-Auth-Email: <cfuser>" \
+            -H "X-Auth-Key: <cftoken>" \
+            -H "Content-Type: application/json" \
+            --data '{"mode":"block","configuration":{"target":"ip","value":"<ip>"},"notes":"Fail2ban <name>"}'
+
+# Option:  actionunban
+# Notes.:  command executed when unbanning an IP. Take care that the
+#          command is executed with Fail2Ban user rights.
+# Tags:      IP address
+#            number of failures
+#            unix timestamp of the ban time
+# Values:  CMD
+#
+
+actionunban = curl -s -X DELETE "https://api.cloudflare.com/client/v4/user/firewall/access_rules/rules/$( \
+              curl -s -X GET "https://api.cloudflare.com/client/v4/user/firewall/access_rules/rules?mode=block&configuration_target=ip&configuration_value=<ip>&page=1&per_page=1&match=all" \
+             -H "X-Auth-Email: <cfuser>" \
+             -H "X-Auth-Key: <cftoken>" \
+             -H "Content-Type: application/json" | awk -F"[,:}]" '{for(i=1;i<=NF;i++){if($i~/'id'\042/){print $(i+1);}}}' | tr -d '"' | sed -e 's/^[ \t]*//' | head -n 1)" \
+             -H "X-Auth-Email: <cfuser>" \
+             -H "X-Auth-Key: <cftoken>" \
+             -H "Content-Type: application/json"
+
+[Init]
+
+# Name of the jail in your jail.local file. default = [jail name]
+name = default
+
+# Option: cfuser
+# Notes.: Replaces <cfuser> in actionban and actionunban with cfuser value below
+# Values: Your CloudFlare user account
+
+cfuser = {{ secret_fail2ban_cloudflare_email }}
+
+# Option: cftoken (Global API Key)
+# Notes.: Replaces <cftoken> in actionban and actionunban with cftoken value below
+# Values: Your CloudFlare API key 
+cftoken = {{ secret_fail2ban_cloudflare_api }}

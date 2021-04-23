@@ -1,0 +1,31 @@
+---
+
+- name: Enable forwarding
+  lineinfile:
+    path: /etc/sysctl.conf
+    regexp: "^#net.ipv4.ip_forward*"
+    line: "net.ipv4.ip_forward=1"
+
+- name: Restart sysctl
+  shell: sudo sysctl -p
+
+- name: Create wireguard conf
+  copy:
+    dest: /etc/wireguard/wg0.conf
+    owner: root
+    group: root
+    mode: 0600
+    content: "{{ secret_wireguard_config }}"
+  notify:
+    - start wireguard service
+
+- name: Install Adguard
+  shell: sudo curl -sSL https://raw.githubusercontent.com/AdguardTeam/AdGuardHome/master/scripts/install.sh | sh
+  notify:
+    - start adguard
+
+- name: Stop resolved
+  service:
+    name: systemd-resolved
+    enabled: no
+    state: stop

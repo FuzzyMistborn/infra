@@ -1,0 +1,14 @@
+[jellyfin]
+enabled = false
+action   = cloudflare-apiv4
+           iptables-allports
+           telegram
+port = 80,443,8096
+protocol = tcp
+filter = jellyfin
+#Number of retrys before to ban
+maxretry = 3
+#time in seconds
+bantime = 3600
+findtime = 3600
+logpath = /home/{{ main_username }}/docker/jellyfin/config/log/log*.log

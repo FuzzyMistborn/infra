@@ -1,0 +1,44 @@
+---
+
+- name: make sure disks unmounted
+  mount:
+    path: "{{ item.path }}"
+    state: unmounted
+  with_items:
+    - "{{ parity_disks }}"
+    - "{{ data_disks }}"
+
+- name: create /mnt points
+  file:
+    dest: "{{ item.path }}"
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: 0777
+  with_items: 
+    - "{{ mergerfs_mount }}"
+    - "{{ parity_disks }}"
+    - "{{ data_disks }}"
+
+- name: mount disks
+  mount:
+    path: "{{ item.path }}"
+    src: "{{ item.source }}"
+    fstype: "{{ item.fs }}"
+    opts: "{{ item.opts }}"
+    # change to 'mounted' to auto mount versus 'present' for just loaded into fstab
+    state: mounted
+  with_items:
+    - "{{ parity_disks }}"
+    - "{{ data_disks }}"
+
+- name: mount mergerfs array
+  mount:
+    path: "{{ item.mountpoint }}"
+    src: "{{ item.source }}"
+    opts: "{{ item.opts }}"
+    fstype: "{{ item.fs }}"
+    # change to 'mounted' to auto mount versus 'present' for just loaded into fstab
+    state: mounted
+  with_items:
+    - "{{ fstab_mergerfs }}"

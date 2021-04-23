@@ -1,0 +1,10 @@
+[sshd]
+enabled = true
+action = iptables-allports
+         telegram
+mode = ddos
+filter = sshd
+logpath = /var/log/auth.log
+maxretry = 3
+bantime = 3600
+findtime = 600

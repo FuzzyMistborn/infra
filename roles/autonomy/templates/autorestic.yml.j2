@@ -1,0 +1,62 @@
+backends:
+  synology_docker:
+    type: sftp
+    path: {{main_username}}@synology:/Restic/autonomy/docker
+    key: {{ secret_restic_repo_password }}
+    env: {}
+  synology_hass_docker:
+    type: sftp
+    path: {{main_username}}@synology:/Restic/autonomy/hass_docker
+    key: {{ secret_restic_repo_password }}
+    env: {}
+  synology_hass_docker_beta:
+    type: sftp
+    path: {{main_username}}@synology:/Restic/autonomy/hass_docker_beta
+    key: {{ secret_restic_repo_password }}
+    env: {}
+  b2_docker:
+    type: b2
+    path: '{{ secret_restic_b2_bucket }}:/autonomy/docker'
+    key: {{ secret_restic_repo_password }}
+    env:
+      B2_ACCOUNT_ID: {{ secret_restic_b2_account_id }}
+      B2_ACCOUNT_KEY: {{ secret_restic_b2_account_key }}
+  b2_hass_docker:
+    type: b2
+    path: '{{ secret_restic_b2_bucket }}:/autonomy/hass_docker'
+    key: {{ secret_restic_repo_password }}
+    env:
+      B2_ACCOUNT_ID: {{ secret_restic_b2_account_id }}
+      B2_ACCOUNT_KEY: {{ secret_restic_b2_account_key }}
+  b2_hass_docker_beta:
+    type: b2
+    path: '{{ secret_restic_b2_bucket }}:/autonomy/hass_docker_beta'
+    key: {{ secret_restic_repo_password }}
+    env:
+      B2_ACCOUNT_ID: {{ secret_restic_b2_account_id }}
+      B2_ACCOUNT_KEY: {{ secret_restic_b2_account_key }}
+locations:
+  docker:
+    from: '~/docker'
+    to: 
+      - synology_docker
+      - b2_docker
+    options:
+      forget:
+        keep-last: 30
+  hass_docker:
+    from: '~/hass_docker'
+    to: 
+      - synology_hass_docker
+      - b2_hass_docker
+    options:
+      forget:
+        keep-last: 30
+  hass_docker_beta:
+    from: '~/hass_docker_beta'
+    to: 
+      - synology_hass_docker_beta
+      - b2_hass_docker_beta
+    options:
+      forget:
+        keep-last: 30
