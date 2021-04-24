@@ -61,7 +61,7 @@ backends:
       B2_ACCOUNT_KEY: {{ secret_media_b2_account_key }}
 locations:
   docker:
-    from: '~/docker'
+    from: '/home/{{main_username}}/docker'
     to: 
       - synology_docker
       - b2_docker
@@ -71,32 +71,32 @@ locations:
   photos:
     from: '/mnt/Media/Photos'
     to: 
-      - synology_docker
-      - b2_docker
+      - synology_photos
+      - b2_photos
     options:
       forget:
         keep-last: 30
   music:
     from: '/mnt/Media/Music'
     to: 
-      - synology_docker
-      - b2_docker
+      - synology_music
+      - b2_music
     options:
       forget:
         keep-last: 30
   audiobooks:
     from: '/mnt/Media/Audiobooks'
     to: 
-      - synology_docker
-      - b2_docker
+      - synology_audiobooks
+      - b2_audiobooks
     options:
       forget:
         keep-last: 30
   files:
     from: '/mnt/Media/Files'
     to: 
-      - synology_docker
-      - b2_docker
+      - synology_files
+      - b2_files
     options:
       backup:
         exclude:

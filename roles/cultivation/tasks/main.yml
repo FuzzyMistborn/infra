@@ -82,20 +82,20 @@
     content: "{{ secret_synology_restic_key }}"
 
 - name: Check that Synology not already in SSH config
-  shell: grep -c "Host synology" /home/{{main_username}}/.ssh/config || true
+  shell: grep -c "Host synology" /root/.ssh/config || true
   register: synology_ssh
 
 - name: Add ssh config for Synology
   lineinfile:
-    path: /home/{{ main_username }}/.ssh/config
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
+    path: /root/.ssh/config
+    owner: root
+    group: root
     mode: 0664
     line: |
       Host synology
         HostName 192.168.30.25
         User {{main_username}}
-        IdentityFile ~/.ssh/synology_restic
+        IdentityFile /home/{{main_username}}/.ssh/synology_restic
     create: true
   when: synology_ssh.stdout == "0" or synology_ssh.stdout == ""
 
@@ -129,9 +129,9 @@
     - bitwarden
 
 #### Cronjobs
-- name: "Main User Cronjobs"
+- name: "Root Cronjobs"
   cron:
-    user: "{{ main_username }}"
+    user: "root"
     name: "{{ item.name }}"
     job: "{{ item.job }}"
     hour: "{{ item.hour }}"

@@ -13,7 +13,7 @@ backends:
       B2_ACCOUNT_KEY: {{ secret_restic_b2_account_key }}
 locations:
   db_backups:
-    from: '~/db_backups'
+    from: '/home/{{main_username}}/db_backups'
     to: 
       - synology_db
       - b2_db

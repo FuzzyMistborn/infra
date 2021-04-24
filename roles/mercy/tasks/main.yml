@@ -103,20 +103,20 @@
     content: "{{ secret_synology_restic_key }}"
 
 - name: Check that Synology not already in SSH config
-  shell: grep -c "Host synology" /home/{{main_username}}/.ssh/config || true
+  shell: grep -c "Host synology" /root/.ssh/config || true
   register: synology_ssh
 
 - name: Add ssh config for Synology
   lineinfile:
-    path: /home/{{ main_username }}/.ssh/config
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
+    path: /root/.ssh/config
+    owner: root
+    group: root
     mode: 0664
     line: |
       Host synology
         HostName 192.168.30.25
         User {{main_username}}
-        IdentityFile ~/.ssh/synology_restic
+        IdentityFile /home/{{main_username}}/.ssh/synology_restic
     create: true
   when: synology_ssh.stdout == "0" or synology_ssh.stdout == ""
 
@@ -154,18 +154,6 @@
     - math
     - tg-sync
 
-- name: Main User Cronjobs
-  cron:
-    user: "{{ main_username }}"
-    name: "{{ item.name }}"
-    job: "{{ item.job }}"
-    hour: "{{ item.hour }}"
-    minute: "{{ item.minute }}"
-    weekday: "{{ item.weekday }}"
-    state: present
-  with_items:
-    - { job: "/home/{{ main_username }}/scripts/media_backup.sh", name: "Backup Media", hour: "2", minute: "59", weekday: "*" }
-
 - name: Root Cronjobs
   cron:
     user: root
@@ -180,3 +168,4 @@
     - { job: "systemctl restart math.service && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_math}}", name: "Restart MATHBot", hour: "3", minute: "1", weekday: "*" }
     - { job: "systemctl restart phantom.service && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_phantom}}", name: "Restart PhantomBot", hour: "3", minute: "2", weekday: "*" }
     - { job: "systemctl restart tg-sync.service && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_tg}}", name: "Restart TG Sync", hour: "3", minute: "3", weekday: "*" }
+    - { job: "/home/{{ main_username }}/scripts/media_backup.sh", name: "Backup Media", hour: "2", minute: "59", weekday: "*" }

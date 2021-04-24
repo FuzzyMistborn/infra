@@ -1,6 +1,10 @@
 #!/bin/bash
 
+cd /home/{{main_username}}
+
 autorestic backup -a
+
+sleep 30s
 
 autorestic forget -a -- prune
 

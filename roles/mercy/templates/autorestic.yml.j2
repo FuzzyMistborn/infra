@@ -16,21 +16,21 @@ backends:
     env: {}
 locations:
   plugins:
-    from: '~/hangoutsbot/hangupsbot/plugins'
+    from: '/home/{{main_username}}/hangoutsbot/hangupsbot/plugins'
     to: 
       - synology_plugins
     options:
       forget:
         keep-last: 10
   local:
-    from: '~/.local/share/hangupsbot'
+    from: '/home/{{main_username}}/.local/share/hangupsbot'
     to: 
       - synology_local
     options:
       forget:
         keep-last: 10
   telegram:
-    from: '~/.telegram-cli'
+    from: '/home/{{main_username}}/.telegram-cli'
     to: 
       - synology_telegram
     options:

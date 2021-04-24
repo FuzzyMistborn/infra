@@ -24,7 +24,11 @@ docker exec hass-db sh -c 'exec mysqldump --single-transaction -h localhost -u h
 find /home/{{main_username}}/db_backups/* -mtime +6 -type f -delete
 
 #### Backup the backups
+cd /home/{{main_username}}
+
 autorestic backup -a
+
+sleep 30s
 
 autorestic forget -a -- prune
 

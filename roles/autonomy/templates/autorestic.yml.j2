@@ -37,7 +37,7 @@ backends:
       B2_ACCOUNT_KEY: {{ secret_restic_b2_account_key }}
 locations:
   docker:
-    from: '~/docker'
+    from: '/home/{{main_username}}/docker'
     to: 
       - synology_docker
       - b2_docker
@@ -45,7 +45,7 @@ locations:
       forget:
         keep-last: 30
   hass_docker:
-    from: '~/hass_docker'
+    from: '/home/{{main_username}}/hass_docker'
     to: 
       - synology_hass_docker
       - b2_hass_docker
@@ -53,7 +53,7 @@ locations:
       forget:
         keep-last: 30
   hass_docker_beta:
-    from: '~/hass_docker_beta'
+    from: '/home/{{main_username}}/hass_docker_beta'
     to: 
       - synology_hass_docker_beta
       - b2_hass_docker_beta
