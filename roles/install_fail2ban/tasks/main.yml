@@ -35,6 +35,53 @@
     path: /etc/fail2ban/scripts/send_telegram_notif.sh
     mode: +x
 
+- name: Adonalsium Fail2ban
+  lineinfile:
+    path: /etc/fail2ban/jail.d/{{item}}.local
+    regexp: "^enabled*"
+    line: "enabled = true"
+  with_items:
+    - jellyfin
+  when: hostname == 'adonalsium'
+
+- name: Autonomy Fail2ban
+  lineinfile:
+    path: /etc/fail2ban/jail.d/{{item}}.local
+    regexp: "^enabled*"
+    line: "enabled = true"
+  with_items:
+    - ha
+  when: hostname == 'autonomy'
+
+- name: Endowment Fail2ban
+  lineinfile:
+    path: /etc/fail2ban/jail.d/{{item}}.local
+    regexp: "^enabled*"
+    line: "enabled = true"
+  with_items:
+    - nextcloud
+    - radarr
+    - sonarr
+  when: hostname == 'endowment'
+
+- name: Cultivation Fail2ban
+  lineinfile:
+    path: /etc/fail2ban/jail.d/{{item}}.local
+    regexp: "^enabled*"
+    line: "enabled = true"
+  with_items:
+    - bitwarden
+  when: hostname == 'cultivation'
+
+- name: Autonomy Fail2ban
+  lineinfile:
+    path: /etc/fail2ban/jail.d/{{item}}.local
+    regexp: "^enabled*"
+    line: "enabled = true"
+  with_items:
+    - ha
+  when: hostname == 'autonomy'
+
 - name: Restart F2B
   service:
     name: fail2ban

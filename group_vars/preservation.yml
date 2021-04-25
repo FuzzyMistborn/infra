@@ -11,9 +11,6 @@ package_list:
   - name: restic
   - name: wget
 
-nfs_mountpoints:
-  - { path: "/mnt/Backup", source: "192.168.30.25:/volume1/Backup/Adonalsium/preservation", fs: nfs, opts: "rw,sync" }
-
 pull_backup: false
 
 ### Docker-Compose with ironicbadger.docker_compose_generator

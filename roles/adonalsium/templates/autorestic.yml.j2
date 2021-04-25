@@ -67,7 +67,9 @@ locations:
       - b2_docker
     options:
       forget:
-        keep-last: 30
+        keep-daily: 7
+        keep-weekly: 8
+        keep-monthly: 4
   photos:
     from: '/mnt/Media/Photos'
     to: 
@@ -75,7 +77,9 @@ locations:
       - b2_photos
     options:
       forget:
-        keep-last: 30
+        keep-daily: 7
+        keep-weekly: 8
+        keep-monthly: 4
   music:
     from: '/mnt/Media/Music'
     to: 
@@ -83,7 +87,9 @@ locations:
       - b2_music
     options:
       forget:
-        keep-last: 30
+        keep-daily: 7
+        keep-weekly: 4
+        keep-monthly: 2
   audiobooks:
     from: '/mnt/Media/Audiobooks'
     to: 
@@ -91,7 +97,9 @@ locations:
       - b2_audiobooks
     options:
       forget:
-        keep-last: 30
+        keep-daily: 7
+        keep-weekly: 4
+        keep-monthly: 2
   files:
     from: '/mnt/Media/Files'
     to: 
@@ -102,4 +110,6 @@ locations:
         exclude:
           - 'Takeout'
       forget:
-        keep-last: 30
+        keep-daily: 7
+        keep-weekly: 8
+        keep-monthly: 4

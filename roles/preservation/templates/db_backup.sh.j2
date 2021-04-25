@@ -28,8 +28,4 @@ cd /home/{{main_username}}
 
 autorestic backup -a
 
-sleep 30s
-
-autorestic forget -a -- prune
-
 curl --retry 3 {{secret_hc_preservation_db_backup}}

@@ -154,6 +154,40 @@
     - math
     - tg-sync
 
+#### Bash Alias
+
+- name: Setup bash aliases
+  lineinfile:
+    dest: "/etc/bash_aliases"
+    create: yes
+    group: root
+    line: "alias {{ item.alias }}='{{ item.command }}'"
+    mode: 0644
+    owner: root
+    regexp: "^alias {{ item.alias }}="
+  with_items:
+    - { alias: "arsnapshot", command: "autorestic exec -av -- snapshots" }
+    - { alias: "arbackup", command: "autorestic backup -a" }
+    - { alias: "arprune", command: "autorestic forget -a -- prune" }
+
+- name: Source aliases file
+  lineinfile:
+    dest: /etc/bash.bashrc
+    line: 'source /etc/bash_aliases'
+    state: present
+
+- name: Main user Cronjobs
+  cron:
+    user: "{{ main_username }}"
+    name: "{{ item.name }}"
+    job: "{{ item.job }}"
+    hour: "{{ item.hour }}"
+    minute: "{{ item.minute }}"
+    weekday: "{{ item.weekday }}"
+    state: present
+  with_items:
+    - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_purge}}", name: "Restic Prune", hour: "21", minute: "00", weekday: "0" }
+
 - name: Root Cronjobs
   cron:
     user: root

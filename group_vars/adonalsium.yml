@@ -45,7 +45,7 @@ snapraid_smtp_host: "{{ secret_snapraid_smtp_host }}"
 snapraid_smtp_port: 465
 snapraid_use_ssl: true
 snapraid_touch: false
-snapraid_run_command: "python3 {{ snapraid_run_bin }} -c {{ snapraid_run_conf}} && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_scrutiny}}"
+snapraid_run_command: "python3 {{ snapraid_run_bin }} -c {{ snapraid_run_conf}} && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_snapraid}}"
 snapraid_cron_jobs:
   - { job: '{{ snapraid_run_command }}', name: 'snapraid_runner', weekday: '*', hour: '04' }
 snapraid_config_excludes:
@@ -88,33 +88,6 @@ containers:
     hostname:  "{{ hostname }}"
     include_global_env_vars: true
   ###
-  - service_name: emby
-    container_name: emby
-    active: true
-    image: emby/embyserver
-    restart: always
-    ports:
-      - 8097:8096
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
-    volumes:
-      - "{{ appdata_path }}/emby/config:/config"
-      - /mnt/Media/Movies:/mnt/movies
-      - /mnt/Media/UHD:/mnt/UHD
-      - /mnt/Media/TV Shows:/mnt/tv
-      - /mnt/Media/Kids Movies:/mnt/kids
-      - /mnt/Media/Kids TV:/mnt/kids_tv
-      - /mnt/Media/Parents Movies:/mnt/parents_movies
-      - /mnt/Media/Parents TV:/mnt/parents_tv
-      - "{{ appdata_path }}/emby/backup:/mnt/backup"
-      - "{{ appdata_path }}/emby/transcode:/transcode"
-    devices:
-      - /dev/dri:/dev/dri
-    environment:
-      - GIDLIST=44,108
-    include_global_env_vars: true
-  ###
   - service_name: jellyfin
     container_name: jellyfin
     active: true
@@ -129,11 +102,12 @@ containers:
       - "{{ appdata_path }}/jellyfin/config:/config"
       - /mnt/Media/Movies:/mnt/movies
       - /mnt/Media/UHD:/mnt/UHD
-      - /mnt/Media/TV Shows:/mnt/tv
-      - /mnt/Media/Kids Movies:/mnt/kids
-      - /mnt/Media/Kids TV:/mnt/kids_tv
-      - /mnt/Media/Parents Movies:/mnt/parents_movies
-      - /mnt/Media/Parents TV:/mnt/parents_tv
+      - '/mnt/Media/TV Shows:/mnt/tv'
+      - '/mnt/Media/Kids Movies:/mnt/kids'
+      - '/mnt/Media/Kids TV:/mnt/kids_tv'
+      - '/mnt/Media/Parents Movies:/mnt/parents_movies'
+      - '/mnt/Media/Parents TV:/mnt/parents_tv'
+      - '/mnt/Media/Family Videos:/mnt/home_videos'
     devices:
       - /dev/dri:/dev/dri
     group_add:

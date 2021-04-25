@@ -208,14 +208,27 @@
     - { name: "docker", src: 'synology_docker', dest: '/home/{{main_username}}/docker' }
   when: pull_backup == "true"
 
-### Fail2ban Enable
-- name: Enable Fail2ban
+#### Bash Alias
+
+- name: Setup bash aliases
   lineinfile:
-    path: /etc/fail2ban/jail.d/{{item}}.local
-    regexp: "^enabled*"
-    line: "enabled = true"
+    dest: "/etc/bash_aliases"
+    create: yes
+    group: root
+    line: "alias {{ item.alias }}='{{ item.command }}'"
+    mode: 0644
+    owner: root
+    regexp: "^alias {{ item.alias }}="
   with_items:
-    - jellyfin
+    - { alias: "arsnapshot", command: "autorestic exec -av -- snapshots" }
+    - { alias: "arbackup", command: "autorestic backup -a" }
+    - { alias: "arprune", command: "autorestic forget -a -- prune" }
+
+- name: Source aliases file
+  lineinfile:
+    dest: /etc/bash.bashrc
+    line: 'source /etc/bash_aliases'
+    state: present
 
 ### Cron
 - name: "Main User Cronjobs"
@@ -230,6 +243,7 @@
   with_items:
     - { job: "docker exec scrutiny /scrutiny/bin/scrutiny-collector-metrics run && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_scrutiny}}", name: "Scrutiny", hour: "*/6", minute: "0", weekday: "*" }
     - { job: "docker container restart jellyfin", name: "Restart Jellyfin", hour: "2", minute: "30", weekday: "*" }
+    - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_purge}}", name: "Restic Prune", hour: "23", minute: "00", weekday: "0" }
 - name: "Root Cronjobs"
   cron:
     user: "root"

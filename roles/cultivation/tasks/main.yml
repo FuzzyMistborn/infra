@@ -52,9 +52,9 @@
     state: restarted
     name: telegraf
 
-#### Nginx Bash Alias
+#### Bash Alias
 
-- name: Setup nginx reload aliases
+- name: Setup bash aliases
   lineinfile:
     dest: "/etc/bash_aliases"
     create: yes
@@ -65,6 +65,9 @@
     regexp: "^alias {{ item.alias }}="
   with_items:
     - { alias: "nginx", command: "docker exec nginx nginx -s reload" }
+    - { alias: "arsnapshot", command: "autorestic exec -av -- snapshots" }
+    - { alias: "arbackup", command: "autorestic backup -a" }
+    - { alias: "arprune", command: "autorestic forget -a -- prune" }
 
 - name: Source aliases file
   lineinfile:
@@ -119,16 +122,19 @@
     - { name: "docker", src: 'synology_docker', dest: '/home/{{main_username}}/docker' }
   when: pull_backup == "true"
 
-### Fail2ban Enable
-- name: Enable Fail2ban
-  lineinfile:
-    path: /etc/fail2ban/jail.d/{{item}}.local
-    regexp: "^enabled*"
-    line: "enabled = true"
-  with_items:
-    - bitwarden
-
 #### Cronjobs
+- name: "Root Cronjobs"
+  cron:
+    user: "{{ main_username }}"
+    name: "{{ item.name }}"
+    job: "{{ item.job }}"
+    hour: "{{ item.hour }}"
+    minute: "{{ item.minute }}"
+    weekday: "{{ item.weekday }}"
+    state: present
+  with_items:
+    - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_cultivation_purge}}", name: "Restic Prune", hour: "22", minute: "15", weekday: "0" }
+
 - name: "Root Cronjobs"
   cron:
     user: "root"

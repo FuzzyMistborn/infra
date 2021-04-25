@@ -69,12 +69,12 @@
     content: "{{ secret_synology_restic_key }}"
 
 - name: Check that Synology not already in SSH config
-  shell: grep -c "Host synology" /root/.ssh/config || true
+  shell: grep -c "Host synology" ~/.ssh/config || true
   register: synology_ssh
 
 - name: Add ssh config for Synology
   lineinfile:
-    path: /root/.ssh/config
+    path: ~/.ssh/config
     owner: root
     group: root
     mode: 0664
@@ -105,16 +105,27 @@
     - { name: "db_backups", src: 'synology_db', dest: '/home/{{main_username}}' }
   when: pull_backup == "true"
 
-#### Restore Folders
-- name: restore folders from backup
-  copy:
-    src: /mnt/Backup/{{item.src}}
-    dest: "/home/{{ main_username }}/{{item.dest}}"
-    remote_src: true
-    mode: preserve
+#### Bash Alias
+
+- name: Setup bash aliases
+  lineinfile:
+    dest: "/etc/bash_aliases"
+    create: yes
+    group: root
+    line: "alias {{ item.alias }}='{{ item.command }}'"
+    mode: 0644
+    owner: root
+    regexp: "^alias {{ item.alias }}="
   with_items:
-    - { src: 'db_backups', dest: '' }
-  when: pull_backup == "true"
+    - { alias: "arsnapshot", command: "autorestic exec -av -- snapshots" }
+    - { alias: "arbackup", command: "autorestic backup -a" }
+    - { alias: "arprune", command: "autorestic forget -a -- prune" }
+
+- name: Source aliases file
+  lineinfile:
+    dest: /etc/bash.bashrc
+    line: 'source /etc/bash_aliases'
+    state: present
 
 #### Restore Databases
 - name: Run DB Restore Script
@@ -126,7 +137,7 @@
 #### Cronjobs
 - name: "Main User Cronjobs"
   cron:
-    user: root
+    user: "{{ main_username }}"
     name: "{{ item.name }}"
     job: "{{ item.job }}"
     hour: "{{ item.hour }}"
@@ -135,3 +146,4 @@
     state: present
   loop:
     - { job: "/home/{{ main_username }}/scripts/db_backup.sh", name: "DB Backup", hour: "0", minute: "45", weekday: "*" }
+    - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_preservation_purge}}", name: "Restic Prune", hour: "22", minute: "45", weekday: "0" }

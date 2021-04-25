@@ -4,7 +4,7 @@ backends:
     path: {{main_username}}@synology:/Restic/mercy/plugins
     key: {{ secret_restic_repo_password }}
     env: {}
-  synology_local
+  synology_local:
     type: sftp
     path: {{main_username}}@synology:/Restic/mercy/local
     key: {{ secret_restic_repo_password }}

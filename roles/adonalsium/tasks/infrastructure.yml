@@ -54,7 +54,7 @@
     pubkey: "{{ secret_proxmox_ct_ssh }}"
     netif: '{"net0":"name=eth0,gw=192.168.30.1,ip=192.168.30.18/24,ip6=dhcp,bridge=vmbr0"}'
     ostemplate: 'local:vztmpl/ubuntu-18.04-standard_18.04.1-1_amd64.tar.gz'
-    mounts: '{"mp0":"/mnt/Backup/Adonalsium/mercy,mp=/mnt/Backup/"}'
+#    mounts: '{"mp0":"/mnt/Backup/Adonalsium/mercy,mp=/mnt/Backup/"}'
 
 ### Create VMs
 - name: Download Ubuntu ISO

@@ -16,8 +16,7 @@ package_list:
   - name: sudo
   - name: wget
 
-telegraf_ver: 1.17.3
-autorestic_ver: 1.0.3
+telegraf_ver: 1.18.1
 
 # geerlingguy.ntp
 ntp_timezone: America/New_York

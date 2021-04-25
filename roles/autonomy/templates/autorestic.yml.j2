@@ -43,7 +43,9 @@ locations:
       - b2_docker
     options:
       forget:
-        keep-last: 30
+        keep-daily: 7
+        keep-weekly: 8
+        keep-monthly: 4
   hass_docker:
     from: '/home/{{main_username}}/hass_docker'
     to: 
@@ -51,7 +53,9 @@ locations:
       - b2_hass_docker
     options:
       forget:
-        keep-last: 30
+        keep-daily: 7
+        keep-weekly: 4
+        keep-monthly: 2
   hass_docker_beta:
     from: '/home/{{main_username}}/hass_docker_beta'
     to: 
@@ -59,4 +63,6 @@ locations:
       - b2_hass_docker_beta
     options:
       forget:
-        keep-last: 30
+        keep-daily: 7
+        keep-weekly: 4
+        keep-monthly: 2
