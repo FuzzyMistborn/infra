@@ -73,15 +73,6 @@
     - bitwarden
   when: hostname == 'cultivation'
 
-- name: Autonomy Fail2ban
-  lineinfile:
-    path: /etc/fail2ban/jail.d/{{item}}.local
-    regexp: "^enabled*"
-    line: "enabled = true"
-  with_items:
-    - ha
-  when: hostname == 'autonomy'
-
 - name: Restart F2B
   service:
     name: fail2ban

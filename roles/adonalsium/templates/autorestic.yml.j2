@@ -1,29 +1,39 @@
 backends:
   synology_docker:
-    type: sftp
-    path: {{main_username}}@synology:/Restic/adonalsium
+    type: s3
+    path: 'http://192.168.30.25:9000/adonalsium'
     key: {{ secret_restic_repo_password }}
-    env: {}
+    env:
+      AWS_ACCESS_KEY_ID: {{ secret_minio_s3_access_key_id }}
+      AWS_SECRET_ACCESS_KEY: {{ secret_minio_s3_access_key }}
   synology_photos:
-    type: sftp
-    path: {{main_username}}@synology:/Restic/media/photos
+    type: s3
+    path: 'http://192.168.30.25:9000/media/photos'
     key: {{ secret_restic_repo_password }}
-    env: {}
+    env:
+      AWS_ACCESS_KEY_ID: {{ secret_minio_s3_access_key_id }}
+      AWS_SECRET_ACCESS_KEY: {{ secret_minio_s3_access_key }}
   synology_music:
-    type: sftp
-    path: {{main_username}}@synology:/Restic/media/music
+    type: s3
+    path: 'http://192.168.30.25:9000/media/music'
     key: {{ secret_restic_repo_password }}
-    env: {}
+    env:
+      AWS_ACCESS_KEY_ID: {{ secret_minio_s3_access_key_id }}
+      AWS_SECRET_ACCESS_KEY: {{ secret_minio_s3_access_key }}
   synology_audiobooks:
-    type: sftp
-    path: {{main_username}}@synology:/Restic/media/audiobooks
+    type: s3
+    path: 'http://192.168.30.25:9000/media/audiobooks'
     key: {{ secret_restic_repo_password }}
-    env: {}
+    env:
+      AWS_ACCESS_KEY_ID: {{ secret_minio_s3_access_key_id }}
+      AWS_SECRET_ACCESS_KEY: {{ secret_minio_s3_access_key }}
   synology_files:
-    type: sftp
-    path: {{main_username}}@synology:/Restic/media/files
+    type: s3
+    path: 'http://192.168.30.25:9000/media/files'
     key: {{ secret_restic_repo_password }}
-    env: {}
+    env:
+      AWS_ACCESS_KEY_ID: {{ secret_minio_s3_access_key_id }}
+      AWS_SECRET_ACCESS_KEY: {{ secret_minio_s3_access_key }}
   b2_docker:
     type: b2
     path: '{{ secret_restic_b2_bucket }}:/adonalsium'

@@ -60,34 +60,9 @@
     - { src: 'db_restore.sh.j2', dest: 'db_restore.sh' }
 
 ### Restic
-- name: Add Synology SSH Key
-  copy:
-    dest: /home/{{ main_username }}/.ssh/synology_restic
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: 0600
-    content: "{{ secret_synology_restic_key }}"
-
-- name: Check that Synology not already in SSH config
-  shell: grep -c "Host synology" ~/.ssh/config || true
-  register: synology_ssh
-
-- name: Add ssh config for Synology
-  lineinfile:
-    path: ~/.ssh/config
-    owner: root
-    group: root
-    mode: 0664
-    line: |
-      Host synology
-        HostName 192.168.30.25
-        User {{main_username}}
-        IdentityFile /home/{{main_username}}/.ssh/synology_restic
-    create: true
-  when: synology_ssh.stdout == "0" or synology_ssh.stdout == ""
-
 - name: Update Restic to latest version
   command: "/usr/bin/restic self-update"
+
 - name: Install Autorestic
   shell: curl -s https://raw.githubusercontent.com/CupCakeArmy/autorestic/master/install.sh | sudo bash
   
@@ -143,7 +118,9 @@
     hour: "{{ item.hour }}"
     minute: "{{ item.minute }}"
     weekday: "{{ item.weekday }}"
+    day: "{{ item.day }}"
     state: present
   loop:
-    - { job: "/home/{{ main_username }}/scripts/db_backup.sh", name: "DB Backup", hour: "0", minute: "45", weekday: "*" }
-    - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_preservation_purge}}", name: "Restic Prune", hour: "22", minute: "45", weekday: "0" }
+    - { job: "/home/{{ main_username }}/scripts/db_backup.sh", name: "DB Backup", hour: "0", minute: "45", weekday: "*", day: "*" }
+    - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_preservation_purge}}", name: "Restic Prune", hour: "22", minute: "45", weekday: "0", day: "*" }
+    - { job: "/usr/local/bin/autorestic check && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_restic_check_preservation}}", name: "Restic Check", hour: "2", minute: "45", weekday: "*", day: "1" }

@@ -11,16 +11,6 @@
     - docker/diun
     - scripts
 
-- name: Copy backup script templates
-  template:
-    src: "{{item.src}}"
-    dest: /home/{{ main_username }}/scripts/{{item.dest}}
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: +x
-  with_items:
-    - { src: 'media_backup.sh.j2', dest: 'media_backup.sh' }
-
 #### DIUN
 - name: Copy DIUN Config Template
   template:
@@ -76,32 +66,6 @@
     state: present
 
 ### Restic
-- name: Add Synology SSH Key
-  copy:
-    dest: /home/{{ main_username }}/.ssh/synology_restic
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: 0600
-    content: "{{ secret_synology_restic_key }}"
-
-- name: Check that Synology not already in SSH config
-  shell: grep -c "Host synology" /root/.ssh/config || true
-  register: synology_ssh
-
-- name: Add ssh config for Synology
-  lineinfile:
-    path: /root/.ssh/config
-    owner: root
-    group: root
-    mode: 0664
-    line: |
-      Host synology
-        HostName 192.168.30.25
-        User {{main_username}}
-        IdentityFile /home/{{main_username}}/.ssh/synology_restic
-    create: true
-  when: synology_ssh.stdout == "0" or synology_ssh.stdout == ""
-
 - name: Update Restic to latest version
   command: "/usr/bin/restic self-update"
 
@@ -123,7 +87,7 @@
   when: pull_backup == "true"
 
 #### Cronjobs
-- name: "Root Cronjobs"
+- name: "Main User Cronjobs"
   cron:
     user: "{{ main_username }}"
     name: "{{ item.name }}"
@@ -131,9 +95,11 @@
     hour: "{{ item.hour }}"
     minute: "{{ item.minute }}"
     weekday: "{{ item.weekday }}"
+    day: "{{ item.day }}"
     state: present
   with_items:
-    - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_cultivation_purge}}", name: "Restic Prune", hour: "22", minute: "15", weekday: "0" }
+    - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_cultivation_purge}}", name: "Restic Prune", hour: "22", minute: "15", weekday: "0", day: "*" }
+    - { job: "/usr/local/bin/autorestic check && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_restic_check_cultivation}}", name: "Restic Check", hour: "2", minute: "15", weekday: "*", day: "1" }
 
 - name: "Root Cronjobs"
   cron:
@@ -145,4 +111,4 @@
     weekday: "{{ item.weekday }}"
     state: present
   with_items:
-    - { job: "/home/{{ main_username }}/scripts/media_backup.sh", name: "Media Backup", hour: "0", minute: "15", weekday: "*" }
+    - { job: "/usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_cultivation_media}}", name: "Media Backup", hour: "0", minute: "15", weekday: "*" }

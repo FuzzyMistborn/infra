@@ -63,14 +63,6 @@
   loop:
     - { src: "backup.sh", dest: "/root/backup.sh" }
 
-- name: Copy media backup templates
-  template:
-    src: "{{item.src}}"
-    dest: "{{item.dest}}"
-    mode: +x
-  with_items:
-    - { src: "media_backup.sh.j2", dest: "/home/{{ main_username }}/media_backup.sh" }
-
 ### Wireguard
 - name: Install Wireguard
   include: wireguard.yml
@@ -162,32 +154,6 @@
   when: install_nut == "true"
 
 ### Restic
-- name: Add Synology SSH Key
-  copy:
-    dest: /home/{{ main_username }}/.ssh/synology_restic
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: 0600
-    content: "{{ secret_synology_restic_key }}"
-
-- name: Check that Synology not already in SSH config
-  shell: grep -c "Host synology" /root/.ssh/config || true
-  register: synology_ssh
-
-- name: Add ssh config for Synology
-  lineinfile:
-    path: /root/.ssh/config
-    owner: root
-    group: root
-    mode: 0664
-    line: |
-      Host synology
-        HostName 192.168.30.25
-        User {{main_username}}
-        IdentityFile /home/{{main_username}}/.ssh/synology_restic
-    create: true
-  when: synology_ssh.stdout == "0" or synology_ssh.stdout == ""
-
 - name: Update Restic to latest version
   command: "/usr/bin/restic self-update"
 
@@ -239,11 +205,13 @@
     hour: "{{ item.hour }}"
     minute: "{{ item.minute }}"
     weekday: "{{ item.weekday }}"
+    day: "{{item.day}}"
     state: present
   with_items:
-    - { job: "docker exec scrutiny /scrutiny/bin/scrutiny-collector-metrics run && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_scrutiny}}", name: "Scrutiny", hour: "*/6", minute: "0", weekday: "*" }
-    - { job: "docker container restart jellyfin", name: "Restart Jellyfin", hour: "2", minute: "30", weekday: "*" }
-    - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_purge}}", name: "Restic Prune", hour: "23", minute: "00", weekday: "0" }
+    - { job: "docker exec scrutiny /scrutiny/bin/scrutiny-collector-metrics run && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_scrutiny}}", name: "Scrutiny", hour: "*/6", minute: "0", weekday: "*", day: "*" }
+    - { job: "docker container restart jellyfin", name: "Restart Jellyfin", hour: "2", minute: "30", weekday: "*", day: "*" }
+    - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_purge}}", name: "Restic Prune", hour: "23", minute: "00", weekday: "0", day: "*" }
+    - { job: "/usr/local/bin/autorestic check && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_restic_check_adonalsium}}", name: "Restic Check", hour: "3", minute: "0", weekday: "*", day: "1" }
 - name: "Root Cronjobs"
   cron:
     user: "root"
@@ -254,4 +222,4 @@
     weekday: "{{ item.weekday }}"
     state: present
   with_items:
-    - { job: "/home/{{ main_username }}/media_backup.sh", name: "Media Backup", hour: "1", minute: "00", weekday: "*" }
+    - { job: "/usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media}}", name: "Media Backup", hour: "1", minute: "00", weekday: "*" }

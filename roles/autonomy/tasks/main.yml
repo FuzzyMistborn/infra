@@ -66,7 +66,6 @@
     group: "{{ main_username }}"
     mode: +x
   with_items:
-    - { src: 'media_backup.sh.j2', dest: 'media_backup.sh' }
     - { src: 'cast_frontdoor.sh.j2', dest: 'cast_frontdoor.sh' }
     - { src: 'cast_media.sh.j2', dest: 'cast_media.sh' }
     - { src: 'cast_stop.sh.j2', dest: 'cast_stop.sh' }
@@ -187,32 +186,6 @@
   when: clone_git == "true"
 
 ### Restic
-- name: Add Synology SSH Key
-  copy:
-    dest: /home/{{ main_username }}/.ssh/synology_restic
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: 0600
-    content: "{{ secret_synology_restic_key }}"
-
-- name: Check that Synology not already in SSH config
-  shell: grep -c "Host synology" /root/.ssh/config || true
-  register: synology_ssh
-
-- name: Add ssh config for Synology
-  lineinfile:
-    path: /root/.ssh/config
-    owner: root
-    group: root
-    mode: 0664
-    line: |
-      Host synology
-        HostName 192.168.30.25
-        User {{main_username}}
-        IdentityFile /home/{{main_username}}/.ssh/synology_restic
-    create: true
-  when: synology_ssh.stdout == "0" or synology_ssh.stdout == ""
-
 - name: Update Restic to latest version
   command: "/usr/bin/restic self-update"
 
@@ -266,12 +239,14 @@
     hour: "{{ item.hour }}"
     minute: "{{ item.minute }}"
     weekday: "{{ item.weekday }}"
+    day: "{{ item.day }}"
     state: present
   loop:
-    - { job: "~/scripts/traffic.sh", name: "Traffic AM", hour: "7-8,16-18", minute: "*/10", weekday: "1-5" }
-    - { job: "~/scripts/traffic.sh", name: "Traffic PM", hour: "9-15", minute: "*/30", weekday: "1-5" }
-    - { job: "~/docker/nodered/github_cron.sh", name: "NodeRed Github", hour: "23", minute: "0", weekday: "*" }
-    - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_autonomy_purge}}", name: "Restic Prune", hour: "22", minute: "00", weekday: "0" }
+    - { job: "~/scripts/traffic.sh", name: "Traffic AM", hour: "7-8,16-18", minute: "*/10", weekday: "1-5", day: "*" }
+    - { job: "~/scripts/traffic.sh", name: "Traffic PM", hour: "9-15", minute: "*/30", weekday: "1-5", day: "*" }
+    - { job: "~/docker/nodered/github_cron.sh", name: "NodeRed Github", hour: "23", minute: "0", weekday: "*", day: "*" }
+    - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_autonomy_purge}}", name: "Restic Prune", hour: "22", minute: "00", weekday: "0", day: "*" }
+    - { job: "/usr/local/bin/autorestic check && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_restic_check_autonomy}}", name: "Restic Check", hour: "2", minute: "00", weekday: "*", day: "1" }
 - name: "Root Cronjobs"
   cron:
     user: "root"
@@ -282,4 +257,4 @@
     weekday: "{{ item.weekday }}"
     state: present
   with_items:
-    - { job: "/home/{{ main_username }}/scripts/media_backup.sh", name: "Media Backup", hour: "0", minute: "0", weekday: "*" }
+    - { job: "/usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_autonomy_media}}", name: "Media Backup", hour: "0", minute: "0", weekday: "*" }

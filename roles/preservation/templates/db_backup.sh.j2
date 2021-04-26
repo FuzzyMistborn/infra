@@ -24,8 +24,6 @@ docker exec hass-db sh -c 'exec mysqldump --single-transaction -h localhost -u h
 find /home/{{main_username}}/db_backups/* -mtime +6 -type f -delete
 
 #### Backup the backups
-cd /home/{{main_username}}
-
-autorestic backup -a
+/usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml
 
 curl --retry 3 {{secret_hc_preservation_db_backup}}
