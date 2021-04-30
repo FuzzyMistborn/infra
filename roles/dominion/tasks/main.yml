@@ -1,4 +1,7 @@
 ---
+- name: Install Ansible via Pip
+  pip:
+    name: ansible
 
 - name: Clone Ansible GitHub Repo
   git:

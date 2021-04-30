@@ -1,5 +1,107 @@
 ---
 
+- name: SSH Keys - Add Phone SSH Key
+  authorized_key:
+    user: "{{ main_username }}"
+    state: present
+    key: "{{ secret_pixel_ssh }}"
+
+- name: SSH Keys - Add Work SSH Key
+  authorized_key:
+    user: "{{ main_username }}"
+    state: present
+    key: "{{ secret_work_ssh }}"
+
+- name: create config directories
+  file:
+    path: "/home/{{main_username}}/{{ item }}"
+    state: directory
+    owner: "{{ main_username }}"
+    group: "{{ main_groupname }}"
+  loop:
+    - docker
+    - docker/diun
+    - docker/nginx
+
+#### DIUN
+- name: Copy DIUN Config Template
+  template:
+    src: diun_config.yml.j2
+    dest: /home/{{ main_username }}/docker/diun/config.yml
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+
+#### Bash Alias
+
+- name: Setup bash aliases
+  lineinfile:
+    dest: "/etc/bash_aliases"
+    create: yes
+    group: root
+    line: "alias {{ item.alias }}='{{ item.command }}'"
+    mode: 0644
+    owner: root
+    regexp: "^alias {{ item.alias }}="
+  with_items:
+    - { alias: "nginx", command: "docker exec nginx nginx -s reload" }
+    - { alias: "arsnapshot", command: "autorestic exec -av -- snapshots" }
+    - { alias: "arbackup", command: "autorestic backup -a" }
+    - { alias: "arprune", command: "autorestic forget -a -- prune" }
+
+- name: Source aliases file
+  lineinfile:
+    dest: /etc/bash.bashrc
+    line: 'source /etc/bash_aliases'
+    state: present
+
+### Restic
+- name: Update Restic to latest version
+  command: "/usr/bin/restic self-update"
+
+- name: Install Autorestic
+  shell: curl -s https://raw.githubusercontent.com/CupCakeArmy/autorestic/master/install.sh | sudo bash
+
+- name: Copy Autorestic Config Template
+  template:
+    src: autorestic.yml.j2
+    dest: /home/{{ main_username }}/.autorestic.yml
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+
+### Backup Restore
+- name: Restore folders from backup
+  command: "/usr/local/bin/autorestic restore -f -l {{item.name}} --from {{item.src}} --to {{item.dest}}"
+  with_items:
+    - { name: "docker", src: 'synology_docker', dest: '/home/{{main_username}}/docker' }
+  when: pull_backup == "true"
+
+#### Cronjobs
+- name: "Main User Cronjobs"
+  cron:
+    user: "{{ main_username }}"
+    name: "{{ item.name }}"
+    job: "{{ item.job }}"
+    hour: "{{ item.hour }}"
+    minute: "{{ item.minute }}"
+    weekday: "{{ item.weekday }}"
+    day: "{{ item.day }}"
+    state: present
+  with_items:
+    - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_honor_purge}}", name: "Restic Prune", hour: "22", minute: "15", weekday: "0", day: "*" }
+    - { job: "/usr/local/bin/autorestic check && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_restic_check_honor}}", name: "Restic Check", hour: "2", minute: "15", weekday: "*", day: "1" }
+
+- name: "Root Cronjobs"
+  cron:
+    user: "root"
+    name: "{{ item.name }}"
+    job: "{{ item.job }}"
+    hour: "{{ item.hour }}"
+    minute: "{{ item.minute }}"
+    weekday: "{{ item.weekday }}"
+    state: present
+  with_items:
+    - { job: "/usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_honor_media}}", name: "Media Backup", hour: "0", minute: "15", weekday: "*" }
+
 - name: Enable forwarding
   lineinfile:
     path: /etc/sysctl.conf
@@ -19,13 +121,8 @@
   notify:
     - start wireguard service
 
-- name: Install Adguard
-  shell: sudo curl -sSL https://raw.githubusercontent.com/AdguardTeam/AdGuardHome/master/scripts/install.sh | sh
-  notify:
-    - start adguard
-
 - name: Stop resolved
   service:
     name: systemd-resolved
     enabled: no
-    state: stop
+    state: stopped

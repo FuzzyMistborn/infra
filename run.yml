@@ -53,9 +53,9 @@
     - 'vars/vault.yaml'
     roles:
       - role: grog.package
+      - role: geerlingguy.pip
       - role: github
       - role: dominion
-#      - role: geerlingguy.ntp
 
   - hosts: endowment
     become: true
@@ -68,7 +68,6 @@
       - role: install_fail2ban
       - role: geerlingguy.docker
       - role: geerlingguy.pip
-#      - role: geerlingguy.ntp
       - role: ironicbadger.ansible_role_docker_compose_generator
 
   - hosts: autonomy
@@ -82,7 +81,6 @@
       - role: geerlingguy.pip
       - role: autonomy
       - role: install_fail2ban
-#      - role: geerlingguy.ntp
       - role: ironicbadger.ansible_role_docker_compose_generator
 
   - hosts: cultivation
@@ -95,7 +93,6 @@
       - role: install_fail2ban
       - role: geerlingguy.docker
       - role: geerlingguy.pip
-#      - role: geerlingguy.ntp
       - role: ironicbadger.ansible_role_docker_compose_generator
 
   - hosts: preservation
@@ -108,7 +105,6 @@
       - role: geerlingguy.pip
       - role: ironicbadger.ansible_role_docker_compose_generator
       - role: preservation
-#      - role: geerlingguy.ntp
 
   - hosts: honor
     become: true
@@ -116,8 +112,11 @@
       - 'vars/vault.yaml'
     roles:
       - role: grog.package
+      - role: geerlingguy.pip
+      - role: geerlingguy.docker
       - role: honor
-#      - role: geerlingguy.ntp
+      - role: install_fail2ban
+      - role: ironicbadger.ansible_role_docker_compose_generator
 
   - hosts: valor
     become: true
@@ -125,9 +124,10 @@
       - 'vars/vault.yaml'
     roles:
       - role: grog.package
+      - role: geerlingguy.pip
+      - role: geerlingguy.docker
       - role: valor
-      - role: install_fail2ban
-#      - role: geerlingguy.ntp
+      - role: ironicbadger.ansible_role_docker_compose_generator
 
   - hosts: mercy
     become: true
@@ -137,7 +137,6 @@
       - role: grog.package
       - role: geerlingguy.pip
       - role: mercy
-#      - role: geerlingguy.ntp
 
   - hosts: omada
     become: true

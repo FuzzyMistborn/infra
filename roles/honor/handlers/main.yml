@@ -10,12 +10,3 @@
     name: wg-quick@wg0
     enabled: 'true'
     state: started
-
-- name: start adguard
-  command: /opt/AdGuardHome/AdGuardHome -s start
-
-- name: stop adguard
-  command: /opt/AdGuardHome/AdGuardHome -s stop
-
-- name: restart adguard
-  command: /opt/AdGuardHome/AdGuardHome -s restart

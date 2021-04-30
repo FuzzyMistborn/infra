@@ -54,7 +54,6 @@
     owner: root
     regexp: "^alias {{ item.alias }}="
   with_items:
-    - { alias: "nginx", command: "docker exec nginx nginx -s reload" }
     - { alias: "arsnapshot", command: "autorestic exec -av -- snapshots" }
     - { alias: "arbackup", command: "autorestic backup -a" }
     - { alias: "arprune", command: "autorestic forget -a -- prune" }

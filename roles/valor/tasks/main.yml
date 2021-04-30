@@ -1,12 +1,25 @@
 ---
-- name: SSH Keys - Add Phone SSH Key
-  authorized_key:
-    user: "{{ main_username }}"
-    state: present
-    key: "{{ secret_pixel_ssh }}"
+- name: create config directories
+  file:
+    path: "/home/{{main_username}}/{{ item }}"
+    state: directory
+    owner: "{{ main_username }}"
+    group: "{{ main_groupname }}"
+  loop:
+    - docker
+    - docker/diun
+    - docker/adguard
 
-- name: SSH Keys - Add Work SSH Key
-  authorized_key:
-    user: "{{ main_username }}"
-    state: present
-    key: "{{ secret_work_ssh }}"
+#### DIUN
+- name: Copy DIUN Config Template
+  template:
+    src: diun_config.yml.j2
+    dest: /home/{{ main_username }}/docker/diun/config.yml
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+
+- name: Stop resolved
+  service:
+    name: systemd-resolved
+    enabled: no
+    state: stopped

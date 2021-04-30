@@ -12,6 +12,7 @@
 
 - name: Create LXC CT
   proxmox:
+    proxmox_default_behavior: no_defaults
     vmid: "{{item.vmid}}"
     hostname: "{{item.name}}"
     unprivileged: "{{item.privileged}}"
@@ -20,6 +21,8 @@
     node: adonalsium
     storage: local-lvm
     disk: "{{item.disk}}"
+    cpus: 1
+    cpuunits: 1000
     cores: "{{item.cores}}"
     memory: "{{item.memory}}"
     swap: "{{item.swap}}"
@@ -27,42 +30,14 @@
     api_password: "{{ secret_proxmox_pass }}"
     api_host: localhost
     pubkey: "{{ secret_proxmox_ct_ssh }}"
+    password:
     netif: '{"net0":"name=eth0,gw={{item.gw}},ip={{item.ip}}/24,ip6=dhcp,bridge={{item.bridge}}"}'
     ostemplate: "{{item.template}}"
+    features:
+      - nesting={{item.nesting}}
   loop:
-    - { "name":"Dominion","vmid":"200","privileged":"true","onboot":"true","gw":"192.168.30.1","ip":"192.168.30.15","bridge":"vmbr0","disk":"10","cores":"2","memory":"512","swap":"512","template":"local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz"}
-    - { "name":"Honor","vmid":"201","privileged":"true","onboot":"true","gw":"192.168.30.1","ip":"192.168.30.16","bridge":"vmbr0","disk":"10","cores":"2","memory":"512","swap":"512","template":"local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz"}
-    - { "name":"Valor","vmid":"202","privileged":"true","onboot":"true","gw":"192.168.30.1","ip":"192.168.30.17","bridge":"vmbr0","disk":"10","cores":"2","memory":"512","swap":"512","template":"local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz"}
-    - { "name":"Omada","vmid":"204","privileged":"true","onboot":"true","gw":"192.168.1.1","ip":"192.168.1.10","bridge":"vmbr1","disk":"10","cores":"2","memory":"1024","swap":"512","template":"local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz"}
-
-- name: Create Mercy CT
-  proxmox:
-    vmid: '203'
-    hostname: Mercy
-    onboot: true
-    unprivileged: true
-    node: adonalsium
-    state: present
-    storage: local-lvm
-    disk: '10'
-    cores: '1'
-    memory: '512'
-    swap: '512'
-    api_user: root@pam
-    api_password: "{{ secret_proxmox_pass }}"
-    api_host: localhost
-    pubkey: "{{ secret_proxmox_ct_ssh }}"
-    netif: '{"net0":"name=eth0,gw=192.168.30.1,ip=192.168.30.18/24,ip6=dhcp,bridge=vmbr0"}'
-    ostemplate: 'local:vztmpl/ubuntu-18.04-standard_18.04.1-1_amd64.tar.gz'
-#    mounts: '{"mp0":"/mnt/Backup/Adonalsium/mercy,mp=/mnt/Backup/"}'
-
-### Create VMs
-- name: Download Ubuntu ISO
-  get_url:
-    url: https://releases.ubuntu.com/20.04.2/ubuntu-20.04.2-live-server-amd64.iso
-    dest: /var/lib/vz/template/iso
-#- name: Download and Unzip Opnsense ISO
-#  unarchive:
-#    src: https://mirrors.nycbug.org/pub/opnsense/releases/21.1/OPNsense-21.1-OpenSSL-dvd-amd64.iso.bz2
-#    dest: /var/lib/vz/template/iso
-#    remote_src: yes
+    - { "name":"Dominion","vmid":"200","privileged":"true","onboot":"true","gw":"192.168.30.1","ip":"192.168.30.15","bridge":"vmbr0","disk":"10","cores":"2","memory":"512","swap":"512","template":"local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz","nesting":"0"}
+    - { "name":"Honor","vmid":"201","privileged":"true","onboot":"true","gw":"192.168.50.1","ip":"192.168.50.10","bridge":"vmbr2","disk":"10","cores":"2","memory":"512","swap":"1024","template":"local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz","nesting":"1"}
+    - { "name":"Valor","vmid":"202","privileged":"true","onboot":"true","gw":"192.168.50.1","ip":"192.168.50.11","bridge":"vmbr2","disk":"10","cores":"2","memory":"512","swap":"512","template":"local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz","nesting":"1"}
+    - { "name":"Mercy","vmid":"203","privileged":"true","onboot":"true","gw":"192.168.30.1","ip":"192.168.30.16","bridge":"vmbr0","disk":"10","cores":"1","memory":"512","swap":"512","template":"local:vztmpl/ubuntu-18.04-standard_18.04.1-1_amd64.tar.gz","nesting":"0"}
+    - { "name":"Omada","vmid":"204","privileged":"true","onboot":"true","gw":"192.168.1.1","ip":"192.168.1.10","bridge":"vmbr1","disk":"10","cores":"2","memory":"1024","swap":"512","template":"local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz","nesting":"0"}
