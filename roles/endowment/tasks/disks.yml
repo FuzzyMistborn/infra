@@ -5,7 +5,6 @@
     path: "{{ item.path }}"
     state: unmounted
   with_items:
-    - "{{ data_disks }}"
     - "{{ smb_mountpoints }}"
 
 - name: create /mnt points
@@ -16,7 +15,6 @@
     group: nogroup
     mode: 0777
   with_items: 
-    - "{{ data_disks }}"
     - "{{ smb_mountpoints }}"
 
 - name: Add smbcredentials
@@ -38,5 +36,4 @@
     # change to 'mounted' to auto mount versus 'present' for just loaded into fstab
     state: mounted
   with_items:
-    - "{{ data_disks }}"
     - "{{ smb_mountpoints }}"

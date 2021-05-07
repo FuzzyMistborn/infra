@@ -22,6 +22,9 @@
     - { path: "auth_commands.sh", mode: "+x" }
     - { path: "nextcloud_cron.sh", mode: "+x" }
 
+- name: Fix Jellyfin render group for iGPU passthrough
+  shell: groupmod -g 150 postfix && groupmod -g 108 render && groupmod -g 107 postfix
+
 #### DIUN
 - name: Copy DIUN Config Template
   template:
@@ -29,10 +32,6 @@
     dest: /home/{{ main_username }}/docker/diun/config.yml
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-
-### Update Restic
-- name: Update Restic to latest version
-  command: "/usr/bin/restic self-update"
 
 ### Telegraf
 - name: Install Telegraf
@@ -76,11 +75,26 @@
     group: "{{ main_username }}"
 
 ### Backup Restore
-- name: Restore folders from backup
-  command: "/usr/local/bin/autorestic restore -f -l {{item.name}} --from {{item.src}} --to {{item.dest}}"
-  with_items:
-    - { name: "docker", src: 'synology_docker', dest: '/home/{{main_username}}/docker' }
-  when: pull_backup == "true"
+- name: Create restore script
+  copy:
+    dest: /home/{{ main_username }}/restore.sh
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: +x
+    content: |
+      #!/bin/bash
+      /usr/local/bin/autorestic restore -f -l docker --from synology_docker --to /home/{{main_username}}/docker
+  when: pull_backup == true
+- name: Run restore script
+  command: /bin/bash ./restore.sh
+  args:
+    chdir: "/home/{{main_username}}"
+  when: pull_backup == true
+- name: Remove restore script
+  file:
+    path: /home/{{ main_username }}/restore.sh
+    state: absent
+  when: pull_backup == true
 
 #### Bash Alias
 

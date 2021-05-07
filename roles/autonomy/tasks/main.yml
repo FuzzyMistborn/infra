@@ -87,55 +87,6 @@
 
       [aliases]
 
-#### RTL_433
-
-- name: Install paho-mqtt
-  command: pip3 install paho-mqtt
-
-- name: Copy RTL_433 script
-  template:
-    src: rtl_433.sh.j2
-    dest: /home/{{ main_username }}/rtl_433.sh
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: +x
-
-- name: Copy rtl2mqtt config template
-  template:
-    src: config.py.j2
-    dest: /home/{{ main_username }}/scripts/config.py
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-
-- name: Run RTL433 script
-  command: /bin/bash ./rtl_433.sh
-  args:
-    chdir: "/home/{{main_username}}"
-
-- name: Remove RTL433 script
-  file:
-    path: /home/{{ main_username }}/rtl_433.sh
-    state: absent
-
-- name: Copy RTL433 service file
-  template:
-    src: "{{item.src}}"
-    dest: /etc/systemd/system/{{item.dest}}
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: 0644
-  with_items:
-    - { src: 'rtl433.service.j2', dest: 'rtl433.service' }
-
-- name: Enable RTL433 service
-  systemd:
-    enabled: true
-    daemon-reload: true
-    name: "{{item}}"
-    state: started
-  loop:
-    - rtl433
-
 #### DIUN
 - name: Copy DIUN Config Template
   template:
@@ -175,7 +126,7 @@
     dest: /home/{{ main_username }}/hass_docker
     accept_hostkey: true
     key_file: /home/{{main_username}}/.ssh/github
-  when: clone_git == "true"
+  when: clone_git == true
 
 - name: Clone NodeRed GitHub Repo
   git:
@@ -183,7 +134,7 @@
     dest: /home/{{ main_username }}/docker/nodered
     accept_hostkey: true
     key_file: /home/{{main_username}}/.ssh/github
-  when: clone_git == "true"
+  when: clone_git == true
 
 ### Restic
 - name: Update Restic to latest version
@@ -200,13 +151,28 @@
     group: "{{ main_username }}"
 
 ### Backup Restore
-- name: Restore folders from backup
-  command: "/usr/local/bin/autorestic restore -f -l {{item.name}} --from {{item.src}} --to {{item.dest}}"
-  with_items:
-    - { name: "docker", src: 'synology_docker', dest: '/home/{{main_username}}/docker' }
-    - { name: "hass_docker", src: 'synology_hass_docker', dest: '/home/{{main_username}}/hass_docker' }
-    - { name: "hass_docker_beta", src: 'synology_hass_docker_beta', dest: '/home/{{main_username}}/hass_docker_beta' }
-  when: pull_backup == "true"
+- name: Create restore script
+  copy:
+    dest: /home/{{ main_username }}/restore.sh
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: +x
+    content: |
+      #!/bin/bash
+      /usr/local/bin/autorestic restore -f -l docker --from synology_docker --to /home/{{main_username}}/docker
+      /usr/local/bin/autorestic restore -f -l hass_docker --from synology_hass_docker --to /home/{{main_username}}/hass_docker
+      /usr/local/bin/autorestic restore -f -l hass_docker_beta --from synology_hass_docker_beta --to /home/{{main_username}}/hass_docker_beta
+  when: pull_backup == true
+- name: Run restore script
+  command: /bin/bash ./restore.sh
+  args:
+    chdir: "/home/{{main_username}}"
+  when: pull_backup == true
+- name: Remove restore script
+  file:
+    path: /home/{{ main_username }}/restore.sh
+    state: absent
+  when: pull_backup == true
 
 #### Bash Alias
 

@@ -45,8 +45,8 @@ containers:
     ports:
       - 8086:8086
     volumes:
-      - "{{ appdata_path }}/influx_db/data:/root/.influxdb2/"
-      - "{{ appdata_path }}/influx_db/config.yml:/etc/influxdb2/config.yml:ro"
+      - "{{ appdata_path }}/influx_db/backup:/media/backup"
+      - "{{ appdata_path }}/influx_db/config:config:/etc/influxdb2"
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"

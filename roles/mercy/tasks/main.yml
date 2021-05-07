@@ -107,13 +107,28 @@
     group: "{{ main_username }}"
 
 ### Backup Restore
-- name: Restore folders from backup
-  command: "/usr/local/bin/autorestic restore -f -l {{item.name}} --from {{item.src}} --to {{item.dest}}"
-  with_items:
-    - { name: "plugins", src: 'synology_plugins', dest: '/home/{{main_username}}/hangoutsbot/hangupsbot/plugins' }
-    - { name: "local", src: 'synology_local', dest: '/home/{{main_username}}/.local/share/hangupsbot' }
-    - { name: "telegram", src: 'synology_telegram', dest: '/home/{{main_username}}/' }
-  when: pull_backup == "true"
+- name: Create restore script
+  copy:
+    dest: /home/{{ main_username }}/restore.sh
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: +x
+    content: |
+      #!/bin/bash
+      /usr/local/bin/autorestic restore -f -l plugins --from synology_plugins --to /home/{{main_username}}/hangoutsbot/hangupsbot/plugins
+      /usr/local/bin/autorestic restore -f -l local --from synology_local --to /home/{{main_username}}/.local/share/hangupsbot
+      /usr/local/bin/autorestic restore -f -l telegram --from synology_telegram --to /home/{{main_username}}/
+  when: pull_backup == true
+- name: Run restore script
+  command: /bin/bash ./restore.sh
+  args:
+    chdir: "/home/{{main_username}}"
+  when: pull_backup == true
+- name: Remove restore script
+  file:
+    path: /home/{{ main_username }}/restore.sh
+    state: absent
+  when: pull_backup == true
 
 - name: Enable bot services
   systemd:

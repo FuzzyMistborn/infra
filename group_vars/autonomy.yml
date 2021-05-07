@@ -91,7 +91,7 @@ containers:
     volumes:
       - "{{ appdata_path }}/zwavejs:/usr/src/app/store"
     devices:
-      - /dev/serial/by-id/usb-0658_0200-if00:/dev/zwave
+      - /dev/zwave:/dev/zwave
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
@@ -108,7 +108,7 @@ containers:
       - 5316:5316
     network_mode: host
     devices:
-      - /dev/serial/by-id/usb-dresden_elektronik_ingenieurtechnik_GmbH_ConBee_II_DE2152697-if00:/dev/ttyACM1
+      - /dev/conbee:/dev/ttyACM1
     volumes:
       - "{{ appdata_path }}/deconz:/root/.local/share/dresden-elektronik/deCONZ"
     labels:
@@ -154,6 +154,24 @@ containers:
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
+    include_global_env_vars: false
+  ###
+  - service_name: rtl433
+    container_name: rtl433
+    active: true
+    image: hertzg/rtl_433:latest
+    restart: always
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    command:
+      - '-Fmqtt://192.168.30.12:1883,user=homeassistant,pass={{ secret_mqtt_pass }},retain=1,devices=rtl_433[/model][/id]'
+      - '-Csi'
+      - '-Mnewmodel'
+      - '-R40'
+      - '-R41'
+    devices:
+      - /dev/bus/usb/001/036
     include_global_env_vars: false
   ###
   - service_name: nodered

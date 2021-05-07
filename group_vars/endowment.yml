@@ -19,9 +19,6 @@ package_list:
 smb_mountpoints:
   - { path: "/mnt/Media", source: "//192.168.30.10/Media", fs: cifs, opts: "defaults,uid=1000,gid=1000,credentials=/home/{{main_username}}/.smbcredentials" }
 
-data_disks:
-  - { path: /mnt/scratch, source: /dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi1-part1, fs: ext4, opts: defaults, content: true }
-
 pull_backup: false
 
 ### Docker-Compose with ironicbadger.docker_compose_generator
@@ -45,6 +42,54 @@ containers:
       - LOG_JSON=false
     hostname:  "{{ hostname }}"
     include_global_env_vars: true
+  ###
+  - service_name: jellyfin
+    container_name: jellyfin
+    active: true
+    image: linuxserver/jellyfin
+    restart: always
+    ports:
+      - 8096:8096
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    volumes:
+      - "{{ appdata_path }}/jellyfin/config:/config"
+      - /mnt/Media/Movies:/mnt/movies
+      - /mnt/Media/UHD:/mnt/UHD
+      - '/mnt/Media/TV Shows:/mnt/tv'
+      - '/mnt/Media/Kids Movies:/mnt/kids'
+      - '/mnt/Media/Kids TV:/mnt/kids_tv'
+      - '/mnt/Media/Parents Movies:/mnt/parents_movies'
+      - '/mnt/Media/Parents TV:/mnt/parents_tv'
+      - '/mnt/Media/Family Videos:/mnt/home_videos'
+    devices:
+      - /dev/dri:/dev/dri
+    group_add:
+      - 108
+    include_global_env_vars: true
+  ###
+  - service_name: handbrake
+    container_name: handbrake
+    active: true
+    image: jlesage/handbrake
+    restart: always
+    ports:
+      - 5800:5800
+    volumes:
+      - "{{ appdata_path }}/docker-api:/data/certs"
+      - "{{ appdata_path }}/handbrake/config:/config"
+      - "{{ appdata_path }}/handbrake/storage:/storage"
+      - "{{ appdata_path }}/handbrake/watch:/watch"
+      - "{{ appdata_path }}/handbrake/output:/output"
+    devices:
+      - /dev/dri:/dev/dri
+    environment:
+      - TZ={{ ntp_timezone }}
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false
   ###
   - service_name: radarr
     container_name: radarr

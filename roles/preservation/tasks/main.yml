@@ -13,7 +13,7 @@
     - docker/nextcloud_db
     - docker/wallabag_db
     - docker/hass_db
-    - docker/influxdb
+    - docker/influx_db
     - db_backups
     - scripts
 
@@ -74,11 +74,26 @@
     group: "{{ main_username }}"
 
 ### Backup Restore
-- name: Restore folders from backup
-  command: "/usr/local/bin/autorestic restore -f -l {{item.name}} --from {{item.src}} --to {{item.dest}}"
-  with_items:
-    - { name: "db_backups", src: 'synology_db', dest: '/home/{{main_username}}' }
-  when: pull_backup == "true"
+- name: Create restore script
+  copy:
+    dest: /home/{{ main_username }}/restore.sh
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: +x
+    content: |
+      #!/bin/bash
+      /usr/local/bin/autorestic restore -f -l db_backups --from synology_db --to /home/{{main_username}}/db_backups
+  when: pull_backup == true
+- name: Run restore script
+  command: /bin/bash ./restore.sh
+  args:
+    chdir: "/home/{{main_username}}"
+  when: pull_backup == true
+- name: Remove restore script
+  file:
+    path: /home/{{ main_username }}/restore.sh
+    state: absent
+  when: pull_backup == true
 
 #### Bash Alias
 
@@ -107,7 +122,7 @@
   command: /bin/bash ./db_restore.sh
   args:
     chdir: "/home/{{main_username}}/scripts"
-  when: pull_backup == "true"
+  when: pull_backup == true
 
 #### Cronjobs
 - name: "Main User Cronjobs"

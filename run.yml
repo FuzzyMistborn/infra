@@ -64,10 +64,10 @@
     roles:
       - role: grog.package
       - role: geerlingguy.samba
-      - role: endowment
-      - role: install_fail2ban
       - role: geerlingguy.docker
       - role: geerlingguy.pip
+      - role: endowment
+      - role: install_fail2ban
       - role: ironicbadger.ansible_role_docker_compose_generator
 
   - hosts: autonomy
@@ -89,10 +89,10 @@
       - 'vars/vault.yaml'
     roles:
       - role: grog.package
-      - role: cultivation
-      - role: install_fail2ban
       - role: geerlingguy.docker
       - role: geerlingguy.pip
+      - role: cultivation
+      - role: install_fail2ban
       - role: ironicbadger.ansible_role_docker_compose_generator
 
   - hosts: preservation

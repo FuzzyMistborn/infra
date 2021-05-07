@@ -66,7 +66,7 @@
 ### Wireguard
 - name: Install Wireguard
   include: wireguard.yml
-  when: install_wireguard == "true"
+  when: install_wireguard == true
 
 ### Telegraf
 - name: Install Telegraf
@@ -109,7 +109,7 @@
 
 - name: Set up containers
   include: infrastructure.yml
-  when: infrastructure == "true"
+  when: infrastructure == true
 
 - name: Install samba config
   template:
@@ -137,21 +137,21 @@
     - 'upsd.conf'
     - 'upsd.users'
     - 'upsmon.conf'
-  when: install_nut == "true"
+  when: install_nut == true
 
 - name: Copy NUT script
   copy:
     src: nut.sh
     dest: /home/{{main_username}}
     mode: +x
-  when: install_nut == "true"
+  when: install_nut == true
 
 - name: Run NUT script
   command: /bin/bash ./nut.sh
   args:
     chdir: /home/{{main_username}}
     creates: /home/{{main_username}}/nut.sh
-  when: install_nut == "true"
+  when: install_nut == true
 
 ### Restic
 - name: Update Restic to latest version
@@ -168,11 +168,26 @@
     group: "{{ main_username }}"
 
 ### Backup Restore
-- name: Restore folders from backup
-  command: "/usr/local/bin/autorestic restore -f -l {{item.name}} --from {{item.src}} --to {{item.dest}}"
-  with_items:
-    - { name: "docker", src: 'synology_docker', dest: '/home/{{main_username}}/docker' }
-  when: pull_backup == "true"
+- name: Create restore script
+  copy:
+    dest: /home/{{ main_username }}/restore.sh
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: +x
+    content: |
+      #!/bin/bash
+      /usr/local/bin/autorestic restore -f -l docker --from synology_docker --to /home/{{main_username}}/docker
+  when: pull_backup == true
+- name: Run restore script
+  command: /bin/bash ./restore.sh
+  args:
+    chdir: "/home/{{main_username}}"
+  when: pull_backup == true
+- name: Remove restore script
+  file:
+    path: /home/{{ main_username }}/restore.sh
+    state: absent
+  when: pull_backup == true
 
 #### Bash Alias
 
@@ -222,5 +237,5 @@
     weekday: "{{ item.weekday }}"
     state: present
   with_items:
-    - { job: "/usr/local/bin/autorestic backup -l docker -c /home/{{main_username}}/.autorestic.yml && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_docker}}", name: "Media Backup (Docker)", hour: "1", minute: "00", weekday: "*" }
-    - { job: "/usr/local/bin/autorestic backup -l photos -l files -l music -l audiobooks -c /home/{{main_username}}/.autorestic.yml && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_all}}", name: "Media Backup (Everything Else)", hour: "1", minute: "15", weekday: "0,3,5" }
+    - { job: "/usr/local/bin/autorestic backup -l docker -c /home/{{main_username}}/.autorestic.yml", name: "Media Backup (Docker)", hour: "1", minute: "00", weekday: "*" }
+    - { job: "/usr/local/bin/autorestic backup -l photos -l files -l music -l audiobooks -c /home/{{main_username}}/.autorestic.yml", name: "Media Backup (Everything Else)", hour: "1", minute: "15", weekday: "0,3,5" }
