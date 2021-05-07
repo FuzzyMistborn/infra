@@ -52,6 +52,11 @@ locations:
         keep-daily: 7
         keep-weekly: 8
         keep-monthly: 4
+    hooks:
+      success:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_autonomy_media}}/0
+      failure:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_autonomy_media}}/fail
   hass_docker:
     from: '/home/{{main_username}}/hass_docker'
     to: 
@@ -62,6 +67,11 @@ locations:
         keep-daily: 7
         keep-weekly: 4
         keep-monthly: 2
+    hooks:
+      success:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_autonomy_media}}/0
+      failure:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_autonomy_media}}/fail
   hass_docker_beta:
     from: '/home/{{main_username}}/hass_docker_beta'
     to: 
@@ -72,3 +82,8 @@ locations:
         keep-daily: 7
         keep-weekly: 4
         keep-monthly: 2
+    hooks:
+      success:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_autonomy_media}}/0
+      failure:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_autonomy_media}}/fail

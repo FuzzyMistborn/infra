@@ -28,6 +28,11 @@ locations:
     options:
       forget:
         keep-last: 10
+    hooks:
+      success:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_media}}/0
+      failure:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_media}}/fail
   local:
     from: '/home/{{main_username}}/.local/share/hangupsbot'
     to: 
@@ -35,6 +40,11 @@ locations:
     options:
       forget:
         keep-last: 10
+    hooks:
+      success:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_media}}/0
+      failure:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_media}}/fail
   telegram:
     from: '/home/{{main_username}}/.telegram-cli'
     to: 
@@ -42,3 +52,8 @@ locations:
     options:
       forget:
         keep-last: 10
+    hooks:
+      success:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_media}}/0
+      failure:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_media}}/fail

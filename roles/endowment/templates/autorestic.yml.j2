@@ -24,3 +24,8 @@ locations:
         keep-daily: 7
         keep-weekly: 8
         keep-monthly: 4
+    hooks:
+      success:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_endowment_media}}/0
+      failure:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_endowment_media}}/fail

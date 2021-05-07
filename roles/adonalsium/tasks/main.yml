@@ -63,6 +63,20 @@
   loop:
     - { src: "backup.sh", dest: "/root/backup.sh" }
 
+### udev Rules
+- name: Add udev rules
+  copy:
+    dest: /etc/udev/rules.d/99-usb-serial.rules
+    owner: root
+    group: root
+    mode: 0644
+    content: |
+      SUBSYSTEM=="tty", ATTRS{idVendor}=="0658", ATTRS{idProduct}=="0200", SYMLINK+="zwave"
+      SUBSYSTEM=="tty", ATTRS{idVendor}=="1cf1", ATTRS{idProduct}=="0030", SYMLINK+="conbee"
+
+- name: Update udev
+  shell: "sudo service udev reload && sudo udevadm trigger"
+
 ### Wireguard
 - name: Install Wireguard
   include: wireguard.yml
@@ -226,7 +240,7 @@
     - { job: "docker exec scrutiny /scrutiny/bin/scrutiny-collector-metrics run > /dev/null 2>&1 && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_scrutiny}}", name: "Scrutiny", hour: "*/6", minute: "0", weekday: "*", day: "*" }
     - { job: "docker container restart jellyfin > /dev/null 2>&1", name: "Restart Jellyfin", hour: "2", minute: "30", weekday: "*", day: "*" }
     - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_purge}}", name: "Restic Prune", hour: "23", minute: "00", weekday: "0", day: "*" }
-    - { job: "/usr/local/bin/autorestic check && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_restic_check_adonalsium}}", name: "Restic Check", hour: "3", minute: "0", weekday: "*", day: "1" }
+    - { job: "/usr/local/bin/autorestic exec -a -- check && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_restic_check_adonalsium}}", name: "Restic Check", hour: "3", minute: "0", weekday: "*", day: "1" }
 - name: "Root Cronjobs"
   cron:
     user: "root"

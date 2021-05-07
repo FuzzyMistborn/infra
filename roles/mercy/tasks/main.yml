@@ -176,7 +176,7 @@
     state: present
   with_items:
     - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_purge}}", name: "Restic Prune", hour: "21", minute: "00", weekday: "0", day: "*" }
-    - { job: "/usr/local/bin/autorestic check && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_restic_check_mercy}}", name: "Restic Check", hour: "21", minute: "30", weekday: "0", day: "1" }
+    - { job: "/usr/local/bin/autorestic exec -a -- check && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_restic_check_mercy}}", name: "Restic Check", hour: "21", minute: "30", weekday: "0", day: "1" }
 
 - name: Root Cronjobs
   cron:
@@ -192,4 +192,4 @@
     - { job: "systemctl restart math.service && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_math}}", name: "Restart MATHBot", hour: "3", minute: "1", weekday: "*" }
     - { job: "systemctl restart phantom.service && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_phantom}}", name: "Restart PhantomBot", hour: "3", minute: "2", weekday: "*" }
     - { job: "systemctl restart tg-sync.service && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_tg}}", name: "Restart TG Sync", hour: "3", minute: "3", weekday: "*" }
-    - { job: "/usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_media}}", name: "Backup Media", hour: "2", minute: "59", weekday: "*" }
+    - { job: "/usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml", name: "Backup Media", hour: "2", minute: "59", weekday: "*" }

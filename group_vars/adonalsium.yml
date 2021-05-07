@@ -107,6 +107,54 @@ containers:
       - AGENT_SECRET={{secret_portainer_key}}
     include_global_env_vars: false
   ###
+  - service_name: jellyfin
+    container_name: jellyfin
+    active: true
+    image: linuxserver/jellyfin
+    restart: always
+    ports:
+      - 8096:8096
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    volumes:
+      - "{{ appdata_path }}/jellyfin/config:/config"
+      - /mnt/Media/Movies:/mnt/movies
+      - /mnt/Media/UHD:/mnt/UHD
+      - '/mnt/Media/TV Shows:/mnt/tv'
+      - '/mnt/Media/Kids Movies:/mnt/kids'
+      - '/mnt/Media/Kids TV:/mnt/kids_tv'
+      - '/mnt/Media/Parents Movies:/mnt/parents_movies'
+      - '/mnt/Media/Parents TV:/mnt/parents_tv'
+      - '/mnt/Media/Family Videos:/mnt/home_videos'
+    devices:
+      - /dev/dri:/dev/dri
+    group_add:
+      - 108
+    include_global_env_vars: true
+  ###
+  - service_name: handbrake
+    container_name: handbrake
+    active: true
+    image: jlesage/handbrake
+    restart: always
+    ports:
+      - 5800:5800
+    volumes:
+      - "{{ appdata_path }}/docker-api:/data/certs"
+      - "{{ appdata_path }}/handbrake/config:/config"
+      - "{{ appdata_path }}/handbrake/storage:/storage"
+      - "{{ appdata_path }}/handbrake/watch:/watch"
+      - "{{ appdata_path }}/handbrake/output:/output"
+    devices:
+      - /dev/dri:/dev/dri
+    environment:
+      - TZ={{ ntp_timezone }}
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false
+  ###
   - service_name: scrutiny
     container_name: scrutiny
     active: true
