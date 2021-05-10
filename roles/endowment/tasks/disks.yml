@@ -24,6 +24,7 @@
     group: "{{ main_username }}"
     mode: 0600
     content: |
+      user=samba
       password={{secret_samba_pass}}
       domain=cosmere
 

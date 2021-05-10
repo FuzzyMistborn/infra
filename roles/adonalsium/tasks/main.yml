@@ -26,6 +26,15 @@
     - { user: "{{ main_username }}", pass: "{{ secret_main_user_pass }}" }
     - { user: ansible, pass: "{{ secret_ansible_pass }}" }
 
+- name: Add samba users
+  user:
+    name: samba
+    password: "!"
+    create_home: no
+
+- name: Add samba user password
+  shell: "printf '{{ secret_samba_pass }}\n{{ secret_samba_pass }}\n' | smbpasswd -a samba"
+
 - name: Add sudoers file for ansible
   copy:
     src: sudoer_ansible

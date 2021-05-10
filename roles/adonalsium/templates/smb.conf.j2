@@ -1,10 +1,11 @@
 ## adonalsium samba configuration
 
 [global]
+  server min protocol = SMB2_02
   workgroup = cosmere
   server string = adonalsium
   security = user
-  guest ok = yes
+  guest ok = no
   map to guest = bad user
 
   log file = /var/log/samba/%m.log
@@ -17,5 +18,6 @@
   public = yes
   writeable = yes
   path = /mnt/Media
+  valid users = samba
   force user = {{main_username}}
   force group = {{main_username}}
