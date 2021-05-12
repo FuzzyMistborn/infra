@@ -4,21 +4,15 @@ hostname: autonomy
 
 ### Install packages with grog.package
 package_list:
-  - name: automake
-  - name: cmake
   - name: curl
   - name: cutycapt
   - name: git
   - name: htop
-  - name: librtlsdr-dev
-  - name: libtool
   - name: lm-sensors
   - name: net-tools
-  - name: nut
   - name: fail2ban
   - name: python
   - name: restic
-  - name: rtl-sdr
   - name: sudo
   - name: wget
   - name: xvfb
@@ -171,7 +165,7 @@ containers:
       - '-R40'
       - '-R41'
     devices:
-      - /dev/bus/usb/001/036
+      - /dev/bus/usb/001/006
     include_global_env_vars: false
   ###
   - service_name: nodered

@@ -45,8 +45,8 @@ containers:
     ports:
       - 8086:8086
     volumes:
-      - "{{ appdata_path }}/influx_db/backup:/media/backup"
-      - "{{ appdata_path }}/influx_db/config:config:/etc/influxdb2"
+      - "/home/{{main_username}}/db_backups/influxdb:/media/backup"
+      - "{{ appdata_path }}/influx_db/config:/etc/influxdb2"
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
@@ -99,6 +99,23 @@ containers:
     environment:
       - MYSQL_ROOT_PASSWORD={{ secret_db_root_pass }}
       - MYSQL_DATABASE=symfony
+    mem_limit: 300M
+    include_global_env_vars: false
+  ###
+  - service_name: photoview-db
+    container_name: photoview-db
+    active: true
+    image: mariadb
+    restart: always
+    ports:
+      - 3310:3306
+    volumes:
+      - "{{ appdata_path }}/photoview_db:/var/lib/mysql"
+    environment:
+      - MYSQL_ROOT_PASSWORD={{ secret_db_root_pass }}
+      - MYSQL_DATABASE=photoview
+      - MYSQL_USER=photoview
+      - MYSQL_PASSWORD={{ secret_photoview_db_pass }}
     mem_limit: 300M
     include_global_env_vars: false
   ###

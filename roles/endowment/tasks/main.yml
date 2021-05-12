@@ -131,7 +131,7 @@
     state: present
   loop:
     - { job: "/home/{{ main_username }}/scripts/nextcloud_cron.sh", name: "Nextcloud", hour: "*", minute: "*/5", weekday: "*", day: "*" }
-    - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_endowment_purge}}", name: "Restic Prune", hour: "22", minute: "30", weekday: "0", day: "*" }
+    - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_endowment_purge}}", name: "Restic Prune", hour: "22", minute: "30", weekday: "1", day: "*" }
     - { job: "/usr/local/bin/autorestic exec -a -- check && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_restic_check_endowment}}", name: "Restic Check", hour: "2", minute: "30", weekday: "*", day: "1" }
 
 - name: "Root Cronjobs"

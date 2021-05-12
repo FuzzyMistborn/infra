@@ -20,6 +20,12 @@ echo Backing up Hass DB
 today=$(date +"%Y_%m_%d")
 docker exec hass-db sh -c 'exec mysqldump --single-transaction -h localhost -u hass -p{{ secret_hass_db_pass }} homeassistant' > /home/{{main_username}}/db_backups/hass/hassDB_$today.sql
 
+#### InfluxDB Backup
+echo Backing up InfluxDB
+docker exec influx-db sh -c 'influx backup \
+  /media/backup/ \
+  -t {{secret_influxdb_token}}'
+
 #### Delete Old
 find /home/{{main_username}}/db_backups/* -mtime +6 -type f -delete
 

@@ -175,7 +175,7 @@
     day: "{{item.day}}"
     state: present
   with_items:
-    - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_purge}}", name: "Restic Prune", hour: "21", minute: "00", weekday: "0", day: "*" }
+    - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_purge}}", name: "Restic Prune", hour: "21", minute: "00", weekday: "1", day: "*" }
     - { job: "/usr/local/bin/autorestic exec -a -- check && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_restic_check_mercy}}", name: "Restic Check", hour: "21", minute: "30", weekday: "0", day: "1" }
 
 - name: Root Cronjobs

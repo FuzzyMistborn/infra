@@ -137,5 +137,18 @@
     state: present
   loop:
     - { job: "/home/{{ main_username }}/scripts/db_backup.sh", name: "DB Backup", hour: "0", minute: "45", weekday: "*", day: "*" }
-    - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_preservation_purge}}", name: "Restic Prune", hour: "22", minute: "45", weekday: "0", day: "*" }
+    - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_preservation_purge}}", name: "Restic Prune", hour: "22", minute: "45", weekday: "1", day: "*" }
     - { job: "/usr/local/bin/autorestic exec -a -- check && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_restic_check_preservation}}", name: "Restic Check", hour: "2", minute: "45", weekday: "*", day: "1" }
+
+- name: Root Cronjobs
+  cron:
+    user: root
+    name: "{{ item.name }}"
+    job: "{{ item.job }}"
+    hour: "{{ item.hour }}"
+    minute: "{{ item.minute }}"
+    weekday: "{{ item.weekday }}"
+    day: "{{ item.day }}"
+    state: present
+  loop:
+    - { job: "/usr/bin/find /home/{{main_username}}/db_backups/influxdb -mtime +1 -type f -delete", name: "Influx Cleanup", hour: "0", minute: "40", weekday: "*", day: "*" }

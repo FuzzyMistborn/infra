@@ -88,6 +88,24 @@ containers:
     hostname:  "{{ hostname }}"
     include_global_env_vars: true
   ###
+  - service_name: remote-api
+    container_name: remote-api
+    active: true
+    image: kekru/docker-remote-api-tls:v0.3.0
+    restart: always
+    ports:
+      - 2376:443
+    volumes:
+      - "{{ appdata_path }}/docker-api:/data/certs"
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+     - CREATE_CERTS_WITH_PW={{ secret_docker_api_tls }}
+     - CERT_HOSTNAME=docker-remote.local
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false
+  ###
   - service_name: portainer
     container_name: portainer
     active: true
