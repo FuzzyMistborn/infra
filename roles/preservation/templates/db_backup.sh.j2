@@ -23,11 +23,12 @@ docker exec hass-db sh -c 'exec mysqldump --single-transaction -h localhost -u h
 #### InfluxDB Backup
 echo Backing up InfluxDB
 docker exec influx-db sh -c 'influx backup \
-  /media/backup/ \
-  -t {{secret_influxdb_token}}'
+  /media/backup/$(date +"%Y.%m.%d") \
+  -t {{secret_influxdb_token}} && chmod 777 -R /media/backup'
 
 #### Delete Old
 find /home/{{main_username}}/db_backups/* -mtime +6 -type f -delete
+find /home/{{main_username}}/db_backups/influxdb -mtime +6 -type d -delete
 
 #### Backup the backups
 /usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml
