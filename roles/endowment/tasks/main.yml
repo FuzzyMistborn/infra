@@ -22,6 +22,16 @@
     - { path: "auth_commands.sh", mode: "+x" }
     - { path: "nextcloud_cron.sh", mode: "+x" }
 
+- name: Copy photos script templates
+  template:
+    src: "{{item.src}}"
+    dest: /home/{{ main_username }}/scripts/{{item.dest}}
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: +x
+  with_items:
+    - { src: 'photos.sh.j2', dest: 'photos.sh' }
+
 - name: Fix Jellyfin render group for iGPU passthrough
   shell: groupmod -g 150 postfix && groupmod -g 108 render && groupmod -g 107 postfix
 
@@ -133,6 +143,7 @@
     - { job: "/home/{{ main_username }}/scripts/nextcloud_cron.sh", name: "Nextcloud", hour: "*", minute: "*/5", weekday: "*", day: "*" }
     - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_endowment_purge}}", name: "Restic Prune", hour: "22", minute: "30", weekday: "1", day: "*" }
     - { job: "/usr/local/bin/autorestic exec -a -- check && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_restic_check_endowment}}", name: "Restic Check", hour: "2", minute: "30", weekday: "*", day: "1" }
+    - { job: "/home/{{ main_username }}/scripts/photos.sh", name: "Photo Reorg", hour: "3", minute: "0", weekday: "*", day: "*" }
 
 - name: "Root Cronjobs"
   cron:

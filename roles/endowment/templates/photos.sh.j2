@@ -1,0 +1,18 @@
+#!/bin/bash
+
+YEAR=$(date +"%Y")
+MONTH=$(date +"%m")
+
+cd '{{ secret_photopath_1 }}'
+
+mkdir -p "${YEAR}/${MONTH}"
+
+find -maxdepth 1 -type f -name "*_${YEAR}${MONTH}*" -exec mv -t ${YEAR}/${MONTH} {} +
+
+cd '{{ secret_photopath_2 }}'
+
+mkdir -p "${YEAR}/${MONTH}"
+
+find -maxdepth 1 -type f -name "*_${YEAR}${MONTH}*" -exec mv -t ${YEAR}/${MONTH} {} +
+
+https://hc.fuzzymistborn.com/ping/a45d70e8-8f1d-4a5a-853f-2724a51ecbd2/$?

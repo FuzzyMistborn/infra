@@ -1,0 +1,31 @@
+backends:
+  synology_docker:
+    type: s3
+    path: 'http://192.168.30.25:9000/omada'
+    key: {{ secret_restic_repo_password }}
+    env:
+      AWS_ACCESS_KEY_ID: {{ secret_minio_s3_access_key_id }}
+      AWS_SECRET_ACCESS_KEY: {{ secret_minio_s3_access_key }}
+  b2_docker:
+    type: b2
+    path: '{{ secret_restic_b2_bucket }}:/omada'
+    key: {{ secret_restic_repo_password }}
+    env:
+      B2_ACCOUNT_ID: {{ secret_restic_b2_account_id }}
+      B2_ACCOUNT_KEY: {{ secret_restic_b2_account_key }}
+locations:
+  docker:
+    from: '/home/{{main_username}}/docker'
+    to: 
+      - synology_docker
+      - b2_docker
+    options:
+      forget:
+        keep-daily: 7
+        keep-weekly: 4
+        keep-monthly: 2
+    hooks:
+      success:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_omada_media}}/0
+      failure:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_omada_media}}/fail
