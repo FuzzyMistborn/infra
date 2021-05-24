@@ -15,4 +15,4 @@ mkdir -p "${YEAR}/${MONTH}"
 
 find -maxdepth 1 -type f -name "*_${YEAR}${MONTH}*" -exec mv -t ${YEAR}/${MONTH} {} +
 
-https://hc.fuzzymistborn.com/ping/a45d70e8-8f1d-4a5a-853f-2724a51ecbd2/$?
+curl --retry 3 {{ secret_hc_photo_reorg }}
