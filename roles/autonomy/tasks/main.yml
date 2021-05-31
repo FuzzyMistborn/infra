@@ -70,6 +70,10 @@
     - { src: 'cast_media.sh.j2', dest: 'cast_media.sh' }
     - { src: 'cast_stop.sh.j2', dest: 'cast_stop.sh' }
 
+- name: Install pysnoo via Pip
+  pip:
+    name: pysnoo
+
 ### CATT
 
 - name: Install CATT python package

@@ -8,6 +8,7 @@ package_list:
   - name: git
   - name: htop
   - name: wget
+  - name: ethtool
   - name: ifupdown2
 
 ### Docker-Compose with ironicbadger.docker_compose_generator
