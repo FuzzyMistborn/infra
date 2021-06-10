@@ -12,9 +12,11 @@
   tasks:
     - name: update all packages
       become: true
-      package:
-        name: '*'
-        state: latest
+      apt:
+        upgrade: dist
+#      package:
+#        name: '*'
+#        state: latest
 
 - hosts: docker
   vars_files:

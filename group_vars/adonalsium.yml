@@ -142,6 +142,7 @@ containers:
       - '/mnt/Media/TV Shows:/mnt/tv'
       - '/mnt/Media/Kids Movies:/mnt/kids'
       - '/mnt/Media/Kids TV:/mnt/kids_tv'
+      - '/mnt/Media/YouTube/Kids:/mnt/kids_youtube'
       - '/mnt/Media/Parents Movies:/mnt/parents_movies'
       - '/mnt/Media/Parents TV:/mnt/parents_tv'
       - '/mnt/Media/Family Videos:/mnt/home_videos'
