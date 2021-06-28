@@ -41,6 +41,7 @@
       - role: install_fail2ban
       - role: geerlingguy.pip
       - role: geerlingguy.samba
+      - role: geerlingguy.nfs
       - role: adonalsium
       - role: geerlingguy.docker
       - role: geerlingguy.ntp

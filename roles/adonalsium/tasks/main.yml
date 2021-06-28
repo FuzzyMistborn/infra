@@ -70,7 +70,7 @@
     dest: "{{item.dest}}"
     mode: +x
   loop:
-    - { src: "backup.sh", dest: "/root/backup.sh" }
+    - { src: "backup.sh", dest: "/home/{{secret_main_user}}/backup.sh" }
 
 ### udev Rules
 - name: Add udev rules

@@ -7,6 +7,7 @@
   with_items:
     - "{{ parity_disks }}"
     - "{{ data_disks }}"
+    - "{{ nfs_mount }}"
 
 - name: create /mnt points
   file:
@@ -19,6 +20,8 @@
     - "{{ mergerfs_mount }}"
     - "{{ parity_disks }}"
     - "{{ data_disks }}"
+    - "{{ nfs_mount }}"
+    - "/media/external_hdd"
 
 - name: mount disks
   mount:
@@ -31,6 +34,17 @@
   with_items:
     - "{{ parity_disks }}"
     - "{{ data_disks }}"
+
+- name: NFS mounts to fstab
+  mount:
+    path: "{{ item.path }}"
+    src: "{{ item.source }}"
+    fstype: "{{ item.fs }}"
+    opts: "{{ item.opts }}"
+    # change to 'mounted' to auto mount versus 'present' for just loaded into fstab
+    state: present
+  with_items:
+    - "{{ nfs_mount }}"
 
 - name: mount mergerfs array
   mount:

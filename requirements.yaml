@@ -5,6 +5,7 @@ roles:
 - src: grog.package
 - src: geerlingguy.docker
 - src: geerlingguy.ntp
+- src: geerlingguy.nfs
 - src: geerlingguy.pip
 - src: geerlingguy.samba
 

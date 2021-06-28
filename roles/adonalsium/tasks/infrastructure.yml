@@ -42,6 +42,7 @@
     - { "name":"Valor","vmid":"202","privileged":"true","onboot":"true","gw":"192.168.50.1","ip":"192.168.50.11","bridge":"vmbr2","disk":"10","cores":"2","memory":"512","swap":"512","template":"local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz","nesting":"1","keyctl":"1"}
     - { "name":"Mercy","vmid":"203","privileged":"true","onboot":"true","gw":"192.168.30.1","ip":"192.168.30.16","bridge":"vmbr0","disk":"10","cores":"1","memory":"512","swap":"512","template":"local:vztmpl/ubuntu-18.04-standard_18.04.1-1_amd64.tar.gz","nesting":"0","keyctl":"0"}
     - { "name":"Omada","vmid":"204","privileged":"true","onboot":"true","gw":"192.168.1.1","ip":"192.168.1.10","bridge":"vmbr1","disk":"10","cores":"2","memory":"1024","swap":"512","template":"local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz","nesting":"1","keyctl":"1"}
+    - { "name":"Elasticsearch","vmid":"205","privileged":"true","onboot":"true","gw":"192.168.30.1","ip":"192.168.30.16","bridge":"vmbr0","disk":"30","cores":"2","memory":"2048","swap":"512","template":"local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz","nesting":"0","keyctl":"0"}
     - { "name":"Autonomy","vmid":"251","privileged":"false","onboot":"true","gw":"192.168.30.1","ip":"192.168.30.12","bridge":"vmbr0","disk":"50","cores":"12","memory":"8192","swap":"512","template":"local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz","nesting":"1","keyctl":"1"}
     - { "name":"Cultivation","vmid":"252","privileged":"true","onboot":"true","gw":"192.168.30.1","ip":"192.168.30.13","bridge":"vmbr0","disk":"40","cores":"4","memory":"3072","swap":"512","template":"local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz","nesting":"1","keyctl":"1"}
     - { "name":"Preservation","vmid":"253","privileged":"true","onboot":"true","gw":"192.168.30.1","ip":"192.168.30.14","bridge":"vmbr0","disk":"40","cores":"4","memory":"3072","swap":"512","template":"local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz","nesting":"1","keyctl":"1"}
@@ -85,6 +86,7 @@
     - { "lxc":"202","order":"8" }
     - { "lxc":"203","order":"7" }
     - { "lxc":"204","order":"6" }
+    - { "lxc":"205","order":"10" }
     - { "lxc":"250","order":"3" }
     - { "lxc":"251","order":"4" }
     - { "lxc":"252","order":"5" }
