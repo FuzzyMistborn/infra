@@ -4,19 +4,21 @@
   tasks:
     - name: update all packages
       become: true
-      package:
-        name: '*'
-        state: latest
+      apt:
+        update_cache: yes
+        cache_valid_time: 86400
+        upgrade: yes 
+        autoremove: yes
 
 - hosts: adonalsium
   tasks:
     - name: update all packages
       become: true
       apt:
+        update_cache: yes
+        cache_valid_time: 86400
         upgrade: dist
-#      package:
-#        name: '*'
-#        state: latest
+        autoremove: yes
 
 - hosts: docker
   vars_files:

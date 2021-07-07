@@ -47,8 +47,6 @@ containers:
     volumes:
       - "/home/{{main_username}}/db_backups/influxdb:/media/backup"
       - "{{ appdata_path }}/influx_db/data:/var/lib/influxdb2"
-      - "{{ appdata_path }}/influx_db/config.yml:/etc/influxdb2/config.yml"
-
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"

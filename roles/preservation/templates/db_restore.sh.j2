@@ -25,6 +25,7 @@ LAST_HASS=$(ls -t | head -n 1)
 docker exec -i hass-db /usr/bin/mysql -u hass -p{{ secret_hass_db_pass }} homeassistant < /home/{{main_username}}/db_backups/hass/$LAST_HASS
 
 #echo Restoring InfluxDB
-#docker exec influx-db sh -c 'influx setup -t {{secret_influxdb_token}}'
-#docker exec influx-db sh -c 'influx restore --full /media/backup/'
+# Run `docker exec -it influx-db` and then run below commands
+# influx setup -t {{secret_influxdb_token}}
+# influx restore --full /media/backup/DATE
 # Lots of user input data, probably not easy to automate/ansible-ize

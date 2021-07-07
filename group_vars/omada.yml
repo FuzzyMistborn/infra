@@ -54,7 +54,7 @@ containers:
   - service_name: omada-controller
     container_name: omada-controller
     active: true
-    image: mbentley/omada-controller:4.2
+    image: mbentley/omada-controller:4.4
     restart: always
     network_mode: host
     labels:
