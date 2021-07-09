@@ -50,3 +50,17 @@
       Host linode
         HostName {{ secret_linode_ip }}
         IdentityFile ~/.ssh/linode
+
+#### Cronjobs
+- name: "Main User Cronjobs"
+  cron:
+    user: "{{ main_username }}"
+    name: "{{ item.name }}"
+    job: "{{ item.job }}"
+    hour: "{{ item.hour }}"
+    minute: "{{ item.minute }}"
+    weekday: "{{ item.weekday }}"
+    day: "{{ item.day }}"
+    state: present
+  with_items:
+    - { job: "cd /home/{{main_username}}/infra && /usr/bin/make update && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_ansible_update}}", name: "Ansible Update", hour: "19", minute: "30", weekday: "3", day: "*" }

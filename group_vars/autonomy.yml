@@ -60,7 +60,7 @@ containers:
     include_global_env_vars: false
   ###
   - service_name: hass-beta
-    container_name: HASS_Beta
+    container_name: HASS-Beta
     active: true
     image: homeassistant/home-assistant:beta
     restart: always
