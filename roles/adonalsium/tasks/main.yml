@@ -86,11 +86,6 @@
 - name: Update udev
   shell: "sudo service udev reload && sudo udevadm trigger"
 
-### Wireguard
-- name: Install Wireguard
-  include: wireguard.yml
-  when: install_wireguard == true
-
 ### Telegraf
 - name: Install Telegraf
   apt:

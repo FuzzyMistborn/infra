@@ -11,6 +11,7 @@ package_list:
   - name: ifupdown2
   - name: restic
   - name: ntfs-3g
+  - name: wireguard
 
 mergerfs_mount:
   - { path: /mnt/Media }
@@ -37,8 +38,7 @@ nfs_mount:
 install_nut: false
 pull_backup: false
 infrastructure: false
-install_wireguard: false
-mergerfs_ver: 2.32.4
+mergerfs_ver: 2.32.6
 
 ### Snapraid Config
 snapraid_force_install: false
@@ -50,6 +50,7 @@ snapraid_smtp_host: "{{ secret_snapraid_smtp_host }}"
 snapraid_smtp_port: 465
 snapraid_use_ssl: true
 snapraid_touch: false
+snapraid_run_bin: /usr/bin/snapraid
 snapraid_run_command: "python3 {{ snapraid_run_bin }} -c {{ snapraid_run_conf}} && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_snapraid}}"
 snapraid_cron_jobs:
   - { job: '{{ snapraid_run_command }}', name: 'snapraid_runner', weekday: '*', hour: '04' }
