@@ -47,10 +47,18 @@ containers:
     volumes:
       - "/home/{{main_username}}/db_backups/influxdb:/media/backup"
       - "{{ appdata_path }}/influx_db/data:/var/lib/influxdb2"
+      - "{{ appdata_path }}/influx_db/config:/etc/influxdb2"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME={{ main_username }}
+      - DOCKER_INFLUXDB_INIT_PASSWORD={{ secret_influxdb_pass }}
+      - DOCKER_INFLUXDB_INIT_ORG=cosmere
+      - DOCKER_INFLUXDB_INIT_BUCKET=Default
+      - DOCKER_INFLUXDB_INIT_RETENTION=168h
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN={{ secret_influxdb_token }}
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
-    mem_limit: 500M
     include_global_env_vars: false
   ###
   - service_name: bitwarden-db
