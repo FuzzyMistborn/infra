@@ -51,6 +51,17 @@
         HostName {{ secret_linode_ip }}
         IdentityFile ~/.ssh/linode
 
+- name: Create update script
+  copy:
+    dest: /home/{{ main_username }}/update.sh
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: +x
+    content: |
+      #!/bin/bash
+      cd /home/{{main_username}}/infra
+      make update && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_ansible_update}}
+
 #### Cronjobs
 - name: "Main User Cronjobs"
   cron:
@@ -63,4 +74,4 @@
     day: "{{ item.day }}"
     state: present
   with_items:
-    - { job: "cd /home/{{main_username}}/infra && /usr/bin/make update && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_ansible_update}}", name: "Ansible Update", hour: "19", minute: "30", weekday: "3", day: "*" }
+    - { job: "/home/{{ main_username }}/update.sh", name: "Ansible Update", hour: "19", minute: "30", weekday: "3", day: "*" }

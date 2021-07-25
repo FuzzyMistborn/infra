@@ -157,6 +157,8 @@ containers:
     active: true
     image: yoryan/mailrise:latest
     restart: always
+    ports:
+      - 8025:8025
     volumes:
       - "{{ appdata_path }}/mailrise/mailrise.conf:/etc/mailrise.conf"
     labels:

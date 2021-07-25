@@ -39,6 +39,8 @@ install_nut: false
 pull_backup: false
 infrastructure: false
 mergerfs_ver: 2.32.6
+nag_force_install: false
+nag_version: 0.0.7
 
 ### Snapraid Config
 snapraid_force_install: false

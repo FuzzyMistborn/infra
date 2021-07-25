@@ -1,0 +1,22 @@
+---
+- name: check whether nag removal is installed
+  shell: "dpkg-query -W 'pve-fake-subscription'"
+  ignore_errors: True
+  register: is_installed
+  changed_when: "is_installed.rc != 0"
+
+- name: install nag removal?
+  set_fact:
+    install_nag: "{{ nag_force_install == true or is_installed.failed == true }}"
+
+- name: Nag Removal Pull Deb
+  get_url:
+    url: https://github.com/Jamesits/pve-fake-subscription/releases/download/v{{nag_version}}/pve-fake-subscription_{{nag_version}}_all.deb
+    dest: /root
+  when: install_nag
+
+- name: install deb
+  apt:
+    deb: /root/pve-fake-subscription_{{nag_version}}_all.deb
+    state: present
+  when: install_nag

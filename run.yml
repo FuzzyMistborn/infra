@@ -36,7 +36,7 @@
           update_cache: yes
           cache_valid_time: 3600
     roles:
-      - role: ironicbadger.ansible_role_proxmox_nag_removal
+      - role: nag-removal
       - role: grog.package
       - role: install_fail2ban
       - role: geerlingguy.pip
@@ -154,8 +154,22 @@
     become: true
     vars_files:
       - 'vars/vault.yaml'
+    pre_tasks:
+      - name: Remove enterprise repo
+        file:
+          state: absent
+          path: /etc/apt/sources.list.d/pve-enterprise.list
+      - name: Switch to community repo
+        apt_repository:
+          repo: 'deb http://download.proxmox.com/debian/pve buster pve-no-subscription'
+          state: present
+      - name: Apt update
+        apt:
+          upgrade: 'yes'
+          update_cache: yes
+          cache_valid_time: 3600
     roles:
-      - role: ironicbadger.ansible_role_proxmox_nag_removal
+      - role: nag-removal
       - role: grog.package
       - role: geerlingguy.pip
       - role: odium
