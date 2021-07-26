@@ -4,6 +4,22 @@ This repo contains the code used to deploy and managing my various LXC's on Prox
 
 A huge HUGE thanks to IronicBadger/AlexKTZ for his [infra GitHub repo](https://github.com/IronicBadger/infra).  I learned a ton poking around that repo and some of the things are copied straight from there, so credit where credit is due.
 
+# Explanation of Shards/Names:
+
+Most of my servers are named after Shards of Adonalsium from my favorite fantasy series by Brandon Sanderson.  So if you look at my roles you'll see a pattern.
+
+**Adonalsium** - Primary Proxmox Node
+**Autonomy** - Home Automation
+**Cultivation** - Misc. Media
+**Dominion** - Ansible primary host
+**Endowment** - Media distribution/collection
+**Honor** - DMZ/Primary Adguard/Wireguard
+**Mercy** - Runs some old chat bots for friends
+**Odium** - Homelab Proxomox Node
+**Omada** - Runs Omada controller for Wifi
+**Preservation** - Databases
+**Valor** - Backup Adguard
+
 # First Deploy instructions:
 
 `make install` - Installs a github hook to prevent uploading an unencrypted Ansible vault file, adds the Ansible Galaxy roles, and sets up the Ansible vault password
