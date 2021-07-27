@@ -8,17 +8,17 @@ A huge HUGE thanks to IronicBadger/AlexKTZ for his [infra GitHub repo](https://g
 
 Most of my servers are named after Shards of Adonalsium from my favorite fantasy series by Brandon Sanderson.  So if you look at my roles you'll see a pattern.
 
-**Adonalsium** - Primary Proxmox Node
-**Autonomy** - Home Automation
-**Cultivation** - Misc. Media
-**Dominion** - Ansible primary host
-**Endowment** - Media distribution/collection
-**Honor** - DMZ/Primary Adguard/Wireguard
-**Mercy** - Runs some old chat bots for friends
-**Odium** - Homelab Proxomox Node
-**Omada** - Runs Omada controller for Wifi
-**Preservation** - Databases
-**Valor** - Backup Adguard
+* **Adonalsium** - Primary Proxmox Node
+* **Autonomy** - Home Automation
+* **Cultivation** - Misc. Media
+* **Dominion** - Ansible primary host
+* **Endowment** - Media distribution/collection
+* **Honor** - DMZ/Primary Adguard/Wireguard
+* **Mercy** - Runs some old chat bots for friends
+* **Odium** - Homelab Proxomox Node
+* **Omada** - Runs Omada controller for Wifi
+* **Preservation** - Databases
+* **Valor** - Backup Adguard
 
 # First Deploy instructions:
 
