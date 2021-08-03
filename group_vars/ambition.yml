@@ -1,0 +1,236 @@
+---
+target_os: ubuntu
+hostname: ambition
+
+### Install packages with grog.package
+package_list:
+  - name: curl
+  - name: iperf3
+  - name: fail2ban
+  - name: restic
+  - name: net-tools
+  - name: python
+  - name: wget
+  - name: wireguard
+
+pull_backup: false
+hugo_ver: 0.86.1
+lego_ver: 4.4.0
+
+### Caddy Config
+caddy_systemd_capabilities_enabled: true
+caddy_systemd_network_dependency: false
+caddy_conf_dir: /home/{{main_username}}/caddy
+caddy_config: "{{ lookup('template', 'roles/ambition/templates/Caddyfile.j2') }}"
+
+### Docker-Compose with ironicbadger.docker_compose_generator
+appdata_path: "/home/{{ main_username }}/docker"
+containers:
+  ###
+  - service_name: diun
+    container_name: diun
+    active: true
+    image: crazymax/diun:latest
+    restart: always
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    volumes:
+      - "{{ appdata_path }}/diun/data:/data"
+      - "{{ appdata_path }}/diun/config.yml:/diun.yml:ro"
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - LOG_LEVEL=info
+      - LOG_JSON=false
+    hostname:  "{{ hostname }}"
+    include_global_env_vars: true
+  ###
+  - service_name: uptime
+    container_name: uptime
+    active: true
+    image: louislam/uptime-kuma:latest
+    restart: always
+    ports:
+      - 3001:3001
+    volumes:
+      - "{{ appdata_path }}/uptime:/app/data"
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false
+  ###
+  - service_name: umami
+    container_name: umami
+    active: true
+    image: ghcr.io/mikecao/umami:mysql-latest
+    restart: always
+    ports:
+      - 3500:3000
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    environment:
+      - DATABASE_URL={{secret_umami_db_url}}
+      - DATABASE_TYPE=mysql
+      - HASH_SALT={{secret_umami_hash}}
+    depends_on:
+      - umami-db
+    include_global_env_vars: false
+  ###
+  - service_name: umami-db
+    container_name: umami-db
+    active: true
+    image: mariadb
+    restart: always
+    volumes:
+      - "{{ appdata_path }}/umami/mariadb:/var/lib/mysql"
+    environment:
+      - MYSQL_ROOT_PASSWORD={{secret_db_root_pass}}
+      - MYSQL_USER=umami
+      - MYSQL_PASSWORD={{secret_umami_db_pass}}
+      - MYSQL_DATABASE=umami
+    mem_limit: 200M
+    include_global_env_vars: false
+  ###
+  - service_name: gitea
+    container_name: gitea
+    active: true
+    image: gitea/gitea:latest
+    restart: always
+    ports:
+      - "3030:3000"
+      - "222:22"
+    volumes:
+      - "{{ appdata_path }}/gitea/data:/data"
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - DB_TYPE=mysql
+      - DB_HOST=gitea-db:3306
+      - DB_NAME=gitea
+      - DB_USER=gitea
+      - DB_PASSWD={{secret_gitea_db_pass}}
+    include_global_env_vars: false
+    depends_on:
+      - gitea-db
+  ###
+  - service_name: gitea-db
+    container_name: gitea-db
+    active: true
+    image: mariadb
+    restart: always
+    volumes:
+      - "{{ appdata_path }}/gitea/mariadb:/var/lib/mysql"
+    environment:
+      - MYSQL_ROOT_PASSWORD={{secret_db_root_pass}}
+      - MYSQL_USER=gitea
+      - MYSQL_PASSWORD={{secret_gitea_db_pass}}
+      - MYSQL_DATABASE=gitea
+    mem_limit: 200M
+    include_global_env_vars: false
+###
+  - service_name: gotify
+    container_name: gotify
+    active: true
+    image: gotify/server
+    restart: always
+    ports:
+      - 8090:80
+    volumes:
+      - "{{ appdata_path }}/gotify:/app/data"
+    environment:
+      - GOTIFY_DEFAULTUSER_PASS={{main_username}}
+      - GOTIFY_DEFAULTUSER_PASS='{{secret_gotify_pass}}'
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false
+###
+  - service_name: wireguard
+    container_name: wireguard
+    active: true
+    image: weejewel/wg-easy
+    restart: always
+    ports:
+      - "51820:51820/udp"
+      - "51821:51821/tcp"
+    volumes:
+      - "{{ appdata_path }}/wireguard:/etc/wireguard"
+    environment:
+      - WG_HOST=remote.fuzzymistborn.com
+      - PASSWORD={{secret_wireguard_pass}}
+      - WG_DEFAULT_DNS=9.9.9.9, 149.112.112.112
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.src_valid_mark=1
+    include_global_env_vars: false
+###
+  - service_name: healthchecks
+    container_name: healthchecks
+    active: true
+    image: ghcr.io/linuxserver/healthchecks
+    restart: always
+    ports:
+      - 8000:8000
+    volumes:
+      - "{{ appdata_path }}/healthchecks/config:/config"
+    environment:
+      - SITE_ROOT=hc.fuzzymistborn.com
+      - SITE_NAME=Cosmere Health Checks
+      - DEFAULT_FROM_EMAIL=healthchecks@fuzzymistborn.com
+      - EMAIL_HOST=mailrise
+      - EMAIL_PORT=8025
+      - ALLOWED_HOSTS=*
+      - SUPERUSER_EMAIL={{secret_email}}
+      - SUPERUSER_PASSWORD={{secret_healtchecks_pass}}
+      - REGENERATE_SETTINGS=False
+      - REGISTRATION_OPEN=False
+      - SECRET_KEY={{secret_healthchecks_key}}
+      - TELEGRAM_BOT_NAME="Cosmere HealthChecks"
+      - TELEGRAM_TOKEN="{{secret_healthchecks_tg_token}}"
+      - DOCKER_MODS=linuxserver/mods:healthchecks-apprise
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: true
+###
+  - service_name: mailrise
+    container_name: mailrise
+    active: true
+    image: yoryan/mailrise:latest
+    restart: always
+    ports:
+      - 8025:8025
+    volumes:
+      - "{{ appdata_path }}/mailrise/mailrise.conf:/etc/mailrise.conf"
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+###
+  - service_name: portainer_agent
+    container_name: portainer_agent
+    active: true
+    image: portainer/agent
+    restart: always
+    ports:
+      - 9001:9001
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    environment:
+      - AGENT_SECRET={{secret_portainer_key}}
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false

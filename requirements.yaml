@@ -1,6 +1,7 @@
 roles:
 - src: ironicbadger.ansible_role_docker_compose_generator
 - src: ironicbadger.ansible_role_snapraid
+- src: caddy_ansible.caddy_ansible
 - src: grog.package
 - src: geerlingguy.docker
 - src: geerlingguy.ntp

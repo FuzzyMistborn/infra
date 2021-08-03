@@ -1,0 +1,68 @@
+backends:
+  b2_docker:
+    type: b2
+    path: '{{ secret_restic_b2_bucket }}:/linode/docker'
+    key: {{ secret_restic_repo_password }}
+    env:
+      B2_ACCOUNT_ID: {{ secret_restic_b2_account_id }}
+      B2_ACCOUNT_KEY: {{ secret_restic_b2_account_key }}
+  b2_db:
+    type: b2
+    path: '{{ secret_restic_b2_bucket }}:/linode/db'
+    key: {{ secret_restic_repo_password }}
+    env:
+      B2_ACCOUNT_ID: {{ secret_restic_b2_account_id }}
+      B2_ACCOUNT_KEY: {{ secret_restic_b2_account_key }}
+  b2_certs:
+    type: b2
+    path: '{{ secret_restic_b2_bucket }}:/linode/certs'
+    key: {{ secret_restic_repo_password }}
+    env:
+      B2_ACCOUNT_ID: {{ secret_restic_b2_account_id }}
+      B2_ACCOUNT_KEY: {{ secret_restic_b2_account_key }}
+locations:
+  docker:
+    from: '/home/{{main_username}}/docker'
+    to: 
+      - b2_docker
+    options:
+      backup:
+        exclude:
+          - '/home/{{main_username}}/docker/umami'
+          - '/home/{{main_username}}/docker/gitea/mariadb'
+      forget:
+        keep-daily: 1
+        keep-weekly: 4
+        keep-monthly: 2
+    hooks:
+      success:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_backup}}/0
+      failure:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_backup}}/fail
+  db:
+    from: '/home/{{main_username}}/db_backups'
+    to: 
+      - b2_db
+    options:
+      forget:
+        keep-daily: 1
+        keep-weekly: 4
+        keep-monthly: 2
+    hooks:
+      success:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_backup}}/0
+      failure:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_backup}}/fail
+  certs:
+    from: '/home/{{main_username}}/lego'
+    to: 
+      - b2_certs
+    options:
+      forget:
+        keep-daily: 1
+        keep-weekly: 4
+    hooks:
+      success:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_backup}}/0
+      failure:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_backup}}/fail

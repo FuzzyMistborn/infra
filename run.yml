@@ -150,6 +150,19 @@
       - role: omada
       - role: ironicbadger.ansible_role_docker_compose_generator
 
+  - hosts: ambition
+    become: true
+    vars_files:
+    - 'vars/vault.yaml'
+    roles:
+      - role: grog.package
+      - role: geerlingguy.pip
+      - role: geerlingguy.docker
+      - role: caddy_ansible.caddy_ansible
+      - role: ambition
+      - role: install_fail2ban
+      - role: ironicbadger.ansible_role_docker_compose_generator
+
   - hosts: odium
     become: true
     vars_files:

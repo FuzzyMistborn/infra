@@ -60,7 +60,8 @@
     content: |
       #!/bin/bash
       cd /home/{{main_username}}/infra
-      make update && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_ansible_update}}
+      /usr/local/bin/ansible-playbook update.yml --vault-password-file .vault-password
+      curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_ansible_update}}
 
 #### Cronjobs
 - name: "Main User Cronjobs"

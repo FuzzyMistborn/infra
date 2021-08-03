@@ -1,0 +1,15 @@
+#!/bin/bash
+
+cd /home/{{main_username}}
+docker-compose up -d gitea-db umami-db
+
+sleep 30s
+echo Restoring Gitea DB
+cd /home/{{main_username}}/db_backups/gitea
+LAST_GITEA=$(ls -t | head -n 1)
+docker exec -i gitea-db /usr/bin/mysql -u gitea -p{{ secret_gitea_db_pass }} gitea < /home/{{main_username}}/db_backups/gitea/$LAST_GITEA
+
+echo Restoring Umami DB
+cd /home/{{main_username}}/db_backups/umami
+LAST_UMAMI=$(ls -t | head -n 1)
+docker exec -i umami-db /usr/bin/mysql -u umami -p{{ secret_umami_db_pass }} umami < /home/{{main_username}}/db_backups/umami/$LAST_UMAMI

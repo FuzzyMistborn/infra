@@ -117,14 +117,12 @@
   with_items:
     - { job: "/usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml", name: "Media Backup", hour: "0", minute: "15", weekday: "*" }
 
-- name: Enable forwarding
-  lineinfile:
-    path: /etc/sysctl.conf
-    regexp: "^#net.ipv4.ip_forward*"
-    line: "net.ipv4.ip_forward=1"
-
-- name: Restart sysctl
-  shell: sudo sysctl -p
+### Wireguard
+- name: Enable IPv4 forwarding
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    reload: yes
 
 - name: Create wireguard conf
   copy:

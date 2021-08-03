@@ -19,6 +19,7 @@ Most of my servers are named after Shards of Adonalsium from my favorite fantasy
 * **Omada** - Runs Omada controller for Wifi
 * **Preservation** - Databases
 * **Valor** - Backup Adguard
+* **Ambition** - Cloud VPS
 
 # First Deploy instructions:
 

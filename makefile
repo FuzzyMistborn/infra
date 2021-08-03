@@ -27,6 +27,9 @@ mercy:
 omada:
 	ansible-playbook -b run.yml --limit omada --vault-password-file .vault-password
 
+ambition:
+	ansible-playbook -b run.yml --limit ambition --vault-password-file .vault-password
+
 adonalsium:
 	ansible-playbook -b run.yml --limit adonalsium --vault-password-file .vault-password
 

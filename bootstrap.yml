@@ -1,6 +1,6 @@
 ---
 
-- hosts: lxc
+- hosts: lxc ambition
   remote_user: root
   gather_facts: true
   vars_files:

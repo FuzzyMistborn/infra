@@ -1,0 +1,257 @@
+---
+- name: Set a hostname
+  hostname:
+    name: ambition
+
+- name: create config directories
+  file:
+    path: /home/{{ main_username }}/{{ item }}
+    state: directory
+    owner: "{{ main_username }}"
+    group: "{{ main_groupname }}"
+  loop:
+    - docker
+    - docker/diun
+    - db_backups
+    - db_backups/gitea
+    - db_backups/umami
+    - scripts
+    - caddy
+
+#### Add Extra SSH keys
+- name: Update SSH Keys
+  authorized_key:
+    user: "{{ item.user }}"
+    state: "{{ item.state }}"
+    key: "{{ item.ssh }}"
+  loop:
+    - { user: "{{ main_username }}", state: absent, ssh: "{{ secret_main_user_ssh }}" }
+    - { user: "{{ main_username }}", state: absent, ssh: "{{ secret_main_user_alt_ssh }}" }
+    - { user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_linode_ssh }}" }
+    - { user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_linode_pixel_ssh }}" }
+    - { user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_linode_work_ssh }}" }
+    - { user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_linode_lxc_ssh }}" }
+
+- name: Add GitHub SSH Key
+  copy:
+    dest: /home/{{ main_username }}/.ssh/github
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0600
+    content: "{{ secret_linode_github_ssh }}"
+- name: Copy Github script
+  template:
+    src: github.sh.j2
+    dest: /home/{{ main_username }}/github.sh
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: +x
+- name: Add ssh config
+  copy:
+    dest: /home/{{ main_username }}/.ssh/config
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0664
+    content: |
+      Host github.com
+        IdentityFile ~/.ssh/github
+- name: Run Github Script
+  command: /bin/bash ./github.sh
+  args:
+    chdir: "/home/{{main_username}}"
+- name: Remove Github script
+  file:
+    path: /home/{{ main_username }}/github.sh
+    state: absent
+
+#### DIUN
+- name: Copy DIUN Config Template
+  template:
+    src: diun_config.yml.j2
+    dest: /home/{{ main_username }}/docker/diun/config.yml
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+
+- name: Copy db backup script template
+  template:
+    src: "{{item.src}}"
+    dest: /home/{{ main_username }}/scripts/{{item.dest}}
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: +x
+  with_items:
+    - { src: 'db_backup.sh.j2', dest: 'db_backup.sh' }
+    - { src: 'db_restore.sh.j2', dest: 'db_restore.sh' }
+    - { src: 'certs.sh.j2', dest: 'certs.sh' }
+
+### Hugo
+- name: Install Hugo
+  apt:
+    deb: https://github.com/gohugoio/hugo/releases/download/v{{hugo_ver}}/hugo_{{hugo_ver}}_Linux-64bit.deb
+
+### Lego
+- name: Pull/install LEGO cert client
+  ansible.builtin.unarchive:
+    src: https://github.com/go-acme/lego/releases/download/v{{lego_ver}}/lego_v{{lego_ver}}_linux_amd64.tar.gz
+    dest: /usr/local/bin
+    remote_src: yes
+- name: Remove unneeded files
+  file:
+    path: /usr/local/bin/{{item}}
+    state: absent
+  with_items:
+    - LICENSE
+    - CHANGELOG.md
+
+### Restic
+- name: Update Restic to latest version
+  command: "/usr/bin/restic self-update"
+
+- name: Install Autorestic
+  shell: curl -s https://raw.githubusercontent.com/CupCakeArmy/autorestic/master/install.sh | sudo bash
+  
+- name: Copy Autorestic Config Template
+  template:
+    src: autorestic.yml.j2
+    dest: /home/{{ main_username }}/.autorestic.yml
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+
+### Backup Restore
+- name: Create restore script
+  copy:
+    dest: /home/{{ main_username }}/restore.sh
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: +x
+    content: |
+      #!/bin/bash
+      /usr/local/bin/autorestic restore -f -l docker --from b2_docker --to /home/{{main_username}}/docker
+      /usr/local/bin/autorestic restore -f -l db --from b2_db --to /home/{{main_username}}/db_backups
+  when: pull_backup == true
+
+- name: Run restore script
+  command: /bin/bash ./restore.sh
+  args:
+    chdir: "/home/{{main_username}}"
+  when: pull_backup == true
+
+- name: Remove restore script
+  file:
+    path: /home/{{ main_username }}/restore.sh
+    state: absent
+  when: pull_backup == true
+
+#### Restore Databases
+- name: Run DB Restore Script
+  command: /bin/bash ./db_restore.sh
+  args:
+    chdir: "/home/{{main_username}}/scripts"
+  when: pull_backup == true
+
+#### Bash Alias
+
+- name: Setup bash aliases
+  lineinfile:
+    dest: "/etc/bash_aliases"
+    create: yes
+    group: root
+    line: "alias {{ item.alias }}='{{ item.command }}'"
+    mode: 0644
+    owner: root
+    regexp: "^alias {{ item.alias }}="
+  with_items:
+    - { alias: "arsnapshot", command: "autorestic exec -av -- snapshots" }
+    - { alias: "arbackup", command: "autorestic backup -a" }
+    - { alias: "arprune", command: "autorestic forget -a -- prune" }
+
+- name: Source aliases file
+  lineinfile:
+    dest: /etc/bash.bashrc
+    line: 'source /etc/bash_aliases'
+    state: present
+
+### Wireguard
+- name: Enable IPv4 forwarding
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    reload: yes
+
+### UFW Rules
+- name: Copy UFW Docker Rules
+  template:
+    src: after.rules.j2
+    dest: /etc/ufw/after.rules
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Set UFW Rules
+  community.general.ufw:
+    rule: "{{item.rule}}"
+    port: "{{item.port}}"
+    proto: "{{item.proto}}"
+    comment: "{{item.comment}}"
+    route: "{{item.route}}"
+  with_items:
+    - { rule: 'allow', port: '22', proto: 'any', comment: 'ssh', route: 'no' }
+    - { rule: 'allow', port: '5201', proto: 'tcp', comment: 'iperf', route: 'no' }
+    - { rule: 'allow', port: '51280', proto: 'udp', comment: 'wireguard', route: 'no' }
+    - { rule: 'allow', port: '80', proto: 'tcp', comment: 'reverse proxy', route: 'yes' }
+    - { rule: 'allow', port: '443', proto: 'tcp', comment: 'reverse proxy', route: 'yes' }
+    - { rule: 'allow', port: '9001', proto: 'tcp', comment: 'portainer', route: 'yes' }
+    - { rule: 'allow', port: '222', proto: 'tcp', comment: 'gitea', route: 'yes' }
+
+- name: Reload UFW
+  community.general.ufw:
+    state: enabled
+
+### Systemd
+- name: Copy systemd service files
+  template:
+    src: "{{item.src}}"
+    dest: /etc/systemd/system/{{item.dest}}
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0644
+  with_items:
+    - { src: 'iperf3.service.j2', dest: 'iperf3.service' }
+
+- name: Enable systemd services
+  systemd:
+    enabled: true
+    daemon-reload: true
+    state: started
+    name: "{{item}}"
+  loop:
+    - iperf3
+
+#### Cronjobs
+- name: "Root Cronjobs"
+  cron:
+    user: "root"
+    name: "{{ item.name }}"
+    job: "{{ item.job }}"
+    hour: "{{ item.hour }}"
+    minute: "{{ item.minute }}"
+    weekday: "{{ item.weekday }}"
+    state: present
+  with_items:
+    - { job: "/usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml", name: "Data Backup", hour: "5", minute: "15", weekday: "*" }
+
+- name: "Main User Cronjobs"
+  cron:
+    user: "{{ main_username }}"
+    name: "{{ item.name }}"
+    job: "{{ item.job }}"
+    hour: "{{ item.hour }}"
+    minute: "{{ item.minute }}"
+    weekday: "{{ item.weekday }}"
+    day: "{{ item.day }}"
+    state: present
+  loop:
+    - { job: "/home/{{ main_username }}/scripts/db_backup.sh", name: "Backup", hour: "5", minute: "0", weekday: "*", day: "*" }
+    - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_prune}}", name: "Restic Prune", hour: "6", minute: "0", weekday: "1", day: "*" }
+    - { job: "/usr/local/bin/autorestic exec -a -- check && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_check}}", name: "Restic Check", hour: "5", minute: "45", weekday: "*", day: "1" }
+    - { job: "/home/{{main_username}}/scripts/certs.sh", name: "Cert Update", hour: "19", minute: "0", weekday: "*", day: "*" }

@@ -1,0 +1,82 @@
+{
+        log {
+                output file /home/{{main_username}}/caddy/access.log {
+                        roll_size 100mb
+                        roll_keep 5
+                        roll_keep_for 168h
+                }
+        }
+        email {{secret_email}}
+}
+
+fuzzymistborn.com {
+        redir https://blog.fuzzymistborn.com{uri}
+}
+
+*.fuzzymistborn.com {
+        tls /home/{{main_username}}/lego/certificates/_.fuzzymistborn.com.crt /home/{{main_username}}/lego/certificates/_.fuzzymistborn.com.key {
+        }
+
+        @hc host hc.fuzzymistborn.com
+        handle @hc {
+                reverse_proxy localhost:8000
+        }
+
+        @root host fuzzymistborn.com
+        handle @root {
+                file_server
+                root * /home/{{main_username}}/blog/public
+        }
+
+        @www host www.fuzzymistborn.com
+        handle @www {
+                file_server
+                root * /home/{{main_username}}/blog/public
+        }
+
+        @blog host blog.fuzzymistborn.com
+        handle @blog {
+                file_server
+                root * /home/{{main_username}}/blog/public
+        }
+
+        @stats host stats.fuzzymistborn.com
+        handle @stats {
+                reverse_proxy localhost:3500
+        }
+
+        # Fallback for otherwise unhandled domains
+        handle {
+                abort
+        }
+}
+
+*.{{secret_personal_url}} {
+        #        tls /home/{{main_username}}/lego/certificates/_.{{secret_personal_url}}.crt /home/{{main_username}}/lego/certificates/_.{{secret_personal_url}}.key {
+        tls /home/{{main_username}}/caddy/casa_cert.pem /home/{{main_username}}/caddy/casa_key.pem {
+                client_auth {
+                        mode require_and_verify
+                        trusted_ca_cert_file /home/{{main_username}}/caddy/cloudflare.crt
+                }
+        }
+
+        @git host git.{{secret_personal_url}}
+        handle @git {
+                reverse_proxy localhost:3030
+        }
+
+        @gotify host gotify.{{secret_personal_url}}
+        handle @gotify {
+                reverse_proxy localhost:8090
+        }
+
+        @uptime host uptime.{{secret_personal_url}}
+        handle @uptime {
+                reverse_proxy localhost:3001
+        }
+
+        # Fallback for otherwise unhandled domains
+        handle {
+                abort
+        }
+}
