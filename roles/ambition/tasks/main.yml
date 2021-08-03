@@ -179,14 +179,6 @@
     reload: yes
 
 ### UFW Rules
-- name: Copy UFW Docker Rules
-  template:
-    src: after.rules.j2
-    dest: /etc/ufw/after.rules
-    owner: root
-    group: root
-    mode: 0644
-
 - name: Set UFW Rules
   community.general.ufw:
     rule: "{{item.rule}}"
@@ -196,12 +188,12 @@
     route: "{{item.route}}"
   with_items:
     - { rule: 'allow', port: '22', proto: 'any', comment: 'ssh', route: 'no' }
+    - { rule: 'allow', port: '80', proto: 'tcp', comment: 'reverse proxy', route: 'no' }
+    - { rule: 'allow', port: '443', proto: 'tcp', comment: 'reverse proxy', route: 'no' }
     - { rule: 'allow', port: '5201', proto: 'tcp', comment: 'iperf', route: 'no' }
     - { rule: 'allow', port: '51280', proto: 'udp', comment: 'wireguard', route: 'no' }
-    - { rule: 'allow', port: '80', proto: 'tcp', comment: 'reverse proxy', route: 'yes' }
-    - { rule: 'allow', port: '443', proto: 'tcp', comment: 'reverse proxy', route: 'yes' }
-    - { rule: 'allow', port: '9001', proto: 'tcp', comment: 'portainer', route: 'yes' }
-    - { rule: 'allow', port: '222', proto: 'tcp', comment: 'gitea', route: 'yes' }
+    - { rule: 'allow', port: '222', proto: 'tcp', comment: 'gitea', route: 'no' }
+    - { rule: 'allow', port: '9001', proto: 'tcp', comment: 'portainer', route: 'no' }
 
 - name: Reload UFW
   community.general.ufw:

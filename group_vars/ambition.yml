@@ -51,7 +51,7 @@ containers:
     image: louislam/uptime-kuma:latest
     restart: always
     ports:
-      - 3001:3001
+      - 127.0.0.1:3001:3001
     volumes:
       - "{{ appdata_path }}/uptime:/app/data"
     labels:
@@ -65,7 +65,7 @@ containers:
     image: ghcr.io/mikecao/umami:mysql-latest
     restart: always
     ports:
-      - 3500:3000
+      - 127.0.0.1:3500:3000
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
@@ -98,7 +98,7 @@ containers:
     image: gitea/gitea:latest
     restart: always
     ports:
-      - "3030:3000"
+      - "127.0.0.1:3030:3000"
       - "222:22"
     volumes:
       - "{{ appdata_path }}/gitea/data:/data"
@@ -140,7 +140,7 @@ containers:
     image: gotify/server
     restart: always
     ports:
-      - 8090:80
+      - 127.0.0.1:8090:80
     volumes:
       - "{{ appdata_path }}/gotify:/app/data"
     environment:
@@ -182,7 +182,7 @@ containers:
     image: ghcr.io/linuxserver/healthchecks
     restart: always
     ports:
-      - 8000:8000
+      - 127.0.0.1:8000:8000
     volumes:
       - "{{ appdata_path }}/healthchecks/config:/config"
     environment:
@@ -211,7 +211,7 @@ containers:
     image: yoryan/mailrise:latest
     restart: always
     ports:
-      - 8025:8025
+      - 127.0.0.1:8025:8025
     volumes:
       - "{{ appdata_path }}/mailrise/mailrise.conf:/etc/mailrise.conf"
     labels:
