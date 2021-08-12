@@ -164,6 +164,7 @@ containers:
     environment:
       - WG_HOST=remote.fuzzymistborn.com
       - PASSWORD={{secret_wireguard_pass}}
+      - WG_PERSISTENT_KEEPALIVE=25
       - WG_DEFAULT_DNS=9.9.9.9, 149.112.112.112
     labels:
       - "diun.enable=true"

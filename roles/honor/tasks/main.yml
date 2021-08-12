@@ -22,6 +22,7 @@
     - docker
     - docker/diun
     - docker/nginx
+    - caddy
 
 #### DIUN
 - name: Copy DIUN Config Template
@@ -116,6 +117,7 @@
     state: present
   with_items:
     - { job: "/usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml", name: "Media Backup", hour: "0", minute: "15", weekday: "*" }
+    - { job: "/home/{{main_username}}/wg-check.sh", name: "Wireguard Tunnel Check/Restore", hour: "*", minute: "*/5", weekday: "*" }
 
 ### Wireguard
 - name: Enable IPv4 forwarding
@@ -130,7 +132,7 @@
     owner: root
     group: root
     mode: 0600
-    content: "{{ secret_wireguard_config }}"
+    content: "{{ secret_honor_wireguard_config }}"
   notify:
     - start wireguard service
 
@@ -139,3 +141,11 @@
     name: systemd-resolved
     enabled: no
     state: stopped
+
+- name: Copy WG Tunnel Check Scripts
+  template:
+    src: wg-check.sh.j2
+    dest: /home/{{ main_username }}/wg-check.sh
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: +x

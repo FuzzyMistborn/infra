@@ -1,0 +1,79 @@
+{
+	log {
+		output file /home/{{main_username}}/caddy/access.log {
+			roll_size 100mb
+			roll_keep 5
+			roll_keep_for 168h
+		}
+	}
+	email {{secret_email}}
+	auto_https off
+}
+
+(proxy_options) {
+	header X-Real-IP {remote_host}
+	header X-Forwarded-Proto {scheme}
+}
+
+(headers) {
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubdomains"
+		X-XSS-Protection "1; mode=block"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "same-origin"
+		Content-Security-Policy "frame-ancestors {{secret_personal_url}} *.{{secret_personal_url}}"
+		-Server
+		Permissions-Policy "geolocation=(self {{secret_personal_url}} *.{{secret_personal_url}}), microphone=()"
+	}
+}
+
+# HomeAssistant
+:5315 {
+		reverse_proxy http://192.168.30.12:5315
+}
+# Bitwarden
+:6482 {
+		reverse_proxy http://192.168.30.13:6482
+}
+# FreshRSS
+:8010 {
+		reverse_proxy http://192.168.30.13:8010
+}
+# Jellyfin
+:8096 {
+		reverse_proxy http://192.168.30.10:8096
+}
+# Nextcloud
+:3491 {
+		reverse_proxy http://192.168.30.11:3491
+}
+# Collabora
+:9980 {
+        encode gzip
+
+        reverse_proxy https://192.168.30.13:9980 {
+                transport http {
+                        tls_insecure_skip_verify
+                }
+        }
+}
+# Organizr
+:5100 {
+		reverse_proxy http://192.168.30.13:5100
+}
+# Photoview
+:8000 {
+		reverse_proxy http://192.168.30.11:8000
+}
+# Radarr
+:7878 {
+		reverse_proxy http://192.168.30.11:7878
+}
+# Sonarr
+:8989 {
+		reverse_proxy http://192.168.30.11:8989
+}
+# Wallabag
+:300 {
+		reverse_proxy http://192.168.30.13:300
+}

@@ -117,7 +117,11 @@ containers:
     cap_add:
       - MKNOD
     environment:
+      - username=admin
+      - password={{ secret_collabora_pw }}
       - domain={{ secret_collabora_url }}
+      - dictionaries=en
+      - extra_params=--o:ssl.enable=true --o:ssl.termination=false
     mem_limit: 1000M      
     include_global_env_vars: false
   ###

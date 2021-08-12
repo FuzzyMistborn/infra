@@ -178,6 +178,16 @@
     value: 1
     reload: yes
 
+- name: Create wireguard conf
+  copy:
+    dest: /etc/wireguard/wg0.conf
+    owner: root
+    group: root
+    mode: 0600
+    content: "{{ secret_ambition_wireguard_config }}"
+  notify:
+    - start wireguard service
+
 ### UFW Rules
 - name: Set UFW Rules
   community.general.ufw:
@@ -192,6 +202,7 @@
     - { rule: 'allow', port: '443', proto: 'tcp', comment: 'reverse proxy', route: 'no' }
     - { rule: 'allow', port: '5201', proto: 'tcp', comment: 'iperf', route: 'no' }
     - { rule: 'allow', port: '51280', proto: 'udp', comment: 'wireguard', route: 'no' }
+    - { rule: 'allow', port: '51282', proto: 'udp', comment: 'wireguard tunnel', route: 'no' }
     - { rule: 'allow', port: '222', proto: 'tcp', comment: 'gitea', route: 'no' }
     - { rule: 'allow', port: '9001', proto: 'tcp', comment: 'portainer', route: 'no' }
 

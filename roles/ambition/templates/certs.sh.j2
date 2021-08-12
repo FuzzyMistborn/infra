@@ -1,13 +1,13 @@
 #!/bin/bash
 
 #LINODE_TOKEN={{secret_linode_token}} \
-#lego --email="fuzzymistborn@protonmail.com" --domains="*.fuzzymistborn.com" --dns="linode" --accept-tos --path /home/{{main_username}}/lego run \
-#lego --email="{{secret_new_email}}" --domains="*.{{secret_personal_url}}" --dns="linode" --accept-tos --path /home/{{main_username}}/lego run
+#/usr/local/bin/lego --email="fuzzymistborn@protonmail.com" --domains="*.fuzzymistborn.com" --dns="linode" --accept-tos --path /home/{{main_username}}/lego run \
+#/usr/local/bin/lego --email="{{secret_new_email}}" --domains="*.{{secret_personal_url}}" --dns="linode" --accept-tos --path /home/{{main_username}}/lego run
 
 LINODE_TOKEN={{secret_linode_token}} \
-lego --email="fuzzymistborn@protonmail.com" --domains="*.fuzzymistborn.com" --dns="linode" --path /home/{{main_username}}/lego renew --days 45
+/usr/local/bin/lego --email="fuzzymistborn@protonmail.com" --domains="*.fuzzymistborn.com" --dns="linode" --path /home/{{main_username}}/lego renew --days 45
 
 LINODE_TOKEN={{secret_linode_token}} \
-lego --email="{{secret_new_email}}" --domains="*.{{secret_personal_url}}" --dns="linode" --path /home/{{main_username}}/lego renew --days 45
+/usr/local/bin/lego --email="{{secret_new_email}}" --domains="*.{{secret_personal_url}}" --dns="linode" --path /home/{{main_username}}/lego renew --days 45
 
 curl --retry 3 {{secret_hc_linode_certs}}
