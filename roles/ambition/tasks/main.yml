@@ -210,26 +210,6 @@
   community.general.ufw:
     state: enabled
 
-### Systemd
-- name: Copy systemd service files
-  template:
-    src: "{{item.src}}"
-    dest: /etc/systemd/system/{{item.dest}}
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: 0644
-  with_items:
-    - { src: 'iperf3.service.j2', dest: 'iperf3.service' }
-
-- name: Enable systemd services
-  systemd:
-    enabled: true
-    daemon-reload: true
-    state: started
-    name: "{{item}}"
-  loop:
-    - iperf3
-
 #### Cronjobs
 - name: "Root Cronjobs"
   cron:

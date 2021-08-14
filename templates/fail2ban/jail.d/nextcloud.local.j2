@@ -1,10 +1,9 @@
 [nextcloud]
 backend = auto
 enabled = false
-action   = cloudflare-apiv4
-           iptables-allports
+action   = iptables-allports
            telegram
-port = 80,443
+port = 80,443,3491
 protocol = tcp
 filter = nextcloud
 #Number of retrys before to ban

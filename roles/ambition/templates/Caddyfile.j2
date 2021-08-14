@@ -8,11 +8,6 @@
 	}
 	email {{secret_email}}
 }
-
-(proxy_options) {
-	header X-Real-IP {remote_host}
-	header X-Forwarded-Proto {scheme}
-}
 (fuzzy_headers) {
 	header {
 		Strict-Transport-Security "max-age=31536000; includeSubdomains"
@@ -53,7 +48,6 @@ fuzzymistborn.com {
 	@hc host hc.fuzzymistborn.com
 	handle @hc {
 		reverse_proxy localhost:8000
-		import proxy_options
 		import fuzzy_headers
 		import no_robots
 	}
@@ -67,14 +61,12 @@ fuzzymistborn.com {
 	handle @blog {
 		file_server
 		root * /home/{{main_username}}/blog/public
-		import proxy_options
 		import fuzzy_headers
 	}
 
 	@stats host stats.fuzzymistborn.com
 	handle @stats {
 		reverse_proxy localhost:3500
-		import proxy_options
 		import fuzzy_headers
 		import no_robots
 	}
@@ -86,18 +78,12 @@ fuzzymistborn.com {
 }
 
 *.{{secret_personal_url}} {
-	#tls /home/{{main_username}}/lego/certificates/_.{{secret_personal_url}}.crt /home/{{main_username}}/lego/certificates/_.{{secret_personal_url}}.key {
-	tls /home/{{main_username}}/caddy/casa_cert.pem /home/{{main_username}}/caddy/casa_key.pem {
-		client_auth {
-			mode require_and_verify
-			trusted_ca_cert_file /home/{{main_username}}/caddy/cloudflare.crt
-		}
+	tls /home/{{main_username}}/lego/certificates/_.{{secret_personal_url}}.crt /home/{{main_username}}/lego/certificates/_.{{secret_personal_url}}.key {
 	}
 
 	@git host git.{{secret_personal_url}}
 	handle @git {
 		reverse_proxy localhost:3030
-		import proxy_options
 		import personal_headers
 		import no_robots
 	}
@@ -105,7 +91,6 @@ fuzzymistborn.com {
 	@gotify host gotify.{{secret_personal_url}}
 	handle @gotify {
 		reverse_proxy localhost:8090
-		import proxy_options
 		import personal_headers
 		import no_robots
 	}
@@ -113,7 +98,6 @@ fuzzymistborn.com {
 	@uptime host uptime.{{secret_personal_url}}
 	handle @uptime {
 		reverse_proxy localhost:3001
-		import proxy_options
 		import personal_headers
 		import no_robots
 	}
@@ -121,7 +105,6 @@ fuzzymistborn.com {
 	@smarthome host smarthome.{{secret_personal_url}}
 	handle @smarthome {
 		reverse_proxy 10.10.10.10:5315
-		import proxy_options
 		import personal_headers
 		import no_robots
 	}
@@ -130,7 +113,6 @@ fuzzymistborn.com {
 	handle @cloud {
 		reverse_proxy 10.10.10.10:3491
 		encode gzip
-		import proxy_options
 		import personal_headers
 		import no_robots
 		redir /.well-known/carddav /remote.php/dav 301
@@ -150,7 +132,8 @@ fuzzymistborn.com {
 	@bitwarden host bitwarden.{{secret_personal_url}}
 	handle @bitwarden {
 		reverse_proxy 10.10.10.10:6482
-		import proxy_options
+		header Host {http.reverse_proxy.upstream.hostporti}
+		header X-Forwarded-Host {host}
 		import personal_headers
 		import no_robots
 		respond /admin* "The admin panel is disabled, please configure the 'ADMIN_TOKEN' variable to enable it"
@@ -159,7 +142,6 @@ fuzzymistborn.com {
 	@news host news.{{secret_personal_url}}
 	handle @news {
 		reverse_proxy 10.10.10.10:8010
-		import proxy_options
 		import personal_headers
 		import no_robots
 	}
@@ -167,7 +149,6 @@ fuzzymistborn.com {
 	@media host media.{{secret_personal_url}}
 	handle @media {
 		reverse_proxy 10.10.10.10:8096
-		import proxy_options
 		import personal_headers
 		import no_robots
 	}
@@ -175,21 +156,15 @@ fuzzymistborn.com {
 	@office host office.{{secret_personal_url}}
 	handle @office {
 		encode gzip
-
-		reverse_proxy https://10.10.10.10:9980 {
-				transport http {
-						tls_insecure_skip_verify
-				}
-		}
-		import proxy_options
+		reverse_proxy http://10.10.10.10:9980
 		import personal_headers
 		import no_robots
+		respond /loleaflet/dist/admin/* "The admin panel is disabled"
 	}
 
 	@dashboard host dashboard.{{secret_personal_url}}
 	handle @dashboard {
 		reverse_proxy 10.10.10.10:5100
-		import proxy_options
 		import personal_headers
 		import no_robots
 	}
@@ -197,7 +172,6 @@ fuzzymistborn.com {
 	@photos host photos.{{secret_personal_url}}
 	handle @photos {
 		reverse_proxy 10.10.10.10:8000
-		import proxy_options
 		import personal_headers
 		import no_robots
 	}
@@ -205,7 +179,6 @@ fuzzymistborn.com {
 	@radarr host radarr.{{secret_personal_url}}
 	handle @radarr {
 		reverse_proxy 10.10.10.10:7878
-		import proxy_options
 		import personal_headers
 		import no_robots
 	}
@@ -213,7 +186,6 @@ fuzzymistborn.com {
 	@sonarr host sonarr.{{secret_personal_url}}
 	handle @sonarr {
 		reverse_proxy 10.10.10.10:8989
-		import proxy_options
 		import personal_headers
 		import no_robots
 	}
@@ -221,7 +193,6 @@ fuzzymistborn.com {
 	@wallabag host wallabag.{{secret_personal_url}}
 	handle @wallabag {
 		reverse_proxy 10.10.10.10:300
-		import proxy_options
 		import personal_headers
 		import no_robots
 	}

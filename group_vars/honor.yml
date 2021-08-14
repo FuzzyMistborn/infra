@@ -65,35 +65,6 @@ containers:
       - NET_ADMIN
     include_global_env_vars: false
   ###
-  - service_name: nginx
-    container_name: nginx
-    active: true
-    image: nginx:stable-alpine
-    restart: always
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - "{{ appdata_path }}/nginx:/etc/nginx"
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
-    include_global_env_vars: false
-  ###
-  - service_name: nginx-ui
-    container_name: nginx-ui
-    active: true
-    image: schenkd/nginx-ui:latest
-    restart: always
-    ports:
-      - 8090:8080
-    volumes:
-      - "{{ appdata_path }}/nginx:/etc/nginx"
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
-    include_global_env_vars: false
-  ###
   - service_name: wireguard
     container_name: wireguard
     active: true

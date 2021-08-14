@@ -1,9 +1,8 @@
 [bitwarden]
 enabled = false
-action   = cloudflare-apiv4
-           iptables-allports
+action   = iptables-allports
            telegram
-port = 80,443,8081
+port = 80,443,6482
 filter = bitwarden
 logpath = /home/{{ main_username }}/docker/bitwarden/data/bitwarden.log
 maxretry = 3

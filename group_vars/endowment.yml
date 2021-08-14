@@ -46,7 +46,7 @@ containers:
   - service_name: radarr
     container_name: radarr
     active: true
-    image: linuxserver/radarr
+    image: ghcr.io/linuxserver/radarr
     restart: always
     ports:
       - 7878:7878
@@ -64,7 +64,7 @@ containers:
   - service_name: radarr_uhd
     container_name: radarr_uhd
     active: true
-    image: linuxserver/radarr
+    image: ghcr.io/linuxserver/radarr
     restart: always
     ports:
       - 7879:7878
@@ -80,7 +80,7 @@ containers:
   - service_name: sonarr
     container_name: sonarr
     active: true
-    image: linuxserver/sonarr
+    image: ghcr.io/linuxserver/sonarr
     restart: always
     ports:
       - 8989:8989
@@ -109,25 +109,10 @@ containers:
       - "diun.regopt=docker.io"
     include_global_env_vars: true
   ###
-  - service_name: hydra2
-    container_name: hydra2
-    active: true
-    image: linuxserver/nzbhydra2
-    restart: always
-    ports:
-      - 5076:5076
-    volumes:
-      - "{{ appdata_path }}/hydra:/config"
-      - "/mnt/scratch/complete:/downloads"
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
-    include_global_env_vars: true
-  ###
   - service_name: sabnzbd
     container_name: sabnzbd
     active: true
-    image: linuxserver/sabnzbd
+    image: ghcr.io/linuxserver/sabnzbd
     restart: always
     ports:
       - 8060:8080
