@@ -200,6 +200,24 @@
     line: 'source /etc/bash_aliases'
     state: present
 
+### Rsyslog
+- name: Copy rsyslog config templates
+  template:
+    src: "{{item.src}}"
+    dest: /etc/{{item.dest}}
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: 'rsyslog.conf.j2', dest: 'rsyslog.conf' }
+    - { src: 'ha.conf.j2', dest: 'rsyslog.d/ha.conf' }
+
+- name: restart rsyslog service
+  service:
+    name: rsyslog
+    enabled: 'true'
+    state: restarted
+
 ### Cronjobs
 - name: "Main User Cronjobs"
   cron:

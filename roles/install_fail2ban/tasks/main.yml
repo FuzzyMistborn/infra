@@ -14,7 +14,6 @@
   with_items:
     - { src: 'jail.conf.j2', dest: 'jail.conf' }
     - { src: 'jail.local.j2', dest: 'jail.local' }
-    - { src: 'action.d/cloudflare-apiv4.conf.j2', dest: 'action.d/cloudflare-apiv4.conf' }
     - { src: 'action.d/telegram.conf.j2', dest: 'action.d/telegram.conf' }
     - { src: 'filter.d/bitwarden.conf.j2', dest: 'filter.d/bitwarden.conf' }
     - { src: 'filter.d/jellyfin.conf.j2', dest: 'filter.d/jellyfin.conf' }
@@ -35,43 +34,19 @@
     path: /etc/fail2ban/scripts/send_telegram_notif.sh
     mode: +x
 
-- name: Adonalsium Fail2ban
+- name: Ambition Fail2ban
   lineinfile:
     path: /etc/fail2ban/jail.d/{{item}}.local
     regexp: "^enabled*"
     line: "enabled = true"
   with_items:
     - jellyfin
-  when: hostname == 'adonalsium'
-
-- name: Autonomy Fail2ban
-  lineinfile:
-    path: /etc/fail2ban/jail.d/{{item}}.local
-    regexp: "^enabled*"
-    line: "enabled = true"
-  with_items:
     - ha
-  when: hostname == 'autonomy'
-
-- name: Endowment Fail2ban
-  lineinfile:
-    path: /etc/fail2ban/jail.d/{{item}}.local
-    regexp: "^enabled*"
-    line: "enabled = true"
-  with_items:
     - nextcloud
     - radarr
     - sonarr
-  when: hostname == 'endowment'
-
-- name: Cultivation Fail2ban
-  lineinfile:
-    path: /etc/fail2ban/jail.d/{{item}}.local
-    regexp: "^enabled*"
-    line: "enabled = true"
-  with_items:
     - bitwarden
-  when: hostname == 'cultivation'
+  when: hostname == 'ambition'
 
 - name: Restart F2B
   service:

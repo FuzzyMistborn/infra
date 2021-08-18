@@ -12,6 +12,7 @@ package_list:
   - name: fail2ban
   - name: python
   - name: restic
+  - name: rsyslog
   - name: sudo
   - name: wget
   
@@ -56,9 +57,11 @@ containers:
       - SMTP_USERNAME={{ secret_snapraid_email_address }}
       - SMTP_PASSWORD={{ secret_snapraid_email_pass }}
       - ADMIN_TOKEN={{ secret_bitwarden_token }}
-      - WEBSOCKET_ENABLED=true # Required to use websockets
+      - WEBSOCKET_ENABLED=false # Required to use websockets
       - SIGNUPS_ALLOWED=false # set to false to disable signups
       - LOG_FILE=/data/bitwarden.log
+      - LOG_LEVEL=warn
+      - EXTENDED_LOGGING=true
       - DATABASE_URL={{ secret_bitwarden_db_url }}
       - ENABLE_DB_WAL=false
     labels:

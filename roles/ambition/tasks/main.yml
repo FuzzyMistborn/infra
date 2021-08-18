@@ -201,6 +201,7 @@
     - { rule: 'allow', port: '80', proto: 'tcp', comment: 'reverse proxy', route: 'no' }
     - { rule: 'allow', port: '443', proto: 'tcp', comment: 'reverse proxy', route: 'no' }
     - { rule: 'allow', port: '5201', proto: 'tcp', comment: 'iperf', route: 'no' }
+    - { rule: 'allow', port: '{{secret_rsyslog_port}}', proto: 'tcp', comment: 'rsyslog', route: 'no' }
     - { rule: 'allow', port: '51280', proto: 'udp', comment: 'wireguard', route: 'no' }
     - { rule: 'allow', port: '51282', proto: 'udp', comment: 'wireguard tunnel', route: 'no' }
     - { rule: 'allow', port: '222', proto: 'tcp', comment: 'gitea', route: 'no' }
@@ -209,6 +210,23 @@
 - name: Reload UFW
   community.general.ufw:
     state: enabled
+
+### Rsyslog
+- name: Copy rsyslog config templates
+  template:
+    src: "{{item.src}}"
+    dest: /etc/{{item.dest}}
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: 'rsyslog.conf.j2', dest: 'rsyslog.conf' }
+
+- name: restart rsyslog service
+  service:
+    name: rsyslog
+    enabled: 'true'
+    state: restarted
 
 #### Cronjobs
 - name: "Root Cronjobs"

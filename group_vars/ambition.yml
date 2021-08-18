@@ -8,6 +8,7 @@ package_list:
   - name: iperf3
   - name: fail2ban
   - name: restic
+  - name: rsyslog
   - name: net-tools
   - name: python
   - name: wget

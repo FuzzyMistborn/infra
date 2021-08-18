@@ -13,6 +13,7 @@ package_list:
   - name: fail2ban
   - name: python
   - name: restic
+  - name: rsyslog
   - name: sudo
   - name: wget
   - name: xvfb

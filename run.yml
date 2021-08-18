@@ -38,7 +38,6 @@
     roles:
       - role: nag-removal
       - role: grog.package
-      - role: install_fail2ban
       - role: geerlingguy.pip
       - role: geerlingguy.samba
       - role: geerlingguy.nfs
@@ -68,7 +67,6 @@
       - role: geerlingguy.docker
       - role: geerlingguy.pip
       - role: endowment
-      - role: install_fail2ban
       - role: ironicbadger.ansible_role_docker_compose_generator
 
   - hosts: autonomy
@@ -81,7 +79,6 @@
       - role: geerlingguy.docker
       - role: geerlingguy.pip
       - role: autonomy
-      - role: install_fail2ban
       - role: ironicbadger.ansible_role_docker_compose_generator
 
   - hosts: cultivation
@@ -93,7 +90,6 @@
       - role: geerlingguy.docker
       - role: geerlingguy.pip
       - role: cultivation
-      - role: install_fail2ban
       - role: ironicbadger.ansible_role_docker_compose_generator
 
   - hosts: preservation

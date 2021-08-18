@@ -10,6 +10,7 @@ package_list:
   - name: fail2ban
   - name: ifupdown2
   - name: restic
+  - name: rsyslog
   - name: ntfs-3g
   - name: wireguard
 
@@ -136,7 +137,7 @@ containers:
   - service_name: jellyfin
     container_name: jellyfin
     active: true
-    image: ghcr.io/linuxserver/jellyfin
+    image: ghcr.io/linuxserver/jellyfin:10.7.2-1-ls110
     restart: always
     ports:
       - 8096:8096

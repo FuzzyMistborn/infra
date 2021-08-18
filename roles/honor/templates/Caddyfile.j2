@@ -23,58 +23,59 @@
 }
 
 # HomeAssistant
-:5315 {
-		reverse_proxy http://192.168.30.12:5315
-		import headers
+http://smarthome.{{secret_personal_url}} {
+	reverse_proxy http://192.168.30.12:5315
+	import headers
 }
 # Bitwarden
-:6482 {
-		reverse_proxy http://192.168.30.13:6482
-		import headers
+http://bitwarden.{{secret_personal_url}} {
+	reverse_proxy http://192.168.30.13:6482
+	import headers
 }
 # FreshRSS
-:8010 {
-		reverse_proxy http://192.168.30.13:8010
-		import headers
+http://news.{{secret_personal_url}} {
+	reverse_proxy http://192.168.30.13:8010
+	import headers
 }
 # Jellyfin
-:8096 {
-		reverse_proxy http://192.168.30.10:8096
-		import headers
+http://media.{{secret_personal_url}} {
+	reverse_proxy http://192.168.30.10:8096
+	header X-Forwarded-Host {host}
+	import headers
 }
 # Nextcloud
-:3491 {
-		reverse_proxy http://192.168.30.11:3491
-		import headers
+http://cloud.{{secret_personal_url}} {
+	reverse_proxy http://192.168.30.11:3491
+	import headers
 }
 # Collabora
-:9980 {
-        encode gzip
-        reverse_proxy http://192.168.30.13:9980
-		import headers
+http://office.{{secret_personal_url}} {
+	encode gzip
+	reverse_proxy http://192.168.30.13:9980
+	import headers
 }
 # Organizr
-:5100 {
-		reverse_proxy http://192.168.30.13:5100
-		import headers
+http://dashboard.{{secret_personal_url}} {
+	reverse_proxy http://192.168.30.13:5100
+	import headers
 }
 # Photoview
-:8000 {
-		reverse_proxy http://192.168.30.11:8000
-		import headers
+http://photos.{{secret_personal_url}} {
+	reverse_proxy http://192.168.30.11:8000
+	import headers
 }
 # Radarr
-:7878 {
-		reverse_proxy http://192.168.30.11:7878
-		import headers
+http://radarr.{{secret_personal_url}} {
+	reverse_proxy http://192.168.30.11:7878
+	import headers
 }
 # Sonarr
-:8989 {
-		reverse_proxy http://192.168.30.11:8989
-		import headers
+http://sonarr.{{secret_personal_url}} {
+	reverse_proxy http://192.168.30.11:8989
+	import headers
 }
 # Wallabag
-:300 {
-		reverse_proxy http://192.168.30.13:300
-		import headers
+http://wallabag.{{secret_personal_url}} {
+	reverse_proxy http://192.168.30.13:300
+	import headers
 }
