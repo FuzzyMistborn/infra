@@ -1,11 +1,10 @@
 $ModLoad imfile
+$InputFilePollInterval 3
+# Homeassistant
 $InputFileName /home/{{ main_username }}/hass_docker/home-assistant.log
-$InputFileTag homeassistant
-$InputFileStateFile homeassistant-error
-$InputFileSeverity error
-$InputFileFacility local3
-$InputFilePollInterval 1
-$InputFilePersistStateInterval 1
+$InputFileTag homeassistant:
+
+$InputFileStateFile hass-error
 $InputRunFileMonitor
 
 *.* @@{{secret_linode_ip}}:{{secret_rsyslog_port}}

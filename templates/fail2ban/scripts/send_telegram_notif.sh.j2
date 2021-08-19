@@ -1,80 +1,60 @@
 #!/bin/bash
-# Version 1.0
-# Send Fail2ban notifications using a Telegram Bot
 
-# Add to the /etc/fail2ban/jail.conf:
-# [sshd]
-# ***
-# action  = iptables[name=SSH, port=22, protocol=tcp]
-#			telegram
+# Sends text messages using Telegram
+# to alert webmaster of banning.
 
-# Create a new file in /etc/fail2ban/action.d with the following information:
-# [Definition]
-# actionstart = /etc/fail2ban/scripts/send_telegram_notif.sh -a start 
-# actionstop = /etc/fail2ban/scripts/send_telegram_notif.sh -a stop
-# actioncheck = 
-# actionban = /etc/fail2ban/scripts/send_telegram_notif.sh -b <ip>
-# actionunban = /etc/fail2ban/scripts/send_telegram_notif.sh -u <ip>
-# 
-# [Init]
-# init = 123
+# Require one argument, one of the following
+# start
+# stop
+# ban
+# unban
+# Optional second argument: Ip for ban/unband
 
-# Telegram BOT Token 
-telegramBotToken='{{ secret_fail2ban_tg_api }}'
 
-# Telegram Chat ID
-telegramChatID='{{ secret_fail2ban_tg_user }}'
-
-function talkToBot() {
-	message=$1
-	curl -s -X POST https://api.telegram.org/bot${telegramBotToken}/sendMessage -d text="${message}" -d chat_id=${telegramChatID} > /dev/null 2>&1
+# Display usage information
+function show_usage {
+  echo "Usage: $0 action <ip>"
+  echo "Where action start, stop, ban, unban"
+  echo "and IP is optional passed to ban, unban"
+  exit
 }
 
-if [ $# -eq 0 ]; then
-	echo "Usage $0 -a ( start || stop ) || -b \$IP || -u \$IP"
-	exit 1;
+# Send notification
+function send_msg {
+  token="{{ secret_fail2ban_tg_api }}"
+  chat_id={{ secret_fail2ban_tg_user }}
+
+  curl -k --header 'Content-Type: application/json' \
+    -d "{\"chat_id\":\"$chat_id\", \"parse_mode\":\"markdown\", \"text\":\"\ud83d\udd14 *Fail2ban* $message\"}" \
+    --request POST https://api.telegram.org/bot$token/sendMessage
+  exit
+}
+
+
+# Check for script arguments
+if [ $# -lt 1 ]
+then
+  show_usage
 fi
 
-while getopts "a:b:u:" opt; do
-	case "$opt" in
-		a)
-			action=$OPTARG
-		;;
-		b)
-			ban=y
-			ip_add_ban=$OPTARG
-		;;
-		u)
-			unban=y
-			ip_add_unban=$OPTARG
-		;;
-		\?) 
-			echo "Invalid option. -$OPTARG" 
-			exit 1
-		;;
-	esac
-done
 
-if [[ ! -z ${action} ]]; then
-	case "${action}" in
-		start)
-			talkToBot "Fail2ban has been started on {{ hostname }}"
-		;;
-		stop)
-			talkToBot "Fail2ban has been stopped on {{ hostname }}"
-		;;
-		*)
-			echo "Incorrect option"
-			exit 1;
-		;;
-	esac
-elif [[ ${ban} == "y" ]]; then
-	talkToBot "The IP address ${ip_add_ban} has been banned from {{ hostname }}"
-	exit 0;
-elif [[ ${unban} == "y" ]]; then
-	talkToBot "The IP address ${ip_add_unban} has been unbanned from {{ hostname }}"
-	exit 0;
+# Take action depending on argument
+if [ "$1" = 'start' ]
+then
+  message="just started jail *$2*!"
+  send_msg
+elif [ "$1" = 'stop' ]
+then
+  message="just stopped jail *$2*!"
+  send_msg
+elif [ "$1" = 'ban' ]
+then
+  message=$([ "$2" != '' ] && echo "just banned IP $2 after $4 failed attempts against jail *$3*." || echo "just banned an ip." )
+  send_msg
+elif [ "$1" = 'unban' ]
+then
+  message=$([ "$2" != '' ] && echo "just unbanned $2" || echo "just banned unbanned an ip." )
+  send_msg
 else
-	info
+  show_usage
 fi
-

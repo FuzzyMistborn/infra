@@ -4,7 +4,7 @@
 # /usr/share/doc/rsyslog-doc/html/configuration/index.html
 #
 # Default logging rules can be found in /etc/rsyslog.d/50-default.conf
- 
+
 
 #################
 #### MODULES ####
@@ -23,7 +23,7 @@
 
 # provides kernel logging support and enable non-kernel klog messages
 #module(load="imklog" permitnonkernelfacility="on")
- 
+
 ###########################
 #### GLOBAL DIRECTIVES ####
 ###########################
@@ -33,7 +33,7 @@
 # To enable high precision timestamps, comment out the following line.
 #
 #$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
-$template noTimestampFormat,"%msg%\n"
+$template noTimestampFormat,"%msg:2:$%\n"
 $ActionFileDefaultTemplate noTimestampFormat
 
 # Filter duplicated messages
@@ -61,6 +61,4 @@ $WorkDirectory /var/spool/rsyslog
 #
 # Include all config files in /etc/rsyslog.d/
 #
-$IncludeConfig /etc/rsyslog.d/sonarr.conf
-$IncludeConfig /etc/rsyslog.d/radarr.conf
-$IncludeConfig /etc/rsyslog.d/nextcloud.conf
+$IncludeConfig /etc/rsyslog.d/endowment.conf

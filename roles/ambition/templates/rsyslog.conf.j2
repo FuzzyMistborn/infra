@@ -34,7 +34,7 @@ module(load="imklog" permitnonkernelfacility="on")
 # To enable high precision timestamps, comment out the following line.
 #
 #$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
-$template noTimestampFormat,"%msg%\n"
+$template noTimestampFormat,"%msg:2:$%\n"
 $ActionFileDefaultTemplate noTimestampFormat
 
 # Filter duplicated messages

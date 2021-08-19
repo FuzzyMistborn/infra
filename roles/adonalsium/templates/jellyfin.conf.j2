@@ -1,11 +1,10 @@
 $ModLoad imfile
+$InputFilePollInterval 3
+# Jellyfin
 $InputFileName /home/{{ main_username }}/docker/jellyfin/config/log/log*.log
-$InputFileTag jellyfin
+$InputFileTag jellyfin:
+
 $InputFileStateFile jellyfin-error
-$InputFileSeverity error
-$InputFileFacility local3
-$InputFilePollInterval 1
-$InputFilePersistStateInterval 1
 $InputRunFileMonitor
 
 *.* @@{{secret_linode_ip}}:{{secret_rsyslog_port}}
