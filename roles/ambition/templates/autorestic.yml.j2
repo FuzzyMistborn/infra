@@ -35,6 +35,8 @@ locations:
         keep-weekly: 4
         keep-monthly: 2
     hooks:
+      before:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_backup}}/start
       success:
         - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_backup}}/0
       failure:
@@ -49,6 +51,8 @@ locations:
         keep-weekly: 4
         keep-monthly: 2
     hooks:
+      before:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_backup}}/start
       success:
         - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_backup}}/0
       failure:
@@ -62,6 +66,8 @@ locations:
         keep-daily: 1
         keep-weekly: 4
     hooks:
+      before:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_backup}}/start
       success:
         - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_backup}}/0
       failure:

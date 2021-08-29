@@ -71,6 +71,14 @@ fuzzymistborn.com {
 		import no_robots
 	}
 
+	@paste host paste.fuzzymistborn.com
+	handle @paste {
+		reverse_proxy localhost:8081
+		encode gzip
+		import fuzzy_headers
+		import no_robots
+	}
+
 	# Fallback for otherwise unhandled domains
 	handle {
 		redir {{secret_redirect}}

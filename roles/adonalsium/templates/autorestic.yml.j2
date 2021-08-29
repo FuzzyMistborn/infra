@@ -81,6 +81,8 @@ locations:
         keep-weekly: 8
         keep-monthly: 4
     hooks:
+      before:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_docker}}/start
       success:
         - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_docker}}/0
       failure:
@@ -96,6 +98,8 @@ locations:
         keep-weekly: 8
         keep-monthly: 2
     hooks:
+      before:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_all}}/start
       success:
         - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_all}}/0
       failure:
@@ -111,6 +115,8 @@ locations:
         keep-weekly: 4
         keep-monthly: 2
     hooks:
+      before:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_all}}/start
       success:
         - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_all}}/0
       failure:
@@ -126,6 +132,8 @@ locations:
         keep-weekly: 4
         keep-monthly: 2
     hooks:
+      before:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_all}}/start
       success:
         - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_all}}/0
       failure:
@@ -144,6 +152,8 @@ locations:
         keep-weekly: 8
         keep-monthly: 4
     hooks:
+      before:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_all}}/start
       success:
         - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_all}}/0
       failure:

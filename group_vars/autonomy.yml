@@ -99,8 +99,6 @@ containers:
     active: true
     image: marthoc/deconz:stable
     restart: always
-    ports:
-      - 5316:5316
     network_mode: host
     devices:
       - /dev/conbee:/dev/ttyACM1
@@ -110,6 +108,8 @@ containers:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
     environment:
+      - DECONZ_VNC_MODE=1
+      - DECONZ_VNC_PASSWORD={{secret_deconz_vnc_pass}}
       - DECONZ_WEB_PORT=100
       - DECONZ_WS_PORT=460
       - DECONZ_DEVICE=/dev/ttyACM1

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+curl --retry 3 {{ secret_hc_photo_reorg }}/start
+
 YEAR=$(date +"%Y")
 MONTH=$(date +"%m")
 
@@ -15,4 +17,4 @@ mkdir -p "${YEAR}/${MONTH}"
 
 find -maxdepth 1 -type f -name "*_${YEAR}${MONTH}*" -exec mv -t ${YEAR}/${MONTH} {} +
 
-curl --retry 3 {{ secret_hc_photo_reorg }}
+curl --retry 3 {{ secret_hc_photo_reorg }}/$1

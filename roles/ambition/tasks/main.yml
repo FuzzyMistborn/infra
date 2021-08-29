@@ -253,6 +253,6 @@
     state: present
   loop:
     - { job: "/home/{{ main_username }}/scripts/db_backup.sh", name: "Backup", hour: "5", minute: "0", weekday: "*", day: "*" }
-    - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_prune}}", name: "Restic Prune", hour: "6", minute: "0", weekday: "1", day: "*" }
-    - { job: "/usr/local/bin/autorestic exec -a -- check && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_check}}", name: "Restic Check", hour: "5", minute: "45", weekday: "*", day: "1" }
+    - { job: "curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_prune}}/start && /usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_prune}}", name: "Restic Prune", hour: "6", minute: "0", weekday: "1", day: "*" }
+    - { job: "curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_check}}/start && /usr/local/bin/autorestic exec -a -- check && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_check}}", name: "Restic Check", hour: "5", minute: "45", weekday: "*", day: "1" }
     - { job: "/home/{{main_username}}/scripts/certs.sh", name: "Cert Update", hour: "19", minute: "0", weekday: "*", day: "*" }

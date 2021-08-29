@@ -59,9 +59,10 @@
     mode: +x
     content: |
       #!/bin/bash
+      curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_ansible_update}}/start
       cd /home/{{main_username}}/infra
       /usr/local/bin/ansible-playbook update.yml --vault-password-file .vault-password
-      curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_ansible_update}}
+      curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_ansible_update}}/$1
 
 #### Cronjobs
 - name: "Main User Cronjobs"

@@ -220,6 +220,21 @@ containers:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
 ###
+  - service_name: pastebin
+    container_name: pastebin
+    active: true
+    image: mkaczanowski/pastebin:latest
+    restart: always
+    ports:
+      - 127.0.0.1:8081:8081
+    volumes:
+      - "{{ appdata_path }}/pastebin:/var/lib/pastebin"
+    command:
+      --address 0.0.0.0 --port 8081 --db /var/lib/pastebin/ --uri https://paste.fuzzymistborn.com
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+###
   - service_name: portainer_agent
     container_name: portainer_agent
     active: true

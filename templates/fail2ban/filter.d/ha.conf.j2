@@ -2,7 +2,8 @@
 before = common.conf
 
 [Definition]
-failregex = ^%(__prefix_line)s.*Login attempt or request with invalid authentication from <HOST>.*$
+#failregex = ^%(__prefix_line)s.*Login attempt or request with invalid authentication from <HOST>.*$
+failregex = ^%(__prefix_line)s.*Login attempt or request with invalid authentication from .* \(<ADDR>\)\..*$
 ignoreregex =
 
 [Init]

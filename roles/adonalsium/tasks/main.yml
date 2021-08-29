@@ -265,10 +265,10 @@
     day: "{{item.day}}"
     state: present
   with_items:
-    - { job: "docker exec scrutiny /scrutiny/bin/scrutiny-collector-metrics run > /dev/null 2>&1 && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_scrutiny}}", name: "Scrutiny", hour: "*/6", minute: "0", weekday: "*", day: "*" }
+    - { job: "curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_scrutiny}}/start && docker exec scrutiny /scrutiny/bin/scrutiny-collector-metrics run > /dev/null 2>&1 && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_scrutiny}}", name: "Scrutiny", hour: "*/6", minute: "0", weekday: "*", day: "*" }
     - { job: "docker container restart jellyfin > /dev/null 2>&1", name: "Restart Jellyfin", hour: "2", minute: "30", weekday: "*", day: "*" }
-    - { job: "/usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_purge}}", name: "Restic Prune", hour: "1", minute: "00", weekday: "1", day: "*" }
-    - { job: "/usr/local/bin/autorestic exec -a -- check && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_restic_check_adonalsium}}", name: "Restic Check", hour: "3", minute: "0", weekday: "*", day: "1" }
+    - { job: "curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_purge}}/start && /usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_purge}}", name: "Restic Prune", hour: "1", minute: "00", weekday: "1", day: "*" }
+    - { job: "curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_restic_check_adonalsium}}/start && /usr/local/bin/autorestic exec -a -- check && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_restic_check_adonalsium}}", name: "Restic Check", hour: "3", minute: "0", weekday: "*", day: "1" }
 - name: "Root Cronjobs"
   cron:
     user: "root"
