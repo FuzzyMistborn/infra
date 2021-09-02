@@ -45,17 +45,17 @@ nag_version: 0.0.7
 
 ### Snapraid Config
 snapraid_force_install: false
-snapraid_email_address: "{{ secret_snapraid_email_address }}" 
-snapraid_gmail_pass: "{{ secret_snapraid_email_pass }}"
-snapraid_email_address_from: "{{ secret_snapraid_email_from }}"
-snapraid_email_address_to: "{{ secret_snapraid_email_to }}"
-snapraid_smtp_host: "{{ secret_snapraid_smtp_host }}"
-snapraid_smtp_port: 465
-snapraid_use_ssl: true
-snapraid_touch: false
-snapraid_run_bin: /usr/bin/snapraid
-snapraid_run_command: "python3 {{ snapraid_run_bin }} -c {{ snapraid_run_conf}} && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_snapraid}}"
-snapraid_cron_jobs:
+snapraid_install: false
+snapraid_runner: false
+snapraid_bin_path: /usr/bin/snapraid
+snapraid_runner_email_address_from: "{{ secret_snapraid_email_from }}"
+snapraid_runner_email_address_to: "{{ secret_snapraid_email_to }}"
+snapraid_runner_smtp_host: "{{ secret_snapraid_smtp_host }}"
+snapraid_runner_smtp_port: 8025
+snapraid_runner_use_ssl: false
+snapraid_runner_touch: false
+snapraid_runner_command: "python3 {{ snapraid_run_bin }} -c {{ snapraid_run_conf}} && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_snapraid}}"
+snapraid_runner_cron_jobs:
   - { job: '{{ snapraid_run_command }}', name: 'snapraid_runner', weekday: '*', hour: '04' }
 snapraid_config_excludes:
   - "*.unrecoverable"
@@ -143,7 +143,7 @@ containers:
       - 8096:8096
     labels:
       - "diun.enable=true"
-      - "diun.regopt=docker.io"
+      - "diun.regopt=ghcr.io"
     volumes:
       - "{{ appdata_path }}/jellyfin/config:/config"
       - /mnt/Media/Movies:/mnt/movies

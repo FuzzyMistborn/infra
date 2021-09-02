@@ -31,6 +31,7 @@
     - { user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_linode_pixel_ssh }}" }
     - { user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_linode_work_ssh }}" }
     - { user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_linode_lxc_ssh }}" }
+    - { user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_code_server_ssh }}" }
 
 - name: Add GitHub SSH Key
   copy:

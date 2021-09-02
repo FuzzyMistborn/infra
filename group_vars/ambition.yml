@@ -26,6 +26,7 @@ caddy_config: "{{ lookup('template', 'roles/ambition/templates/Caddyfile.j2') }}
 
 ### Docker-Compose with ironicbadger.docker_compose_generator
 appdata_path: "/home/{{ main_username }}/docker"
+compose_schema_version: '2.1'
 containers:
   ###
   - service_name: diun
@@ -69,7 +70,7 @@ containers:
       - 127.0.0.1:3500:3000
     labels:
       - "diun.enable=true"
-      - "diun.regopt=docker.io"
+      - "diun.regopt=ghcr.io"
     environment:
       - DATABASE_URL={{secret_umami_db_url}}
       - DATABASE_TYPE=mysql
@@ -155,7 +156,7 @@ containers:
   - service_name: wireguard
     container_name: wireguard
     active: true
-    image: weejewel/wg-easy
+    image: fuzzymistborn/wg-easy:stable
     restart: always
     ports:
       - "51820:51820/udp"
@@ -173,7 +174,7 @@ containers:
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
-    sysctls:
+    sysctl:
       - net.ipv4.ip_forward=1
       - net.ipv4.conf.all.src_valid_mark=1
     include_global_env_vars: false
@@ -204,7 +205,7 @@ containers:
       - DOCKER_MODS=linuxserver/mods:healthchecks-apprise
     labels:
       - "diun.enable=true"
-      - "diun.regopt=docker.io"
+      - "diun.regopt=ghcr.io"
     include_global_env_vars: true
 ###
   - service_name: mailrise

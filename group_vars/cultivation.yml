@@ -80,7 +80,7 @@ containers:
       - "{{ appdata_path }}/freshrss:/config"
     labels:
       - "diun.enable=true"
-      - "diun.regopt=docker.io"
+      - "diun.regopt=ghcr.io"
     include_global_env_vars: true
   ###
   - service_name: wallabag

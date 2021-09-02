@@ -3,6 +3,12 @@
   pip:
     name: ansible
 
+- name: Add Code-Server SSH Key
+  authorized_key:
+    user: "{{ main_username }}"
+    state: present
+    key: "{{ secret_main_user_code_server_ssh }}"
+
 - name: Clone Ansible GitHub Repo
   git:
     repo: git@github.com:FuzzyMistborn/infra.git
