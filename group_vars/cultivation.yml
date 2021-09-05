@@ -83,6 +83,24 @@ containers:
       - "diun.regopt=ghcr.io"
     include_global_env_vars: true
   ###
+  - service_name: code-server
+    container_name: code-server
+    active: true
+    image: ghcr.io/linuxserver/code-server
+    restart: always
+    ports:
+      - 8443:8443
+    volumes:
+      - "{{ appdata_path }}/code:/config"
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=ghcr.io"
+    environment:
+      - PASSWORD={{ secret_code_server_pass }}
+      - SUDO_PASSWORD={{ secret_code_server_pass }}
+      - PROXY_DOMAIN=code.{{secret_personal_url}}
+    include_global_env_vars: true
+  ###
   - service_name: wallabag
     container_name: wallabag
     active: true

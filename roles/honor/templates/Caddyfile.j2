@@ -37,6 +37,11 @@ http://news.{{secret_personal_url}} {
 	reverse_proxy http://192.168.30.13:8010
 	import headers
 }
+# Code-Server
+http://code.{{secret_personal_url}} {
+	reverse_proxy http://192.168.30.13:8443
+	import headers
+}
 # Jellyfin
 http://media.{{secret_personal_url}} {
 	reverse_proxy http://192.168.30.10:8096

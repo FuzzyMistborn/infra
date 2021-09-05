@@ -9,14 +9,29 @@
   set_fact:
     install_nag: "{{ nag_force_install == true or is_installed.failed == true }}"
 
+- name: Install Github3.py
+  pip:
+    name: github3.py
+- name: Get latest release for nag removal
+  community.general.github_release:
+    user: Jamesits
+    repo: pve-fake-subscription
+    action: latest_release
+  register: nag_ver_latest
+  when: nag_ver is undefined
+- name: Set nag version
+  set_fact:
+    nag_ver: "{{ nag_ver_latest.tag  | regex_replace('v') }}"
+  when: nag_ver is undefined
+
 - name: Nag Removal Pull Deb
   get_url:
-    url: https://github.com/Jamesits/pve-fake-subscription/releases/download/v{{nag_version}}/pve-fake-subscription_{{nag_version}}_all.deb
+    url: https://github.com/Jamesits/pve-fake-subscription/releases/download/v{{nag_ver}}/pve-fake-subscription_{{nag_ver}}_all.deb
     dest: /root
   when: install_nag
 
 - name: install deb
   apt:
-    deb: /root/pve-fake-subscription_{{nag_version}}_all.deb
+    deb: /root/pve-fake-subscription_{{nag_ver}}_all.deb
     state: present
   when: install_nag

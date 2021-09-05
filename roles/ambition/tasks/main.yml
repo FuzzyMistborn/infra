@@ -85,15 +85,43 @@
     - { src: 'db_restore.sh.j2', dest: 'db_restore.sh' }
     - { src: 'certs.sh.j2', dest: 'certs.sh' }
 
+- name: Install Github3.py
+  pip:
+    name: github3.py
+
 ### Hugo
+- name: Get latest release for hugo
+  community.general.github_release:
+    user: gohugoio
+    repo: hugo
+    action: latest_release
+  register: hugo_ver_latest
+  when: nag_ver is undefined
+- name: Set hugo version
+  set_fact:
+    hugo_ver: "{{ hugo_ver_latest.tag }}"
+  when: hugo_ver is undefined
+
 - name: Install Hugo
   apt:
     deb: https://github.com/gohugoio/hugo/releases/download/v{{hugo_ver}}/hugo_{{hugo_ver}}_Linux-64bit.deb
 
 ### Lego
+- name: Get latest release for lego
+  community.general.github_release:
+    user: go-acme
+    repo: lego
+    action: latest_release
+  register: lego_ver_latest
+  when: lego_ver is undefined
+- name: Set lego version
+  set_fact:
+    lego_ver: "{{ lego_ver_latest.tag }}"
+  when: lego_ver is undefined
+
 - name: Pull/install LEGO cert client
   ansible.builtin.unarchive:
-    src: https://github.com/go-acme/lego/releases/download/v{{lego_ver}}/lego_v{{lego_ver}}_linux_amd64.tar.gz
+    src: https://github.com/go-acme/lego/releases/download/{{lego_ver}}/lego_{{lego_ver}}_linux_amd64.tar.gz
     dest: /usr/local/bin
     remote_src: yes
 - name: Remove unneeded files

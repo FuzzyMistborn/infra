@@ -153,6 +153,13 @@ fuzzymistborn.com {
 		import no_robots
 	}
 
+	@code host code.{{secret_personal_url}}
+	handle @code {
+		reverse_proxy 10.10.10.10:80
+		import personal_headers
+		import no_robots
+	}
+
 	@media host media.{{secret_personal_url}}
 	handle @media {
 		reverse_proxy 10.10.10.10:80

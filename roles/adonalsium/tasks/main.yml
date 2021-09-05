@@ -87,9 +87,24 @@
   shell: "sudo service udev reload && sudo udevadm trigger"
 
 ### Telegraf
+- name: Install Github3.py
+  pip:
+    name: github3.py
+- name: Get latest release for telegraf
+  community.general.github_release:
+    user: influxdata
+    repo: telegraf
+    action: latest_release
+  register: telegraf_ver_latest
+  when: telegraf_ver is undefined
+- name: Set telegraf version
+  set_fact:
+    telegraf_ver: "{{ telegraf_ver_latest.tag  | regex_replace('v') }}"
+  when: telegraf_ver is undefined
 - name: Install Telegraf
   apt:
     deb: https://dl.influxdata.com/telegraf/releases/telegraf_{{telegraf_ver}}-1_amd64.deb
+
 - name: Copy Telegraf config
   template:
     src: telegraf.conf.j2
@@ -118,6 +133,19 @@
     group: "{{ main_username }}"
 
 ### Infrastructure
+- name: Get latest release for mergerfs
+  community.general.github_release:
+    user: trapexit
+    repo: mergerfs
+    action: latest_release
+  register: mergerfs_ver_latest
+  when: mergerfs_ver is undefined
+
+- name: Set mergerfs version
+  set_fact:
+    mergerfs_ver: "{{ mergerfs_ver_latest.tag }}"
+  when: mergerfs_ver is undefined
+
 - name: Install Mergerfs
   apt:
     deb: https://github.com/trapexit/mergerfs/releases/download/{{mergerfs_ver}}/mergerfs_{{mergerfs_ver}}.debian-buster_amd64.deb

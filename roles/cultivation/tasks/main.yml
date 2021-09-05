@@ -20,9 +20,24 @@
     group: "{{ main_username }}"
 
 ### Telegraf
+- name: Install Proxmoxer
+  pip:
+    name: github3.py
+- name: Get latest release for telegraf
+  community.general.github_release:
+    user: influxdata
+    repo: telegraf
+    action: latest_release
+  register: telegraf_ver_latest
+  when: telegraf_ver is undefined
+- name: Set telegraf version
+  set_fact:
+    telegraf_ver: "{{ telegraf_ver_latest.tag  | regex_replace('v') }}"
+  when: telegraf_ver is undefined
 - name: Install Telegraf
   apt:
     deb: https://dl.influxdata.com/telegraf/releases/telegraf_{{telegraf_ver}}-1_amd64.deb
+
 - name: Copy Telegraf config
   template:
     src: telegraf.conf.j2

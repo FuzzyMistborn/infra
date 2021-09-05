@@ -15,8 +15,8 @@ package_list:
   - name: wireguard
 
 pull_backup: false
-hugo_ver: 0.86.1
-lego_ver: 4.4.0
+#hugo_ver: 0.86.1
+#lego_ver: 4.4.0
 
 ### Caddy Config
 caddy_systemd_capabilities_enabled: true
