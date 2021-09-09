@@ -19,7 +19,6 @@
     group: "{{ main_username }}"
     mode: "{{item.mode}}"
   with_items:
-    - { path: "auth_commands.sh", mode: "+x" }
     - { path: "nextcloud_cron.sh", mode: "+x" }
 
 - name: Copy photos script templates
@@ -191,10 +190,3 @@
     state: present
   with_items:
     - { job: "/usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml", name: "Media Backup", hour: "0", minute: "30", weekday: "*" }
-
-### SSH
-- name: SSH Keys - Add HASS SSH Key
-  authorized_key:
-    user: "{{ main_username }}"
-    state: present
-    key: "{{ secret_hass_ssh }}"

@@ -1,0 +1,52 @@
+### Lego
+- name: Install Github3.py
+  pip:
+    name: github3.py
+
+- name: Get latest release for lego
+  community.general.github_release:
+    user: go-acme
+    repo: lego
+    action: latest_release
+  register: lego_ver_latest
+  when: lego_ver is undefined
+- name: Set lego version
+  set_fact:
+    lego_ver: "{{ lego_ver_latest.tag }}"
+  when: lego_ver is undefined
+
+- name: Pull/install LEGO cert client
+  ansible.builtin.unarchive:
+    src: https://github.com/go-acme/lego/releases/download/{{lego_ver}}/lego_{{lego_ver}}_linux_amd64.tar.gz
+    dest: /usr/local/bin
+    remote_src: yes
+- name: Remove unneeded files
+  file:
+    path: /usr/local/bin/{{item}}
+    state: absent
+  with_items:
+    - LICENSE
+    - CHANGELOG.md
+
+- name: Copy certs script
+  template:
+    src: "{{item.src}}"
+    dest: /home/{{ main_username }}/{{item.dest}}
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: +x
+  with_items:
+    - { src: 'certs.sh.j2', dest: 'certs.sh' }
+
+- name: "Main User Cronjobs"
+  cron:
+    user: "{{ main_username }}"
+    name: "{{ item.name }}"
+    job: "{{ item.job }}"
+    hour: "{{ item.hour }}"
+    minute: "{{ item.minute }}"
+    weekday: "{{ item.weekday }}"
+    day: "{{ item.day }}"
+    state: present
+  loop:
+    - { job: "/home/{{main_username}}/certs.sh", name: "Cert Update", hour: "19", minute: "0", weekday: "*", day: "*" }

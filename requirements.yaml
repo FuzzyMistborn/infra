@@ -12,3 +12,4 @@ roles:
 collections:
 - community.general
 - community.docker
+- kewlfft.aur

@@ -111,6 +111,7 @@
       - role: grog.package
       - role: geerlingguy.pip
       - role: geerlingguy.docker
+      - role: caddy_ansible.caddy_ansible
       - role: honor
       - role: install_fail2ban
       - role: ironicbadger.ansible_role_docker_compose_generator
@@ -125,6 +126,16 @@
       - role: geerlingguy.docker
       - role: valor
       - role: ironicbadger.ansible_role_docker_compose_generator
+
+  - hosts: caddy
+    become: true
+    vars_files:
+      - 'vars/vault.yaml'
+    roles:
+      - role: grog.package
+      - role: geerlingguy.pip
+      - role: caddy_internal
+      - role: caddy_ansible.caddy_ansible
 
   - hosts: mercy
     become: true
@@ -158,6 +169,15 @@
       - role: ambition
       - role: install_fail2ban
       - role: ironicbadger.ansible_role_docker_compose_generator
+
+  - hosts: kelsier
+    become: true
+    vars_files:
+      - 'vars/vault.yaml'
+    roles:
+      - role: grog.package
+      - role: geerlingguy.pip
+      - role: kelsier
 
   - hosts: odium
     become: true

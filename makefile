@@ -30,6 +30,12 @@ omada:
 ambition:
 	ansible-playbook -b run.yml --limit ambition --vault-password-file .vault-password
 
+caddy:
+	ansible-playbook -b run.yml --limit caddy --vault-password-file .vault-password
+
+kelsier:
+	ansible-playbook -b run.yml --limit kelsier --vault-password-file .vault-password
+
 adonalsium:
 	ansible-playbook -b run.yml --limit adonalsium --vault-password-file .vault-password
 

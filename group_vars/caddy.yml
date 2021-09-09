@@ -1,0 +1,18 @@
+---
+target_os: ubuntu
+hostname: caddy
+
+### Install packages with grog.package
+package_list:
+  - name: curl
+  - name: htop
+  - name: net-tools
+  - name: sudo
+  - name: wget
+  - name: libnss3-tools
+
+### Caddy Config
+caddy_systemd_capabilities_enabled: true
+caddy_systemd_network_dependency: false
+caddy_conf_dir: /home/{{main_username}}/caddy
+caddy_config: "{{ lookup('template', 'roles/caddy_internal/templates/Caddyfile.j2') }}"

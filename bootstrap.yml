@@ -62,3 +62,40 @@
     service:
       name: sshd
       state: restarted
+
+- hosts: kelsier
+  remote_user: "{{main_username}}"
+  gather_facts: true
+  vars_files:
+    - 'vars/vault.yaml'
+  tasks:
+  - name: Add ansible user
+    user:
+      name: ansible
+      password: "{{ secret_ansible_pass }}" 
+      groups: 
+        - wheel
+      shell: /bin/bash
+  - name: Add sudoers file for ansible
+    copy:
+      src: sudoer_ansible
+      dest: /etc/sudoers.d/ansible
+      owner: root
+      group: root
+      mode: 0440
+  - name: Add SSH Keys
+    authorized_key:
+      user: ansible
+      state: present
+      key: "{{ secret_ansible_ssh }}"
+  - name: Add hardened SSH config
+    copy:
+      src: sshd_config
+      dest: /etc/ssh/sshd_config
+      owner: root
+      group: root
+      mode: 0600
+  - name: Restart ssh
+    service:
+      name: sshd
+      state: restarted

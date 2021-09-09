@@ -1,0 +1,32 @@
+backends:
+  synology_docker:
+    type: s3
+    path: 'http://192.168.10.20:9000/kelsier'
+    key: {{ secret_restic_repo_password }}
+    env:
+      AWS_ACCESS_KEY_ID: {{ secret_minio_s3_access_key_id }}
+      AWS_SECRET_ACCESS_KEY: {{ secret_minio_s3_access_key }}
+locations:
+  docker:
+    from: '/home/{{main_username}}'
+    to: 
+      - synology_docker
+    options:
+      backup:
+        exclude:
+          - '.cache*'
+          - 'Nextcloud'
+          - 'Downloads'
+          - 'git'
+          - '*steam*'
+      forget:
+        keep-daily: 7
+        keep-weekly: 4
+        keep-monthly: 2
+    hooks:
+      before:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_kelsier_media}}/start
+      success:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_kelsier_media}}/0
+      failure:
+        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_kelsier_media}}/fail

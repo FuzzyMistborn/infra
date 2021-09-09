@@ -1,0 +1,271 @@
+---
+
+- name: SSH Keys
+  authorized_key:
+    user: "{{ main_username }}"
+    state: present
+    key: "{{secret_kelsier_hass_ssh}}"
+
+- name: Copy SSH files
+  template:
+    src: "{{item.src}}"
+    dest: "{{item.dest}}"
+    mode: "{{item.mode}}"
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+  loop:
+    - { src: "auth_commands.sh.j2", dest: "/home/{{main_username}}/.ssh/auth_commands.sh", mode: "755" }
+    - { src: "ssh_config.j2", dest: "/home/{{main_username}}/.ssh/config", mode: "600" }
+
+- name: Add Kelsier LXC SSH Key
+  copy:
+    dest: /home/{{ main_username }}/.ssh/kelsier_lxcs
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0600
+    content: "{{ secret_kelsier_lxc_ssh }}"
+
+- name: Add Kelsier VPS SSH Key
+  copy:
+    dest: /home/{{ main_username }}/.ssh/kelsier_vps
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0600
+    content: "{{ secret_kelsier_vps_ssh }}"
+
+- name: Add Github SSH Key
+  copy:
+    dest: /home/{{ main_username }}/.ssh/github
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0600
+    content: "{{ secret_github_ssh }}"
+
+# Sudoers file
+
+- name: Add sudoers file for main user
+  template:
+    src: sudoers_main_user.j2
+    dest: /etc/sudoers.d/{{main_username}}
+    owner: root
+    group: root
+    mode: 0440
+
+### AUR
+
+- name: Install AUR Packages
+  kewlfft.aur.aur:
+    use: yay
+    name:
+      - balena-etcher
+      - jellyfin-media-player
+      - mqtt-explorer
+      - zoom
+      - protonmail-bridge
+      - spotify
+      - ferdi
+      - brave
+      - ckan
+      - telegraf
+      - squeezelite
+    state: present
+  become_user: ansible
+  become: yes
+
+# fstab
+
+- name: make sure disks unmounted
+  mount:
+    path: "{{ item.path }}"
+    state: unmounted
+  with_items:
+    - "{{ data_disks }}"
+    - "{{ nfs_mount }}"
+    - "{{ smb_mountpoints }}"
+
+- name: create /mnt points
+  file:
+    dest: "{{ item.path }}"
+    state: directory
+    owner: "{{main_username}}"
+    group: nobody
+    mode: 0777
+  with_items: 
+    - "{{ data_disks }}"
+    - "{{ nfs_mount }}"
+    - "{{ smb_mountpoints }}"
+
+- name: Add smbcredentials
+  copy:
+    dest: /home/{{main_username}}/.smbcredentials
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0600
+    content: |
+      user=samba
+      password={{secret_samba_pass}}
+      domain=cosmere
+
+- name: mount disks
+  mount:
+    path: "{{ item.path }}"
+    src: "{{ item.source }}"
+    fstype: "{{ item.fs }}"
+    opts: "{{ item.opts }}"
+    # change to 'mounted' to auto mount versus 'present' for just loaded into fstab
+    state: mounted
+  with_items:
+    - "{{ data_disks }}"
+    - "{{ nfs_mount }}"
+    - "{{ smb_mountpoints }}"
+
+### Telegraf
+- name: Copy Telegraf config
+  template:
+    src: telegraf.conf.j2
+    dest: /etc/telegraf/telegraf.conf
+    owner: root
+    group: root
+    mode: 0644
+- name: Enable/Start Telegraf
+  systemd:
+    enabled: true
+    daemon-reload: true
+    state: restarted
+    name: telegraf
+
+#### NUT
+
+- name: Copy nut folder
+  copy:
+    src: etc/nut/{{item}}
+    dest: /etc/nut/{{item}}
+    owner: root
+    group: nut
+    mode: 0640
+  with_items:
+    - 'nut.conf'
+    - 'ups.conf'
+    - 'upsd.conf'
+    - 'upsd.users'
+    - 'upsmon.conf'
+  when: install_nut == true
+
+- name: Copy NUT script
+  copy:
+    src: nut.sh
+    dest: /home/{{main_username}}
+    mode: +x
+  when: install_nut == true
+
+- name: Run NUT script
+  command: /bin/bash ./nut.sh
+  args:
+    chdir: /home/{{main_username}}
+    creates: /home/{{main_username}}/nut.sh
+  when: install_nut == true
+
+### Restic
+- name: Install Autorestic
+  shell: curl -s https://raw.githubusercontent.com/CupCakeArmy/autorestic/master/install.sh | sudo bash
+  
+- name: Copy Autorestic Config Template
+  template:
+    src: autorestic.yml.j2
+    dest: /home/{{ main_username }}/.autorestic.yml
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+
+### Backup Restore
+- name: Create restore script
+  copy:
+    dest: /home/{{ main_username }}/restore.sh
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: +x
+    content: |
+      #!/bin/bash
+      /usr/local/bin/autorestic restore -f -l home --from synology_docker --to /home/{{main_username}}/docker
+  when: pull_backup == true
+- name: Run restore script
+  command: /bin/bash ./restore.sh
+  args:
+    chdir: "/home/{{main_username}}"
+  when: pull_backup == true
+- name: Remove restore script
+  file:
+    path: /home/{{ main_username }}/restore.sh
+    state: absent
+  when: pull_backup == true
+
+#### Bash Alias
+
+- name: Setup bash aliases
+  lineinfile:
+    dest: "/etc/bash_aliases"
+    create: yes
+    group: root
+    line: "alias {{ item.alias }}='{{ item.command }}'"
+    mode: 0644
+    owner: root
+    regexp: "^alias {{ item.alias }}="
+  with_items:
+    - { alias: "arsnapshot", command: "autorestic exec -av -- snapshots" }
+    - { alias: "arbackup", command: "autorestic backup -a" }
+    - { alias: "arprune", command: "autorestic forget -a -- prune" }
+
+- name: Source aliases file
+  lineinfile:
+    dest: /etc/bash.bashrc
+    line: 'source /etc/bash_aliases'
+    state: present
+
+### Wireguard
+- name: Enable IPv4 forwarding
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: "1"
+    reload: yes
+
+### WOL
+- name: Copy systemd service files
+  copy:
+    src: wol.service
+    dest: /etc/systemd/system/wol.service
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0644
+
+- name: Enable/Start WOL
+  systemd:
+    enabled: true
+    daemon-reload: true
+    state: restarted
+    name: wol
+
+### Cron
+- name: "Main User Cronjobs"
+  cron:
+    user: "{{ main_username }}"
+    name: "{{ item.name }}"
+    job: "{{ item.job }}"
+    hour: "{{ item.hour }}"
+    minute: "{{ item.minute }}"
+    weekday: "{{ item.weekday }}"
+    day: "{{item.day}}"
+    state: present
+  with_items:
+    - { job: "/mnt/Backup/Kelsier/app_backup.sh", name: "App Backup", hour: "19", minute: "0", weekday: "*", day: "*/3" }
+    - { job: "curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_kelsier_purge}}/start && /usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_kelsier_purge}}", name: "Restic Prune", hour: "20", minute: "00", weekday: "1", day: "*" }
+    - { job: "curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_restic_check_kelsier}}/start && /usr/local/bin/autorestic exec -a -- check && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_restic_check_kelsier}}", name: "Restic Check", hour: "19", minute: "0", weekday: "*", day: "1" }
+- name: "Root Cronjobs"
+  cron:
+    user: "root"
+    name: "{{ item.name }}"
+    job: "{{ item.job }}"
+    hour: "{{ item.hour }}"
+    minute: "{{ item.minute }}"
+    weekday: "{{ item.weekday }}"
+    state: present
+  with_items:
+    - { job: "/usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml", name: "Media Backup", hour: "21", minute: "00", weekday: "0,3,5" }

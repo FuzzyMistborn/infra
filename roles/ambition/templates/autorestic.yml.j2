@@ -32,8 +32,8 @@ locations:
           - '/home/{{main_username}}/docker/gitea/mariadb'
       forget:
         keep-daily: 1
-        keep-weekly: 4
-        keep-monthly: 2
+        keep-weekly: 6
+        keep-monthly: 3
     hooks:
       before:
         - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_backup}}/start
@@ -48,8 +48,8 @@ locations:
     options:
       forget:
         keep-daily: 1
-        keep-weekly: 4
-        keep-monthly: 2
+        keep-weekly: 6
+        keep-monthly: 3
     hooks:
       before:
         - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_backup}}/start

@@ -1,13 +1,12 @@
 {
 	log {
 		output file /home/{{main_username}}/caddy/access.log {
-			roll_size 100mb
+			roll_size 10mb
 			roll_keep 5
 			roll_keep_for 168h
 		}
 	}
 	email {{secret_email}}
-	auto_https off
 }
 
 (headers) {

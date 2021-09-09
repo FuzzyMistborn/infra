@@ -96,7 +96,7 @@ locations:
       forget:
         keep-daily: 1
         keep-weekly: 8
-        keep-monthly: 2
+        keep-monthly: 4
     hooks:
       before:
         - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_all}}/start
@@ -112,8 +112,8 @@ locations:
     options:
       forget:
         keep-daily: 1
-        keep-weekly: 4
-        keep-monthly: 2
+        keep-weekly: 8
+        keep-monthly: 4
     hooks:
       before:
         - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_all}}/start
@@ -129,8 +129,8 @@ locations:
     options:
       forget:
         keep-daily: 1
-        keep-weekly: 4
-        keep-monthly: 2
+        keep-weekly: 8
+        keep-monthly: 4
     hooks:
       before:
         - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_all}}/start
