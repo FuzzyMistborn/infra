@@ -28,6 +28,7 @@
 
 - name: set filename
   set_fact: file_name="telegraf_{{telegraf_ver | regex_replace('v')}}-1_amd64.deb"
+  when: force_install == True
 
 - name: install deb
   apt:
