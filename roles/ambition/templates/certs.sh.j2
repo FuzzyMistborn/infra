@@ -1,7 +1,5 @@
 #!/bin/bash
 
-curl --retry 3 {{secret_hc_linode_certs}}/start
-
 #LINODE_TOKEN={{secret_linode_token}} \
 #/usr/local/bin/lego --email="fuzzymistborn@protonmail.com" --domains="*.fuzzymistborn.com" --dns="linode" --accept-tos --path /home/{{main_username}}/lego run \
 #LINODE_TOKEN={{secret_linode_token}} \
@@ -12,5 +10,3 @@ LINODE_TOKEN={{secret_linode_token}} \
 
 LINODE_TOKEN={{secret_linode_token}} \
 /usr/local/bin/lego --email="{{secret_new_email}}" --domains="*.{{secret_personal_url}}" --dns="linode" --path /home/{{main_username}}/lego renew --days 45
-
-curl --retry 3 {{secret_hc_linode_certs}}/$1

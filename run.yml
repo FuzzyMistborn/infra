@@ -36,11 +36,15 @@
           update_cache: yes
           cache_valid_time: 3600
     roles:
-      - role: nag-removal
+      - role: install_nag-removal
       - role: grog.package
       - role: geerlingguy.pip
       - role: geerlingguy.samba
       - role: geerlingguy.nfs
+      - role: install_mergerfs
+      - role: install_autorestic
+      - role: install_runitor
+      - role: install_telegraf
       - role: adonalsium
       - role: geerlingguy.docker
       - role: geerlingguy.ntp
@@ -66,6 +70,9 @@
       - role: geerlingguy.samba
       - role: geerlingguy.docker
       - role: geerlingguy.pip
+      - role: install_autorestic
+      - role: install_telegraf
+      - role: install_runitor
       - role: endowment
       - role: ironicbadger.ansible_role_docker_compose_generator
 
@@ -78,6 +85,9 @@
       - role: github
       - role: geerlingguy.docker
       - role: geerlingguy.pip
+      - role: install_autorestic
+      - role: install_telegraf
+      - role: install_runitor
       - role: autonomy
       - role: ironicbadger.ansible_role_docker_compose_generator
 
@@ -89,6 +99,9 @@
       - role: grog.package
       - role: geerlingguy.docker
       - role: geerlingguy.pip
+      - role: install_autorestic
+      - role: install_telegraf
+      - role: install_runitor
       - role: cultivation
       - role: ironicbadger.ansible_role_docker_compose_generator
 
@@ -100,6 +113,9 @@
       - role: grog.package
       - role: geerlingguy.docker
       - role: geerlingguy.pip
+      - role: install_autorestic
+      - role: install_telegraf
+      - role: install_runitor
       - role: ironicbadger.ansible_role_docker_compose_generator
       - role: preservation
 
@@ -111,6 +127,9 @@
       - role: grog.package
       - role: geerlingguy.pip
       - role: geerlingguy.docker
+      - role: install_lego
+      - role: install_autorestic
+      - role: install_runitor
       - role: caddy_ansible.caddy_ansible
       - role: honor
       - role: install_fail2ban
@@ -134,6 +153,8 @@
     roles:
       - role: grog.package
       - role: geerlingguy.pip
+      - role: install_autorestic
+      - role: install_runitor
       - role: caddy_internal
       - role: caddy_ansible.caddy_ansible
 
@@ -144,6 +165,8 @@
     roles:
       - role: grog.package
       - role: geerlingguy.pip
+      - role: install_autorestic
+      - role: install_runitor
       - role: mercy
 
   - hosts: omada
@@ -154,6 +177,8 @@
       - role: grog.package
       - role: geerlingguy.pip
       - role: geerlingguy.docker
+      - role: install_autorestic
+      - role: install_runitor
       - role: omada
       - role: ironicbadger.ansible_role_docker_compose_generator
 
@@ -165,6 +190,9 @@
       - role: grog.package
       - role: geerlingguy.pip
       - role: geerlingguy.docker
+      - role: install_lego
+      - role: install_autorestic
+      - role: install_runitor
       - role: caddy_ansible.caddy_ansible
       - role: ambition
       - role: install_fail2ban
@@ -177,6 +205,8 @@
     roles:
       - role: grog.package
       - role: geerlingguy.pip
+      - role: install_autorestic
+      - role: install_runitor
       - role: kelsier
 
   - hosts: odium
@@ -198,7 +228,7 @@
           update_cache: yes
           cache_valid_time: 3600
     roles:
-      - role: nag-removal
+      - role: install_nag-removal
       - role: grog.package
       - role: geerlingguy.pip
       - role: odium

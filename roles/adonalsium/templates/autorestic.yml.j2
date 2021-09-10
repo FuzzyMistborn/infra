@@ -80,13 +80,6 @@ locations:
         keep-daily: 1
         keep-weekly: 8
         keep-monthly: 4
-    hooks:
-      before:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_docker}}/start
-      success:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_docker}}/0
-      failure:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_docker}}/fail
   photos:
     from: '/mnt/Media/Photos'
     to: 
@@ -97,13 +90,6 @@ locations:
         keep-daily: 1
         keep-weekly: 8
         keep-monthly: 4
-    hooks:
-      before:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_all}}/start
-      success:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_all}}/0
-      failure:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_all}}/fail
   music:
     from: '/mnt/Media/Music'
     to: 
@@ -114,13 +100,6 @@ locations:
         keep-daily: 1
         keep-weekly: 8
         keep-monthly: 4
-    hooks:
-      before:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_all}}/start
-      success:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_all}}/0
-      failure:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_all}}/fail
   audiobooks:
     from: '/mnt/Media/Audiobooks'
     to: 
@@ -131,13 +110,6 @@ locations:
         keep-daily: 1
         keep-weekly: 8
         keep-monthly: 4
-    hooks:
-      before:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_all}}/start
-      success:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_all}}/0
-      failure:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_all}}/fail
   files:
     from: '/mnt/Media/Files'
     to: 
@@ -151,10 +123,3 @@ locations:
         keep-daily: 1
         keep-weekly: 8
         keep-monthly: 4
-    hooks:
-      before:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_all}}/start
-      success:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_all}}/0
-      failure:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_media_all}}/fail

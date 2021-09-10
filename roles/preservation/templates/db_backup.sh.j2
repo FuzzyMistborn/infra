@@ -1,7 +1,5 @@
 #!/bin/bash
 
-curl --retry 3 {{secret_hc_preservation_db_backup}}/start
-
 # Nextcloud DB Backup
 echo Backing up Nextcloud DB
 today=$(date +"%Y_%m_%d")
@@ -34,5 +32,3 @@ find /home/{{main_username}}/db_backups/influxdb -mtime +6 -type d -delete
 
 #### Backup the backups
 /usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml
-
-curl --retry 3 {{secret_hc_preservation_db_backup}}/$1

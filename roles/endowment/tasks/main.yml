@@ -43,24 +43,6 @@
     group: "{{ main_username }}"
 
 ### Telegraf
-- name: Install Github3.py
-  pip:
-    name: github3.py
-- name: Get latest release for telegraf
-  community.general.github_release:
-    user: influxdata
-    repo: telegraf
-    action: latest_release
-  register: telegraf_ver_latest
-  when: telegraf_ver is undefined
-- name: Set telegraf version
-  set_fact:
-    telegraf_ver: "{{ telegraf_ver_latest.tag  | regex_replace('v') }}"
-  when: telegraf_ver is undefined
-- name: Install Telegraf
-  apt:
-    deb: https://dl.influxdata.com/telegraf/releases/telegraf_{{telegraf_ver}}-1_amd64.deb
-
 - name: Copy Telegraf config
   template:
     src: telegraf.conf.j2
@@ -85,12 +67,6 @@
   include: disks.yml
 
 ### Restic
-- name: Update Restic to latest version
-  command: "/usr/bin/restic self-update"
-
-- name: Install Autorestic
-  shell: curl -s https://raw.githubusercontent.com/CupCakeArmy/autorestic/master/install.sh | sudo bash
-
 - name: Copy Autorestic Config Template
   template:
     src: autorestic.yml.j2
@@ -175,9 +151,9 @@
     state: present
   loop:
     - { job: "/home/{{ main_username }}/scripts/nextcloud_cron.sh", name: "Nextcloud", hour: "*", minute: "*/5", weekday: "*", day: "*" }
-    - { job: "curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_endowment_purge}}/start && /usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_endowment_purge}}", name: "Restic Prune", hour: "22", minute: "30", weekday: "1", day: "*" }
-    - { job: "curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_restic_check_endowment}}/start && /usr/local/bin/autorestic exec -a -- check && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_restic_check_endowment}}", name: "Restic Check", hour: "2", minute: "30", weekday: "*", day: "1" }
-    - { job: "/home/{{ main_username }}/scripts/photos.sh", name: "Photo Reorg", hour: "3", minute: "0", weekday: "*", day: "*" }
+    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_endowment_purge}} -- /usr/local/bin/autorestic forget -a -- prune", name: "Restic Prune", hour: "22", minute: "30", weekday: "1", day: "*" }
+    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_restic_check_endowment}} -- /usr/local/bin/autorestic exec -a -- check", name: "Restic Check", hour: "2", minute: "30", weekday: "*", day: "1" }
+    - { job: "/usr/local/bin/runitor -uuid {{ secret_hc_photo_reorg }} -- /home/{{ main_username }}/scripts/photos.sh", name: "Photo Reorg", hour: "3", minute: "0", weekday: "*", day: "*" }
 
 - name: "Root Cronjobs"
   cron:
@@ -189,4 +165,4 @@
     weekday: "{{ item.weekday }}"
     state: present
   with_items:
-    - { job: "/usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml", name: "Media Backup", hour: "0", minute: "30", weekday: "*" }
+    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_endowment_media}} -- /usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml", name: "Media Backup", hour: "0", minute: "30", weekday: "*" }

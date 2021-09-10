@@ -1,0 +1,38 @@
+---
+
+- name: get latest release
+  uri:
+    url: https://api.github.com/repos/go-acme/lego/releases/latest
+    return_content: true
+  register: release_latest
+  when: lego_ver is undefined
+
+- name: download latest release
+  loop: "{{ release_latest.json.assets }}"
+  when: "lego_ver is undefined and 'linux_amd64.tar.gz' in item.name"
+  unarchive:
+    src: "{{ item.browser_download_url }}"
+    dest: /usr/local/bin
+    remote_src: yes
+    owner: "{{main_username}}"
+    group: "{{main_username}}"
+    mode: +x
+
+- name: download tagged version
+  when: "lego_ver is defined"
+  unarchive:
+    src: https://github.com/go-acme/lego/releases/download/{{lego_ver}}/lego_{{lego_ver}}_linux_amd64.tar.gz
+    dest: /usr/local/bin
+    remote_src: yes
+    owner: "{{main_username}}"
+    group: "{{main_username}}"
+    mode: +x
+
+- name: remove unneeded files
+  file:
+    path: /usr/local/bin/{{item}}
+    state: absent
+  with_items:
+    - LICENSE
+    - CHANGELOG.md
+    - README.md

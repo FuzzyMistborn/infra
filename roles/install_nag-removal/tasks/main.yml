@@ -1,0 +1,41 @@
+---
+- name: check whether package is installed
+  shell: "dpkg-query -W 'pve-fake-subscription'"
+  ignore_errors: True
+  register: is_installed
+  changed_when: "is_installed.rc != 0"
+
+- name: install package?
+  set_fact:
+    force_install: "{{ nag_force_install == true or is_installed.failed == true }}"
+
+- name: get latest release
+  uri:
+    url: https://api.github.com/repos/Jamesits/pve-fake-subscription/releases/latest
+    return_content: true
+  register: release_latest
+  when: nag_ver is undefined
+
+- name: download latest release
+  when: "nag_ver is undefined and force_install == True"
+  get_url:
+      url: "{{ release_latest.json.assets.0.browser_download_url }}"
+      dest: /tmp
+
+- set_fact: file_name="{{ release_latest.json.assets.0.name }}"
+  when: "nag_ver is undefined"
+
+- name: download tagged release
+  when: "nag_ver is defined and force_install == True"
+  get_url:
+      url: https://github.com/Jamesits/pve-fake-subscription/releases/download/{{nag_ver}}/pve-fake-subscription_{{nag_ver | regex_replace('v') }}_all.deb
+      dest: /tmp
+
+- set_fact: file_name="pve-fake-subscription_{{nag_ver | regex_replace('v') }}_all.deb"
+  when: "nag_ver is defined"
+
+- name: install deb
+  apt:
+    deb: /tmp/{{ file_name }}
+    state: present
+  when: force_install == True

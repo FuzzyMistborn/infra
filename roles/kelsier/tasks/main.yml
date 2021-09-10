@@ -57,19 +57,36 @@
   kewlfft.aur.aur:
     use: yay
     name:
-      - balena-etcher
-      - jellyfin-media-player
-      - mqtt-explorer
-      - zoom
-      - protonmail-bridge
+#      - balena-etcher # Currently broken, use appimage
+      - mqtt-explorer-appimage # Other package broken
       - spotify
-      - ferdi
       - brave
-      - ckan
+#      - ckan # Currently broken, use Mono
       - telegraf
       - squeezelite
+      - bauh
     state: present
   become_user: ansible
+  become: yes
+
+### Flatpak
+- name: Add the flathub flatpak repository remote
+  community.general.flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+    method: system
+
+- name: Install flatpaks
+  community.general.flatpak:
+    name:
+      - com.getferdi.Ferdi
+      - com.github.iwalton3.jellyfin-media-player
+      - us.zoom.Zoom
+      - ch.protonmail.protonmail-bridge
+    state: present
+    method: user
+  become_user: "{{main_username}}"
   become: yes
 
 # fstab
@@ -166,9 +183,6 @@
   when: install_nut == true
 
 ### Restic
-- name: Install Autorestic
-  shell: curl -s https://raw.githubusercontent.com/CupCakeArmy/autorestic/master/install.sh | sudo bash
-  
 - name: Copy Autorestic Config Template
   template:
     src: autorestic.yml.j2
@@ -256,8 +270,8 @@
     state: present
   with_items:
     - { job: "/mnt/Backup/Kelsier/app_backup.sh", name: "App Backup", hour: "19", minute: "0", weekday: "*", day: "*/3" }
-    - { job: "curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_kelsier_purge}}/start && /usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_kelsier_purge}}", name: "Restic Prune", hour: "20", minute: "00", weekday: "1", day: "*" }
-    - { job: "curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_restic_check_kelsier}}/start && /usr/local/bin/autorestic exec -a -- check && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_restic_check_kelsier}}", name: "Restic Check", hour: "19", minute: "0", weekday: "*", day: "1" }
+    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_kelsier_purge}} -- /usr/local/bin/autorestic forget -a -- prune", name: "Restic Prune", hour: "20", minute: "00", weekday: "1", day: "*" }
+    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_restic_check_kelsier}} -- /usr/local/bin/autorestic exec -a -- check", name: "Restic Check", hour: "19", minute: "0", weekday: "*", day: "1" }
 - name: "Root Cronjobs"
   cron:
     user: "root"
@@ -268,4 +282,4 @@
     weekday: "{{ item.weekday }}"
     state: present
   with_items:
-    - { job: "/usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml", name: "Media Backup", hour: "21", minute: "00", weekday: "0,3,5" }
+    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_kelsier_media}} -- /usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml", name: "Media Backup", hour: "21", minute: "00", weekday: "0,3,5" }

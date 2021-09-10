@@ -56,12 +56,6 @@
     state: present
 
 ### Restic
-- name: Update Restic to latest version
-  command: "/usr/bin/restic self-update"
-
-- name: Install Autorestic
-  shell: curl -s https://raw.githubusercontent.com/CupCakeArmy/autorestic/master/install.sh | sudo bash
-
 - name: Copy Autorestic Config Template
   template:
     src: autorestic.yml.j2
@@ -103,8 +97,8 @@
     day: "{{ item.day }}"
     state: present
   with_items:
-    - { job: "curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_honor_purge}}/start && /usr/local/bin/autorestic forget -a -- prune && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_honor_purge}}", name: "Restic Prune", hour: "22", minute: "15", weekday: "1", day: "*" }
-    - { job: "curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_restic_check_honor}}/start && /usr/local/bin/autorestic exec -a -- check && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_restic_check_honor}}", name: "Restic Check", hour: "2", minute: "15", weekday: "*", day: "1" }
+    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_honor_purge}} -- /usr/local/bin/autorestic forget -a -- prune", name: "Restic Prune", hour: "22", minute: "15", weekday: "1", day: "*" }
+    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_restic_check_honor}} -- /usr/local/bin/autorestic exec -a -- check", name: "Restic Check", hour: "2", minute: "15", weekday: "*", day: "1" }
 
 - name: "Root Cronjobs"
   cron:
@@ -116,7 +110,7 @@
     weekday: "{{ item.weekday }}"
     state: present
   with_items:
-    - { job: "/usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml", name: "Media Backup", hour: "0", minute: "15", weekday: "*" }
+    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_honor_media}} -- /usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml", name: "Media Backup", hour: "0", minute: "15", weekday: "*" }
     - { job: "/home/{{main_username}}/wg-check.sh", name: "Wireguard Tunnel Check/Restore", hour: "*", minute: "*/5", weekday: "*" }
 
 ### Wireguard

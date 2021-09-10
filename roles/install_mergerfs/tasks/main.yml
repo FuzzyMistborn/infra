@@ -1,0 +1,43 @@
+---
+- name: check whether package is installed
+  shell: "dpkg-query -W 'mergerfs'"
+  ignore_errors: True
+  register: is_installed
+  changed_when: "is_installed.rc != 0"
+
+- name: install package?
+  set_fact:
+    force_install: "{{ mergerfs_force_install == true or is_installed.failed == true }}"
+
+- name: get latest release
+  uri:
+    url: https://api.github.com/repos/trapexit/mergerfs/releases/latest
+    return_content: true
+  register: release_latest
+  when: mergerfs_ver is undefined
+
+- name: download latest release
+  loop: "{{ release_latest.json.assets }}"
+  when: "mergerfs_ver is undefined  and force_install == True and 'debian-bullseye_amd64.deb' in item.name"
+  get_url:
+      url: "{{ item.browser_download_url }}"
+      dest: /tmp
+
+- set_fact: file_name="{{ item.name }}"
+  loop: "{{ release_latest.json.assets }}"
+  when: "mergerfs_ver is undefined  and force_install == True and 'debian-bullseye_amd64.deb' in item.name"
+
+- name: download tagged release
+  when: "mergerfs_ver is defined and force_install == True"
+  get_url:
+      url: https://github.com/trapexit/mergerfs/releases/download/{{mergerfs_ver}}/mergerfs_{{mergerfs_ver}}.debian-bullseye_amd64.deb
+      dest: /tmp
+
+- set_fact: file_name="mergerfs_{{mergerfs_ver}}.debian-bullseye_amd64.deb"
+  when: "mergerfs_ver is defined"
+
+- name: install deb
+  apt:
+    deb: /tmp/{{ file_name }}
+    state: present
+  when: force_install == True

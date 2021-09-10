@@ -24,8 +24,3 @@ locations:
         keep-daily: 1
         keep-weekly: 4
         keep-monthly: 2
-    hooks:
-      success:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_omada_media}}/0
-      failure:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_omada_media}}/fail

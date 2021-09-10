@@ -1,0 +1,44 @@
+---
+- name: check whether package is installed
+  shell: "dpkg-query -W 'telegraf'"
+  ignore_errors: True
+  register: is_installed
+  changed_when: "is_installed.rc != 0"
+
+- name: install package?
+  set_fact:
+    force_install: "{{ telegraf_force_install == true or is_installed.failed == true }}"
+
+- name: debug
+  debug:
+    msg: "{{force_install}}"
+
+- name: get latest release
+  uri:
+    url: https://api.github.com/repos/influxdata/telegraf/releases/latest
+    return_content: true
+  register: release_latest
+  when: telegraf_ver is undefined
+
+- name: download latest release
+  get_url:
+      url: https://dl.influxdata.com/telegraf/releases/telegraf_{{ release_latest.json.name | regex_replace('v')}}-1_amd64.deb
+      dest: /tmp
+
+- set_fact: file_name="{{ release_latest.json.name | regex_replace('v')}}-1_amd64.deb"
+  when: "telegraf_ver is undefined  and force_install == True"
+
+- name: download tagged release
+  when: "telegraf_ver is defined and force_install == True"
+  get_url:
+      url: https://dl.influxdata.com/telegraf/releases/telegraf_{{telegraf_ver}}-1_amd64.deb
+      dest: /tmp
+
+- set_fact: file_name="telegraf_{{telegraf_ver}}-1_amd64.deb"
+  when: "telegraf_ver is defined"
+
+- name: install deb
+  apt:
+    deb: /tmp/{{ file_name }}
+    state: present
+  when: force_install == True

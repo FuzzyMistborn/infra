@@ -1,7 +1,5 @@
 #/bin/bash
 
-curl --retry 3 {{secret_hc_linode_db_backup}}/start
-
 #### Gitea DB Backup
 echo Backing up Gitea DB
 today=$(date -d "$date" +"%Y_%m_%d")
@@ -13,5 +11,3 @@ today=$(date +"%Y_%m_%d")
 docker exec umami-db sh -c 'exec mysqldump --single-transaction -h localhost -u umami -p{{ secret_umami_db_pass }} umami' > /home/{{main_username}}/db_backups/umami/umamiDB_$today.sql
 
 find /home/{{main_username}}/db_backups/* -mtime +6 -type f -delete
-
-curl --retry 3 {{secret_hc_linode_db_backup}}/$?

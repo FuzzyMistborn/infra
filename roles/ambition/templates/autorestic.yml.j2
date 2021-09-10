@@ -34,13 +34,6 @@ locations:
         keep-daily: 1
         keep-weekly: 6
         keep-monthly: 3
-    hooks:
-      before:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_backup}}/start
-      success:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_backup}}/0
-      failure:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_backup}}/fail
   db:
     from: '/home/{{main_username}}/db_backups'
     to: 
@@ -50,13 +43,6 @@ locations:
         keep-daily: 1
         keep-weekly: 6
         keep-monthly: 3
-    hooks:
-      before:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_backup}}/start
-      success:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_backup}}/0
-      failure:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_backup}}/fail
   certs:
     from: '/home/{{main_username}}/lego'
     to: 
@@ -65,10 +51,3 @@ locations:
       forget:
         keep-daily: 1
         keep-weekly: 4
-    hooks:
-      before:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_backup}}/start
-      success:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_backup}}/0
-      failure:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_linode_restic_backup}}/fail

@@ -11,5 +11,6 @@ package_list:
   - name: wget
   - name: make
   - name: sshpass
+  - name: screen
 
 pull_backup: false

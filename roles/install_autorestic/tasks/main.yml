@@ -1,0 +1,42 @@
+---
+
+- name: Update Restic to latest version
+  command: "/usr/bin/restic self-update"
+
+- name: get latest release
+  uri:
+    url: https://api.github.com/repos/cupcakearmy/autorestic/releases/latest
+    return_content: true
+  register: release_latest
+  when: autorestic_ver is undefined
+
+- name: download latest release
+  loop: "{{ release_latest.json.assets }}"
+  when: "autorestic_ver is undefined and 'linux_amd64.bz2' in item.name"
+  get_url:
+      url: "{{ item.browser_download_url }}"
+      dest: /tmp
+      force: yes
+      owner: "{{main_username}}"
+      group: "{{main_username}}"
+      mode: +x
+
+- set_fact: file_name="{{ item.name }}"
+  loop: "{{ release_latest.json.assets }}"
+  when: "autorestic_ver is undefined and 'linux_amd64.bz2' in item.name"
+
+- name: download tagged release
+  when: "autorestic_ver is defined"
+  get_url:
+      url: https://github.com/cupcakearmy/autorestic/releases/download/{{autorestic_ver }}/autorestic_{{ autorestic_ver | regex_replace('v')}}_linux_amd64.bz2
+      dest: /tmp
+      force: yes
+      owner: "{{main_username}}"
+      group: "{{main_username}}"
+      mode: +x
+
+- set_fact: file_name="autorestic_{{ autorestic_ver | regex_replace('v')}}_linux_amd64.bz2"
+  when: "autorestic_ver is defined"
+
+- name: Unzip release
+  shell: "cd /tmp && bzip2 -d {{ file_name }} && mv {{ file_name | regex_replace('.bz2') }} /usr/local/bin/autorestic"

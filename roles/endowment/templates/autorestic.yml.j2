@@ -24,10 +24,3 @@ locations:
         keep-daily: 1
         keep-weekly: 8
         keep-monthly: 4
-    hooks:
-      before:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_endowment_media}}/start
-      success:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_endowment_media}}/0
-      failure:
-        - curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_endowment_media}}/fail

@@ -1,0 +1,36 @@
+---
+
+- name: get latest release
+  uri:
+    url: https://api.github.com/repos/bdd/runitor/releases/latest
+    return_content: true
+  register: release_latest
+  when: "runitor_ver is undefined"
+
+- name: download latest release
+  loop: "{{ release_latest.json.assets }}"
+  when: "runitor_ver is undefined and '-linux-amd64' in item.name"
+  get_url:
+    url: "{{ item.browser_download_url }}"
+    dest: /usr/local/bin/runitor
+    force: yes
+    owner: "{{main_username}}"
+    group: "{{main_username}}"
+    mode: +x
+
+- name: download tagged version
+  when: "runitor_ver is defined"
+  get_url:
+    url: https://github.com/bdd/runitor/releases/download/{{runitor_ver}}/runitor-{{runitor_ver}}-linux-amd64
+    dest: /usr/local/bin/runitor
+    remote_src: yes
+    owner: "{{main_username}}"
+    group: "{{main_username}}"
+    mode: +x
+
+- name: populate /etc/environment
+  lineinfile:
+    dest: "/etc/environment"
+    state: present
+    regexp: "^HC_API_URL="
+    line: "HC_API_URL={{secret_hc_ping_url}}"
