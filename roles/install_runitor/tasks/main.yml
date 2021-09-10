@@ -5,25 +5,17 @@
     url: https://api.github.com/repos/bdd/runitor/releases/latest
     return_content: true
   register: release_latest
-  when: "runitor_ver is undefined"
+  when: runitor_ver is undefined
 
-- name: download latest release
-  loop: "{{ release_latest.json.assets }}"
-  when: "runitor_ver is undefined and '-linux-amd64' in item.name"
-  get_url:
-    url: "{{ item.browser_download_url }}"
-    dest: /usr/local/bin/runitor
-    force: yes
-    owner: "{{main_username}}"
-    group: "{{main_username}}"
-    mode: +x
+- name: set version if not already
+  set_fact: runitor_ver="{{ release_latest.json.tag_name }}"
+  when: runitor_ver is undefined
 
-- name: download tagged version
-  when: "runitor_ver is defined"
+- name: download release
   get_url:
     url: https://github.com/bdd/runitor/releases/download/{{runitor_ver}}/runitor-{{runitor_ver}}-linux-amd64
-    dest: /usr/local/bin/runitor
-    remote_src: yes
+    dest: /usr/local/bin
+    force: yes
     owner: "{{main_username}}"
     group: "{{main_username}}"
     mode: +x

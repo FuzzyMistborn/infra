@@ -14,27 +14,21 @@
     url: https://api.github.com/repos/trapexit/mergerfs/releases/latest
     return_content: true
   register: release_latest
-  when: mergerfs_ver is undefined
+  when: mergerfs_ver is undefined and force_install == True
 
-- name: download latest release
-  loop: "{{ release_latest.json.assets }}"
-  when: "mergerfs_ver is undefined  and force_install == True and 'debian-bullseye_amd64.deb' in item.name"
-  get_url:
-      url: "{{ item.browser_download_url }}"
-      dest: /tmp
+- name: set version if not already
+  set_fact: mergerfs_ver="{{ release_latest.json.tag_name }}"
+  when: mergerfs_ver is undefined and force_install == True
 
-- set_fact: file_name="{{ item.name }}"
-  loop: "{{ release_latest.json.assets }}"
-  when: "mergerfs_ver is undefined  and force_install == True and 'debian-bullseye_amd64.deb' in item.name"
-
-- name: download tagged release
-  when: "mergerfs_ver is defined and force_install == True"
+- name: download release
+  when: force_install == True
   get_url:
       url: https://github.com/trapexit/mergerfs/releases/download/{{mergerfs_ver}}/mergerfs_{{mergerfs_ver}}.debian-bullseye_amd64.deb
       dest: /tmp
 
-- set_fact: file_name="mergerfs_{{mergerfs_ver}}.debian-bullseye_amd64.deb"
-  when: "mergerfs_ver is defined"
+- name: set filename
+  set_fact: file_name="mergerfs_{{mergerfs_ver}}.debian-bullseye_amd64.deb"
+  when: force_install == True
 
 - name: install deb
   apt:

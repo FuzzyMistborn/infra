@@ -85,24 +85,6 @@
     - { src: 'db_restore.sh.j2', dest: 'db_restore.sh' }
     - { src: 'certs.sh.j2', dest: 'certs.sh' }
 
-### Hugo
-- name: get latest release
-  uri:
-    url: https://api.github.com/repos/gohugoio/hugo/releases/latest
-    return_content: true
-  register: release_latest
-
-- name: download latest release
-  loop: "{{ release_latest.json.assets }}"
-  when: "'Linux-64bit.tar.gz' in item.name"
-  unarchive:
-    src: "{{ item.browser_download_url }}"
-    dest: /usr/local/bin
-    remote_src: yes
-    owner: "{{main_username}}"
-    group: "{{main_username}}"
-    mode: +x
-
 ### Restic
 - name: Copy Autorestic Config Template
   template:

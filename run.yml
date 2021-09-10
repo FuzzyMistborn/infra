@@ -191,6 +191,7 @@
       - role: geerlingguy.pip
       - role: geerlingguy.docker
       - role: install_lego
+      - role: install_hugo
       - role: install_autorestic
       - role: install_runitor
       - role: caddy_ansible.caddy_ansible

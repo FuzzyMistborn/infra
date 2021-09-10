@@ -16,7 +16,7 @@ package_list:
   - name: sudo
   - name: wget
 
-telegraf_force_install: false
+#telegraf_force_install: false
 #telegraf_ver: 1.18.1
 
 # geerlingguy.ntp

@@ -182,8 +182,8 @@
     weekday: "{{ item.weekday }}"
     state: present
   with_items:
-    - { job: "systemctl restart bar.service && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_bar}}", name: "Restart BARbot", hour: "3", minute: "0", weekday: "*" }
-    - { job: "systemctl restart math.service && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_math}}", name: "Restart MATHBot", hour: "3", minute: "1", weekday: "*" }
-    - { job: "systemctl restart phantom.service && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_phantom}}", name: "Restart PhantomBot", hour: "3", minute: "2", weekday: "*" }
-    - { job: "systemctl restart tg-sync.service && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_mercy_tg}}", name: "Restart TG Sync", hour: "3", minute: "3", weekday: "*" }
+    - { job: "/usr/local/bin/runitor -no-start-ping=true -uuid {{secret_hc_mercy_bar}} -- systemctl restart bar.service", name: "Restart BARbot", hour: "3", minute: "0", weekday: "*" }
+    - { job: "/usr/local/bin/runitor -no-start-ping=true -uuid {{secret_hc_mercy_math}} -- systemctl restart math.service", name: "Restart MATHBot", hour: "3", minute: "1", weekday: "*" }
+    - { job: "/usr/local/bin/runitor -no-start-ping=true -uuid {{secret_hc_mercy_phantom}} -- systemctl restart phantom.service", name: "Restart PhantomBot", hour: "3", minute: "2", weekday: "*" }
+    - { job: "/usr/local/bin/runitor -no-start-ping=true -uuid {{secret_hc_mercy_tg}} -- systemctl restart tg-sync.service", name: "Restart TG Sync", hour: "3", minute: "3", weekday: "*" }
     - { job: "/usr/local/bin/runitor -uuid {{secret_hc_mercy_media}}/ -- /usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml", name: "Backup Media", hour: "2", minute: "59", weekday: "*" }

@@ -239,4 +239,4 @@
     weekday: "{{ item.weekday }}"
     state: present
   with_items:
-    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_autonomy_media}} --/usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml", name: "Media Backup", hour: "0", minute: "0", weekday: "*" }
+    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_autonomy_media}} -- /usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml", name: "Media Backup", hour: "0", minute: "0", weekday: "*" }

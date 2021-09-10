@@ -2,18 +2,18 @@
 
 - name: get latest release
   uri:
-    url: https://api.github.com/repos/go-acme/lego/releases/latest
+    url: https://api.github.com/repos/gohugoio/hugo/releases/latest
     return_content: true
   register: release_latest
-  when: lego_ver is undefined
+  when: hugo_ver is undefined
 
 - name: set version if not already
-  set_fact: lego_ver="{{ release_latest.json.tag_name }}"
-  when: lego_ver is undefined
+  set_fact: hugo_ver="{{ release_latest.json.tag_name }}"
+  when: hugo_ver is undefined
 
 - name: download release
   unarchive:
-    src: https://github.com/go-acme/lego/releases/download/{{lego_ver}}/lego_{{lego_ver}}_linux_amd64.tar.gz
+    src: https://github.com/gohugoio/hugo/releases/download/{{hugo_ver}}/hugo_{{hugo_ver | regex_replace('v')}}_Linux-64bit.tar.gz
     dest: /usr/local/bin
     remote_src: yes
     owner: "{{main_username}}"
@@ -26,4 +26,4 @@
     state: absent
   with_items:
     - LICENSE
-    - CHANGELOG.md
+    - README.md

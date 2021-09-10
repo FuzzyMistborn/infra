@@ -9,33 +9,25 @@
   set_fact:
     force_install: "{{ telegraf_force_install == true or is_installed.failed == true }}"
 
-- name: debug
-  debug:
-    msg: "{{force_install}}"
-
 - name: get latest release
   uri:
     url: https://api.github.com/repos/influxdata/telegraf/releases/latest
     return_content: true
   register: release_latest
-  when: telegraf_ver is undefined
+  when: telegraf_ver is undefined and force_install == True
 
-- name: download latest release
+- name: set version if not already
+  set_fact: telegraf_ver="{{ release_latest.json.tag_name }}"
+  when: telegraf_ver is undefined and force_install == True
+
+- name: download release
+  when: force_install == True
   get_url:
-      url: https://dl.influxdata.com/telegraf/releases/telegraf_{{ release_latest.json.name | regex_replace('v')}}-1_amd64.deb
+      url: https://dl.influxdata.com/telegraf/releases/telegraf_{{telegraf_ver | regex_replace('v')}}-1_amd64.deb
       dest: /tmp
 
-- set_fact: file_name="{{ release_latest.json.name | regex_replace('v')}}-1_amd64.deb"
-  when: "telegraf_ver is undefined  and force_install == True"
-
-- name: download tagged release
-  when: "telegraf_ver is defined and force_install == True"
-  get_url:
-      url: https://dl.influxdata.com/telegraf/releases/telegraf_{{telegraf_ver}}-1_amd64.deb
-      dest: /tmp
-
-- set_fact: file_name="telegraf_{{telegraf_ver}}-1_amd64.deb"
-  when: "telegraf_ver is defined"
+- name: set filename
+  set_fact: file_name="telegraf_{{telegraf_ver | regex_replace('v')}}-1_amd64.deb"
 
 - name: install deb
   apt:

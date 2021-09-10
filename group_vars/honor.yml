@@ -14,6 +14,7 @@ package_list:
   - name: wireguard
 
 pull_backup: false
+#lego_ver: 4.4.0
 
 ### Caddy Config
 caddy_systemd_capabilities_enabled: true
