@@ -10,7 +10,7 @@
   apt_repository:
     repo: 'deb http://download.proxmox.com/debian/pve buster pve-no-subscription'
     state: present
-       
+
 - name: Install Proxmoxer
   pip:
     name: proxmoxer
@@ -64,4 +64,4 @@
     weekday: "{{ item.weekday }}"
     state: present
   with_items:
-    - { job: "/usr/bin/systemctl suspend", name: "Daily Suspend", hour: "0", minute: "0", weekday: "*" }
+    - {job: "/usr/bin/systemctl suspend", name: "Daily Suspend", hour: "0", minute: "0", weekday: "*"}

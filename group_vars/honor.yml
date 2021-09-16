@@ -14,7 +14,7 @@ package_list:
   - name: wireguard
 
 pull_backup: false
-#lego_ver: 4.4.0
+# lego_ver: 4.4.0
 
 ### Caddy Config
 caddy_systemd_capabilities_enabled: true
@@ -42,7 +42,7 @@ containers:
     environment:
       - LOG_LEVEL=info
       - LOG_JSON=false
-    hostname:  "{{ hostname }}"
+    hostname: "{{ hostname }}"
     include_global_env_vars: true
   ###
   - service_name: adguard
@@ -122,8 +122,8 @@ containers:
       - "{{ appdata_path }}/docker-api:/data/certs"
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
-     - CREATE_CERTS_WITH_PW={{ secret_docker_api_tls }}
-     - CERT_HOSTNAME=docker-remote.local
+      - CREATE_CERTS_WITH_PW={{ secret_docker_api_tls }}
+      - CERT_HOSTNAME=docker-remote.local
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"

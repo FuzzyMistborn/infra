@@ -49,7 +49,7 @@ containers:
       - "{{ appdata_path }}/influx_db/data:/var/lib/influxdb2"
       - "{{ appdata_path }}/influx_db/config:/etc/influxdb2"
     environment:
-#      - DOCKER_INFLUXDB_INIT_MODE=setup
+      #  - DOCKER_INFLUXDB_INIT_MODE=setup
       - DOCKER_INFLUXDB_INIT_USERNAME={{ main_username }}
       - DOCKER_INFLUXDB_INIT_PASSWORD={{ secret_influxdb_pass }}
       - DOCKER_INFLUXDB_INIT_ORG=cosmere
@@ -138,8 +138,8 @@ containers:
       - "{{ appdata_path }}/docker-api:/data/certs"
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
-     - CREATE_CERTS_WITH_PW={{ secret_docker_api_tls }}
-     - CERT_HOSTNAME=docker-remote.local
+      - CREATE_CERTS_WITH_PW={{ secret_docker_api_tls }}
+      - CERT_HOSTNAME=docker-remote.local
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
@@ -160,7 +160,7 @@ containers:
     environment:
       - LOG_LEVEL=info
       - LOG_JSON=false
-    hostname:  "{{ hostname }}"
+    hostname: "{{ hostname }}"
     include_global_env_vars: true
   ###
   - service_name: portainer_agent
@@ -179,4 +179,3 @@ containers:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
     include_global_env_vars: false
-    

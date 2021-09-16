@@ -17,5 +17,5 @@ caddy_systemd_network_dependency: false
 caddy_conf_dir: /home/{{main_username}}/caddy
 caddy_config: "{{ lookup('template', 'roles/caddy_internal/templates/Caddyfile.j2') }}"
 
-#lego_ver: v4.4.0
-#lego_force_install: true
+# lego_ver: v4.4.0
+# lego_force_install: true

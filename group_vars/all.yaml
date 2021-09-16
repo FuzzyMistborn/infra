@@ -16,11 +16,11 @@ package_list:
   - name: sudo
   - name: wget
 
-#telegraf_force_install: false
-#telegraf_ver: 1.18.1
-#autorestic_ver: v1.1.2
-#restic_ver: v0.12.1
-#runitor_ver: v0.8.0
+# telegraf_force_install: false
+# telegraf_ver: 1.18.1
+# autorestic_ver: v1.1.2
+# restic_ver: v0.12.1
+# runitor_ver: v0.8.0
 runitor_url: "{{secret_hc_ping_url}}"
 
 # geerlingguy.ntp

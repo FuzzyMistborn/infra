@@ -25,13 +25,13 @@
     state: "{{ item.state }}"
     key: "{{ item.ssh }}"
   loop:
-    - { user: "{{ main_username }}", state: absent, ssh: "{{ secret_main_user_ssh }}" }
-    - { user: "{{ main_username }}", state: absent, ssh: "{{ secret_main_user_alt_ssh }}" }
-    - { user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_linode_ssh }}" }
-    - { user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_linode_pixel_ssh }}" }
-    - { user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_linode_work_ssh }}" }
-    - { user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_linode_lxc_ssh }}" }
-    - { user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_code_server_ssh }}" }
+    - {user: "{{ main_username }}", state: absent, ssh: "{{ secret_main_user_ssh }}"}
+    - {user: "{{ main_username }}", state: absent, ssh: "{{ secret_main_user_alt_ssh }}"}
+    - {user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_linode_ssh }}"}
+    - {user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_linode_pixel_ssh }}"}
+    - {user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_linode_work_ssh }}"}
+    - {user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_linode_lxc_ssh }}"}
+    - {user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_code_server_ssh }}"}
 
 - name: Add GitHub SSH Key
   copy:
@@ -81,9 +81,9 @@
     group: "{{ main_username }}"
     mode: +x
   with_items:
-    - { src: 'db_backup.sh.j2', dest: 'db_backup.sh' }
-    - { src: 'db_restore.sh.j2', dest: 'db_restore.sh' }
-    - { src: 'certs.sh.j2', dest: 'certs.sh' }
+    - {src: 'db_backup.sh.j2', dest: 'db_backup.sh'}
+    - {src: 'db_restore.sh.j2', dest: 'db_restore.sh'}
+    - {src: 'certs.sh.j2', dest: 'certs.sh'}
 
 ### Restic
 - name: Copy Autorestic Config Template
@@ -137,9 +137,9 @@
     owner: root
     regexp: "^alias {{ item.alias }}="
   with_items:
-    - { alias: "arsnapshot", command: "autorestic exec -av -- snapshots" }
-    - { alias: "arbackup", command: "autorestic backup -a" }
-    - { alias: "arprune", command: "autorestic forget -a -- prune" }
+    - {alias: "arsnapshot", command: "autorestic exec -av -- snapshots"}
+    - {alias: "arbackup", command: "autorestic backup -a"}
+    - {alias: "arprune", command: "autorestic forget -a -- prune"}
 
 - name: Source aliases file
   lineinfile:
@@ -173,15 +173,15 @@
     comment: "{{item.comment}}"
     route: "{{item.route}}"
   with_items:
-    - { rule: 'allow', port: '22', proto: 'any', comment: 'ssh', route: 'no' }
-    - { rule: 'allow', port: '80', proto: 'tcp', comment: 'reverse proxy', route: 'no' }
-    - { rule: 'allow', port: '443', proto: 'tcp', comment: 'reverse proxy', route: 'no' }
-    - { rule: 'allow', port: '5201', proto: 'tcp', comment: 'iperf', route: 'no' }
-    - { rule: 'allow', port: '{{secret_rsyslog_port}}', proto: 'tcp', comment: 'rsyslog', route: 'no' }
-    - { rule: 'allow', port: '51280', proto: 'udp', comment: 'wireguard', route: 'no' }
-    - { rule: 'allow', port: '51282', proto: 'udp', comment: 'wireguard tunnel', route: 'no' }
-    - { rule: 'allow', port: '222', proto: 'tcp', comment: 'gitea', route: 'no' }
-    - { rule: 'allow', port: '9001', proto: 'tcp', comment: 'portainer', route: 'no' }
+    - {rule: 'allow', port: '22', proto: 'any', comment: 'ssh', route: 'no'}
+    - {rule: 'allow', port: '80', proto: 'tcp', comment: 'reverse proxy', route: 'no'}
+    - {rule: 'allow', port: '443', proto: 'tcp', comment: 'reverse proxy', route: 'no'}
+    - {rule: 'allow', port: '5201', proto: 'tcp', comment: 'iperf', route: 'no'}
+    - {rule: 'allow', port: '{{secret_rsyslog_port}}', proto: 'tcp', comment: 'rsyslog', route: 'no'}
+    - {rule: 'allow', port: '51280', proto: 'udp', comment: 'wireguard', route: 'no'}
+    - {rule: 'allow', port: '51282', proto: 'udp', comment: 'wireguard tunnel', route: 'no'}
+    - {rule: 'allow', port: '222', proto: 'tcp', comment: 'gitea', route: 'no'}
+    - {rule: 'allow', port: '9001', proto: 'tcp', comment: 'portainer', route: 'no'}
 
 - name: Reload UFW
   community.general.ufw:
@@ -196,7 +196,7 @@
     group: root
     mode: 0644
   with_items:
-    - { src: 'rsyslog.conf.j2', dest: 'rsyslog.conf' }
+    - {src: 'rsyslog.conf.j2', dest: 'rsyslog.conf'}
 
 - name: restart rsyslog service
   service:
@@ -215,7 +215,7 @@
     weekday: "{{ item.weekday }}"
     state: present
   with_items:
-    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_linode_restic_backup}} -- /usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml", name: "Data Backup", hour: "5", minute: "15", weekday: "*" }
+    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_linode_restic_backup}} -- /usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml", name: "Data Backup", hour: "5", minute: "15", weekday: "*"}
 
 - name: "Main User Cronjobs"
   cron:
@@ -228,7 +228,7 @@
     day: "{{ item.day }}"
     state: present
   loop:
-    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_linode_db_backup}} -- /home/{{ main_username }}/scripts/db_backup.sh", name: "Backup", hour: "5", minute: "0", weekday: "*", day: "*" }
-    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_linode_restic_prune}} -- /usr/local/bin/autorestic forget -a -- prune", name: "Restic Prune", hour: "6", minute: "0", weekday: "1", day: "*" }
-    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_linode_restic_check}} -- /usr/local/bin/autorestic exec -a -- check", name: "Restic Check", hour: "5", minute: "45", weekday: "*", day: "1" }
-    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_linode_certs}} -- /home/{{main_username}}/scripts/certs.sh", name: "Cert Update", hour: "19", minute: "0", weekday: "*", day: "*" }
+    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_linode_db_backup}} -- /home/{{ main_username }}/scripts/db_backup.sh", name: "Backup", hour: "5", minute: "0", weekday: "*", day: "*"}
+    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_linode_restic_prune}} -- /usr/local/bin/autorestic forget -a -- prune", name: "Restic Prune", hour: "6", minute: "0", weekday: "1", day: "*"}
+    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_linode_restic_check}} -- /usr/local/bin/autorestic exec -a -- check", name: "Restic Check", hour: "5", minute: "45", weekday: "*", day: "1"}
+    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_linode_certs}} -- /home/{{main_username}}/scripts/certs.sh", name: "Cert Update", hour: "19", minute: "0", weekday: "*", day: "*"}

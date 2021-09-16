@@ -1,237 +1,237 @@
 ---
-  - hosts: all
-    become: true
-    tasks:
-      - name: Set timezone
-        timezone:
-          name: "{{ ntp_timezone }}"
-        when: ansible_distribution == 'Ubuntu'
-      - name: Remove Ubuntu motd spam
-        file:
-          path: "/etc/update-motd.d/{{ item }}"
-          state: absent
-        loop:
-          - 80-livepatch
-          - 95-hwe-eol
-          - 50-motd-news
-          - 10-help-text
-        when: ansible_distribution == 'Ubuntu'
+- hosts: all
+  become: true
+  tasks:
+    - name: Set timezone
+      timezone:
+        name: "{{ ntp_timezone }}"
+      when: ansible_distribution == 'Ubuntu'
+    - name: Remove Ubuntu motd spam
+      file:
+        path: "/etc/update-motd.d/{{ item }}"
+        state: absent
+      loop:
+        - 80-livepatch
+        - 95-hwe-eol
+        - 50-motd-news
+        - 10-help-text
+      when: ansible_distribution == 'Ubuntu'
 
-  - hosts: adonalsium
-    become: true
-    vars_files:
+- hosts: adonalsium
+  become: true
+  vars_files:
     - 'vars/vault.yaml'
-    pre_tasks:
-      - name: Remove enterprise repo
-        file:
-          state: absent
-          path: /etc/apt/sources.list.d/pve-enterprise.list
-      - name: Switch to community repo
-        apt_repository:
-          repo: 'deb http://download.proxmox.com/debian/pve buster pve-no-subscription'
-          state: present
-      - name: Apt update
-        apt:
-          upgrade: 'yes'
-          update_cache: yes
-          cache_valid_time: 3600
-    roles:
-      - role: install_nag-removal
-      - role: grog.package
-      - role: geerlingguy.pip
-      - role: geerlingguy.samba
-      - role: geerlingguy.nfs
-      - role: install_mergerfs
-      - role: install_autorestic
-      - role: install_runitor
-      - role: install_telegraf
-      - role: adonalsium
-      - role: geerlingguy.docker
-      - role: geerlingguy.ntp
-      - role: ironicbadger.ansible_role_docker_compose_generator
-      - role: ironicbadger.ansible_role_snapraid
+  pre_tasks:
+    - name: Remove enterprise repo
+      file:
+        state: absent
+        path: /etc/apt/sources.list.d/pve-enterprise.list
+    - name: Switch to community repo
+      apt_repository:
+        repo: 'deb http://download.proxmox.com/debian/pve buster pve-no-subscription'
+        state: present
+    - name: Apt update
+      apt:
+        upgrade: 'yes'
+        update_cache: yes
+        cache_valid_time: 3600
+  roles:
+    - role: install_nag-removal
+    - role: grog.package
+    - role: geerlingguy.pip
+    - role: geerlingguy.samba
+    - role: geerlingguy.nfs
+    - role: install_mergerfs
+    - role: fuzzymistborn.autorestic
+    - role: install_runitor
+    - role: install_telegraf
+    - role: adonalsium
+    - role: geerlingguy.docker
+    - role: geerlingguy.ntp
+    - role: ironicbadger.ansible_role_docker_compose_generator
+    - role: ironicbadger.ansible_role_snapraid
 
-  - hosts: dominion
-    become: true
-    vars_files:
+- hosts: dominion
+  become: true
+  vars_files:
     - 'vars/vault.yaml'
-    roles:
-      - role: grog.package
-      - role: geerlingguy.pip
-      - role: github
-      - role: dominion
+  roles:
+    - role: grog.package
+    - role: geerlingguy.pip
+    - role: github
+    - role: dominion
 
-  - hosts: endowment
-    become: true
-    vars_files:
+- hosts: endowment
+  become: true
+  vars_files:
     - 'vars/vault.yaml'
-    roles:
-      - role: grog.package
-      - role: geerlingguy.samba
-      - role: geerlingguy.docker
-      - role: geerlingguy.pip
-      - role: install_autorestic
-      - role: install_telegraf
-      - role: install_runitor
-      - role: endowment
-      - role: ironicbadger.ansible_role_docker_compose_generator
+  roles:
+    - role: grog.package
+    - role: geerlingguy.samba
+    - role: geerlingguy.docker
+    - role: geerlingguy.pip
+    - role: fuzzymistborn.autorestic
+    - role: install_telegraf
+    - role: install_runitor
+    - role: endowment
+    - role: ironicbadger.ansible_role_docker_compose_generator
 
-  - hosts: autonomy
-    become: true
-    vars_files:
-      - 'vars/vault.yaml'
-    roles:
-      - role: grog.package
-      - role: github
-      - role: geerlingguy.docker
-      - role: geerlingguy.pip
-      - role: install_autorestic
-      - role: install_telegraf
-      - role: install_runitor
-      - role: autonomy
-      - role: ironicbadger.ansible_role_docker_compose_generator
-
-  - hosts: cultivation
-    become: true
-    vars_files:
-      - 'vars/vault.yaml'
-    roles:
-      - role: grog.package
-      - role: geerlingguy.docker
-      - role: geerlingguy.pip
-      - role: install_autorestic
-      - role: install_telegraf
-      - role: install_runitor
-      - role: cultivation
-      - role: ironicbadger.ansible_role_docker_compose_generator
-
-  - hosts: preservation
-    become: true
-    vars_files:
-      - 'vars/vault.yaml'
-    roles:
-      - role: grog.package
-      - role: geerlingguy.docker
-      - role: geerlingguy.pip
-      - role: install_autorestic
-      - role: install_telegraf
-      - role: install_runitor
-      - role: ironicbadger.ansible_role_docker_compose_generator
-      - role: preservation
-
-  - hosts: honor
-    become: true
-    vars_files:
-      - 'vars/vault.yaml'
-    roles:
-      - role: grog.package
-      - role: geerlingguy.pip
-      - role: geerlingguy.docker
-      - role: install_lego
-      - role: install_autorestic
-      - role: install_runitor
-      - role: caddy_ansible.caddy_ansible
-      - role: honor
-      - role: install_fail2ban
-      - role: ironicbadger.ansible_role_docker_compose_generator
-
-  - hosts: valor
-    become: true
-    vars_files:
-      - 'vars/vault.yaml'
-    roles:
-      - role: grog.package
-      - role: geerlingguy.pip
-      - role: geerlingguy.docker
-      - role: valor
-      - role: ironicbadger.ansible_role_docker_compose_generator
-
-  - hosts: caddy
-    become: true
-    vars_files:
-      - 'vars/vault.yaml'
-    roles:
-      - role: grog.package
-      - role: geerlingguy.pip
-      - role: install_autorestic
-      - role: install_runitor
-      - role: caddy_internal
-      - role: caddy_ansible.caddy_ansible
-
-  - hosts: mercy
-    become: true
-    vars_files:
-      - 'vars/vault.yaml'
-    roles:
-      - role: grog.package
-      - role: geerlingguy.pip
-      - role: install_autorestic
-      - role: install_runitor
-      - role: mercy
-
-  - hosts: omada
-    become: true
-    vars_files:
-      - 'vars/vault.yaml'
-    roles:
-      - role: grog.package
-      - role: geerlingguy.pip
-      - role: geerlingguy.docker
-      - role: install_autorestic
-      - role: install_runitor
-      - role: omada
-      - role: ironicbadger.ansible_role_docker_compose_generator
-
-  - hosts: ambition
-    become: true
-    vars_files:
+- hosts: autonomy
+  become: true
+  vars_files:
     - 'vars/vault.yaml'
-    roles:
-      - role: grog.package
-      - role: geerlingguy.pip
-      - role: geerlingguy.docker
-      - role: install_lego
-      - role: install_hugo
-      - role: install_autorestic
-      - role: install_runitor
-      - role: caddy_ansible.caddy_ansible
-      - role: ambition
-      - role: install_fail2ban
-      - role: ironicbadger.ansible_role_docker_compose_generator
+  roles:
+    - role: grog.package
+    - role: github
+    - role: geerlingguy.docker
+    - role: geerlingguy.pip
+    - role: fuzzymistborn.autorestic
+    - role: install_telegraf
+    - role: install_runitor
+    - role: autonomy
+    - role: ironicbadger.ansible_role_docker_compose_generator
 
-  - hosts: kelsier
-    become: true
-    vars_files:
-      - 'vars/vault.yaml'
-    roles:
-      - role: grog.package
-      - role: geerlingguy.pip
-      - role: install_autorestic
-      - role: install_runitor
-      - role: kelsier
+- hosts: cultivation
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+  roles:
+    - role: grog.package
+    - role: geerlingguy.docker
+    - role: geerlingguy.pip
+    - role: fuzzymistborn.autorestic
+    - role: install_telegraf
+    - role: install_runitor
+    - role: cultivation
+    - role: ironicbadger.ansible_role_docker_compose_generator
 
-  - hosts: odium
-    become: true
-    vars_files:
-      - 'vars/vault.yaml'
-    pre_tasks:
-      - name: Remove enterprise repo
-        file:
-          state: absent
-          path: /etc/apt/sources.list.d/pve-enterprise.list
-      - name: Switch to community repo
-        apt_repository:
-          repo: 'deb http://download.proxmox.com/debian/pve buster pve-no-subscription'
-          state: present
-      - name: Apt update
-        apt:
-          upgrade: 'yes'
-          update_cache: yes
-          cache_valid_time: 3600
-    roles:
-      - role: install_nag-removal
-      - role: grog.package
-      - role: geerlingguy.pip
-      - role: odium
-      - role: geerlingguy.docker
-      - role: ironicbadger.ansible_role_docker_compose_generator
+- hosts: preservation
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+  roles:
+    - role: grog.package
+    - role: geerlingguy.docker
+    - role: geerlingguy.pip
+    - role: fuzzymistborn.autorestic
+    - role: install_telegraf
+    - role: install_runitor
+    - role: ironicbadger.ansible_role_docker_compose_generator
+    - role: preservation
+
+- hosts: honor
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+  roles:
+    - role: grog.package
+    - role: geerlingguy.pip
+    - role: geerlingguy.docker
+    - role: install_lego
+    - role: fuzzymistborn.autorestic
+    - role: install_runitor
+    - role: caddy_ansible.caddy_ansible
+    - role: honor
+    - role: install_fail2ban
+    - role: ironicbadger.ansible_role_docker_compose_generator
+
+- hosts: valor
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+  roles:
+    - role: grog.package
+    - role: geerlingguy.pip
+    - role: geerlingguy.docker
+    - role: valor
+    - role: ironicbadger.ansible_role_docker_compose_generator
+
+- hosts: caddy
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+  roles:
+    - role: grog.package
+    - role: geerlingguy.pip
+    - role: fuzzymistborn.autorestic
+    - role: install_runitor
+    - role: caddy_internal
+    - role: caddy_ansible.caddy_ansible
+
+- hosts: mercy
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+  roles:
+    - role: grog.package
+    - role: geerlingguy.pip
+    - role: fuzzymistborn.autorestic
+    - role: install_runitor
+    - role: mercy
+
+- hosts: omada
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+  roles:
+    - role: grog.package
+    - role: geerlingguy.pip
+    - role: geerlingguy.docker
+    - role: fuzzymistborn.autorestic
+    - role: install_runitor
+    - role: omada
+    - role: ironicbadger.ansible_role_docker_compose_generator
+
+- hosts: ambition
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+  roles:
+    - role: grog.package
+    - role: geerlingguy.pip
+    - role: geerlingguy.docker
+    - role: install_lego
+    - role: install_hugo
+    - role: fuzzymistborn.autorestic
+    - role: install_runitor
+    - role: caddy_ansible.caddy_ansible
+    - role: ambition
+    - role: install_fail2ban
+    - role: ironicbadger.ansible_role_docker_compose_generator
+
+- hosts: kelsier
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+  roles:
+    - role: grog.package
+    - role: geerlingguy.pip
+    - role: fuzzymistborn.autorestic
+    - role: install_runitor
+    - role: kelsier
+
+- hosts: odium
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+  pre_tasks:
+    - name: Remove enterprise repo
+      file:
+        state: absent
+        path: /etc/apt/sources.list.d/pve-enterprise.list
+    - name: Switch to community repo
+      apt_repository:
+        repo: 'deb http://download.proxmox.com/debian/pve buster pve-no-subscription'
+        state: present
+    - name: Apt update
+      apt:
+        upgrade: 'yes'
+        update_cache: yes
+        cache_valid_time: 3600
+  roles:
+    - role: install_nag-removal
+    - role: grog.package
+    - role: geerlingguy.pip
+    - role: odium
+    - role: geerlingguy.docker
+    - role: ironicbadger.ansible_role_docker_compose_generator

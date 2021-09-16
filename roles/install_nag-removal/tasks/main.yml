@@ -1,7 +1,7 @@
 ---
 - name: check whether package is installed
   shell: "dpkg-query -W 'pve-fake-subscription'"
-  ignore_errors: True
+  ignore_errors: true
   register: is_installed
   changed_when: "is_installed.rc != 0"
 
@@ -23,8 +23,8 @@
 - name: download release
   when: force_install == True
   get_url:
-      url: https://github.com/Jamesits/pve-fake-subscription/releases/download/{{nag_ver}}/pve-fake-subscription_{{nag_ver | regex_replace('v') }}_all.deb
-      dest: /tmp
+    url: https://github.com/Jamesits/pve-fake-subscription/releases/download/{{nag_ver}}/pve-fake-subscription_{{nag_ver | regex_replace('v') }}_all.deb
+    dest: /tmp
 
 - name: set filename
   set_fact: file_name="pve-fake-subscription_{{nag_ver | regex_replace('v') }}_all.deb"

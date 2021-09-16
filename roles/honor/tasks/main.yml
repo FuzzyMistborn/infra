@@ -44,10 +44,9 @@
     owner: root
     regexp: "^alias {{ item.alias }}="
   with_items:
-    - { alias: "nginx", command: "docker exec nginx nginx -s reload" }
-    - { alias: "arsnapshot", command: "autorestic exec -av -- snapshots" }
-    - { alias: "arbackup", command: "autorestic backup -a" }
-    - { alias: "arprune", command: "autorestic forget -a -- prune" }
+    - {alias: "arsnapshot", command: "autorestic exec -av -- snapshots"}
+    - {alias: "arbackup", command: "autorestic backup -a"}
+    - {alias: "arprune", command: "autorestic forget -a -- prune"}
 
 - name: Source aliases file
   lineinfile:
@@ -97,8 +96,8 @@
     day: "{{ item.day }}"
     state: present
   with_items:
-    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_honor_purge}} -- /usr/local/bin/autorestic forget -a -- prune", name: "Restic Prune", hour: "22", minute: "15", weekday: "1", day: "*" }
-    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_restic_check_honor}} -- /usr/local/bin/autorestic exec -a -- check", name: "Restic Check", hour: "2", minute: "15", weekday: "*", day: "1" }
+    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_honor_purge}} -- /usr/local/bin/autorestic forget -a -- prune", name: "Restic Prune", hour: "22", minute: "15", weekday: "1", day: "*"}
+    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_restic_check_honor}} -- /usr/local/bin/autorestic exec -a -- check", name: "Restic Check", hour: "2", minute: "15", weekday: "*", day: "1"}
 
 - name: "Root Cronjobs"
   cron:
@@ -110,8 +109,8 @@
     weekday: "{{ item.weekday }}"
     state: present
   with_items:
-    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_honor_media}} -- /usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml", name: "Media Backup", hour: "0", minute: "15", weekday: "*" }
-    - { job: "/home/{{main_username}}/wg-check.sh", name: "Wireguard Tunnel Check/Restore", hour: "*", minute: "*/5", weekday: "*" }
+    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_honor_media}} -- /usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml", name: "Media Backup", hour: "0", minute: "15", weekday: "*"}
+    - {job: "/home/{{main_username}}/wg-check.sh", name: "Wireguard Tunnel Check/Restore", hour: "*", minute: "*/5", weekday: "*"}
 
 ### Wireguard
 - name: Enable IPv4 forwarding

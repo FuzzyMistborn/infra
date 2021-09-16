@@ -1,3 +1,4 @@
+---
 - name: Copy certs script
   template:
     src: "{{item.src}}"
@@ -6,7 +7,7 @@
     group: "{{ main_username }}"
     mode: +x
   with_items:
-    - { src: 'certs.sh.j2', dest: 'certs.sh' }
+    - {src: 'certs.sh.j2', dest: 'certs.sh'}
 
 - name: "Main User Cronjobs"
   cron:
@@ -19,4 +20,4 @@
     day: "{{ item.day }}"
     state: present
   loop:
-    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_caddy_internal_certs}} -- /home/{{main_username}}/certs.sh", name: "Cert Update", hour: "19", minute: "0", weekday: "*", day: "*" }
+    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_caddy_internal_certs}} -- /home/{{main_username}}/certs.sh", name: "Cert Update", hour: "19", minute: "0", weekday: "*", day: "*"}

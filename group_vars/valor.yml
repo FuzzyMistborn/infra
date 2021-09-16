@@ -28,7 +28,7 @@ containers:
     environment:
       - LOG_LEVEL=info
       - LOG_JSON=false
-    hostname:  "{{ hostname }}"
+    hostname: "{{ hostname }}"
     include_global_env_vars: true
   ###
   - service_name: adguard

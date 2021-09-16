@@ -6,62 +6,62 @@
   vars_files:
     - 'vars/vault.yaml'
   tasks:
-  - name: Apt update
-    apt:
-      upgrade: 'yes'
-      update_cache: yes
-      cache_valid_time: 3600
-  
-  - name: Ensure user groups exists
-    group:
-      name: "{{ item }}"
-      state: present
-    loop:
-      - "{{ main_username }}"
-      - ansible
+    - name: Apt update
+      apt:
+        upgrade: 'yes'
+        update_cache: yes
+        cache_valid_time: 3600
 
-  - name: Add users
-    user:
-      name: "{{ item.user }}"
-      password: "{{ item.pass }}"
-      groups: 
-        - "{{ item.user }}"
-        - sudo
-      shell: /bin/bash
-    loop:
-      - { user: "{{ main_username }}", pass: "{{ secret_main_user_pass }}" }
-      - { user: ansible, pass: "{{ secret_ansible_pass }}" }
+    - name: Ensure user groups exists
+      group:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - "{{ main_username }}"
+        - ansible
 
-  - name: Add sudoers file for ansible
-    copy:
-      src: sudoer_ansible
-      dest: /etc/sudoers.d/ansible
-      owner: root
-      group: root
-      mode: 0440
+    - name: Add users
+      user:
+        name: "{{ item.user }}"
+        password: "{{ item.pass }}"
+        groups:
+          - "{{ item.user }}"
+          - sudo
+        shell: /bin/bash
+      loop:
+        - {user: "{{ main_username }}", pass: "{{ secret_main_user_pass }}"}
+        - {user: ansible, pass: "{{ secret_ansible_pass }}"}
 
-  - name: SSH Keys
-    authorized_key:
-      user: "{{ item.user }}"
-      state: present
-      key: "{{ item.ssh }}"
-    loop:
-      - { user: "{{ main_username }}", ssh: "{{ secret_main_user_ssh }}" }
-      - { user: "{{ main_username }}", ssh: "{{ secret_main_user_alt_ssh }}" }
-      - { user: ansible, ssh: "{{ secret_ansible_ssh }}" }
-  
-  - name: Add hardened SSH config
-    copy:
-      src: sshd_config
-      dest: /etc/ssh/sshd_config
-      owner: root
-      group: root
-      mode: 0600
+    - name: Add sudoers file for ansible
+      copy:
+        src: sudoer_ansible
+        dest: /etc/sudoers.d/ansible
+        owner: root
+        group: root
+        mode: 0440
 
-  - name: Restart ssh
-    service:
-      name: sshd
-      state: restarted
+    - name: SSH Keys
+      authorized_key:
+        user: "{{ item.user }}"
+        state: present
+        key: "{{ item.ssh }}"
+      loop:
+        - {user: "{{ main_username }}", ssh: "{{ secret_main_user_ssh }}"}
+        - {user: "{{ main_username }}", ssh: "{{ secret_main_user_alt_ssh }}"}
+        - {user: ansible, ssh: "{{ secret_ansible_ssh }}"}
+
+    - name: Add hardened SSH config
+      copy:
+        src: sshd_config
+        dest: /etc/ssh/sshd_config
+        owner: root
+        group: root
+        mode: 0600
+
+    - name: Restart ssh
+      service:
+        name: sshd
+        state: restarted
 
 - hosts: kelsier
   remote_user: "{{main_username}}"
@@ -69,33 +69,33 @@
   vars_files:
     - 'vars/vault.yaml'
   tasks:
-  - name: Add ansible user
-    user:
-      name: ansible
-      password: "{{ secret_ansible_pass }}" 
-      groups: 
-        - wheel
-      shell: /bin/bash
-  - name: Add sudoers file for ansible
-    copy:
-      src: sudoer_ansible
-      dest: /etc/sudoers.d/ansible
-      owner: root
-      group: root
-      mode: 0440
-  - name: Add SSH Keys
-    authorized_key:
-      user: ansible
-      state: present
-      key: "{{ secret_ansible_ssh }}"
-  - name: Add hardened SSH config
-    copy:
-      src: sshd_config
-      dest: /etc/ssh/sshd_config
-      owner: root
-      group: root
-      mode: 0600
-  - name: Restart ssh
-    service:
-      name: sshd
-      state: restarted
+    - name: Add ansible user
+      user:
+        name: ansible
+        password: "{{ secret_ansible_pass }}"
+        groups:
+          - wheel
+        shell: /bin/bash
+    - name: Add sudoers file for ansible
+      copy:
+        src: sudoer_ansible
+        dest: /etc/sudoers.d/ansible
+        owner: root
+        group: root
+        mode: 0440
+    - name: Add SSH Keys
+      authorized_key:
+        user: ansible
+        state: present
+        key: "{{ secret_ansible_ssh }}"
+    - name: Add hardened SSH config
+      copy:
+        src: sshd_config
+        dest: /etc/ssh/sshd_config
+        owner: root
+        group: root
+        mode: 0600
+    - name: Restart ssh
+      service:
+        name: sshd
+        state: restarted

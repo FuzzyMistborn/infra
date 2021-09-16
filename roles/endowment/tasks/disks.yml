@@ -14,7 +14,7 @@
     owner: nobody
     group: nogroup
     mode: 0777
-  with_items: 
+  with_items:
     - "{{ smb_mountpoints }}"
 
 - name: Add smbcredentials

@@ -1,3 +1,4 @@
+---
 roles:
 - src: ironicbadger.ansible_role_docker_compose_generator
 - src: ironicbadger.ansible_role_snapraid
@@ -8,6 +9,7 @@ roles:
 - src: geerlingguy.nfs
 - src: geerlingguy.pip
 - src: geerlingguy.samba
+- src: fuzzymistborn.autorestic
 
 collections:
 - community.general

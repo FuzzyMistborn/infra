@@ -40,7 +40,7 @@ containers:
     environment:
       - LOG_LEVEL=info
       - LOG_JSON=false
-    hostname:  "{{ hostname }}"
+    hostname: "{{ hostname }}"
     include_global_env_vars: true
   ###
   - service_name: homeassistant
@@ -122,10 +122,10 @@ containers:
     image: buanet/iobroker:latest
     restart: always
     ports:
-      - 8081:8081 # Main
+      - 8081:8081  # Main
       - 1881:1881
-      - 8082:8082 # Web Server
-      - 8087:8087 # Rest API
+      - 8082:8082  # Web Server
+      - 8087:8087  # Rest API
     volumes:
       - "{{ appdata_path }}/iobroker:/opt/iobroker"
     labels:

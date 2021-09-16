@@ -15,34 +15,34 @@ package_list:
   - name: wireguard
 
 mergerfs_mount:
-  - { path: /mnt/Media }
+  - {path: /mnt/Media}
 
 parity_disks:
-  - { path: /mnt/parity1, source: /dev/disk/by-id/ata-ST8000NM0055-1RM112_ZA11KJXC-part1, fs: ext4, opts: defaults, content: false }
+  - {path: /mnt/parity1, source: /dev/disk/by-id/ata-ST8000NM0055-1RM112_ZA11KJXC-part1, fs: ext4, opts: defaults, content: false}
 
 data_disks:
-  - { path: /mnt/disk1, source: /dev/disk/by-id/ata-ST8000NM0055-1RM112_ZA11KKDB-part1, fs: ext4, opts: defaults, content: true }
-  - { path: /mnt/disk2, source: /dev/disk/by-id/ata-ST8000NM0055-1RM112_ZA11KW0F-part1, fs: ext4, opts: defaults, content: true }
-  - { path: /mnt/disk3, source: /dev/disk/by-id/ata-ST8000NM0055-1RM112_ZA11KW4B-part1, fs: ext4, opts: defaults, content: true }
-  - { path: /mnt/disk4, source: /dev/disk/by-id/ata-ST4000NM0024-1HT178_Z4F06WRN-part1, fs: ext4, opts: defaults, content: true }
-  - { path: /mnt/disk5, source: /dev/disk/by-id/ata-WDC_WD60EFRX-68MYMN1_WD-WX21D25R5VX9-part1, fs: ext4, opts: defaults, content: true }
-  - { path: /mnt/disk6, source: /dev/disk/by-id/ata-WDC_WD60EFRX-68MYMN1_WD-WX31D25040NC-part1, fs: ext4, opts: defaults, content: true }
+  - {path: /mnt/disk1, source: /dev/disk/by-id/ata-ST8000NM0055-1RM112_ZA11KKDB-part1, fs: ext4, opts: defaults, content: true}
+  - {path: /mnt/disk2, source: /dev/disk/by-id/ata-ST8000NM0055-1RM112_ZA11KW0F-part1, fs: ext4, opts: defaults, content: true}
+  - {path: /mnt/disk3, source: /dev/disk/by-id/ata-ST8000NM0055-1RM112_ZA11KW4B-part1, fs: ext4, opts: defaults, content: true}
+  - {path: /mnt/disk4, source: /dev/disk/by-id/ata-ST4000NM0024-1HT178_Z4F06WRN-part1, fs: ext4, opts: defaults, content: true}
+  - {path: /mnt/disk5, source: /dev/disk/by-id/ata-WDC_WD60EFRX-68MYMN1_WD-WX21D25R5VX9-part1, fs: ext4, opts: defaults, content: true}
+  - {path: /mnt/disk6, source: /dev/disk/by-id/ata-WDC_WD60EFRX-68MYMN1_WD-WX31D25040NC-part1, fs: ext4, opts: defaults, content: true}
 
 fstab_mergerfs:
-  - { source: "/mnt/disk*", mountpoint: "/mnt/Media", fs: fuse.mergerfs, opts: "direct_io,defaults,allow_other,minfreespace=50G,fsname=mergerfs" }  
+  - {source: "/mnt/disk*", mountpoint: "/mnt/Media", fs: fuse.mergerfs, opts: "direct_io,defaults,allow_other,minfreespace=50G,fsname=mergerfs"}
 
 nfs_mount:
-  - { path: /mnt/synology_backup, source: 192.168.30.25:/volume1/Backup/, fs: nfs, opts: defaults, content: false }
-  - { path: /mnt/synology_minio, source: 192.168.30.25:/volume1/Minio/, fs: nfs, opts: defaults, content: false }
+  - {path: /mnt/synology_backup, source: 192.168.30.25:/volume1/Backup/, fs: nfs, opts: defaults, content: false}
+  - {path: /mnt/synology_minio, source: 192.168.30.25:/volume1/Minio/, fs: nfs, opts: defaults, content: false}
 
 ### Variables
 install_nut: false
 pull_backup: false
 infrastructure: false
-#mergerfs_force_install: true
-#mergerfs_ver: 2.32.4
-#nag_force_install: true
-#nag_ver: 0.0.7
+# mergerfs_force_install: true
+# mergerfs_ver: 2.32.4
+# nag_force_install: true
+# nag_ver: 0.0.7
 
 ### Snapraid Config
 snapraid_force_install: false
@@ -57,7 +57,7 @@ snapraid_runner_use_ssl: false
 snapraid_runner_touch: false
 snapraid_runner_command: "python3 {{ snapraid_run_bin }} -c {{ snapraid_run_conf}}"
 snapraid_runner_cron_jobs:
-  - { job: '/usr/local/bin/runitor -uuid {{secret_hc_adonalsium_snapraid}} -- {{ snapraid_run_command }}', name: 'snapraid_runner', weekday: '*', hour: '04' }
+  - {job: '/usr/local/bin/runitor -uuid {{secret_hc_adonalsium_snapraid}} -- {{ snapraid_run_command }}', name: 'snapraid_runner', weekday: '*', hour: '04'}
 snapraid_config_excludes:
   - "*.unrecoverable"
   - "/tmp/"
@@ -95,7 +95,7 @@ containers:
     environment:
       - LOG_LEVEL=info
       - LOG_JSON=false
-    hostname:  "{{ hostname }}"
+    hostname: "{{ hostname }}"
     include_global_env_vars: true
   ###
   - service_name: remote-api
@@ -109,8 +109,8 @@ containers:
       - "{{ appdata_path }}/docker-api:/data/certs"
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
-     - CREATE_CERTS_WITH_PW={{ secret_docker_api_tls }}
-     - CERT_HOSTNAME=docker-remote.local
+      - CREATE_CERTS_WITH_PW={{ secret_docker_api_tls }}
+      - CERT_HOSTNAME=docker-remote.local
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
@@ -199,8 +199,8 @@ containers:
       - "{{ appdata_path }}/scrutiny:/scrutiny/config"
       - /run/udev:/run/udev:ro
     devices:
-##### THIS IS LIKELY UNNCESSARY WITH THE PRIVILEGED FLAG
-#      - /dev/sda:/dev/sda # SSD for later
+      ### THIS IS LIKELY UNNCESSARY WITH THE PRIVILEGED FLAG
+      # - /dev/sda:/dev/sda # SSD for later
       - /dev/sdb:/dev/sdb
       - /dev/sdc:/dev/sdc
       - /dev/sdd:/dev/sdd

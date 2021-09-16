@@ -15,7 +15,7 @@ package_list:
   - name: rsyslog
   - name: sudo
   - name: wget
-  
+
 pull_backup: false
 
 ### Docker-Compose with ironicbadger.docker_compose_generator
@@ -37,7 +37,7 @@ containers:
     environment:
       - LOG_LEVEL=info
       - LOG_JSON=false
-    hostname:  "{{ hostname }}"
+    hostname: "{{ hostname }}"
     include_global_env_vars: true
   ###
   - service_name: bitwarden
@@ -57,8 +57,8 @@ containers:
       - SMTP_USERNAME={{ secret_snapraid_email_address }}
       - SMTP_PASSWORD={{ secret_snapraid_email_pass }}
       - ADMIN_TOKEN={{ secret_bitwarden_token }}
-      - WEBSOCKET_ENABLED=false # Required to use websockets
-      - SIGNUPS_ALLOWED=false # set to false to disable signups
+      - WEBSOCKET_ENABLED=false  # Required to use websockets
+      - SIGNUPS_ALLOWED=false  # set to false to disable signups
       - LOG_FILE=/data/bitwarden.log
       - LOG_LEVEL=warn
       - EXTENDED_LOGGING=true
@@ -143,7 +143,7 @@ containers:
       - domain={{ secret_collabora_url }}
       - dictionaries=en
       - extra_params=--o:ssl.enable=false
-    mem_limit: 1000M      
+    mem_limit: 1000M
     include_global_env_vars: false
   ###
   - service_name: organizr
@@ -234,8 +234,8 @@ containers:
       - "{{ appdata_path }}/docker-api:/data/certs"
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
-     - CREATE_CERTS_WITH_PW={{ secret_docker_api_tls }}
-     - CERT_HOSTNAME=docker-remote.local
+      - CREATE_CERTS_WITH_PW={{ secret_docker_api_tls }}
+      - CERT_HOSTNAME=docker-remote.local
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"

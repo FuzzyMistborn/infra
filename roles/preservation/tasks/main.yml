@@ -53,8 +53,8 @@
     group: "{{ main_username }}"
     mode: +x
   with_items:
-    - { src: 'db_backup.sh.j2', dest: 'db_backup.sh' }
-    - { src: 'db_restore.sh.j2', dest: 'db_restore.sh' }
+    - {src: 'db_backup.sh.j2', dest: 'db_backup.sh'}
+    - {src: 'db_restore.sh.j2', dest: 'db_restore.sh'}
 
 ### Restic
 - name: Copy Autorestic Config Template
@@ -98,9 +98,9 @@
     owner: root
     regexp: "^alias {{ item.alias }}="
   with_items:
-    - { alias: "arsnapshot", command: "autorestic exec -av -- snapshots" }
-    - { alias: "arbackup", command: "autorestic backup -a" }
-    - { alias: "arprune", command: "autorestic forget -a -- prune" }
+    - {alias: "arsnapshot", command: "autorestic exec -av -- snapshots"}
+    - {alias: "arbackup", command: "autorestic backup -a"}
+    - {alias: "arprune", command: "autorestic forget -a -- prune"}
 
 - name: Source aliases file
   lineinfile:
@@ -127,6 +127,6 @@
     day: "{{ item.day }}"
     state: present
   loop:
-    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_preservation_db_backup}} -- /home/{{ main_username }}/scripts/db_backup.sh", name: "DB Backup", hour: "0", minute: "45", weekday: "*", day: "*" }
-    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_preservation_purge}} -- /usr/local/bin/autorestic forget -a -- prune", name: "Restic Prune", hour: "22", minute: "45", weekday: "1", day: "*" }
-    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_restic_check_preservation}} -- /usr/local/bin/autorestic exec -a -- check", name: "Restic Check", hour: "2", minute: "45", weekday: "*", day: "1" }
+    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_preservation_db_backup}} -- /home/{{ main_username }}/scripts/db_backup.sh", name: "DB Backup", hour: "0", minute: "45", weekday: "*", day: "*"}
+    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_preservation_purge}} -- /usr/local/bin/autorestic forget -a -- prune", name: "Restic Prune", hour: "22", minute: "45", weekday: "1", day: "*"}
+    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_restic_check_preservation}} -- /usr/local/bin/autorestic exec -a -- check", name: "Restic Check", hour: "2", minute: "45", weekday: "*", day: "1"}

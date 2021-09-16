@@ -15,10 +15,10 @@ package_list:
   - name: wireguard
 
 pull_backup: false
-#hugo_ver: v0.88.1
-#hugo_force_install: true
-#lego_ver: v4.4.0
-#lego_force_install: true
+# hugo_ver: v0.88.1
+# hugo_force_install: true
+# lego_ver: v4.4.0
+# lego_force_install: true
 
 ### Caddy Config
 caddy_systemd_capabilities_enabled: true
@@ -46,7 +46,7 @@ containers:
     environment:
       - LOG_LEVEL=info
       - LOG_JSON=false
-    hostname:  "{{ hostname }}"
+    hostname: "{{ hostname }}"
     include_global_env_vars: true
   ###
   - service_name: uptime
@@ -137,7 +137,7 @@ containers:
       - MYSQL_DATABASE=gitea
     mem_limit: 200M
     include_global_env_vars: false
-###
+  ###
   - service_name: gotify
     container_name: gotify
     active: true
@@ -154,7 +154,7 @@ containers:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
     include_global_env_vars: false
-###
+  ###
   - service_name: wireguard
     container_name: wireguard
     active: true
@@ -180,7 +180,7 @@ containers:
       - net.ipv4.ip_forward=1
       - net.ipv4.conf.all.src_valid_mark=1
     include_global_env_vars: false
-###
+  ###
   - service_name: healthchecks
     container_name: healthchecks
     active: true
@@ -209,7 +209,7 @@ containers:
       - "diun.enable=true"
       - "diun.regopt=ghcr.io"
     include_global_env_vars: true
-###
+  ###
   - service_name: mailrise
     container_name: mailrise
     active: true
@@ -222,7 +222,7 @@ containers:
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
-###
+  ###
   - service_name: pastebin
     container_name: pastebin
     active: true
@@ -237,7 +237,7 @@ containers:
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
-###
+  ###
   - service_name: portainer_agent
     container_name: portainer_agent
     active: true

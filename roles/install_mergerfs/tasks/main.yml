@@ -1,7 +1,7 @@
 ---
 - name: check whether package is installed
   shell: "dpkg-query -W 'mergerfs'"
-  ignore_errors: True
+  ignore_errors: true
   register: is_installed
   changed_when: "is_installed.rc != 0"
 
@@ -23,8 +23,8 @@
 - name: download release
   when: force_install == True
   get_url:
-      url: https://github.com/trapexit/mergerfs/releases/download/{{mergerfs_ver}}/mergerfs_{{mergerfs_ver}}.debian-bullseye_amd64.deb
-      dest: /tmp
+    url: https://github.com/trapexit/mergerfs/releases/download/{{mergerfs_ver}}/mergerfs_{{mergerfs_ver}}.debian-bullseye_amd64.deb
+    dest: /tmp
 
 - name: set filename
   set_fact: file_name="mergerfs_{{mergerfs_ver}}.debian-bullseye_amd64.deb"

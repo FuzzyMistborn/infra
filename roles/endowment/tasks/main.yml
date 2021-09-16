@@ -19,7 +19,7 @@
     group: "{{ main_username }}"
     mode: "{{item.mode}}"
   with_items:
-    - { path: "nextcloud_cron.sh", mode: "+x" }
+    - {path: "nextcloud_cron.sh", mode: "+x"}
 
 - name: Copy photos script templates
   template:
@@ -29,7 +29,7 @@
     group: "{{ main_username }}"
     mode: +x
   with_items:
-    - { src: 'photos.sh.j2', dest: 'photos.sh' }
+    - {src: 'photos.sh.j2', dest: 'photos.sh'}
 
 - name: Fix Jellyfin render group for iGPU passthrough
   shell: groupmod -g 150 postfix && groupmod -g 108 render && groupmod -g 107 postfix
@@ -108,9 +108,9 @@
     owner: root
     regexp: "^alias {{ item.alias }}="
   with_items:
-    - { alias: "arsnapshot", command: "autorestic exec -av -- snapshots" }
-    - { alias: "arbackup", command: "autorestic backup -a" }
-    - { alias: "arprune", command: "autorestic forget -a -- prune" }
+    - {alias: "arsnapshot", command: "autorestic exec -av -- snapshots"}
+    - {alias: "arbackup", command: "autorestic backup -a"}
+    - {alias: "arprune", command: "autorestic forget -a -- prune"}
 
 - name: Source aliases file
   lineinfile:
@@ -127,10 +127,10 @@
     group: root
     mode: 0644
   with_items:
-    - { src: 'rsyslog.conf.j2', dest: 'rsyslog.conf' }
-    - { src: 'sonarr.conf.j2', dest: 'rsyslog.d/sonarr.conf' }
-    - { src: 'nextcloud.conf.j2', dest: 'rsyslog.d/nextcloud.conf' }
-    - { src: 'radarr.conf.j2', dest: 'rsyslog.d/radarr.conf' }
+    - {src: 'rsyslog.conf.j2', dest: 'rsyslog.conf'}
+    - {src: 'sonarr.conf.j2', dest: 'rsyslog.d/sonarr.conf'}
+    - {src: 'nextcloud.conf.j2', dest: 'rsyslog.d/nextcloud.conf'}
+    - {src: 'radarr.conf.j2', dest: 'rsyslog.d/radarr.conf'}
 
 - name: restart rsyslog service
   service:
@@ -150,10 +150,10 @@
     day: "{{ item.day }}"
     state: present
   loop:
-    - { job: "/home/{{ main_username }}/scripts/nextcloud_cron.sh", name: "Nextcloud", hour: "*", minute: "*/5", weekday: "*", day: "*" }
-    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_endowment_purge}} -- /usr/local/bin/autorestic forget -a -- prune", name: "Restic Prune", hour: "22", minute: "30", weekday: "1", day: "*" }
-    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_restic_check_endowment}} -- /usr/local/bin/autorestic exec -a -- check", name: "Restic Check", hour: "2", minute: "30", weekday: "*", day: "1" }
-    - { job: "/usr/local/bin/runitor -uuid {{ secret_hc_photo_reorg }} -- /home/{{ main_username }}/scripts/photos.sh", name: "Photo Reorg", hour: "3", minute: "0", weekday: "*", day: "*" }
+    - {job: "/home/{{ main_username }}/scripts/nextcloud_cron.sh", name: "Nextcloud", hour: "*", minute: "*/5", weekday: "*", day: "*"}
+    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_endowment_purge}} -- /usr/local/bin/autorestic forget -a -- prune", name: "Restic Prune", hour: "22", minute: "30", weekday: "1", day: "*"}
+    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_restic_check_endowment}} -- /usr/local/bin/autorestic exec -a -- check", name: "Restic Check", hour: "2", minute: "30", weekday: "*", day: "1"}
+    - {job: "/usr/local/bin/runitor -uuid {{ secret_hc_photo_reorg }} -- /home/{{ main_username }}/scripts/photos.sh", name: "Photo Reorg", hour: "3", minute: "0", weekday: "*", day: "*"}
 
 - name: "Root Cronjobs"
   cron:
@@ -165,4 +165,4 @@
     weekday: "{{ item.weekday }}"
     state: present
   with_items:
-    - { job: "/usr/local/bin/runitor -uuid {{secret_hc_endowment_media}} -- /usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml", name: "Media Backup", hour: "0", minute: "30", weekday: "*" }
+    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_endowment_media}} -- /usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml", name: "Media Backup", hour: "0", minute: "30", weekday: "*"}
