@@ -19,3 +19,11 @@ caddy_config: "{{ lookup('template', 'roles/caddy_internal/templates/Caddyfile.j
 
 # lego_ver: v4.4.0
 # lego_force_install: true
+
+### Cronjobs
+cronjobs:
+  - name: Cert Update
+    job: /usr/local/bin/runitor -uuid {{secret_hc_caddy_internal_certs}} -- /home/{{main_username}}/certs.sh
+    user: "{{ main_username }}"
+    minute: 0
+    hour: 19

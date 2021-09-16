@@ -8,16 +8,3 @@
     mode: +x
   with_items:
     - {src: 'certs.sh.j2', dest: 'certs.sh'}
-
-- name: "Main User Cronjobs"
-  cron:
-    user: "{{ main_username }}"
-    name: "{{ item.name }}"
-    job: "{{ item.job }}"
-    hour: "{{ item.hour }}"
-    minute: "{{ item.minute }}"
-    weekday: "{{ item.weekday }}"
-    day: "{{ item.day }}"
-    state: present
-  loop:
-    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_caddy_internal_certs}} -- /home/{{main_username}}/certs.sh", name: "Cert Update", hour: "19", minute: "0", weekday: "*", day: "*"}

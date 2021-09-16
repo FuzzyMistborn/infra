@@ -157,33 +157,3 @@
     dest: /etc/bash.bashrc
     line: 'source /etc/bash_aliases'
     state: present
-
-- name: Main user Cronjobs
-  cron:
-    user: "{{ main_username }}"
-    name: "{{ item.name }}"
-    job: "{{ item.job }}"
-    hour: "{{ item.hour }}"
-    minute: "{{ item.minute }}"
-    weekday: "{{ item.weekday }}"
-    day: "{{item.day}}"
-    state: present
-  with_items:
-    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_mercy_purge}} -- /usr/local/bin/autorestic forget -a -- prune", name: "Restic Prune", hour: "21", minute: "00", weekday: "1", day: "*"}
-    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_restic_check_mercy}} -- /usr/local/bin/autorestic exec -a -- check", name: "Restic Check", hour: "21", minute: "30", weekday: "0", day: "1"}
-
-- name: Root Cronjobs
-  cron:
-    user: root
-    name: "{{ item.name }}"
-    job: "{{ item.job }}"
-    hour: "{{ item.hour }}"
-    minute: "{{ item.minute }}"
-    weekday: "{{ item.weekday }}"
-    state: present
-  with_items:
-    - {job: "/usr/local/bin/runitor -no-start-ping=true -uuid {{secret_hc_mercy_bar}} -- systemctl restart bar.service", name: "Restart BARbot", hour: "3", minute: "0", weekday: "*"}
-    - {job: "/usr/local/bin/runitor -no-start-ping=true -uuid {{secret_hc_mercy_math}} -- systemctl restart math.service", name: "Restart MATHBot", hour: "3", minute: "1", weekday: "*"}
-    - {job: "/usr/local/bin/runitor -no-start-ping=true -uuid {{secret_hc_mercy_phantom}} -- systemctl restart phantom.service", name: "Restart PhantomBot", hour: "3", minute: "2", weekday: "*"}
-    - {job: "/usr/local/bin/runitor -no-start-ping=true -uuid {{secret_hc_mercy_tg}} -- systemctl restart tg-sync.service", name: "Restart TG Sync", hour: "3", minute: "3", weekday: "*"}
-    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_mercy_media}}/ -- /usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml", name: "Backup Media", hour: "2", minute: "59", weekday: "*"}

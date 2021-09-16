@@ -46,6 +46,7 @@
     - role: install_runitor
     - role: install_telegraf
     - role: adonalsium
+    - role: cronjobs
     - role: geerlingguy.docker
     - role: geerlingguy.ntp
     - role: ironicbadger.ansible_role_docker_compose_generator
@@ -59,7 +60,9 @@
     - role: grog.package
     - role: geerlingguy.pip
     - role: github
+    - role: install_runitor
     - role: dominion
+    - role: cronjobs
 
 - hosts: endowment
   become: true
@@ -74,6 +77,7 @@
     - role: install_telegraf
     - role: install_runitor
     - role: endowment
+    - role: cronjobs
     - role: ironicbadger.ansible_role_docker_compose_generator
 
 - hosts: autonomy
@@ -89,6 +93,7 @@
     - role: install_telegraf
     - role: install_runitor
     - role: autonomy
+    - role: cronjobs
     - role: ironicbadger.ansible_role_docker_compose_generator
 
 - hosts: cultivation
@@ -103,6 +108,7 @@
     - role: install_telegraf
     - role: install_runitor
     - role: cultivation
+    - role: cronjobs
     - role: ironicbadger.ansible_role_docker_compose_generator
 
 - hosts: preservation
@@ -118,6 +124,7 @@
     - role: install_runitor
     - role: ironicbadger.ansible_role_docker_compose_generator
     - role: preservation
+    - role: cronjobs
 
 - hosts: honor
   become: true
@@ -132,6 +139,7 @@
     - role: install_runitor
     - role: caddy_ansible.caddy_ansible
     - role: honor
+    - role: cronjobs
     - role: install_fail2ban
     - role: ironicbadger.ansible_role_docker_compose_generator
 
@@ -156,6 +164,7 @@
     - role: fuzzymistborn.autorestic
     - role: install_runitor
     - role: caddy_internal
+    - role: cronjobs
     - role: caddy_ansible.caddy_ansible
 
 - hosts: mercy
@@ -168,6 +177,7 @@
     - role: fuzzymistborn.autorestic
     - role: install_runitor
     - role: mercy
+    - role: cronjobs
 
 - hosts: omada
   become: true
@@ -180,6 +190,7 @@
     - role: fuzzymistborn.autorestic
     - role: install_runitor
     - role: omada
+    - role: cronjobs
     - role: ironicbadger.ansible_role_docker_compose_generator
 
 - hosts: ambition
@@ -196,6 +207,7 @@
     - role: install_runitor
     - role: caddy_ansible.caddy_ansible
     - role: ambition
+    - role: cronjobs
     - role: install_fail2ban
     - role: ironicbadger.ansible_role_docker_compose_generator
 
@@ -209,6 +221,7 @@
     - role: fuzzymistborn.autorestic
     - role: install_runitor
     - role: kelsier
+    - role: cronjobs
 
 - hosts: odium
   become: true
@@ -233,5 +246,6 @@
     - role: grog.package
     - role: geerlingguy.pip
     - role: odium
+    - role: cronjobs
     - role: geerlingguy.docker
     - role: ironicbadger.ansible_role_docker_compose_generator

@@ -13,6 +13,26 @@ package_list:
 
 pull_backup: false
 
+### Cronjobs
+cronjobs:
+  - name: DB Backup
+    job: /usr/local/bin/runitor -uuid {{secret_hc_preservation_db_backup}} -- /home/{{ main_username }}/scripts/db_backup.sh
+    user: "{{ main_username }}"
+    minute: 45
+    hour: 0
+  - name: Restic Prune
+    job: /usr/local/bin/runitor -uuid {{secret_hc_preservation_purge}} -- /usr/local/bin/autorestic forget -a -- prune
+    user: "{{ main_username }}"
+    minute: 45
+    hour: 22
+    weekday: 1
+  - name: Restic Check
+    job: /usr/local/bin/runitor -uuid {{secret_hc_restic_check_preservation}} -- /usr/local/bin/autorestic exec -a -- check
+    user: "{{ main_username }}"
+    minute: 45
+    hour: 2
+    day: 1
+
 ### Docker-Compose with ironicbadger.docker_compose_generator
 appdata_path: "/home/{{ main_username }}/docker"
 containers:

@@ -21,6 +21,43 @@ package_list:
 clone_git: false
 pull_backup: false
 
+### Cronjobs
+cronjobs:
+  - name: Traffic AM
+    job: /usr/local/bin/runitor -uuid {{secret_hc_autonomy_traffic}} -- /home/{{main_username}}/scripts/traffic.sh > /dev/null
+    user: "{{ main_username }}"
+    minute: '*/10'
+    hour: 7-8,16-18
+    weekday: 1-5
+  - name: Traffic PM
+    job: /usr/local/bin/runitor -uuid {{secret_hc_autonomy_traffic}} -- /home/{{main_username}}/scripts/traffic.sh > /dev/null
+    user: "{{ main_username }}"
+    minute: '*/30'
+    hour: 9-15
+    weekday: 1-5
+  - name: NodeRed Github
+    job: /usr/local/bin/runitor -uuid {{secret_hc_autonomy_nr_git}} -- /home/{{main_username}}/docker/nodered/github_cron.sh
+    user: "{{ main_username }}"
+    minute: 0
+    hour: 23
+  - name: Restic Prune
+    job: /usr/local/bin/runitor -uuid {{secret_hc_autonomy_purge}} -- /usr/local/bin/autorestic forget -a -- prune
+    user: "{{ main_username }}"
+    minute: 0
+    hour: 22
+    weekday: 1
+  - name: Restic Check
+    job: /usr/local/bin/runitor -uuid {{secret_hc_restic_check_autonomy}} -- /usr/local/bin/autorestic exec -a -- check
+    user: "{{ main_username }}"
+    minute: 0
+    hour: 2
+    day: 1
+  - name: Media Backup
+    job: /usr/local/bin/runitor -uuid {{secret_hc_autonomy_media}} -- /usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml
+    user: root
+    minute: 0
+    hour: 0
+
 ### Docker-Compose with ironicbadger.docker_compose_generator
 appdata_path: "/home/{{ main_username }}/docker"
 containers:

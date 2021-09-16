@@ -15,6 +15,14 @@ package_list:
   - name: ethtool
   - name: ifupdown2
 
+### Cronjobs
+cronjobs:
+  - name: Daily Suspend
+    job: /usr/bin/systemctl suspend
+    user: root
+    minute: 0
+    hour: 0
+
 ### Docker-Compose with ironicbadger.docker_compose_generator
 appdata_path: /home/{{main_username}}/docker
 containers:

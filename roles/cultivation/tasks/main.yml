@@ -108,30 +108,3 @@
     name: rsyslog
     enabled: 'true'
     state: restarted
-
-#### Cronjobs
-- name: "Main User Cronjobs"
-  cron:
-    user: "{{ main_username }}"
-    name: "{{ item.name }}"
-    job: "{{ item.job }}"
-    hour: "{{ item.hour }}"
-    minute: "{{ item.minute }}"
-    weekday: "{{ item.weekday }}"
-    day: "{{ item.day }}"
-    state: present
-  with_items:
-    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_cultivation_purge}} -- /usr/local/bin/autorestic forget -a -- prune", name: "Restic Prune", hour: "22", minute: "15", weekday: "1", day: "*"}
-    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_restic_check_cultivation}} -- /usr/local/bin/autorestic exec -a -- check", name: "Restic Check", hour: "2", minute: "15", weekday: "*", day: "1"}
-
-- name: "Root Cronjobs"
-  cron:
-    user: "root"
-    name: "{{ item.name }}"
-    job: "{{ item.job }}"
-    hour: "{{ item.hour }}"
-    minute: "{{ item.minute }}"
-    weekday: "{{ item.weekday }}"
-    state: present
-  with_items:
-    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_cultivation_media}} -- /usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml", name: "Media Backup", hour: "0", minute: "15", weekday: "*"}

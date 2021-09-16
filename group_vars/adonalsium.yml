@@ -44,6 +44,42 @@ infrastructure: false
 # nag_force_install: true
 # nag_ver: 0.0.7
 
+### Cronjobs
+cronjobs:
+  - name: Scrutiny
+    job: /usr/local/bin/runitor -uuid {{secret_hc_adonalsium_scrutiny}} -- docker exec scrutiny /scrutiny/bin/scrutiny-collector-metrics run > /dev/null 2>&1
+    user: "{{ main_username }}"
+    minute: 0
+    hour: '*/6'
+  - name: Restart Jellyfin
+    job: docker container restart jellyfin > /dev/null 2>&1
+    user: "{{ main_username }}"
+    hour: 2
+    minute: 30
+  - name: Restic Prune
+    job: /usr/local/bin/runitor -uuid {{secret_hc_adonalsium_purge}} -- /usr/local/bin/autorestic forget -a -- prune
+    user: "{{ main_username }}"
+    minute: 0
+    hour: 1
+    weekday: 1
+  - name: Restic Check
+    job: /usr/local/bin/runitor -uuid {{secret_hc_restic_check_adonalsium}} -- /usr/local/bin/autorestic check
+    user: "{{ main_username }}"
+    minute: 0
+    hour: 3
+    day: 1
+  - name: Media Backup (Docker)
+    job: /usr/local/bin/runitor -uuid {{secret_hc_adonalsium_media_docker}} -- /usr/local/bin/autorestic backup -l docker -c /home/{{main_username}}/.autorestic.yml
+    user: root
+    minute: 45
+    hour: 23
+  - name: Media Backup (Everything Else)
+    job: /usr/local/bin/runitor -uuid {{secret_hc_adonalsium_media_all}} -- /usr/local/bin/autorestic backup -l photos -l files -l music -l audiobooks -c /home/{{main_username}}/.autorestic.yml
+    user: root
+    minute: 15
+    hour: 1
+    weekday: 0,3,5
+
 ### Snapraid Config
 snapraid_force_install: false
 snapraid_install: false

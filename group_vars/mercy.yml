@@ -28,3 +28,43 @@ package_list:
   - name: restic
 
 pull_backup: false
+
+### Cronjobs
+cronjobs:
+  - name: Restic Prune
+    job: /usr/local/bin/runitor -uuid {{secret_hc_mercy_purge}} -- /usr/local/bin/autorestic forget -a -- prune
+    user: "{{ main_username }}"
+    minute: 0
+    hour: 21
+    weekday: 1
+  - name: Restic Check
+    job: /usr/local/bin/runitor -uuid {{secret_hc_restic_check_mercy}} -- /usr/local/bin/autorestic exec -a -- check
+    user: "{{ main_username }}"
+    minute: 30
+    hour: 21
+    day: 1
+  - name: Restart BARbot
+    job: /usr/local/bin/runitor -no-start-ping=true -uuid {{secret_hc_mercy_bar}} -- systemctl restart bar.service
+    user: root
+    minute: 0
+    hour: 3
+  - name: Restart MATHBot
+    job: /usr/local/bin/runitor -no-start-ping=true -uuid {{secret_hc_mercy_math}} -- systemctl restart math.service
+    user: root
+    minute: 1
+    hour: 3
+  - name: Restart PhantomBot
+    job: /usr/local/bin/runitor -no-start-ping=true -uuid {{secret_hc_mercy_phantom}} -- systemctl restart phantom.service
+    user: root
+    minute: 2
+    hour: 3
+  - name: Restart TG Sync
+    job: /usr/local/bin/runitor -no-start-ping=true -uuid {{secret_hc_mercy_tg}} -- systemctl restart tg-sync.service
+    user: root
+    minute: 3
+    hour: 3
+  - name: Backup Media
+    job: /usr/local/bin/runitor -uuid {{secret_hc_mercy_media}}/ -- /usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml
+    user: root
+    minute: 59
+    hour: 2

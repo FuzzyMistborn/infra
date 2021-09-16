@@ -53,15 +53,3 @@
   command: pveam download local {{item}}
   with_items:
     - ubuntu-20.04-standard_20.04-1_amd64.tar.gz
-
-- name: "Root Cronjobs"
-  cron:
-    user: "root"
-    name: "{{ item.name }}"
-    job: "{{ item.job }}"
-    hour: "{{ item.hour }}"
-    minute: "{{ item.minute }}"
-    weekday: "{{ item.weekday }}"
-    state: present
-  with_items:
-    - {job: "/usr/bin/systemctl suspend", name: "Daily Suspend", hour: "0", minute: "0", weekday: "*"}

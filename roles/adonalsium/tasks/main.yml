@@ -239,32 +239,3 @@
     name: rsyslog
     enabled: 'true'
     state: restarted
-
-### Cron
-- name: "Main User Cronjobs"
-  cron:
-    user: "{{ main_username }}"
-    name: "{{ item.name }}"
-    job: "{{ item.job }}"
-    hour: "{{ item.hour }}"
-    minute: "{{ item.minute }}"
-    weekday: "{{ item.weekday }}"
-    day: "{{item.day}}"
-    state: present
-  with_items:
-    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_adonalsium_scrutiny}} -- docker exec scrutiny /scrutiny/bin/scrutiny-collector-metrics run > /dev/null 2>&1", name: "Scrutiny", hour: "*/6", minute: "0", weekday: "*", day: "*"}
-    - {job: "docker container restart jellyfin > /dev/null 2>&1", name: "Restart Jellyfin", hour: "2", minute: "30", weekday: "*", day: "*"}
-    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_adonalsium_purge}} -- /usr/local/bin/autorestic forget -a -- prune", name: "Restic Prune", hour: "1", minute: "00", weekday: "1", day: "*"}
-    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_restic_check_adonalsium}} -- /usr/local/bin/autorestic check", name: "Restic Check", hour: "3", minute: "0", weekday: "*", day: "1"}
-- name: "Root Cronjobs"
-  cron:
-    user: "root"
-    name: "{{ item.name }}"
-    job: "{{ item.job }}"
-    hour: "{{ item.hour }}"
-    minute: "{{ item.minute }}"
-    weekday: "{{ item.weekday }}"
-    state: present
-  with_items:
-    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_adonalsium_media_docker}} -- /usr/local/bin/autorestic backup -l docker -c /home/{{main_username}}/.autorestic.yml", name: "Media Backup (Docker)", hour: "23", minute: "45", weekday: "*"}
-    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_adonalsium_media_all}} -- /usr/local/bin/autorestic backup -l photos -l files -l music -l audiobooks -c /home/{{main_username}}/.autorestic.yml", name: "Media Backup (Everything Else)", hour: "1", minute: "15", weekday: "0,3,5"}

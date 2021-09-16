@@ -256,30 +256,3 @@
     daemon-reload: true
     state: restarted
     name: wol
-
-### Cron
-- name: "Main User Cronjobs"
-  cron:
-    user: "{{ main_username }}"
-    name: "{{ item.name }}"
-    job: "{{ item.job }}"
-    hour: "{{ item.hour }}"
-    minute: "{{ item.minute }}"
-    weekday: "{{ item.weekday }}"
-    day: "{{item.day}}"
-    state: present
-  with_items:
-    - {job: "/mnt/Backup/Kelsier/app_backup.sh", name: "App Backup", hour: "19", minute: "0", weekday: "*", day: "*/3"}
-    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_kelsier_purge}} -- /usr/local/bin/autorestic forget -a -- prune", name: "Restic Prune", hour: "20", minute: "00", weekday: "1", day: "*"}
-    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_restic_check_kelsier}} -- /usr/local/bin/autorestic exec -a -- check", name: "Restic Check", hour: "19", minute: "0", weekday: "*", day: "1"}
-- name: "Root Cronjobs"
-  cron:
-    user: "root"
-    name: "{{ item.name }}"
-    job: "{{ item.job }}"
-    hour: "{{ item.hour }}"
-    minute: "{{ item.minute }}"
-    weekday: "{{ item.weekday }}"
-    state: present
-  with_items:
-    - {job: "/usr/local/bin/runitor -uuid {{secret_hc_kelsier_media}} -- /usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml", name: "Media Backup", hour: "21", minute: "00", weekday: "0,3,5"}
