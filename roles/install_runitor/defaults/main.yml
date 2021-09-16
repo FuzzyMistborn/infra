@@ -1,0 +1,5 @@
+---
+
+# Force install/update
+runitor_force_install: false
+runitor_url: https://hc-ping.com

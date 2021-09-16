@@ -1,0 +1,60 @@
+---
+
+- name: check whether installed
+  find:
+    paths: /usr/local/bin
+    patterns: syncthing
+  register: is_installed
+
+- name: install/update binary?
+  set_fact:
+    force_install: "{{ syncthing_force_install == true or is_installed.matched == 0 }}"
+
+- name: get latest release
+  uri:
+    url: https://api.github.com/repos/syncthing/syncthing/releases/latest
+    return_content: true
+  register: release_latest
+  when: syncthing_ver is undefined and force_install == True
+
+- name: set version if not already
+  set_fact: syncthing_ver="{{ release_latest.json.tag_name }}"
+  when: syncthing_ver is undefined and force_install == True
+
+- name: download release
+  unarchive:
+    src: https://github.com/syncthing/syncthing/releases/download/{{syncthing_ver}}/syncthing-linux-amd64-{{syncthing_ver}}.tar.gz
+    dest: /usr/local/bin
+    remote_src: yes
+    owner: "{{main_username}}"
+    group: "{{main_username}}"
+    mode: +x
+  when: force_install == True
+
+- name: remove unneeded files
+  file:
+    path: /usr/local/bin/{{item}}
+    state: absent
+  with_items:
+    - README.txt
+    - AUTHORS.txt
+    - LICENSE.txt
+    - etc
+    - extra
+    - .metadata
+  when: force_install == True
+
+- name: Copy systemd service file
+  template:
+    src: ../templates/syncthing.service.j2
+    dest: /etc/systemd/system/syncthing.service
+    owner: "{{ syncthing_user }}"
+    group: "{{ syncthing_user }}"
+    mode: 0644
+
+- name: Enable systemd service
+  systemd:
+    enabled: true
+    daemon-reload: true
+    state: started
+    name: synthinc.service

@@ -1,0 +1,4 @@
+---
+
+# Force install/update
+hugo_force_install: false

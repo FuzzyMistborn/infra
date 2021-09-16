@@ -1,0 +1,13 @@
+---
+- name: ensure destination for autorestic configuration file exists
+  file:
+    path: "{{ autorestic_generator_output_path }}"
+    state: directory
+
+- name: write autorestic conf file
+  template:
+    backup: yes
+    src: ../templates/autorestic.yml.j2
+    dest: "{{ autorestic_generator_output_path }}/.autorestic.yml"
+    owner: "{{ autorestic_generator_generator_uid }}"
+    group: "{{ autorestic_generator_generator_gid }}"

@@ -1,0 +1,5 @@
+---
+
+# Force install/update
+syncthing_force_install: false
+syncthing_user: root

@@ -55,9 +55,9 @@ snapraid_runner_smtp_host: "{{ secret_snapraid_smtp_host }}"
 snapraid_runner_smtp_port: 8025
 snapraid_runner_use_ssl: false
 snapraid_runner_touch: false
-snapraid_runner_command: "python3 {{ snapraid_run_bin }} -c {{ snapraid_run_conf}} && curl -fsS -m 10 --retry 5 -o /dev/null {{secret_hc_adonalsium_snapraid}}"
+snapraid_runner_command: "python3 {{ snapraid_run_bin }} -c {{ snapraid_run_conf}}"
 snapraid_runner_cron_jobs:
-  - { job: '{{ snapraid_run_command }}', name: 'snapraid_runner', weekday: '*', hour: '04' }
+  - { job: '/usr/local/bin/runitor -uuid {{secret_hc_adonalsium_snapraid}} -- {{ snapraid_run_command }}', name: 'snapraid_runner', weekday: '*', hour: '04' }
 snapraid_config_excludes:
   - "*.unrecoverable"
   - "/tmp/"
@@ -73,8 +73,8 @@ snapraid_config_excludes:
   - ".fseventsd"
   - ".Spotlight-V100"
   - ".TemporaryItems"
-  - ".Trashes"
   - ".AppleDB"
+  - ".Trash*"
 
 ### Docker-Compose with ironicbadger.docker_compose_generator
 appdata_path: "/home/{{ main_username }}/docker"

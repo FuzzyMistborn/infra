@@ -1,15 +1,24 @@
 ---
+- name: check whether installed
+  find:
+    paths: /usr/local/bin
+    patterns: runitor
+  register: is_installed
+
+- name: install/update binary?
+  set_fact:
+    force_install: "{{ runitor_force_install == true or is_installed.matched == 0 }}"
 
 - name: get latest release
   uri:
     url: https://api.github.com/repos/bdd/runitor/releases/latest
     return_content: true
   register: release_latest
-  when: runitor_ver is undefined
+  when: runitor_ver is undefined and force_install == True
 
 - name: set version if not already
   set_fact: runitor_ver="{{ release_latest.json.tag_name }}"
-  when: runitor_ver is undefined
+  when: runitor_ver is undefined and force_install == True
 
 - name: download release
   get_url:
@@ -19,10 +28,12 @@
     owner: "{{main_username}}"
     group: "{{main_username}}"
     mode: +x
+  when: force_install == True
 
 - name: populate /etc/environment
   lineinfile:
     dest: "/etc/environment"
     state: present
     regexp: "^HC_API_URL="
-    line: "HC_API_URL={{secret_hc_ping_url}}"
+    line: "HC_API_URL={{runitor_url}}"
+  when: force_install == True

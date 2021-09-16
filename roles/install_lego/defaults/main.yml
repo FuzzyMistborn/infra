@@ -1,0 +1,4 @@
+---
+
+# Force install/update
+lego_force_install: false

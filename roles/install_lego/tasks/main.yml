@@ -1,15 +1,25 @@
 ---
 
+- name: check whether installed
+  find:
+    paths: /usr/local/bin
+    patterns: lego
+  register: is_installed
+
+- name: install/update binary?
+  set_fact:
+    force_install: "{{ lego_force_install == true or is_installed.matched == 0 }}"
+
 - name: get latest release
   uri:
     url: https://api.github.com/repos/go-acme/lego/releases/latest
     return_content: true
   register: release_latest
-  when: lego_ver is undefined
+  when: lego_ver is undefined and force_install == True
 
 - name: set version if not already
   set_fact: lego_ver="{{ release_latest.json.tag_name }}"
-  when: lego_ver is undefined
+  when: lego_ver is undefined and force_install == True
 
 - name: download release
   unarchive:
@@ -19,6 +29,7 @@
     owner: "{{main_username}}"
     group: "{{main_username}}"
     mode: +x
+  when: force_install == True
 
 - name: remove unneeded files
   file:
@@ -27,3 +38,4 @@
   with_items:
     - LICENSE
     - CHANGELOG.md
+  when: force_install == True

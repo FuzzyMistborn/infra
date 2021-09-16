@@ -1,0 +1,149 @@
+# {{ ansible_managed }}
+---
+backends:
+{% for backend in autorestic_backends %}
+  {{ backend.name }}:
+    type: {{ backend.type }}
+    path: '{{ backend.path }}'
+    key: {{ backend.key }}
+    env:
+{% for envvar in backend.env %}
+      {{ envvar }}
+{% endfor %}
+{% if backend.options is defined %}
+    options: 
+{% if backend.options.backup is defined %}
+      backup:
+{% endif %}
+{% if backend.options.backup.tag is defined %}
+        tag:
+{% for tag in backend.options.backup.tag %}
+          - {{ tag }}
+{% endfor %}
+{% endif %}
+{% if backend.options.backup.exclude is defined %}
+        exclude:
+{% for exclude in backend.options.backup.exclude %}
+          - {{ exclude }}
+{% endfor %}
+{% endif %}
+{% if backend.options.backup.excludefile is defined %}
+        exclude-file:
+{% for excludefile in backend.options.backup.excludefile %}
+          - {{ excludefile }}
+{% endfor %}
+{% endif %}
+{% if backend.options.forget is defined %}
+      forget:
+{% endif %}
+{% if backend.options.forget.last is defined %}
+        keep-last: {{backend.options.forget.last}}
+{% endif %}
+{% if backend.options.forget.hourly is defined %}
+        keep-hourly: {{backend.options.forget.hourly}}
+{% endif %}
+{% if backend.options.forget.daily is defined %}
+        keep-daily: {{backend.options.forget.daily}}
+{% endif %}
+{% if backend.options.forget.weekly is defined %}
+        keep-weekly: {{backend.options.forget.weekly}}
+{% endif %}
+{% if backend.options.forget.monthly is defined %}
+        keep-monthly: {{backend.options.forget.monthly}}
+{% endif %}
+{% if backend.options.forget.yearly is defined %}
+        keep-yearly: {{backend.options.forget.yearly}}
+{% endif %}
+{% if backend.options.forget.within is defined %}
+        keep-within: {{backend.options.forget.within}}
+{% endif %}
+{% endif %}
+{% endfor %}
+
+locations:
+{% for location in autorestic_locations %}
+  {{ location.name }}:
+    from: {{ location.from }}
+    to: 
+{% for to in location.to %}
+      - {{ to }}
+{% endfor %}
+{% if location.cron is defined %}
+    cron: {{ location.cron }}
+{% endif %}
+{% if location.hooks is defined %}
+    hooks: 
+{% if location.hooks.before is defined %}
+      before: 
+{% for before in location.hooks.before %}
+        - {{ before }}
+{% endfor %}
+{% endif %}
+{% if location.hooks.after is defined %}
+      after: 
+{% for after in location.hooks.after %}
+        - {{ after }}
+{% endfor %}
+{% endif %}
+{% if location.hooks.failure is defined %}
+      failure: 
+{% for failure in location.hooks.failure %}
+        - {{ failure }}
+{% endfor %}
+{% endif %}
+{% if location.hooks.success is defined %}
+      success: 
+{% for success in location.hooks.success %}
+        - {{ success }}
+{% endfor %}
+{% endif %}
+{% if location.options is defined %}
+    options: 
+{% if location.options.backup is defined %}
+      backup:
+{% endif %}
+{% if location.options.backup.tag is defined %}
+        tag:
+{% for tag in location.options.backup.tag %}
+          - {{ tag }}
+{% endfor %}
+{% endif %}
+{% if location.options.backup.exclude is defined %}
+        exclude:
+{% for exclude in location.options.backup.exclude %}
+          - {{ exclude }}
+{% endfor %}
+{% endif %}
+{% if location.options.backup.excludefile is defined %}
+        exclude-file:
+{% for excludefile in location.options.backup.excludefile %}
+          - {{ excludefile }}
+{% endfor %}
+{% endif %}
+{% if location.options.forget is defined %}
+      forget:
+{% endif %}
+{% if location.options.forget.last is defined %}
+        keep-last: {{location.options.forget.last}}
+{% endif %}
+{% if location.options.forget.hourly is defined %}
+        keep-hourly: {{location.options.forget.hourly}}
+{% endif %}
+{% if location.options.forget.daily is defined %}
+        keep-daily: {{location.options.forget.daily}}
+{% endif %}
+{% if location.options.forget.weekly is defined %}
+        keep-weekly: {{location.options.forget.weekly}}
+{% endif %}
+{% if location.options.forget.monthly is defined %}
+        keep-monthly: {{location.options.forget.monthly}}
+{% endif %}
+{% if location.options.forget.yearly is defined %}
+        keep-yearly: {{location.options.forget.yearly}}
+{% endif %}
+{% if location.options.forget.within is defined %}
+        keep-within: {{location.options.forget.within}}
+{% endif %}
+{% endif %}
+{% endif %}
+{% endfor %}

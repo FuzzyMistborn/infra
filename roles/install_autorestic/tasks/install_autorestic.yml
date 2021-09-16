@@ -1,0 +1,50 @@
+---
+
+- name: check whether autorestic installed
+  find:
+    paths: /usr/local/bin
+    patterns: autorestic
+  register: is_installed
+
+- name: install autorestic binary?
+  set_fact:
+    force_install: "{{ is_installed.matched == 0 }}"
+
+- name: update autorestic binary?
+  set_fact:
+    update_binary: "{{ autorestic_ver is undefined and is_installed.matched == 1 }}"
+
+- name: Update to latest autorestic version
+  command: "/usr/local/bin/autorestic upgrade"
+  when:  update_binary == True
+  register: update
+  changed_when: "'Already up to date' not in update.stdout_lines"
+
+- name: get latest autorestic release
+  uri:
+    url: https://api.github.com/repos/cupcakearmy/autorestic/releases/latest
+    return_content: true
+  register: release_latest
+  when: autorestic_ver is undefined and force_install == True
+
+- name: set autorestic version if not already
+  set_fact: autorestic_ver="{{ release_latest.json.tag_name }}"
+  when: autorestic_ver is undefined and force_install == True
+
+- name: download autorestic release
+  get_url:
+      url: https://github.com/cupcakearmy/autorestic/releases/download/{{autorestic_ver}}/autorestic_{{autorestic_ver | regex_replace('v')}}_linux_amd64.bz2
+      dest: /tmp
+      force: yes
+      owner: "{{main_username}}"
+      group: "{{main_username}}"
+      mode: +x
+  when: force_install == True
+
+- name: set autorestic filename
+  set_fact: file_name="autorestic_{{ autorestic_ver | regex_replace('v')}}_linux_amd64.bz2"
+  when: force_install == True
+
+- name: Unzip autorestic release
+  shell: "cd /tmp && bzip2 -d {{ file_name }} && mv {{ file_name | regex_replace('.bz2') }} /usr/local/bin/autorestic"
+  when: force_install == True

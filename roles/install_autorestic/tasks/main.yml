@@ -1,30 +1,10 @@
 ---
 
-- name: Update Restic to latest version
-  command: "/usr/bin/restic self-update"
+- name: install restic
+  include: install_restic.yml
 
-- name: get latest release
-  uri:
-    url: https://api.github.com/repos/cupcakearmy/autorestic/releases/latest
-    return_content: true
-  register: release_latest
-  when: autorestic_ver is undefined
+- name: install autorestic
+  include: install_autorestic.yml
 
-- name: set version if not already
-  set_fact: autorestic_ver="{{ release_latest.json.tag_name }}"
-  when: autorestic_ver is undefined
-
-- name: download release
-  get_url:
-      url: https://github.com/cupcakearmy/autorestic/releases/download/{{autorestic_ver}}/autorestic_{{autorestic_ver | regex_replace('v')}}_linux_amd64.bz2
-      dest: /tmp
-      force: yes
-      owner: "{{main_username}}"
-      group: "{{main_username}}"
-      mode: +x
-
-- name: set filename
-  set_fact: file_name="autorestic_{{ autorestic_ver | regex_replace('v')}}_linux_amd64.bz2"
-
-- name: Unzip release
-  shell: "cd /tmp && bzip2 -d {{ file_name }} && mv {{ file_name | regex_replace('.bz2') }} /usr/local/bin/autorestic"
+- name: configure autorestic
+  include: configure.yml
