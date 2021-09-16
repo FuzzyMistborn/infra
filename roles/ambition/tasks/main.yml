@@ -173,15 +173,7 @@
     comment: "{{item.comment}}"
     route: "{{item.route}}"
   with_items:
-    - {rule: 'allow', port: '22', proto: 'any', comment: 'ssh', route: 'no'}
-    - {rule: 'allow', port: '80', proto: 'tcp', comment: 'reverse proxy', route: 'no'}
-    - {rule: 'allow', port: '443', proto: 'tcp', comment: 'reverse proxy', route: 'no'}
-    - {rule: 'allow', port: '5201', proto: 'tcp', comment: 'iperf', route: 'no'}
-    - {rule: 'allow', port: '{{secret_rsyslog_port}}', proto: 'tcp', comment: 'rsyslog', route: 'no'}
-    - {rule: 'allow', port: '51280', proto: 'udp', comment: 'wireguard', route: 'no'}
-    - {rule: 'allow', port: '51282', proto: 'udp', comment: 'wireguard tunnel', route: 'no'}
-    - {rule: 'allow', port: '222', proto: 'tcp', comment: 'gitea', route: 'no'}
-    - {rule: 'allow', port: '9001', proto: 'tcp', comment: 'portainer', route: 'no'}
+    - "{{ ufw }}"
 
 - name: Reload UFW
   community.general.ufw:

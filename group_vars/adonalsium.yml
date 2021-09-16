@@ -14,26 +14,178 @@ package_list:
   - name: ntfs-3g
   - name: wireguard
 
+### Disks
 mergerfs_mount:
-  - {path: /mnt/Media}
+  - path: /mnt/Media
 
 parity_disks:
-  - {path: /mnt/parity1, source: /dev/disk/by-id/ata-ST8000NM0055-1RM112_ZA11KJXC-part1, fs: ext4, opts: defaults, content: false}
+  - path: /mnt/parity1
+    source: /dev/disk/by-id/ata-ST8000NM0055-1RM112_ZA11KJXC-part1
+    fs: ext4
+    opts: defaults
+    content: false
 
 data_disks:
-  - {path: /mnt/disk1, source: /dev/disk/by-id/ata-ST8000NM0055-1RM112_ZA11KKDB-part1, fs: ext4, opts: defaults, content: true}
-  - {path: /mnt/disk2, source: /dev/disk/by-id/ata-ST8000NM0055-1RM112_ZA11KW0F-part1, fs: ext4, opts: defaults, content: true}
-  - {path: /mnt/disk3, source: /dev/disk/by-id/ata-ST8000NM0055-1RM112_ZA11KW4B-part1, fs: ext4, opts: defaults, content: true}
-  - {path: /mnt/disk4, source: /dev/disk/by-id/ata-ST4000NM0024-1HT178_Z4F06WRN-part1, fs: ext4, opts: defaults, content: true}
-  - {path: /mnt/disk5, source: /dev/disk/by-id/ata-WDC_WD60EFRX-68MYMN1_WD-WX21D25R5VX9-part1, fs: ext4, opts: defaults, content: true}
-  - {path: /mnt/disk6, source: /dev/disk/by-id/ata-WDC_WD60EFRX-68MYMN1_WD-WX31D25040NC-part1, fs: ext4, opts: defaults, content: true}
+  - path: /mnt/disk1
+    source: /dev/disk/by-id/ata-ST8000NM0055-1RM112_ZA11KKDB-part1
+    fs: ext4
+    opts: defaults
+    content: true
+  - path: /mnt/disk2
+    source: /dev/disk/by-id/ata-ST8000NM0055-1RM112_ZA11KW0F-part1
+    fs: ext4
+    opts: defaults
+    content: true
+  - path: /mnt/disk3
+    source: /dev/disk/by-id/ata-ST8000NM0055-1RM112_ZA11KW4B-part1
+    fs: ext4
+    opts: defaults
+    content: true
+  - path: /mnt/disk4
+    source: /dev/disk/by-id/ata-ST4000NM0024-1HT178_Z4F06WRN-part1
+    fs: ext4
+    opts: defaults
+    content: true
+  - path: /mnt/disk5
+    source: /dev/disk/by-id/ata-WDC_WD60EFRX-68MYMN1_WD-WX21D25R5VX9-part1
+    fs: ext4
+    opts: defaults
+    content: true
+  - path: /mnt/disk6
+    source: /dev/disk/by-id/ata-WDC_WD60EFRX-68MYMN1_WD-WX31D25040NC-part1
+    fs: ext4
+    opts: defaults
+    content: true
 
 fstab_mergerfs:
-  - {source: "/mnt/disk*", mountpoint: "/mnt/Media", fs: fuse.mergerfs, opts: "direct_io,defaults,allow_other,minfreespace=50G,fsname=mergerfs"}
+  - source: "/mnt/disk*"
+    mountpoint: "/mnt/Media"
+    fs: fuse.mergerfs
+    opts: "direct_io,defaults,allow_other,minfreespace=50G,fsname=mergerfs"
 
 nfs_mount:
-  - {path: /mnt/synology_backup, source: 192.168.30.25:/volume1/Backup/, fs: nfs, opts: defaults, content: false}
-  - {path: /mnt/synology_minio, source: 192.168.30.25:/volume1/Minio/, fs: nfs, opts: defaults, content: false}
+  - path: /mnt/synology_backup
+    source: 192.168.30.25:/volume1/Backup/
+    fs: nfs
+    opts: defaults
+    content: false
+  - path: /mnt/synology_minio
+    source: 192.168.30.25:/volume1/Minio/
+    fs: nfs
+    opts: defaults
+    content: false
+
+### Infrastructure
+lxc:
+  - name: Dominion
+    vmid: 200
+    privileged: true
+    gw: 192.168.30.1
+    ip: 192.168.30.15
+    disk: 10
+    cores: 2
+    memory: 512
+  - name: Honor
+    vmid: 201
+    privileged: true
+    gw: 192.168.50.1
+    ip: 192.168.50.10
+    bridge: vmbr2
+    disk: 10
+    cores: 2
+    memory: 1024
+    nesting: 1
+    keyctl: 1
+  - name: Valor
+    vmid: 202
+    privileged: true
+    gw: 192.168.50.1
+    ip: 192.168.50.11
+    bridge: vmbr2
+    disk: 10
+    cores: 2
+    memory: 512
+    nesting: 1
+    keyctl: 1
+  - name: Mercy
+    vmid: 203
+    privileged: true
+    gw: 192.168.30.1
+    ip: 192.168.30.18
+    disk: 10
+    cores: 1
+    memory: 512
+    template: local:vztmpl/ubuntu-18.04-standard_18.04.1-1_amd64.tar.gz
+  - name: Omada
+    vmid: 204
+    privileged: true
+    gw: 192.168.1.1
+    ip: 192.168.1.10
+    bridge: vmbr1
+    disk: 10
+    cores: 2
+    memory: 1024
+    nesting: 1
+    keyctl: 1
+  - name: Elasticsearch
+    vmid: 205
+    privileged: true
+    gw: 192.168.30.1
+    ip: 192.168.30.16
+    disk: 30
+    cores: 2
+    memory: 2048
+  - name: Caddy
+    vmid: 206
+    privileged: true
+    gw: 192.168.30.1
+    ip: 192.168.30.17
+    disk: 8
+    cores: 2
+    memory: 512
+  - name: Autonomy
+    vmid: 251
+    privileged: false
+    gw: 192.168.30.1
+    ip: 192.168.30.12
+    disk: 50
+    cores: 12
+    memory: 8192
+    nesting: 1
+    keyctl: 1
+  - name: Cultivation
+    vmid: 252
+    privileged: true
+    gw: 192.168.30.1
+    ip: 192.168.30.13
+    disk: 40
+    cores: 4
+    memory: 3072
+    nesting: 1
+    keyctl: 1
+  - name: Preservation
+    vmid: 253
+    privileged: true
+    gw: 192.168.30.1
+    ip: 192.168.30.14
+    disk: 40
+    cores: 4
+    memory: 3072
+    nesting: 1
+    keyctl: 1
+
+lxc_mounts:
+  - name: Endowment
+    vmid: 250
+    privileged: false
+    gw: 192.168.30.1
+    ip: 192.168.30.200
+    disk: 75
+    cores: 6
+    memory: 4096
+    nesting: 1
+    keyctl: 0
+    fsmount: cifs
 
 ### Variables
 install_nut: false

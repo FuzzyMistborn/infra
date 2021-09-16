@@ -54,15 +54,33 @@ package_list:
   - name: wine
 
 data_disks:
-  - {path: /mnt/Games, source: /dev/disk/by-id/ata-TEAM_T253X2001T_TPBF2006200010200009-part1, fs: ext4, opts: defaults, content: true}
+  - path: /mnt/Games
+    source: /dev/disk/by-id/ata-TEAM_T253X2001T_TPBF2006200010200009-part1
+    fs: ext4
+    opts: defaults
+    content: true
 
 nfs_mount:
-  - {path: /mnt/Backup, source: 192.168.10.20:/volume1/Backup/, fs: nfs, opts: defaults, content: false}
-  - {path: /mnt/NVR, source: 192.168.10.20:/volume1/BlueIris/, fs: nfs, opts: defaults, content: false}
+  - path: /mnt/Backup
+    source: 192.168.10.20:/volume1/Backup/
+    fs: nfs
+    opts: defaults
+    content: false
+  - path: /mnt/NVR
+    source: 192.168.10.20:/volume1/BlueIris/
+    fs: nfs
+    opts: defaults
+    content: false
 
 smb_mountpoints:
-  - {path: "/mnt/Media", source: "//192.168.30.10/Media", fs: cifs, opts: "defaults,uid=1000,gid=1000,credentials=/home/{{main_username}}/.smbcredentials"}
-  - {path: "/home/{{main_username}}/RetroPie", source: "//192.168.30.10/Media/Files/Roms/Retropie", fs: cifs, opts: "defaults,uid=1000,gid=1000,credentials=/home/{{main_username}}/.smbcredentials"}
+  - path: "/mnt/Media"
+    source: "//192.168.30.10/Media"
+    fs: cifs
+    opts: "defaults,uid=1000,gid=1000,credentials=/home/{{main_username}}/.smbcredentials"
+  - path: "/home/{{main_username}}/RetroPie"
+    source: "//192.168.30.10/Media/Files/Roms/Retropie"
+    fs: cifs
+    opts: "defaults,uid=1000,gid=1000,credentials=/home/{{main_username}}/.smbcredentials"
 
 ### Variables
 install_nut: false

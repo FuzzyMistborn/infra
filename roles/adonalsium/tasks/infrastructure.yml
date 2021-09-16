@@ -16,7 +16,7 @@
     vmid: "{{item.vmid}}"
     hostname: "{{item.name}}"
     unprivileged: "{{item.privileged}}"
-    onboot: "{{item.onboot}}"
+    onboot: "{{item.onboot | default ('true') }}"
     state: present
     node: adonalsium
     storage: local-lvm
@@ -25,28 +25,19 @@
     cpuunits: 1000
     cores: "{{item.cores}}"
     memory: "{{item.memory}}"
-    swap: "{{item.swap}}"
+    swap: "{{item.swap | default ('512') }}"
     api_user: root@pam
     api_password: "{{ secret_proxmox_pass }}"
     api_host: localhost
     pubkey: "{{ secret_proxmox_ct_ssh }}"
     password: "{{ secret_proxmox_pass }}"
-    netif: '{"net0":"name=eth0,gw={{item.gw}},ip={{item.ip}}/24,bridge={{item.bridge}}"}'
-    ostemplate: "{{item.template}}"
+    netif: '{"net0":"name=eth0,gw={{item.gw}},ip={{item.ip}}/24,bridge={{item.bridge | default ('vmbr0') }}"}'
+    ostemplate: "{{item.template| default ('local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz')}}"
     features:
-      - nesting={{item.nesting}}
-      - keyctl={{item.keyctl}}
-  loop:
-    - {"name":"Dominion", "vmid":"200", "privileged":"true", "onboot":"true", "gw":"192.168.30.1", "ip":"192.168.30.15", "bridge":"vmbr0", "disk":"10", "cores":"2", "memory":"512", "swap":"512", "template":"local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz", "nesting":"0", "keyctl":"0"}
-    - {"name":"Honor", "vmid":"201", "privileged":"true", "onboot":"true", "gw":"192.168.50.1", "ip":"192.168.50.10", "bridge":"vmbr2", "disk":"10", "cores":"2", "memory":"512", "swap":"1024", "template":"local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz", "nesting":"1", "keyctl":"1"}
-    - {"name":"Valor", "vmid":"202", "privileged":"true", "onboot":"true", "gw":"192.168.50.1", "ip":"192.168.50.11", "bridge":"vmbr2", "disk":"10", "cores":"2", "memory":"512", "swap":"512", "template":"local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz", "nesting":"1", "keyctl":"1"}
-    - {"name":"Mercy", "vmid":"203", "privileged":"true", "onboot":"true", "gw":"192.168.30.1", "ip":"192.168.30.18", "bridge":"vmbr0", "disk":"10", "cores":"1", "memory":"512", "swap":"512", "template":"local:vztmpl/ubuntu-18.04-standard_18.04.1-1_amd64.tar.gz", "nesting":"0", "keyctl":"0"}
-    - {"name":"Omada", "vmid":"204", "privileged":"true", "onboot":"true", "gw":"192.168.1.1", "ip":"192.168.1.10", "bridge":"vmbr1", "disk":"10", "cores":"2", "memory":"1024", "swap":"512", "template":"local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz", "nesting":"1", "keyctl":"1"}
-    - {"name":"Elasticsearch", "vmid":"205", "privileged":"true", "onboot":"true", "gw":"192.168.30.1", "ip":"192.168.30.16", "bridge":"vmbr0", "disk":"30", "cores":"2", "memory":"2048", "swap":"512", "template":"local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz", "nesting":"0", "keyctl":"0"}
-    - {"name":"Caddy", "vmid":"206", "privileged":"true", "onboot":"true", "gw":"192.168.30.1", "ip":"192.168.30.17", "bridge":"vmbr0", "disk":"8", "cores":"2", "memory":"512", "swap":"512", "template":"local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz", "nesting":"0", "keyctl":"0"}
-    - {"name":"Autonomy", "vmid":"251", "privileged":"false", "onboot":"true", "gw":"192.168.30.1", "ip":"192.168.30.12", "bridge":"vmbr0", "disk":"50", "cores":"12", "memory":"8192", "swap":"512", "template":"local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz", "nesting":"1", "keyctl":"1"}
-    - {"name":"Cultivation", "vmid":"252", "privileged":"true", "onboot":"true", "gw":"192.168.30.1", "ip":"192.168.30.13", "bridge":"vmbr0", "disk":"40", "cores":"4", "memory":"3072", "swap":"512", "template":"local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz", "nesting":"1", "keyctl":"1"}
-    - {"name":"Preservation", "vmid":"253", "privileged":"true", "onboot":"true", "gw":"192.168.30.1", "ip":"192.168.30.14", "bridge":"vmbr0", "disk":"40", "cores":"4", "memory":"3072", "swap":"512", "template":"local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz", "nesting":"1", "keyctl":"1"}
+      - nesting={{item.nesting | default ('0')}}
+      - keyctl={{item.keyctl | default ('0')}}
+  with_items:
+    - "{{ lxc }}"
 
 - name: Create LXC CT w/ Mounts
   proxmox:
@@ -54,7 +45,7 @@
     vmid: "{{item.vmid}}"
     hostname: "{{item.name}}"
     unprivileged: "{{item.privileged}}"
-    onboot: "{{item.onboot}}"
+    onboot: "{{item.onboot | default ('true') }}"
     state: present
     node: adonalsium
     storage: local-lvm
@@ -63,21 +54,21 @@
     cpuunits: 1000
     cores: "{{item.cores}}"
     memory: "{{item.memory}}"
-    swap: "{{item.swap}}"
+    swap: "{{item.swap | default ('512') }}"
     api_user: root@pam
     api_password: "{{ secret_proxmox_pass }}"
     api_host: localhost
     pubkey: "{{ secret_proxmox_ct_ssh }}"
     password: "{{ secret_proxmox_pass }}"
-    netif: '{"net0":"name=eth0,gw={{item.gw}},ip={{item.ip}}/24,bridge={{item.bridge}}"}'
-    ostemplate: "{{item.template}}"
+    netif: '{"net0":"name=eth0,gw={{item.gw}},ip={{item.ip}}/24,bridge={{item.bridge | default ('vmbr0') }}"}'
+    ostemplate: "{{item.template| default ('local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz')}}"
     mounts: '{"mp0":"/dev/disk/by-id/ata-Crucial_CT256MX100SSD1_14420D84F328-part1,mp=/mnt/scratch,backup=0"}'
     features:
-      - nesting={{item.nesting}}
-      - keyctl={{item.keyctl}}
+      - nesting={{item.nesting | default ('0')}}
+      - keyctl={{item.keyctl | default ('0')}}
       - mount={{item.fsmount}}
-  loop:
-    - {"name":"Endowment", "vmid":"250", "privileged":"false", "onboot":"true", "gw":"192.168.30.1", "ip":"192.168.30.200", "bridge":"vmbr0", "disk":"75", "cores":"6", "memory":"4096", "swap":"512", "template":"local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz", "nesting":"1", "keyctl":"0", "fsmount":"cifs"}
+  with_items:
+    - "{{ lxc_mounts }}"
 
 - name: Set boot order
   shell: pct set {{item.lxc}} --startup order={{item.order}}
