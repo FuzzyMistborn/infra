@@ -92,14 +92,6 @@
     - {src: 'scripts/run.sh.j2', dest: 'scripts/run.sh'}
     - {src: 'scripts/tg_ho.py.j2', dest: 'scripts/tg_ho.py'}
 
-### Restic
-- name: Copy Autorestic Config Template
-  template:
-    src: autorestic.yml.j2
-    dest: /home/{{ main_username }}/.autorestic.yml
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-
 ### Backup Restore
 - name: Create restore script
   copy:

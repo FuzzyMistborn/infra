@@ -182,14 +182,6 @@
     creates: /home/{{main_username}}/nut.sh
   when: install_nut == true
 
-### Restic
-- name: Copy Autorestic Config Template
-  template:
-    src: autorestic.yml.j2
-    dest: /home/{{ main_username }}/.autorestic.yml
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-
 ### Backup Restore
 - name: Create restore script
   copy:

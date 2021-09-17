@@ -104,6 +104,62 @@ caddy_systemd_network_dependency: false
 caddy_conf_dir: /home/{{main_username}}/caddy
 caddy_config: "{{ lookup('template', 'roles/ambition/templates/Caddyfile.j2') }}"
 
+### Autorestic Config
+autorestic_locations:
+  - name: docker
+    from: '/home/{{main_username}}/docker'
+    to: 
+      - b2_docker
+    options:
+      backup:
+        exclude:
+          - '/home/{{main_username}}/docker/umami'
+          - '/home/{{main_username}}/docker/gitea/mariadb'
+      forget:
+        daily: 1
+        weekly: 6
+        monthly: 3
+  - name: db
+    from: '/home/{{main_username}}/db_backups'
+    to: 
+      - b2_db
+    options:
+      forget:
+        daily: 1
+        weekly: 6
+        monthly: 3
+  - name: certs
+    from: '/home/{{main_username}}/lego'
+    to: 
+      - b2_certs
+    options:
+      forget:
+        daily: 1
+        weekly: 4
+
+autorestic_backends:
+  - name: b2_docker
+    type: b2
+    path: '{{ secret_restic_b2_bucket }}:/linode/docker'
+    key: "{{ secret_restic_repo_password }}"
+    env:
+      - B2_ACCOUNT_ID: "{{ secret_restic_b2_account_id }}"
+      - B2_ACCOUNT_KEY: "{{ secret_restic_b2_account_key }}"
+  - name: b2_db
+    type: b2
+    path: '{{ secret_restic_b2_bucket }}:/linode/db'
+    key: "{{ secret_restic_repo_password }}"
+    env:
+      - B2_ACCOUNT_ID: "{{ secret_restic_b2_account_id }}"
+      - B2_ACCOUNT_KEY: "{{ secret_restic_b2_account_key }}"
+  - name: b2_certs
+    type: b2
+    path: '{{ secret_restic_b2_bucket }}:/linode/certs'
+    key: "{{ secret_restic_repo_password }}"
+    env:
+      - B2_ACCOUNT_ID: "{{ secret_restic_b2_account_id }}"
+      - B2_ACCOUNT_KEY: "{{ secret_restic_b2_account_key }}"
+
 ### Docker-Compose with ironicbadger.docker_compose_generator
 appdata_path: "/home/{{ main_username }}/docker"
 compose_schema_version: '2.1'

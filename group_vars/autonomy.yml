@@ -58,6 +58,83 @@ cronjobs:
     minute: 0
     hour: 0
 
+### Autorestic Config
+autorestic_locations:
+  - name: docker
+    from: '/home/{{main_username}}/docker'
+    to: 
+      - synology_docker
+      - b2_docker
+    options:
+      forget:
+        daily: 1
+        weekly: 8
+        monthly: 4
+  - name: hass_docker
+    from: '/home/{{main_username}}/hass_docker'
+    to: 
+      - synology_hass_docker
+      - b2_hass_docker
+    options:
+      forget:
+        daily: 1
+        weekly: 4
+        monthly: 2
+  - name: hass_docker_beta
+    from: '/home/{{main_username}}/hass_docker_beta'
+    to: 
+      - synology_hass_docker_beta
+      - b2_hass_docker_beta
+    options:
+      forget:
+        daily: 1
+        weekly: 4
+        monthly: 2
+
+autorestic_backends:
+  - name: synology_docker
+    type: s3
+    path: 'http://192.168.30.25:9000/autonomy/docker'
+    key: "{{ secret_restic_repo_password }}"
+    env:
+      - AWS_ACCESS_KEY_ID: "{{ secret_minio_s3_access_key_id }}"
+      - AWS_SECRET_ACCESS_KEY: "{{ secret_minio_s3_access_key }}"
+  - name: synology_hass_docker
+    type: s3
+    path: 'http://192.168.30.25:9000/autonomy/hass_docker'
+    key: "{{ secret_restic_repo_password }}"
+    env:
+      - AWS_ACCESS_KEY_ID: "{{ secret_minio_s3_access_key_id }}"
+      - AWS_SECRET_ACCESS_KEY: "{{ secret_minio_s3_access_key }}"
+  - name: synology_hass_docker_beta
+    type: s3
+    path: 'http://192.168.30.25:9000/autonomy/hass_docker_beta'
+    key: "{{ secret_restic_repo_password }}"
+    env:
+      - AWS_ACCESS_KEY_ID: "{{ secret_minio_s3_access_key_id }}"
+      - AWS_SECRET_ACCESS_KEY: "{{ secret_minio_s3_access_key }}"
+  - name: b2_docker
+    type: b2
+    path: '{{ secret_restic_b2_bucket }}:/autonomy/docker'
+    key: "{{ secret_restic_repo_password }}"
+    env:
+      - B2_ACCOUNT_ID: "{{ secret_restic_b2_account_id }}"
+      - B2_ACCOUNT_KEY: "{{ secret_restic_b2_account_key }}"
+  - name: b2_hass_docker
+    type: b2
+    path: '{{ secret_restic_b2_bucket }}:/autonomy/hass_docker'
+    key: "{{ secret_restic_repo_password }}"
+    env:
+      - B2_ACCOUNT_ID: "{{ secret_restic_b2_account_id }}"
+      - B2_ACCOUNT_KEY: "{{ secret_restic_b2_account_key }}"
+  - name: b2_hass_docker_beta
+    type: b2
+    path: '{{ secret_restic_b2_bucket }}:/autonomy/hass_docker_beta'
+    key: "{{ secret_restic_repo_password }}"
+    env:
+      - B2_ACCOUNT_ID: "{{ secret_restic_b2_account_id }}"
+      - B2_ACCOUNT_KEY: "{{ secret_restic_b2_account_key }}"
+
 ### Docker-Compose with ironicbadger.docker_compose_generator
 appdata_path: "/home/{{ main_username }}/docker"
 containers:
