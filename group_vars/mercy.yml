@@ -33,21 +33,21 @@ pull_backup: false
 autorestic_locations:
   - name: plugins
     from: '/home/{{main_username}}/hangoutsbot/hangupsbot/plugins'
-    to: 
+    to:
       - synology_plugins
     options:
       forget:
         last: 10
   - name: local
     from: '/home/{{main_username}}/.local/share/hangupsbot'
-    to: 
+    to:
       - synology_local
     options:
       forget:
         last: 10
   - name: telegram
     from: '/home/{{main_username}}/.telegram-cli'
-    to: 
+    to:
       - synology_telegram
     options:
       forget:

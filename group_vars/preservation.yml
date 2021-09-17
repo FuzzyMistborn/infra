@@ -42,7 +42,7 @@ telegraf_influx_docker: true
 autorestic_locations:
   - name: db_backups
     from: '/home/{{main_username}}/db_backups'
-    to: 
+    to:
       - synology_db
       - b2_db
     options:

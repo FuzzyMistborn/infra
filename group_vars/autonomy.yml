@@ -67,7 +67,7 @@ cronjobs:
 autorestic_locations:
   - name: docker
     from: '/home/{{main_username}}/docker'
-    to: 
+    to:
       - synology_docker
       - b2_docker
     options:
@@ -77,7 +77,7 @@ autorestic_locations:
         monthly: 4
   - name: hass_docker
     from: '/home/{{main_username}}/hass_docker'
-    to: 
+    to:
       - synology_hass_docker
       - b2_hass_docker
     options:
@@ -87,7 +87,7 @@ autorestic_locations:
         monthly: 2
   - name: hass_docker_beta
     from: '/home/{{main_username}}/hass_docker_beta'
-    to: 
+    to:
       - synology_hass_docker_beta
       - b2_hass_docker_beta
     options:

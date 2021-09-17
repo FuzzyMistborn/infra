@@ -97,7 +97,7 @@ telegraf_influx_disk_mounts: '"/","/mnt/Media"'
 autorestic_locations:
   - name: docker
     from: '/home/{{main_username}}'
-    to: 
+    to:
       - synology_docker
     options:
       backup:

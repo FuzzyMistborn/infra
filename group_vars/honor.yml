@@ -44,7 +44,7 @@ cronjobs:
 autorestic_locations:
   - name: docker
     from: '/home/{{main_username}}/docker'
-    to: 
+    to:
       - synology_docker
       - b2_docker
     options:

@@ -108,7 +108,7 @@ caddy_config: "{{ lookup('template', 'roles/ambition/templates/Caddyfile.j2') }}
 autorestic_locations:
   - name: docker
     from: '/home/{{main_username}}/docker'
-    to: 
+    to:
       - b2_docker
     options:
       backup:
@@ -121,7 +121,7 @@ autorestic_locations:
         monthly: 3
   - name: db
     from: '/home/{{main_username}}/db_backups'
-    to: 
+    to:
       - b2_db
     options:
       forget:
@@ -130,7 +130,7 @@ autorestic_locations:
         monthly: 3
   - name: certs
     from: '/home/{{main_username}}/lego'
-    to: 
+    to:
       - b2_certs
     options:
       forget:
