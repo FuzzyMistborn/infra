@@ -136,21 +136,6 @@
     - "{{ nfs_mount }}"
     - "{{ smb_mountpoints }}"
 
-### Telegraf
-- name: Copy Telegraf config
-  template:
-    src: telegraf.conf.j2
-    dest: /etc/telegraf/telegraf.conf
-    owner: root
-    group: root
-    mode: 0644
-- name: Enable/Start Telegraf
-  systemd:
-    enabled: true
-    daemon-reload: true
-    state: restarted
-    name: telegraf
-
 #### NUT
 
 - name: Copy nut folder

@@ -42,26 +42,6 @@
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
 
-### Telegraf
-- name: Copy Telegraf config
-  template:
-    src: telegraf.conf.j2
-    dest: /etc/telegraf/telegraf.conf
-    owner: root
-    group: root
-    mode: 0644
-- name: Add Telegraf user to docker group
-  user:
-    name: telegraf
-    groups: docker
-    append: yes
-- name: Enable/Start Telegraf
-  systemd:
-    enabled: true
-    daemon-reload: true
-    state: restarted
-    name: telegraf
-
 #### Mount disks
 - name: Set up disks/mounts
   include: disks.yml

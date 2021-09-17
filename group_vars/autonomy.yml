@@ -21,6 +21,11 @@ package_list:
 clone_git: false
 pull_backup: false
 
+### Telegraf
+telegraf_influx_token: "{{secret_telegraf_autonomy}}"
+telegraf_influx_bucket: Autonomy
+telegraf_influx_docker: true
+
 ### Cronjobs
 cronjobs:
   - name: Traffic AM

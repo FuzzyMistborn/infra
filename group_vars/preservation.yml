@@ -33,6 +33,11 @@ cronjobs:
     hour: 2
     day: 1
 
+### Telegraf
+telegraf_influx_token: "{{secret_telegraf_preservation}}"
+telegraf_influx_bucket: Preservation
+telegraf_influx_docker: true
+
 ### Autorestic Config
 autorestic_locations:
   - name: db_backups

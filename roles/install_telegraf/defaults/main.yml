@@ -1,3 +1,15 @@
 ---
 
+telegraf_config_path: "/etc/telegraf"
+telegraf_config_user: root
+telegraf_config_group: root
+
 telegraf_force_install: false
+telegraf_influx_url: 'http://localhost:8086'
+telegraf_influx_token: change_me
+telegraf_influx_org: Influx
+telegraf_influx_bucket: change_me
+telegraf_influx_disk_mounts: '"/"'
+telegraf_influx_docker: false
+telegraf_influx_pve: false
+telegraf_influx_pve_api: change_me

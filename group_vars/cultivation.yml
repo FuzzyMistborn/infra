@@ -18,6 +18,11 @@ package_list:
 
 pull_backup: false
 
+### Telegraf
+telegraf_influx_token: "{{secret_telegraf_cultivation}}"
+telegraf_influx_bucket: Cultivation
+telegraf_influx_docker: true
+
 ### Cronjobs
 cronjobs:
   - name: Restic Prune

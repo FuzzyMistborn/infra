@@ -221,6 +221,7 @@
     - role: fuzzymistborn.autorestic
     - role: install_runitor
     - role: kelsier
+    - role: install_telegraf
     - role: cronjobs
 
 - hosts: odium

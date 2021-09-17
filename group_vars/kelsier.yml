@@ -88,6 +88,11 @@ pull_backup: false
 
 pip_package: python-pip
 
+### Telegraf
+telegraf_influx_token: "{{secret_telegraf_kelsier}}"
+telegraf_influx_bucket: Kelsier
+telegraf_influx_disk_mounts: '"/","/mnt/Media"'
+
 ### Autorestic Config
 autorestic_locations:
   - name: docker

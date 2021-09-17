@@ -196,6 +196,14 @@ infrastructure: false
 # nag_force_install: true
 # nag_ver: 0.0.7
 
+### Telegraf
+telegraf_influx_token: "{{secret_telegraf_adonalsium}}"
+telegraf_influx_bucket: Adonalsium
+telegraf_influx_disk_mounts: '"/","/mnt/Media"'
+telegraf_influx_docker: true
+telegraf_influx_pve: true
+telegraf_influx_pve_api: "{{secret_telegraf_adonalsium_api}}"
+
 ### Cronjobs
 cronjobs:
   - name: Scrutiny
