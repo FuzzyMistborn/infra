@@ -24,6 +24,7 @@ caddy_config: "{{ lookup('template', 'roles/caddy_internal/templates/Caddyfile.j
 cronjobs:
   - name: Cert Update
     job: /usr/local/bin/runitor -uuid {{secret_hc_caddy_internal_certs}} -- /home/{{main_username}}/certs.sh
-    user: "{{ main_username }}"
+    user: root
     minute: 0
     hour: 19
+    day: 1,15

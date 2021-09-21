@@ -1,5 +1,9 @@
 ---
 
+- name: Install yamllint via Pip
+  pip:
+    name: yamllint1
+
 - name: create config directories
   file:
     path: /home/{{ main_username }}/{{ item }}

@@ -5,7 +5,7 @@
     state: directory
     owner: "{{ telegraf_config_user }}"
     group: "{{ telegraf_config_group }}"
-    mode: 0644
+    mode: 0755
 
 - name: write telegraf conf file
   template:

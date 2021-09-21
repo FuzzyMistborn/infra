@@ -41,9 +41,10 @@ cronjobs:
     day: 1
   - name: Cert Update
     job: /usr/local/bin/runitor -uuid {{secret_hc_linode_certs}} -- /home/{{main_username}}/scripts/certs.sh
-    user: "{{ main_username }}"
+    user: root
     minute: 0
     hour: 19
+    day: 1,15
   - name: Data Backup
     job: /usr/local/bin/runitor -uuid {{secret_hc_linode_restic_backup}} -- /usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml
     user: root
@@ -143,22 +144,22 @@ autorestic_backends:
     path: '{{ secret_restic_b2_bucket }}:/linode/docker'
     key: "{{ secret_restic_repo_password }}"
     env:
-      - B2_ACCOUNT_ID: "{{ secret_restic_b2_account_id }}"
-      - B2_ACCOUNT_KEY: "{{ secret_restic_b2_account_key }}"
+      - "B2_ACCOUNT_ID: {{ secret_restic_b2_account_id }}"
+      - "B2_ACCOUNT_KEY: {{ secret_restic_b2_account_key }}"
   - name: b2_db
     type: b2
     path: '{{ secret_restic_b2_bucket }}:/linode/db'
     key: "{{ secret_restic_repo_password }}"
     env:
-      - B2_ACCOUNT_ID: "{{ secret_restic_b2_account_id }}"
-      - B2_ACCOUNT_KEY: "{{ secret_restic_b2_account_key }}"
+      - "B2_ACCOUNT_ID: {{ secret_restic_b2_account_id }}"
+      - "B2_ACCOUNT_KEY: {{ secret_restic_b2_account_key }}"
   - name: b2_certs
     type: b2
     path: '{{ secret_restic_b2_bucket }}:/linode/certs'
     key: "{{ secret_restic_repo_password }}"
     env:
-      - B2_ACCOUNT_ID: "{{ secret_restic_b2_account_id }}"
-      - B2_ACCOUNT_KEY: "{{ secret_restic_b2_account_key }}"
+      - "B2_ACCOUNT_ID: {{ secret_restic_b2_account_id }}"
+      - "B2_ACCOUNT_KEY: {{ secret_restic_b2_account_key }}"
 
 ### Docker-Compose with ironicbadger.docker_compose_generator
 appdata_path: "/home/{{ main_username }}/docker"
@@ -368,6 +369,20 @@ containers:
       - "{{ appdata_path }}/pastebin:/var/lib/pastebin"
     command:
       --address 0.0.0.0 --port 8081 --db /var/lib/pastebin/ --uri https://paste.fuzzymistborn.com --ui-expiry-times '1 day, 1 hour, 1 week, 10 minutes, 5 minutes' --ttl '86400'
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+  ###
+  - service_name: privatebin
+    container_name: privatebin
+    active: true
+    image: privatebin/nginx-fpm-alpine
+    restart: always
+    ports:
+      - 8080:8080
+    volumes:
+      - "{{ appdata_path }}/privatebin/data:/srv/data"
+      - "{{ appdata_path }}/privatebin/config:/srv/cfg"
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"

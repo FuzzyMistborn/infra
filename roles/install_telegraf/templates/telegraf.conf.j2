@@ -132,7 +132,7 @@
 [[inputs.swap]]
 [[inputs.system]]
 [[inputs.temp]]
-{% if telegraf_influx_proxmox %}
+{% if telegraf_influx_pve %}
 [[inputs.proxmox]]
   ## API connection configuration. The API token was introduced in Proxmox v6.2. Required permissions for user and token: PVEAuditor role on /.
   base_url = "https://localhost:8006/api2/json"

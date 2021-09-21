@@ -73,8 +73,10 @@
       user:
         name: ansible
         password: "{{ secret_ansible_pass }}"
+        uid: 666
         groups:
           - wheel
+        system: yes
         shell: /bin/bash
     - name: Add sudoers file for ansible
       copy:

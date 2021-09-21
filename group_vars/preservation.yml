@@ -57,15 +57,15 @@ autorestic_backends:
     path: 'http://192.168.30.25:9000/preservation'
     key: "{{ secret_restic_repo_password }}"
     env:
-      - AWS_ACCESS_KEY_ID: "{{ secret_minio_s3_access_key_id }}"
-      - AWS_SECRET_ACCESS_KEY: "{{ secret_minio_s3_access_key }}"
+      - "AWS_ACCESS_KEY_ID: {{ secret_minio_s3_access_key_id }}"
+      - "AWS_SECRET_ACCESS_KEY: {{ secret_minio_s3_access_key }}"
   - name: b2_db
     type: b2
     path: '{{ secret_restic_b2_bucket }}:/preservation'
     key: "{{ secret_restic_repo_password }}"
     env:
-      - B2_ACCOUNT_ID: "{{ secret_restic_b2_account_id }}"
-      - B2_ACCOUNT_KEY: "{{ secret_restic_b2_account_key }}"
+      - "B2_ACCOUNT_ID: {{ secret_restic_b2_account_id }}"
+      - "B2_ACCOUNT_KEY: {{ secret_restic_b2_account_key }}"
 
 ### Docker-Compose with ironicbadger.docker_compose_generator
 appdata_path: "/home/{{ main_username }}/docker"

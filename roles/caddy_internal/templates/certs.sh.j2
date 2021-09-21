@@ -1,11 +1,7 @@
 #!/bin/bash
 
-curl --retry 3 {{secret_hc_caddy_internal_certs}}/start
-
-#LINODE_TOKEN={{secret_linode_token}} \
 #/usr/local/bin/lego --email="{{secret_new_email}}" --domains="*.{{secret_personal_internal_url}}" --dns="linode" --accept-tos --path /home/{{main_username}}/lego run
 
-LINODE_TOKEN={{secret_linode_token}} \
 /usr/local/bin/lego --email="{{secret_new_email}}" --domains="*.{{secret_personal_internal_url}}" --dns="linode" --path /home/{{main_username}}/lego renew --days 45
 
-curl --retry 3 {{secret_hc_caddy_internal_certs}}/$1
+systemctl restart caddy

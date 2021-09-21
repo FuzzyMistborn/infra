@@ -139,6 +139,14 @@
     line: 'source /etc/bash_aliases'
     state: present
 
+### LEGO variable
+- name: populate /etc/environment
+  lineinfile:
+    dest: "/etc/environment"
+    state: present
+    regexp: "^LINODE_TOKEN="
+    line: "LINODE_TOKEN={{secret_linode_token}}"
+
 ### Wireguard
 - name: Enable IPv4 forwarding
   sysctl:

@@ -81,15 +81,15 @@ autorestic_backends:
     path: 'http://192.168.30.25:9000/endowment'
     key: "{{ secret_restic_repo_password }}"
     env:
-      - AWS_ACCESS_KEY_ID: "{{ secret_minio_s3_access_key_id }}"
-      - AWS_SECRET_ACCESS_KEY: "{{ secret_minio_s3_access_key }}"
+      - "AWS_ACCESS_KEY_ID: {{ secret_minio_s3_access_key_id }}"
+      - "AWS_SECRET_ACCESS_KEY: {{ secret_minio_s3_access_key }}"
   - name: b2_docker
     type: b2
     path: '{{ secret_restic_b2_bucket }}:/endowment'
     key: "{{ secret_restic_repo_password }}"
     env:
-      - B2_ACCOUNT_ID: "{{ secret_restic_b2_account_id }}"
-      - B2_ACCOUNT_KEY: "{{ secret_restic_b2_account_key }}"
+      - "B2_ACCOUNT_ID: {{ secret_restic_b2_account_id }}"
+      - "B2_ACCOUNT_KEY: {{ secret_restic_b2_account_key }}"
 
 ### Docker-Compose with ironicbadger.docker_compose_generator
 appdata_path: "/home/{{ main_username }}/docker"
@@ -229,22 +229,28 @@ containers:
   - service_name: nextcloud
     container_name: nextcloud
     active: true
-    image: nextcloud
+    image: fuzzymistborn/nextcloud-docker:latest
     restart: always
     ports:
       - 3491:80
       - 3492:443
     volumes:
-      - "{{ appdata_path }}/nextcloud_docker/apps:/var/www/html/apps"
       - "{{ appdata_path }}/nextcloud_docker/html:/var/www/html"
-      - "{{ appdata_path }}/nextcloud_docker/config:/var/www/html/config"
-      - "{{ appdata_path }}/nextcloud_docker/data:/var/www/html/data"
-      - /mnt/Media/:/mnt/Media/
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
     mem_limit: 1000M
     include_global_env_vars: true
+  ###
+  - service_name: nextcloud-redis
+    container_name: nextcloud-redis
+    active: true
+    image: redis
+    restart: always
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false
   ###
   - service_name: photoview
     container_name: photoview

@@ -57,14 +57,24 @@
   kewlfft.aur.aur:
     use: yay
     name:
-      # - balena-etcher  # Currently broken, use appimage
       - mqtt-explorer-appimage  # Other package broken
-      - spotify
-      - brave
-      # - ckan  # Currently broken, use Mono
       - telegraf
       - squeezelite
       - bauh
+      - logiops
+      - protonmail-bridge
+      - zoom
+      - jellyfin-media-player
+      - brother-hl2270dw
+      - gwe
+      - esphome
+      - python-esphome-dashboard
+      - popsicle
+      - psst
+      - ventoy
+      - remmina-plugin-rdesktop
+      # - ckan  # Currently broken, use Mono
+      # - ferdi # Conflict package, install manually
     state: present
   become_user: ansible
   become: yes
@@ -77,19 +87,16 @@
     flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
     method: system
 
-- name: Install flatpaks
-  community.general.flatpak:
-    name:
-      - com.getferdi.Ferdi
-      - com.github.iwalton3.jellyfin-media-player
-      - us.zoom.Zoom
-      - ch.protonmail.protonmail-bridge
-    state: present
-    method: user
-  become_user: "{{main_username}}"
-  become: yes
+# - name: Install flatpaks
+#   community.general.flatpak:
+#     name:
+#       - 
+#     state: present
+#     method: user
+#   become_user: "{{main_username}}"
+#   become: yes
 
-# fstab
+# fstab/disk mounts
 
 - name: make sure disks unmounted
   mount:
@@ -97,7 +104,6 @@
     state: unmounted
   with_items:
     - "{{ data_disks }}"
-    - "{{ nfs_mount }}"
     - "{{ smb_mountpoints }}"
 
 - name: create /mnt points
@@ -133,8 +139,34 @@
     state: mounted
   with_items:
     - "{{ data_disks }}"
-    - "{{ nfs_mount }}"
     - "{{ smb_mountpoints }}"
+
+- name: Copy mount service files
+  copy:
+    src: etc/systemd/{{ item }}
+    dest: /etc/systemd/system/{{ item }}
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0644
+  with_items:
+    - 'mnt-Backup.mount'
+    - 'mnt-NVR.mount'
+
+- name: Enable/Start Network-Manager-wait
+  systemd:
+    enabled: true
+    daemon-reload: true
+    state: restarted
+    name: NetworkManager-wait-online
+
+### Logiops
+- name: Copy logid.cfg file
+  copy:
+    src: logid.cfg
+    dest: /etc/logid.cfg
+    owner: root
+    group: root
+    mode: 0644 
 
 #### NUT
 
@@ -219,17 +251,19 @@
     reload: yes
 
 ### WOL
-- name: Copy systemd service files
-  copy:
-    src: wol.service
-    dest: /etc/systemd/system/wol.service
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: 0644
+- name: Enable WOL ethtool
+  command: ethtool -s eno1 wol g
 
-- name: Enable/Start WOL
+- name: enable WOL tlp.conf
+  lineinfile:
+    dest: "/etc/tlp.conf"
+    state: present
+    regexp: "^WOL_DISABLE"
+    line: "WOL_DISABLE=N"
+
+- name: Reload TLP
   systemd:
     enabled: true
     daemon-reload: true
     state: restarted
-    name: wol
+    name: tlp

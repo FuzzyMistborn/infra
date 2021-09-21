@@ -23,11 +23,19 @@
 - name: download release
   get_url:
     url: https://github.com/bdd/runitor/releases/download/{{runitor_ver}}/runitor-{{runitor_ver}}-linux-amd64
-    dest: /usr/local/bin
+    dest: /tmp
     force: yes
     owner: "{{main_username}}"
     group: "{{main_username}}"
     mode: +x
+  when: force_install == True
+
+- name: set filename
+  set_fact: file_name="runitor-{{ runitor_ver }}-linux-amd64"
+  when: force_install == True
+
+- name: move to /usr/local/bin
+  shell: "mv /tmp/{{ file_name }} /usr/local/bin/runitor"
   when: force_install == True
 
 - name: populate /etc/environment

@@ -10,6 +10,7 @@
 }
 (fuzzy_headers) {
 	header {
+		Permissions-Policy interest-cohort=()
 		Strict-Transport-Security "max-age=31536000; includeSubdomains"
 		X-XSS-Protection "1; mode=block"
 		X-Content-Type-Options "nosniff"
@@ -21,6 +22,7 @@
 }
 (personal_headers) {
 	header {
+		Permissions-Policy interest-cohort=()
 		Strict-Transport-Security "max-age=31536000; includeSubdomains"
 		X-XSS-Protection "1; mode=block"
 		X-Content-Type-Options "nosniff"
@@ -73,7 +75,7 @@ fuzzymistborn.com {
 
 	@paste host paste.fuzzymistborn.com
 	handle @paste {
-		reverse_proxy localhost:8081
+		reverse_proxy localhost:8080
 		encode gzip
 		import fuzzy_headers
 		import no_robots

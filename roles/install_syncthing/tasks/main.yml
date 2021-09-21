@@ -24,24 +24,20 @@
 - name: download release
   unarchive:
     src: https://github.com/syncthing/syncthing/releases/download/{{syncthing_ver}}/syncthing-linux-amd64-{{syncthing_ver}}.tar.gz
-    dest: /usr/local/bin
+    dest: /tmp
     remote_src: yes
     owner: "{{main_username}}"
     group: "{{main_username}}"
     mode: +x
   when: force_install == True
 
-- name: remove unneeded files
-  file:
-    path: /usr/local/bin/{{item}}
-    state: absent
-  with_items:
-    - README.txt
-    - AUTHORS.txt
-    - LICENSE.txt
-    - etc
-    - extra
-    - .metadata
+- name: move to /usr/bin
+  copy:
+    src: /tmp/syncthing-linux-amd64-{{syncthing_ver}}/syncthing
+    dest: /usr/bin
+    owner: "{{main_username}}"
+    group: "{{main_username}}"
+    mode: +x
   when: force_install == True
 
 - name: Copy systemd service file
@@ -57,4 +53,4 @@
     enabled: true
     daemon-reload: true
     state: started
-    name: synthinc.service
+    name: syncthing.service

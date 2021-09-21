@@ -4,6 +4,12 @@ hostname: kelsier
 
 ### Install packages with grog.package
 package_list:
+  - name: dragon
+    state: absent
+  - name: dolphin
+    state: absent
+  - name: spectacle
+    state: absent
   - name: curl
   - name: cronie
   - name: htop
@@ -23,6 +29,9 @@ package_list:
   - name: nut
   - name: openssh
   - name: virtualbox
+  - name: virtualbox-host-dkms
+  - name: virtualbox-ext-oracle
+  - name: virtualbox-guest-iso
   - name: calibre
   - name: gimp
   - name: mkvtoolnix-gui
@@ -47,11 +56,18 @@ package_list:
   - name: nano
   - name: nfs-utils
   - name: ntfs-3g
-  - name: pipewire
+  - name: pipewire-pulse
   - name: steam
   - name: thunderbird
   - name: firefox
   - name: wine
+  - name: code
+  - name: plasma-browser-integration
+  - name: libreoffice-still
+  - name: system-config-printer
+  - name: vivaldi
+  - name: latte-dock
+  - name: libvncserver
 
 data_disks:
   - path: /mnt/Games
@@ -65,25 +81,23 @@ nfs_mount:
     source: 192.168.10.20:/volume1/Backup/
     fs: nfs
     opts: defaults
-    content: false
   - path: /mnt/NVR
     source: 192.168.10.20:/volume1/BlueIris/
     fs: nfs
     opts: defaults
-    content: false
 
 smb_mountpoints:
   - path: "/mnt/Media"
     source: "//192.168.30.10/Media"
     fs: cifs
-    opts: "defaults,uid=1000,gid=1000,credentials=/home/{{main_username}}/.smbcredentials"
+    opts: "noauto,x-systemd.automount,uid=1000,gid=1000,credentials=/home/{{main_username}}/.smbcredentials"
   - path: "/home/{{main_username}}/RetroPie"
     source: "//192.168.30.10/Media/Files/Roms/Retropie"
     fs: cifs
-    opts: "defaults,uid=1000,gid=1000,credentials=/home/{{main_username}}/.smbcredentials"
+    opts: "noauto,x-systemd.automount,uid=1000,gid=1000,credentials=/home/{{main_username}}/.smbcredentials"
 
 ### Variables
-install_nut: false
+install_nut: true
 pull_backup: false
 
 pip_package: python-pip
@@ -91,7 +105,7 @@ pip_package: python-pip
 ### Telegraf
 telegraf_influx_token: "{{secret_telegraf_kelsier}}"
 telegraf_influx_bucket: Kelsier
-telegraf_influx_disk_mounts: '"/","/mnt/Media"'
+telegraf_influx_disk_mounts: '"/","/mnt/Games"'
 
 ### Autorestic Config
 autorestic_locations:
@@ -102,11 +116,11 @@ autorestic_locations:
     options:
       backup:
         exclude:
-          - '.cache*'
-          - 'Nextcloud'
-          - 'Downloads'
-          - 'git'
-          - '*steam*'
+          - "'.cache*'"
+          - "'Nextcloud'"
+          - "'Downloads'"
+          - "'git'"
+          - "'*steam*'"
       forget:
         daily: 7
         weekly: 4
@@ -118,8 +132,8 @@ autorestic_backends:
     path: 'http://192.168.10.20:9000/kelsier'
     key: "{{ secret_restic_repo_password }}"
     env:
-      - AWS_ACCESS_KEY_ID: "{{ secret_minio_s3_access_key_id }}"
-      - AWS_SECRET_ACCESS_KEY: "{{ secret_minio_s3_access_key }}"
+      - "AWS_ACCESS_KEY_ID: {{ secret_minio_s3_access_key_id }}"
+      - "AWS_SECRET_ACCESS_KEY: {{ secret_minio_s3_access_key }}"
 
 ### Cronjobs
 cronjobs:

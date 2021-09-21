@@ -1,0 +1,12 @@
+Unit]
+Description=Mount NFS Backup at boot
+
+[Mount]
+What=192.168.10.20:/volume1/Backup/
+Where=/mnt/Backup
+Options=
+Type=nfs
+TimeoutSec=30
+
+[Install]
+WantedBy=multi-user.target
