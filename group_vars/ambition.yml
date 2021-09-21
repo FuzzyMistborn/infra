@@ -358,28 +358,13 @@ containers:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
   ###
-  - service_name: pastebin
-    container_name: pastebin
-    active: true
-    image: mkaczanowski/pastebin:latest
-    restart: always
-    ports:
-      - 127.0.0.1:8081:8081
-    volumes:
-      - "{{ appdata_path }}/pastebin:/var/lib/pastebin"
-    command:
-      --address 0.0.0.0 --port 8081 --db /var/lib/pastebin/ --uri https://paste.fuzzymistborn.com --ui-expiry-times '1 day, 1 hour, 1 week, 10 minutes, 5 minutes' --ttl '86400'
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
-  ###
   - service_name: privatebin
     container_name: privatebin
     active: true
     image: privatebin/nginx-fpm-alpine
     restart: always
     ports:
-      - 8080:8080
+      - 127.0.0.1:8080:8080
     volumes:
       - "{{ appdata_path }}/privatebin/data:/srv/data"
       - "{{ appdata_path }}/privatebin/config:/srv/cfg"

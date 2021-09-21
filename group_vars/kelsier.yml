@@ -8,8 +8,6 @@ package_list:
     state: absent
   - name: dolphin
     state: absent
-  - name: spectacle
-    state: absent
   - name: curl
   - name: cronie
   - name: htop
@@ -68,6 +66,10 @@ package_list:
   - name: vivaldi
   - name: latte-dock
   - name: libvncserver
+  - name: scrot
+  - name: spectacle
+  - name: kdialog
+  - name: Qt.labs.platform
 
 data_disks:
   - path: /mnt/Games
