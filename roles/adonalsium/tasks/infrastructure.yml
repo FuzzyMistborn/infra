@@ -21,14 +21,15 @@
     node: adonalsium
     storage: local-lvm
     disk: "{{item.disk}}"
-    cpus: 1
-    cpuunits: 1000
+    cpus: '1'
+    cpuunits: '1000'
     cores: "{{item.cores}}"
     memory: "{{item.memory}}"
     swap: "{{item.swap | default ('512') }}"
     api_user: root@pam
-    api_password: "{{ secret_proxmox_pass }}"
     api_host: localhost
+    api_token_id: Ansible
+    api_token_secret: "{{secret_proxmox_api_token}}"
     pubkey: "{{ secret_proxmox_ct_ssh }}"
     password: "{{ secret_proxmox_pass }}"
     netif: "{'net0':'name=eth0,gw={{item.gw}},ip={{item.ip}}/24,bridge={{item.bridge | default ('vmbr0') }} '}"
@@ -50,14 +51,15 @@
     node: adonalsium
     storage: local-lvm
     disk: "{{item.disk}}"
-    cpus: 1
-    cpuunits: 1000
+    cpus: '1'
+    cpuunits: '1000'
     cores: "{{item.cores}}"
     memory: "{{item.memory}}"
     swap: "{{item.swap | default ('512') }}"
     api_user: root@pam
-    api_password: "{{ secret_proxmox_pass }}"
     api_host: localhost
+    api_token_id: Ansible
+    api_token_secret: "{{secret_proxmox_api_token}}"
     pubkey: "{{ secret_proxmox_ct_ssh }}"
     password: "{{ secret_proxmox_pass }}"
     netif: "{'net0':'name=eth0,gw={{item.gw}},ip={{item.ip}}/24,bridge={{item.bridge | default ('vmbr0') }} '}"

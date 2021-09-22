@@ -72,7 +72,8 @@
       - popsicle
       - psst
       - ventoy
-      - remmina-plugin-rdesktop
+      - remmina-git
+      - autofs
       # - ckan  # Currently broken, use Mono
       # - ferdi # Conflict package, install manually
     state: present
@@ -104,6 +105,7 @@
     state: unmounted
   with_items:
     - "{{ data_disks }}"
+    - "{{ nfs_mount }}"
     - "{{ smb_mountpoints }}"
 
 - name: create /mnt points
@@ -139,25 +141,8 @@
     state: mounted
   with_items:
     - "{{ data_disks }}"
+    - "{{ nfs_mount }}"
     - "{{ smb_mountpoints }}"
-
-- name: Copy mount service files
-  copy:
-    src: etc/systemd/{{ item }}
-    dest: /etc/systemd/system/{{ item }}
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: 0644
-  with_items:
-    - 'mnt-Backup.mount'
-    - 'mnt-NVR.mount'
-
-- name: Enable/Start Network-Manager-wait
-  systemd:
-    enabled: true
-    daemon-reload: true
-    state: restarted
-    name: NetworkManager-wait-online
 
 ### Logiops
 - name: Copy logid.cfg file

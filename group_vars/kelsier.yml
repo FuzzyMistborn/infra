@@ -33,7 +33,6 @@ package_list:
   - name: calibre
   - name: gimp
   - name: mkvtoolnix-gui
-  - name: remmina
   - name: filezilla
   - name: flameshot
   - name: gedit
@@ -69,7 +68,6 @@ package_list:
   - name: scrot
   - name: spectacle
   - name: kdialog
-  - name: Qt.labs.platform
 
 data_disks:
   - path: /mnt/Games
@@ -82,21 +80,21 @@ nfs_mount:
   - path: /mnt/Backup
     source: 192.168.10.20:/volume1/Backup/
     fs: nfs
-    opts: defaults
+    opts: "_netdev,noauto,nofail,x-systemd.automount"
   - path: /mnt/NVR
     source: 192.168.10.20:/volume1/BlueIris/
     fs: nfs
-    opts: defaults
+    opts: "_netdev,noauto,nofail,x-systemd.automount"
 
 smb_mountpoints:
   - path: "/mnt/Media"
     source: "//192.168.30.10/Media"
     fs: cifs
-    opts: "noauto,x-systemd.automount,uid=1000,gid=1000,credentials=/home/{{main_username}}/.smbcredentials"
+    opts: "_netdev,noauto,nofail,x-systemd.automount,uid=1000,gid=1000,credentials=/home/{{main_username}}/.smbcredentials"
   - path: "/home/{{main_username}}/RetroPie"
     source: "//192.168.30.10/Media/Files/Roms/Retropie"
     fs: cifs
-    opts: "noauto,x-systemd.automount,uid=1000,gid=1000,credentials=/home/{{main_username}}/.smbcredentials"
+    opts: "_netdev,noauto,nofail,x-systemd.automount,uid=1000,gid=1000,credentials=/home/{{main_username}}/.smbcredentials"
 
 ### Variables
 install_nut: true

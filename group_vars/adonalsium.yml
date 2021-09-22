@@ -82,7 +82,7 @@ lxc:
     privileged: true
     gw: 192.168.30.1
     ip: 192.168.30.15
-    disk: 10
+    disk: 'local-lvm:10'
     cores: 2
     memory: 512
   - name: Honor
@@ -91,7 +91,7 @@ lxc:
     gw: 192.168.50.1
     ip: 192.168.50.10
     bridge: vmbr2
-    disk: 10
+    disk: 'local-lvm:10'
     cores: 2
     memory: 1024
     nesting: 1
@@ -102,7 +102,7 @@ lxc:
     gw: 192.168.50.1
     ip: 192.168.50.11
     bridge: vmbr2
-    disk: 10
+    disk: 'local-lvm:10'
     cores: 2
     memory: 512
     nesting: 1
@@ -112,7 +112,7 @@ lxc:
     privileged: true
     gw: 192.168.30.1
     ip: 192.168.30.18
-    disk: 10
+    disk: 'local-lvm:10'
     cores: 1
     memory: 512
     template: local:vztmpl/ubuntu-18.04-standard_18.04.1-1_amd64.tar.gz
@@ -122,7 +122,7 @@ lxc:
     gw: 192.168.1.1
     ip: 192.168.1.10
     bridge: vmbr1
-    disk: 10
+    disk: 'local-lvm:10'
     cores: 2
     memory: 1024
     nesting: 1
@@ -132,7 +132,7 @@ lxc:
     privileged: true
     gw: 192.168.30.1
     ip: 192.168.30.16
-    disk: 30
+    disk: 'local-lvm:30'
     cores: 2
     memory: 2048
   - name: Caddy
@@ -140,7 +140,7 @@ lxc:
     privileged: true
     gw: 192.168.30.1
     ip: 192.168.30.17
-    disk: 8
+    disk: 'local-lvm:8'
     cores: 2
     memory: 512
   - name: Autonomy
@@ -148,7 +148,7 @@ lxc:
     privileged: false
     gw: 192.168.30.1
     ip: 192.168.30.12
-    disk: 50
+    disk: 'local-lvm510'
     cores: 12
     memory: 8192
     nesting: 1
@@ -158,7 +158,7 @@ lxc:
     privileged: true
     gw: 192.168.30.1
     ip: 192.168.30.13
-    disk: 40
+    disk: 'local-lvm:40'
     cores: 4
     memory: 3072
     nesting: 1
@@ -168,7 +168,7 @@ lxc:
     privileged: true
     gw: 192.168.30.1
     ip: 192.168.30.14
-    disk: 40
+    disk: 'local-lvm:40'
     cores: 4
     memory: 3072
     nesting: 1
@@ -180,7 +180,7 @@ lxc_mounts:
     privileged: false
     gw: 192.168.30.1
     ip: 192.168.30.200
-    disk: 75
+    disk: 'local-lvm:75'
     cores: 6
     memory: 4096
     nesting: 1
