@@ -18,7 +18,7 @@ package_list:
 
 # telegraf_force_install: false
 # telegraf_ver: 1.18.1
-telegraf_influx_url: 'http://192.168.30.14:8086'
+telegraf_influx_url: 'http://192.168.50.22:8086'
 telegraf_influx_org: Cosmere
 syncthing_user: "{{main_username}}"
 

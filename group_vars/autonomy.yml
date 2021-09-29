@@ -285,7 +285,7 @@ containers:
       - '-R41'
       - '-X n=digoo,m=OOK_PWM,bits=>24,s=464,l=1404,r=1800,t=200,get=@0:{20}:id,get=@20:{4}:event:[2:LOW_BATTERY 6:CLOSE 12:OPEN],unique'
     devices:
-      - /dev/bus/usb/001/016
+      - /dev/bus/usb/001/006
     include_global_env_vars: false
   ###
   - service_name: nodered
@@ -350,6 +350,20 @@ containers:
       - DEEPSTACK_PORT=5001
       - DEEPSTACK_API_KEY="{{secret_deepstack_api}}"
       - DEEPSTACK_TIMEOUT=20
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false
+  - service_name: lms
+    container_name: logitech_media_server
+    active: true
+    image: fuzzymistborn/lms:latest
+    restart: always
+    network_mode: host
+    volumes:
+      - "{{ appdata_path }}/lms/data:/var/lib/squeezeboxserver"
+      - "{{ appdata_path }}/lms/logs:/var/log/squeezeboxserver"
+      - "{{ appdata_path }}/lms/playlists:/mnt/playlists"
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"

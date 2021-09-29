@@ -228,14 +228,26 @@
     line: 'source /etc/bash_aliases'
     state: present
 
-### Wireguard
-- name: Enable IPv4 forwarding
+#### Misc
+
+- name: Clean up Nautilus
+  lineinfile:
+    dest: "/home/{{main_username}}/.config/user-dirs.dirs"
+    regexp: "^{{ item.find }}"
+    line: "{{ item.replace }}"
+  with_items:
+    - {find: 'XDG_DESKTOP_DIR', replace: '#XDG_DESKTOP_DIR="$HOME/Desktop"'}
+    - {find: 'XDG_TEMPLATES_DIR', replace: '#XDG_TEMPLATES_DIR="$HOME/Templates"'}
+    - {find: 'XDG_PUBLICSHARE_DIR', replace: '#XDG_PUBLICSHARE_DIR="$HOME/Public"'}
+    - {find: 'XDG_MUSIC_DIR', replace: '#XDG_MUSIC_DIR="$HOME/Music"'}
+    - {find: 'XDG_VIDEOS_DIR', replace: '#XDG_VIDEOS_DIR="$HOME/Videos"'}
+
+- name: Enable IPv4 forwarding for wireguard
   sysctl:
     name: net.ipv4.ip_forward
     value: "1"
     reload: yes
 
-### WOL
 - name: Enable WOL ethtool
   command: ethtool -s eno1 wol g
 
@@ -246,9 +258,12 @@
     regexp: "^WOL_DISABLE"
     line: "WOL_DISABLE=N"
 
-- name: Reload TLP
+- name: Reload TLP/Cronie
   systemd:
     enabled: true
     daemon-reload: true
     state: restarted
-    name: tlp
+    name: "{{ item }}"
+  with_items:
+    - tlp
+    - cronie

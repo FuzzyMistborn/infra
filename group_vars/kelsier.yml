@@ -8,6 +8,8 @@ package_list:
     state: absent
   - name: dolphin
     state: absent
+  - name: plank
+    state: absent
   - name: curl
   - name: cronie
   - name: htop
@@ -18,6 +20,7 @@ package_list:
   - name: wireguard-tools
   - name: restic
   - name: git
+  - name: nautilus
   - name: lm_sensors
   - name: python
   - name: screen
@@ -88,11 +91,11 @@ nfs_mount:
 
 smb_mountpoints:
   - path: "/mnt/Media"
-    source: "//192.168.30.10/Media"
+    source: "//192.168.1.20/Media"
     fs: cifs
     opts: "_netdev,noauto,nofail,x-systemd.automount,uid=1000,gid=1000,credentials=/home/{{main_username}}/.smbcredentials"
   - path: "/home/{{main_username}}/RetroPie"
-    source: "//192.168.30.10/Media/Files/Roms/Retropie"
+    source: "//192.168.10.20/Media/Files/Roms/Retropie"
     fs: cifs
     opts: "_netdev,noauto,nofail,x-systemd.automount,uid=1000,gid=1000,credentials=/home/{{main_username}}/.smbcredentials"
 

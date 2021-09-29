@@ -165,7 +165,7 @@ containers:
     environment:
       - MYSQL_ROOT_PASSWORD={{ secret_db_root_pass }}
       - SYMFONY__ENV__DATABASE_DRIVER=pdo_mysql
-      - SYMFONY__ENV__DATABASE_HOST=192.168.30.14
+      - SYMFONY__ENV__DATABASE_HOST=192.168.50.22
       - SYMFONY__ENV__DATABASE_PORT=3309
       - SYMFONY__ENV__DATABASE_NAME=symfony
       - SYMFONY__ENV__DATABASE_PASSWORD={{ secret_db_root_pass }}

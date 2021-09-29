@@ -80,8 +80,9 @@ lxc:
   - name: Dominion
     vmid: 200
     privileged: true
-    gw: 192.168.30.1
-    ip: 192.168.30.15
+    gw: 192.168.10.1
+    ip: 192.168.10.15
+    bridge: vmbr3
     disk: 'local-lvm:10'
     cores: 2
     memory: 512
@@ -91,7 +92,7 @@ lxc:
     gw: 192.168.50.1
     ip: 192.168.50.10
     bridge: vmbr2
-    disk: 'local-lvm:10'
+    disk: 'local-lvm:15'
     cores: 2
     memory: 1024
     nesting: 1
@@ -110,8 +111,9 @@ lxc:
   - name: Mercy
     vmid: 203
     privileged: true
-    gw: 192.168.30.1
-    ip: 192.168.30.18
+    gw: 192.168.50.1
+    ip: 192.168.50.30
+    bridge: vmbr2
     disk: 'local-lvm:10'
     cores: 1
     memory: 512
@@ -121,7 +123,7 @@ lxc:
     privileged: true
     gw: 192.168.1.1
     ip: 192.168.1.10
-    bridge: vmbr1
+    bridge: vmbr0
     disk: 'local-lvm:10'
     cores: 2
     memory: 1024
@@ -156,8 +158,9 @@ lxc:
   - name: Cultivation
     vmid: 252
     privileged: true
-    gw: 192.168.30.1
-    ip: 192.168.30.13
+    gw: 192.168.50.1
+    ip: 192.168.50.21
+    bridge: vmbr2
     disk: 'local-lvm:40'
     cores: 4
     memory: 3072
@@ -166,8 +169,9 @@ lxc:
   - name: Preservation
     vmid: 253
     privileged: true
-    gw: 192.168.30.1
-    ip: 192.168.30.14
+    gw: 192.168.50.1
+    ip: 192.168.50.22
+    bridge: vmbr2
     disk: 'local-lvm:40'
     cores: 4
     memory: 3072
@@ -178,8 +182,9 @@ lxc_mounts:
   - name: Endowment
     vmid: 250
     privileged: false
-    gw: 192.168.30.1
-    ip: 192.168.30.200
+    gw: 192.168.50.1
+    ip: 192.168.50.20
+    bridge: vmbr2
     disk: 'local-lvm:75'
     cores: 6
     memory: 4096

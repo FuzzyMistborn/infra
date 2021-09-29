@@ -29,58 +29,58 @@ http://smarthome.{{secret_personal_url}} {
 }
 # Bitwarden
 http://bitwarden.{{secret_personal_url}} {
-	reverse_proxy http://192.168.30.13:6482
+	reverse_proxy http://192.168.50.21:6482
 	import headers
 }
 # FreshRSS
 http://news.{{secret_personal_url}} {
-	reverse_proxy http://192.168.30.13:8010
+	reverse_proxy http://192.168.50.21:8010
 	import headers
 }
 # Code-Server
 http://code.{{secret_personal_url}} {
-	reverse_proxy http://192.168.30.13:8443
+	reverse_proxy http://192.168.50.21:8443
 	import headers
 }
 # Jellyfin
 http://media.{{secret_personal_url}} {
-	reverse_proxy http://192.168.30.10:8096
+	reverse_proxy http://192.168.1.20:8096
 	header X-Forwarded-Host {host}
 	import headers
 }
 # Nextcloud
 http://cloud.{{secret_personal_url}} {
-	reverse_proxy http://192.168.30.11:3491
+	reverse_proxy http://192.168.50.20:3491
 	import headers
 }
 # Collabora
 http://office.{{secret_personal_url}} {
 	encode gzip
-	reverse_proxy http://192.168.30.13:9980
+	reverse_proxy http://192.168.50.21:9980
 	import headers
 }
 # Organizr
 http://dashboard.{{secret_personal_url}} {
-	reverse_proxy http://192.168.30.13:5100
+	reverse_proxy http://192.168.50.21:5100
 	import headers
 }
 # Photoview
 http://photos.{{secret_personal_url}} {
-	reverse_proxy http://192.168.30.11:8000
+	reverse_proxy http://192.168.50.20:8000
 	import headers
 }
 # Radarr
 http://radarr.{{secret_personal_url}} {
-	reverse_proxy http://192.168.30.11:7878
+	reverse_proxy http://192.168.50.20:7878
 	import headers
 }
 # Sonarr
 http://sonarr.{{secret_personal_url}} {
-	reverse_proxy http://192.168.30.11:8989
+	reverse_proxy http://192.168.50.20:8989
 	import headers
 }
 # Wallabag
 http://wallabag.{{secret_personal_url}} {
-	reverse_proxy http://192.168.30.13:300
+	reverse_proxy http://192.168.50.21:300
 	import headers
 }
