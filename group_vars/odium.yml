@@ -46,7 +46,7 @@ containers:
   - service_name: matrix_db
     container_name: matrix_db
     active: false
-    image: postgres:13
+    image: postgres:14
     restart: always
     ports:
       - 5432:5432
