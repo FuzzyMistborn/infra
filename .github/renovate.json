@@ -1,6 +1,4 @@
 {
-#  "extends": ["config:base"],
   "ansible": {
-#    "fileMatch": ["^group_vars/.*\.ya?ml$"]
   }
 }
