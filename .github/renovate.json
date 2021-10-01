@@ -1,4 +1,5 @@
 {
   "ansible": {
+    "fileMatch": ["group_vars/preservation.yml", "group_vars/ambition.yml"]
   }
 }
