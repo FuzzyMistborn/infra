@@ -1,6 +1,6 @@
 {
   "enabledManagers": ["ansible", "docker-compose", "dockerfile"],
   "ansible": {
-    "fileMatch": ["group_vars/preservation.yml", "group_vars/ambition.yml"]
+    "fileMatch": ["^group_vars/.*\\.ya?ml$"]
   }
 }
