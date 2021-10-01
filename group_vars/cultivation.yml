@@ -247,7 +247,7 @@ containers:
   - service_name: paperless-redis
     container_name: paperless-redis
     active: true
-    image: redis:6.0
+    image: redis:6.2
     restart: always
     labels:
       - "diun.enable=true"
