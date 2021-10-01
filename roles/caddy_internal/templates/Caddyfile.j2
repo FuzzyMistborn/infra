@@ -25,7 +25,7 @@
 
 	@media host media.{{secret_personal_internal_url}}
 	handle @media {
-		reverse_proxy http://192.168.30.10:8096
+		reverse_proxy http://192.168.1.20:8096
 	}
 
 	@nodered host nodered.{{secret_personal_internal_url}}
@@ -45,32 +45,32 @@
 
 	@cloud host cloud.{{secret_personal_internal_url}}
 	handle @cloud {
-		reverse_proxy http://192.168.30.11:3491
+		reverse_proxy http://192.168.50.20:3491
 	}
 
 	@wallabag host wallabag.{{secret_personal_internal_url}}
 	handle @wallabag {
-		reverse_proxy http://192.168.30.13:300
+		reverse_proxy http://192.168.50.21:300
 	}
 
 	@news host news.{{secret_personal_internal_url}}
 	handle @news {
-		reverse_proxy http://192.168.30.13:8010
+		reverse_proxy http://192.168.50.21:8010
 	}
 
 	@paperless host paperless.{{secret_personal_internal_url}}
 	handle @paperless {
-		reverse_proxy http://192.168.30.13:8000
+		reverse_proxy http://192.168.50.21:8000
 	}
 
 	@transfer host transfer.{{secret_personal_internal_url}}
 	handle @transfer {
-		reverse_proxy http://192.168.30.13:3000
+		reverse_proxy http://192.168.50.21:3000
 	}
 
 	@portainer host portainer.{{secret_personal_internal_url}}
 	handle @portainer {
-		reverse_proxy http://192.168.30.10:9000
+		reverse_proxy http://192.168.1.20:9000
 	}
 
 	@adguard host adguard.{{secret_personal_internal_url}}
@@ -90,42 +90,42 @@
 
 	@lms host lms.{{secret_personal_internal_url}}
 	handle @lms {
-		reverse_proxy http://192.168.30.11:9000
+		reverse_proxy http://192.168.50.20:9000
 	}
 
 	@syncthing host syncthing.{{secret_personal_internal_url}}
 	handle @syncthing {
-		reverse_proxy http://192.168.30.11:8384
+		reverse_proxy http://192.168.50.20:8384
 	}
 
 	@sonarr host sonarr.{{secret_personal_internal_url}}
 	handle @sonarr {
-		reverse_proxy http://192.168.30.11:8989
+		reverse_proxy http://192.168.50.20:8989
 	}
 
 	@radarr host radarr.{{secret_personal_internal_url}}
 	handle @radarr {
-		reverse_proxy http://192.168.30.11:7878
+		reverse_proxy http://192.168.50.20:7878
 	}
 
 	@radarr_uhd host radarr_uhd.{{secret_personal_internal_url}}
 	handle @radarr_uhd {
-		reverse_proxy http://192.168.30.11:7879
+		reverse_proxy http://192.168.50.20:7879
 	}
 
 	@sabnzb host sabnzb.{{secret_personal_internal_url}}
 	handle @sabnzb {
-		reverse_proxy http://192.168.30.11:8060
+		reverse_proxy http://192.168.50.20:8060
 	}
 
 	@prowlarr host prowlarr.{{secret_personal_internal_url}}
 	handle @prowlarr {
-		reverse_proxy http://192.168.30.11:9696
+		reverse_proxy http://192.168.50.20:9696
 	}
 
 	@influx host influx.{{secret_personal_internal_url}}
 	handle @influx {
-		reverse_proxy http://192.168.30.14:8086
+		reverse_proxy http://192.168.50.22:8086
 	}
 
 	@bi host bi.{{secret_personal_internal_url}}
@@ -135,22 +135,22 @@
 
 	@scrutiny host scrutiny.{{secret_personal_internal_url}}
 	handle @scrutiny {
-		reverse_proxy http://192.168.30.10:8080
+		reverse_proxy http://192.168.1.20:8080
 	}
 
 	@handbrake host handbrake.{{secret_personal_internal_url}}
 	handle @handbrake {
-		reverse_proxy http://192.168.30.10:5800
+		reverse_proxy http://192.168.1.20:5800
 	}
 
 	@photos host photos.{{secret_personal_internal_url}}
 	handle @photos {
-		reverse_proxy http://192.168.30.11:8000
+		reverse_proxy http://192.168.50.20:8000
 	}
 
 	@dashboard host dashboard.{{secret_personal_internal_url}}
 	handle @dashboard {
-		reverse_proxy http://192.168.30.13:5100
+		reverse_proxy http://192.168.50.21:5100
 	}
 
 	@wghonor host wghonor.{{secret_personal_internal_url}}
