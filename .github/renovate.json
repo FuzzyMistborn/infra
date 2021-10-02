@@ -1,5 +1,6 @@
 {
   "enabledManagers": ["ansible", "docker-compose", "dockerfile"],
+  "dependencyDashboard": true,
   "ansible": {
     "fileMatch": ["^group_vars/.*\\.ya?ml$"]
   }
