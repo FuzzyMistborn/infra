@@ -147,7 +147,7 @@ containers:
   - service_name: diun
     container_name: diun
     active: true
-    image: crazymax/diun:latest
+    image: crazymax/diun:4
     restart: always
     labels:
       - "diun.enable=true"
@@ -197,7 +197,7 @@ containers:
   - service_name: zwavejs
     container_name: zwavejs
     active: true
-    image: zwavejs/zwavejs2mqtt:latest
+    image: zwavejs/zwavejs2mqtt:5.7.2
     restart: always
     ports:
       - 8091:8091
@@ -216,7 +216,7 @@ containers:
   - service_name: deconz
     container_name: deconz
     active: true
-    image: marthoc/deconz:stable
+    image: marthoc/deconz:2.12.06
     restart: always
     network_mode: host
     devices:
@@ -238,7 +238,7 @@ containers:
   - service_name: iobroker
     container_name: iobroker
     active: true
-    image: buanet/iobroker:latest
+    image: buanet/iobroker:latest-v5
     restart: always
     ports:
       - 8081:8081  # Main
@@ -257,7 +257,7 @@ containers:
   - service_name: mqtt
     container_name: MQTT
     active: true
-    image: eclipse-mosquitto
+    image: eclipse-mosquitto:2
     restart: always
     ports:
       - 1883:1883
@@ -273,7 +273,7 @@ containers:
   - service_name: rtl433
     container_name: rtl433
     active: true
-    image: hertzg/rtl_433:latest
+    image: hertzg/rtl_433:master
     restart: always
     labels:
       - "diun.enable=true"
@@ -291,7 +291,7 @@ containers:
   - service_name: nodered
     container_name: nodered
     active: true
-    image: nodered/node-red
+    image: nodered/node-red:2.0.6
     restart: always
     ports:
       - 1880:1880
@@ -372,7 +372,7 @@ containers:
   - service_name: portainer_agent
     container_name: portainer_agent
     active: true
-    image: portainer/agent
+    image: portainer/agent:2.9.0
     restart: always
     ports:
       - 9001:9001

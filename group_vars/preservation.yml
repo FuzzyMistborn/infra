@@ -74,7 +74,7 @@ containers:
   - service_name: hass-db
     container_name: hass-db
     active: true
-    image: mariadb
+    image: mariadb:10.6
     restart: always
     ports:
       - 3307:3306
@@ -94,7 +94,7 @@ containers:
   - service_name: influx-db
     container_name: influx-db
     active: true
-    image: influxdb
+    image: influxdb:2.0.8
     restart: always
     ports:
       - 8086:8086
@@ -118,7 +118,7 @@ containers:
   - service_name: bitwarden-db
     container_name: bitwarden-db
     active: true
-    image: mariadb
+    image: mariadb:10.6
     restart: always
     ports:
       - 3308:3306
@@ -152,7 +152,7 @@ containers:
   - service_name: wallabag-db
     container_name: wallabag-db
     active: true
-    image: mariadb
+    image: mariadb:10.6
     restart: always
     ports:
       - 3309:3306
@@ -167,7 +167,7 @@ containers:
   - service_name: photoview-db
     container_name: photoview-db
     active: true
-    image: mariadb
+    image: mariadb:10.6
     restart: always
     ports:
       - 3310:3306
@@ -202,7 +202,7 @@ containers:
   - service_name: diun
     container_name: diun
     active: true
-    image: crazymax/diun:latest
+    image: crazymax/diun:4
     restart: always
     labels:
       - "diun.enable=true"
@@ -220,7 +220,7 @@ containers:
   - service_name: portainer_agent
     container_name: portainer_agent
     active: true
-    image: portainer/agent
+    image: portainer/agent:2.9.0
     restart: always
     ports:
       - 9001:9001

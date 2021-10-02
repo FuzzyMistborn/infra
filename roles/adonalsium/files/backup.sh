@@ -1,6 +1,6 @@
 #!/bin/bash
 # Mount HDD
-mount -t ntfs /dev/disk/by-uuid/26967030966FFF1D /media/external_hdd
+mount /dev/disk/by-uuid/54622b56-2601-4404-a519-2546242b0b42 /media/external_hdd
 mount /mnt/synology_backup
 mount /mnt/synology_minio
 

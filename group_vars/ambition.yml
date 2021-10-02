@@ -169,7 +169,7 @@ containers:
   - service_name: diun
     container_name: diun
     active: true
-    image: crazymax/diun:latest
+    image: crazymax/diun:4
     restart: always
     labels:
       - "diun.enable=true"
@@ -187,7 +187,7 @@ containers:
   - service_name: uptime
     container_name: uptime
     active: true
-    image: louislam/uptime-kuma:1.7.1
+    image: louislam/uptime-kuma:1.7.3
     restart: always
     ports:
       - 127.0.0.1:3001:3001
@@ -219,7 +219,7 @@ containers:
   - service_name: umami-db
     container_name: umami-db
     active: true
-    image: mariadb
+    image: mariadb:10.6
     restart: always
     volumes:
       - "{{ appdata_path }}/umami/mariadb:/var/lib/mysql"
@@ -234,7 +234,7 @@ containers:
   - service_name: gitea
     container_name: gitea
     active: true
-    image: gitea/gitea:latest
+    image: gitea/gitea:1.15
     restart: always
     ports:
       - "127.0.0.1:3030:3000"
@@ -261,7 +261,7 @@ containers:
   - service_name: gitea-db
     container_name: gitea-db
     active: true
-    image: mariadb
+    image: mariadb:10.6
     restart: always
     volumes:
       - "{{ appdata_path }}/gitea/mariadb:/var/lib/mysql"
@@ -276,7 +276,7 @@ containers:
   - service_name: gotify
     container_name: gotify
     active: true
-    image: gotify/server
+    image: gotify/server:2.1
     restart: always
     ports:
       - 127.0.0.1:8090:80
@@ -319,7 +319,7 @@ containers:
   - service_name: healthchecks
     container_name: healthchecks
     active: true
-    image: ghcr.io/linuxserver/healthchecks
+    image: ghcr.io/linuxserver/healthchecks:version-v1.22.0
     restart: always
     ports:
       - 127.0.0.1:8000:8000
@@ -348,7 +348,7 @@ containers:
   - service_name: mailrise
     container_name: mailrise
     active: true
-    image: yoryan/mailrise:latest
+    image: yoryan/mailrise:release-1.2.0
     restart: always
     ports:
       - 127.0.0.1:8025:8025
@@ -361,7 +361,7 @@ containers:
   - service_name: privatebin
     container_name: privatebin
     active: true
-    image: privatebin/nginx-fpm-alpine
+    image: privatebin/nginx-fpm-alpine:1.3.5
     restart: always
     ports:
       - 127.0.0.1:8080:8080
@@ -375,7 +375,7 @@ containers:
   - service_name: portainer_agent
     container_name: portainer_agent
     active: true
-    image: portainer/agent
+    image: portainer/agent:2.9.0
     restart: always
     ports:
       - 9001:9001

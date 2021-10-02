@@ -7,4 +7,8 @@
 
 /usr/local/bin/lego --email="{{secret_new_email}}" --domains="*.{{secret_personal_url}}" --dns="linode" --path /home/{{main_username}}/lego renew --days 45
 
-systemctl restart caddy
+/usr/bin/systemctl daemon-reload
+
+/usr/bin/systemctl restart caddy
+
+sleep 10s

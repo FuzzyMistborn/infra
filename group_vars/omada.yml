@@ -68,7 +68,7 @@ containers:
   - service_name: diun
     container_name: diun
     active: true
-    image: crazymax/diun:latest
+    image: crazymax/diun:4
     restart: always
     labels:
       - "diun.enable=true"
@@ -84,7 +84,7 @@ containers:
     include_global_env_vars: true
     ###
   - service_name: portainer_agent
-    container_name: portainer_agent
+    container_name: portainer/agent:2.9.0
     active: true
     image: portainer/agent
     restart: always

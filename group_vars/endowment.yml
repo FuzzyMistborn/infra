@@ -98,7 +98,7 @@ containers:
   - service_name: diun
     container_name: diun
     active: true
-    image: crazymax/diun:latest
+    image: crazymax/diun:4
     restart: always
     labels:
       - "diun.enable=true"
@@ -116,7 +116,7 @@ containers:
   - service_name: radarr
     container_name: radarr
     active: true
-    image: ghcr.io/linuxserver/radarr
+    image: ghcr.io/linuxserver/radarr:version-3.2.2.5080
     restart: always
     ports:
       - 7878:7878
@@ -134,7 +134,7 @@ containers:
   - service_name: radarr_uhd
     container_name: radarr_uhd
     active: true
-    image: ghcr.io/linuxserver/radarr
+    image: ghcr.io/linuxserver/radarr:version-3.2.2.5080
     restart: always
     ports:
       - 7879:7878
@@ -150,7 +150,7 @@ containers:
   - service_name: sonarr
     container_name: sonarr
     active: true
-    image: ghcr.io/linuxserver/sonarr
+    image: ghcr.io/linuxserver/sonarr:version-3.0.6.1342
     restart: always
     ports:
       - 8989:8989
@@ -229,7 +229,7 @@ containers:
   - service_name: nextcloud-redis
     container_name: nextcloud-redis
     active: true
-    image: redis
+    image: redis:6.2
     restart: always
     labels:
       - "diun.enable=true"
@@ -239,7 +239,7 @@ containers:
   - service_name: photoview
     container_name: photoview
     active: true
-    image: viktorstrate/photoview:latest
+    image: viktorstrate/photoview:2.3
     restart: always
     network_mode: host
     volumes:
@@ -298,7 +298,7 @@ containers:
   - service_name: portainer_agent
     container_name: portainer_agent
     active: true
-    image: portainer/agent
+    image: portainer/agent:2.9.0
     restart: always
     ports:
       - 9001:9001

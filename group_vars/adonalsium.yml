@@ -11,7 +11,6 @@ package_list:
   - name: ifupdown2
   - name: restic
   - name: rsyslog
-  - name: ntfs-3g
   - name: wireguard
 
 ### Disks
@@ -413,7 +412,7 @@ containers:
   - service_name: diun
     container_name: diun
     active: true
-    image: crazymax/diun:latest
+    image: crazymax/diun:4
     restart: always
     labels:
       - "diun.enable=true"
@@ -449,7 +448,7 @@ containers:
   - service_name: portainer
     container_name: portainer
     active: true
-    image: portainer/portainer-ce
+    image: portainer/portainer-ce:2.9.0
     restart: always
     mem_limit: 200M
     ports:
@@ -495,7 +494,7 @@ containers:
   - service_name: handbrake
     container_name: handbrake
     active: true
-    image: jlesage/handbrake
+    image: jlesage/handbrake:v1.24.1
     restart: always
     ports:
       - 5800:5800
@@ -517,7 +516,7 @@ containers:
   - service_name: scrutiny
     container_name: scrutiny
     active: true
-    image: analogj/scrutiny
+    image: analogj/scrutiny:v0.3.12-omnibus
     restart: always
     privileged: true
     ports:
