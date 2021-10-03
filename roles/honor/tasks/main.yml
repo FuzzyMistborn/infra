@@ -24,6 +24,16 @@
     - docker/nginx
     - caddy
 
+- name: Copy certs script
+  template:
+    src: "{{item.src}}"
+    dest: /home/{{ main_username }}/{{item.dest}}
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: +x
+  with_items:
+    - {src: 'certs.sh.j2', dest: 'certs.sh'}
+
 #### DIUN
 - name: Copy DIUN Config Template
   template:

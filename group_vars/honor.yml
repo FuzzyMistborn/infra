@@ -35,6 +35,12 @@ cronjobs:
     user: root
     minute: 15
     hour: 0
+  - name: Cert Update
+    job: /usr/local/bin/runitor -uuid {{secret_hc_honor_certs}} -- /home/{{main_username}}/certs.sh
+    user: root
+    minute: 0
+    hour: 19
+    day: 1,15
   - name: Wireguard Tunnel Check/Restore
     job: /home/{{main_username}}/wg-check.sh
     user: root

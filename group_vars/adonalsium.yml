@@ -136,15 +136,6 @@ lxc:
     disk: 'local-lvm:30'
     cores: 2
     memory: 2048
-  - name: Caddy
-    vmid: 206
-    privileged: true
-    gw: 192.168.1.1
-    ip: 192.168.1.25
-    bridge: vmbr0
-    disk: 'local-lvm:8'
-    cores: 2
-    memory: 512
   - name: Autonomy
     vmid: 251
     privileged: false

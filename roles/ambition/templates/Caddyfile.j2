@@ -44,8 +44,7 @@ fuzzymistborn.com {
 }
 
 *.fuzzymistborn.com {
-	tls /home/{{main_username}}/lego/certificates/_.fuzzymistborn.com.crt /home/{{main_username}}/lego/certificates/_.fuzzymistborn.com.key {
-	}
+	tls /home/{{main_username}}/lego/certificates/_.fuzzymistborn.com.crt /home/{{main_username}}/lego/certificates/_.fuzzymistborn.com.key
 
 	@hc host hc.fuzzymistborn.com
 	handle @hc {
@@ -88,8 +87,7 @@ fuzzymistborn.com {
 }
 
 *.{{secret_personal_url}} {
-	tls /home/{{main_username}}/lego/certificates/_.{{secret_personal_url}}.crt /home/{{main_username}}/lego/certificates/_.{{secret_personal_url}}.key {
-	}
+	tls /home/{{main_username}}/lego/certificates/_.{{secret_personal_url}}.crt /home/{{main_username}}/lego/certificates/_.{{secret_personal_url}}.key
 
 	@git host git.{{secret_personal_url}}
 	handle @git {
@@ -114,14 +112,22 @@ fuzzymistborn.com {
 
 	@smarthome host smarthome.{{secret_personal_url}}
 	handle @smarthome {
-		reverse_proxy 10.10.10.10:80
+		reverse_proxy https://10.10.10.10:443 {
+			transport http {
+				tls_server_name smarthome.{{secret_personal_url}}
+			}
+		}
 		import personal_headers
 		import no_robots
 	}
 
 	@cloud host cloud.{{secret_personal_url}}
 	handle @cloud {
-		reverse_proxy 10.10.10.10:80
+		reverse_proxy https://10.10.10.10:443 {
+			transport http {
+				tls_server_name cloud.{{secret_personal_url}}
+			}
+		}
 		encode gzip
 		import personal_headers
 		import no_robots
@@ -141,7 +147,11 @@ fuzzymistborn.com {
 
 	@bitwarden host bitwarden.{{secret_personal_url}}
 	handle @bitwarden {
-		reverse_proxy 10.10.10.10:80
+		reverse_proxy https://10.10.10.10:443 {
+			transport http {
+				tls_server_name bitwarden.{{secret_personal_url}}
+			}
+		}
 		header Host {http.reverse_proxy.upstream.hostporti}
 		import personal_headers
 		import no_robots
@@ -150,21 +160,33 @@ fuzzymistborn.com {
 
 	@news host news.{{secret_personal_url}}
 	handle @news {
-		reverse_proxy 10.10.10.10:80
+		reverse_proxy https://10.10.10.10:443 {
+			transport http {
+				tls_server_name news.{{secret_personal_url}}
+			}
+		}
 		import personal_headers
 		import no_robots
 	}
 
 	@code host code.{{secret_personal_url}}
 	handle @code {
-		reverse_proxy 10.10.10.10:80
+		reverse_proxy https://10.10.10.10:443 {
+			transport http {
+				tls_server_name code.{{secret_personal_url}}
+			}
+		}
 		import personal_headers
 		import no_robots
 	}
 
 	@media host media.{{secret_personal_url}}
 	handle @media {
-		reverse_proxy 10.10.10.10:80
+		reverse_proxy https://10.10.10.10:443 {
+			transport http {
+				tls_server_name media.{{secret_personal_url}}
+			}
+		}
 		import personal_headers
 		import no_robots
 	}
@@ -172,7 +194,11 @@ fuzzymistborn.com {
 	@office host office.{{secret_personal_url}}
 	handle @office {
 		encode gzip
-		reverse_proxy 10.10.10.10:80
+		reverse_proxy 10.10.10.10:443 {
+			transport http {
+				tls_server_name dashboard.{{secret_personal_url}}
+			}
+		}
 		import personal_headers
 		import no_robots
 		respond /loleaflet/dist/admin/* "The admin panel is disabled"
@@ -180,35 +206,55 @@ fuzzymistborn.com {
 
 	@dashboard host dashboard.{{secret_personal_url}}
 	handle @dashboard {
-		reverse_proxy 10.10.10.10:80
+		reverse_proxy https://10.10.10.10:443 {
+			transport http {
+				tls_server_name dashboard.{{secret_personal_url}}
+			}
+		}
 		import personal_headers
 		import no_robots
 	}
 
 	@photos host photos.{{secret_personal_url}}
 	handle @photos {
-		reverse_proxy 10.10.10.10:80
+		reverse_proxy https://10.10.10.10:443 {
+			transport http {
+				tls_server_name photos.{{secret_personal_url}}
+			}
+		}
 		import personal_headers
 		import no_robots
 	}
 
 	@radarr host radarr.{{secret_personal_url}}
 	handle @radarr {
-		reverse_proxy 10.10.10.10:80
+		reverse_proxy https://10.10.10.10:443 {
+			transport http {
+				tls_server_name radarr.{{secret_personal_url}}
+			}
+		}
 		import personal_headers
 		import no_robots
 	}
 
 	@sonarr host sonarr.{{secret_personal_url}}
 	handle @sonarr {
-		reverse_proxy 10.10.10.10:80
+		reverse_proxy https://10.10.10.10:443 {
+			transport http {
+				tls_server_name sonarr.{{secret_personal_url}}
+			}
+		}
 		import personal_headers
 		import no_robots
 	}
 
 	@wallabag host wallabag.{{secret_personal_url}}
 	handle @wallabag {
-		reverse_proxy 10.10.10.10:80
+		reverse_proxy https://10.10.10.10:443 {
+			transport http {
+				tls_server_name wallabag.{{secret_personal_url}}
+			}
+		}
 		import personal_headers
 		import no_robots
 	}

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#/usr/local/bin/lego --email="{{secret_new_email}}" --domains="*.{{secret_personal_internal_url}}" --dns="linode" --accept-tos --path /home/{{main_username}}/lego run
+#/usr/local/bin/lego --email="{{secret_new_email}}" --domains="*.{{secret_personal_url}}" --dns="linode" --accept-tos --path /home/{{main_username}}/lego run
+
+/usr/local/bin/lego --email="{{secret_new_email}}" --domains="*.{{secret_personal_internal_url}}" --dns="linode" --path /home/{{main_username}}/lego renew --days 45
+/usr/local/bin/lego --email="{{secret_new_email}}" --domains="*.{{secret_personal_url}}" --dns="linode" --path /home/{{main_username}}/lego renew --days 45
+
+/bin/systemctl daemon-reload
+
+/bin/systemctl restart caddy
+
+sleep 10s
