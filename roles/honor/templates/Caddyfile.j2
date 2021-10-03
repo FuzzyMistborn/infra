@@ -91,6 +91,12 @@ cloud.{{secret_personal_url}} {
 	tls /home/{{main_username}}/lego/certificates/_.{{secret_personal_url}}.crt /home/{{main_username}}/lego/certificates/_.{{secret_personal_url}}.key
 	import headers
 }
+calendar.{{secret_personal_url}} {
+	redir /* https://cloud.{{secret_personal_url}}/apps/calendar/ 301
+}
+tasks.{{secret_personal_url}} {
+	redir /* https://cloud.{{secret_personal_url}}/apps/tasks/ 301
+}
 # Collabora
 office.{{secret_personal_url}} {
 	encode gzip
