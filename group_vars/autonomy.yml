@@ -147,11 +147,8 @@ containers:
   - service_name: diun
     container_name: diun
     active: true
-    image: crazymax/diun:4
+    image: crazymax/diun:4.20.1
     restart: always
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     volumes:
       - "{{ appdata_path }}/diun/data:/data"
       - "{{ appdata_path }}/diun/config.yml:/diun.yml:ro"
