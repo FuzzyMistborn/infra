@@ -177,7 +177,7 @@ lxc_mounts:
     ip: 192.168.50.20
     bridge: vmbr2
     disk: 'local-lvm:75'
-    cores: 6
+    cores: 8
     memory: 4096
     nesting: 1
     keyctl: 0
@@ -207,11 +207,6 @@ cronjobs:
     user: "{{ main_username }}"
     minute: 0
     hour: '*/6'
-  - name: Restart Jellyfin
-    job: docker container restart jellyfin > /dev/null 2>&1
-    user: "{{ main_username }}"
-    hour: 2
-    minute: 30
   - name: Restic Prune
     job: /usr/local/bin/runitor -uuid {{secret_hc_adonalsium_purge}} -- /usr/local/bin/autorestic forget -a -- prune
     user: "{{ main_username }}"
@@ -452,55 +447,6 @@ containers:
       - AGENT_SECRET={{secret_portainer_key}}
     include_global_env_vars: false
   ###
-  - service_name: jellyfin
-    container_name: jellyfin
-    active: true
-    image: ghcr.io/linuxserver/jellyfin:latest
-    restart: always
-    ports:
-      - 8096:8096
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=ghcr.io"
-    volumes:
-      - "{{ appdata_path }}/jellyfin/config:/config"
-      - /mnt/Media/Movies:/mnt/movies
-      - /mnt/Media/UHD:/mnt/UHD
-      - '/mnt/Media/TV Shows:/mnt/tv'
-      - '/mnt/Media/Kids Movies:/mnt/kids'
-      - '/mnt/Media/Kids TV:/mnt/kids_tv'
-      - '/mnt/Media/YouTube/Kids:/mnt/kids_youtube'
-      - '/mnt/Media/Parents Movies:/mnt/parents_movies'
-      - '/mnt/Media/Parents TV:/mnt/parents_tv'
-      - '/mnt/Media/Family Videos:/mnt/home_videos'
-    devices:
-      - /dev/dri:/dev/dri
-    group_add:
-      - 108
-    include_global_env_vars: true
-  ###
-  - service_name: handbrake
-    container_name: handbrake
-    active: true
-    image: jlesage/handbrake:v1.24.1
-    restart: always
-    ports:
-      - 5800:5800
-    volumes:
-      - "{{ appdata_path }}/docker-api:/data/certs"
-      - "{{ appdata_path }}/handbrake/config:/config"
-      - "{{ appdata_path }}/handbrake/storage:/storage"
-      - "{{ appdata_path }}/handbrake/watch:/watch"
-      - "{{ appdata_path }}/handbrake/output:/output"
-    devices:
-      - /dev/dri:/dev/dri
-    environment:
-      - TZ={{ ntp_timezone }}
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
-    include_global_env_vars: false
-  ###
   - service_name: scrutiny
     container_name: scrutiny
     active: true
@@ -529,4 +475,25 @@ containers:
     cap_add:
       - SYS_RAWIO
       - SYS_ADMIN
+    include_global_env_vars: false
+  ###
+  - service_name: handbrake
+    container_name: handbrake
+    active: true
+    image: jlesage/handbrake:v1.24.1
+    restart: always
+    ports:
+      - 5800:5800
+    volumes:
+      - "{{ appdata_path }}/handbrake/config:/config"
+      - "{{ appdata_path }}/handbrake/storage:/storage"
+      - "/mnt/Media//Movies/1-Processing/Handbrake/Watch:/watch"
+      - "/mnt/Media/Movies/1-Processing/Handbrake/Output:/output"
+    devices:
+      - /dev/dri:/dev/dri
+    environment:
+      - TZ={{ ntp_timezone }}
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
     include_global_env_vars: false

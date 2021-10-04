@@ -1,7 +1,14 @@
 $ModLoad imfile
 $InputFilePollInterval 3
 # Nextcloud
-$InputFileName /home/{{main_username}}/docker/nextcloud_docker/data/nextcloud.log
+$InputFileName /home/{{main_username}}/docker/nextcloud_docker/html/data/nextcloud.log
+$InputFileTag nextcloud:
+
+$InputFileStateFile nextcloud-error
+$InputRunFileMonitor
+
+# Nextcloud
+$InputFileName /home/{{main_username}}/docker/jellyfin/config/log/log*.log
 $InputFileTag nextcloud:
 
 $InputFileStateFile nextcloud-error

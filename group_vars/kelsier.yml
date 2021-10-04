@@ -10,6 +10,8 @@ package_list:
     state: absent
   - name: plank
     state: absent
+  - name: gwenview
+    state: absent
   - name: curl
   - name: cronie
   - name: htop
@@ -71,6 +73,7 @@ package_list:
   - name: scrot
   - name: spectacle
   - name: kdialog
+  - name: nomacs
 
 data_disks:
   - path: /mnt/Games

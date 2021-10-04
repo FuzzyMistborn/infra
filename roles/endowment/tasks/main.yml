@@ -100,9 +100,7 @@
     mode: 0644
   with_items:
     - {src: 'rsyslog.conf.j2', dest: 'rsyslog.conf'}
-    - {src: 'sonarr.conf.j2', dest: 'rsyslog.d/sonarr.conf'}
-    - {src: 'nextcloud.conf.j2', dest: 'rsyslog.d/nextcloud.conf'}
-    - {src: 'radarr.conf.j2', dest: 'rsyslog.d/radarr.conf'}
+    - {src: 'endowment.conf.j2', dest: 'rsyslog.d/endowment.conf'}
 
 - name: restart rsyslog service
   service:

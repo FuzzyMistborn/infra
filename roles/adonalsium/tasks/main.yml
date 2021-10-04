@@ -195,19 +195,10 @@
     value: 1
     reload: yes
 
-### Rsyslog
-- name: Copy rsyslog config templates
-  template:
-    src: "{{item.src}}"
-    dest: /etc/{{item.dest}}
-    owner: root
-    group: root
-    mode: 0644
-  with_items:
-    - {src: 'jellyfin.conf.j2', dest: 'rsyslog.d/jellyfin.conf'}
-
-- name: restart rsyslog service
-  service:
-    name: rsyslog
-    enabled: 'true'
-    state: restarted
+- name: Reboot Cronjob
+  cron:
+    name: "Set /dev/dri to 777"
+    job: "chmod -R 777 /dev/dri"
+    user: "root"
+    special_time: reboot
+    state: present
