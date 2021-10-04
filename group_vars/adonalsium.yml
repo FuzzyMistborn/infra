@@ -143,7 +143,7 @@ lxc:
     ip: 192.168.30.12
     disk: 'local-lvm510'
     cores: 12
-    memory: 8192
+    memory: 5120
     nesting: 1
     keyctl: 1
   - name: Cultivation
@@ -154,7 +154,7 @@ lxc:
     bridge: vmbr2
     disk: 'local-lvm:40'
     cores: 4
-    memory: 3072
+    memory: 2048
     nesting: 1
     keyctl: 1
   - name: Preservation
@@ -178,7 +178,7 @@ lxc_mounts:
     bridge: vmbr2
     disk: 'local-lvm:75'
     cores: 8
-    memory: 4096
+    memory: 6144
     nesting: 1
     keyctl: 0
     fsmount: cifs
@@ -480,7 +480,7 @@ containers:
   - service_name: handbrake
     container_name: handbrake
     active: true
-    image: jlesage/handbrake:v1.24.1
+    image: jlesage/handbrake:v1.24.2
     restart: always
     ports:
       - 5800:5800
