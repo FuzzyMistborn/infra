@@ -46,6 +46,9 @@ update:
 docker:
 	ansible-playbook docker.yml --vault-password-file .vault-password
 
+test:
+	ansible-playbook -b test.yml --vault-password-file .vault-password
+
 ### Vault
 decrypt:
 	ansible-vault decrypt --vault-password-file .vault-password vars/vault.yaml

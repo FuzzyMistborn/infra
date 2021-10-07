@@ -63,7 +63,6 @@ package_list:
   - name: thunderbird
   - name: firefox
   - name: wine
-  - name: code
   - name: plasma-browser-integration
   - name: libreoffice-still
   - name: system-config-printer
