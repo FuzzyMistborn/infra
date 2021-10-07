@@ -190,9 +190,6 @@ containers:
       - 127.0.0.1:3001:3001
     volumes:
       - "{{ appdata_path }}/uptime:/app/data"
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     include_global_env_vars: false
   ###
   - service_name: umami
@@ -240,9 +237,6 @@ containers:
       - "{{ appdata_path }}/gitea/data:/data"
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     environment:
       - USER_UID=1000
       - USER_GID=1000
@@ -282,9 +276,6 @@ containers:
     environment:
       - GOTIFY_DEFAULTUSER_PASS={{main_username}}
       - GOTIFY_DEFAULTUSER_PASS='{{secret_gotify_pass}}'
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     include_global_env_vars: false
   ###
   - service_name: wireguard
@@ -337,9 +328,6 @@ containers:
       - TELEGRAM_BOT_NAME="Cosmere HealthChecks"
       - TELEGRAM_TOKEN="{{secret_healthchecks_tg_token}}"
       - DOCKER_MODS=linuxserver/mods:healthchecks-apprise
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=ghcr.io"
     include_global_env_vars: true
   ###
   - service_name: mailrise
@@ -351,9 +339,6 @@ containers:
       - 127.0.0.1:8025:8025
     volumes:
       - "{{ appdata_path }}/mailrise/mailrise.conf:/etc/mailrise.conf"
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
   ###
   - service_name: privatebin
     container_name: privatebin
@@ -365,9 +350,6 @@ containers:
     volumes:
       - "{{ appdata_path }}/privatebin/data:/srv/data"
       - "{{ appdata_path }}/privatebin/config:/srv/cfg"
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
   ###
   - service_name: portainer_agent
     container_name: portainer_agent
@@ -381,7 +363,4 @@ containers:
       - /var/lib/docker/volumes:/var/lib/docker/volumes
     environment:
       - AGENT_SECRET={{secret_portainer_key}}
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     include_global_env_vars: false

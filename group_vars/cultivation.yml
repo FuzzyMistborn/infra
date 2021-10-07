@@ -115,9 +115,6 @@ containers:
       - EXTENDED_LOGGING=true
       - DATABASE_URL={{ secret_bitwarden_db_url }}
       - ENABLE_DB_WAL=false
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     include_global_env_vars: false
   ###
   - service_name: freshrss
@@ -171,9 +168,6 @@ containers:
       - SYMFONY__ENV__DOMAIN_NAME={{ secret_wallabag_url }}
     volumes:
       - "{{ appdata_path }}/wallabag/images:/var/www/wallabag/web/assets/images"
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     include_global_env_vars: true
   ###
   - service_name: collabora
@@ -183,9 +177,6 @@ containers:
     restart: always
     ports:
       - 9980:9980
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     cap_add:
       - MKNOD
     environment:
@@ -220,9 +211,6 @@ containers:
       - 8025:8025
     volumes:
       - "{{ appdata_path }}/mailrise/mailrise.conf:/etc/mailrise.conf"
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     include_global_env_vars: false
   ###
   - service_name: psitransfer
@@ -234,9 +222,6 @@ containers:
       - 3000:3000
     volumes:
       - "{{ appdata_path }}/psitransfer:/data"
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     environment:
       - PSITRANSFER_ADMIN_PASS={{ secret_psitransfer_pass }}
     include_global_env_vars: false
@@ -269,9 +254,6 @@ containers:
       - PAPERLESS_SECRET_KEY={{ secret_paperless_key }}
       - USERMAP_UID={{main_uid}}
       - USERMAP_GID={{main_gid}}
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     include_global_env_vars: false
   ###
   - service_name: remote-api
@@ -287,9 +269,6 @@ containers:
     environment:
       - CREATE_CERTS_WITH_PW={{ secret_docker_api_tls }}
       - CERT_HOSTNAME=docker-remote.local
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     include_global_env_vars: false
   ###
   - service_name: portainer_agent
@@ -304,7 +283,4 @@ containers:
       - /var/lib/docker/volumes:/var/lib/docker/volumes
     environment:
       - AGENT_SECRET={{secret_portainer_key}}
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     include_global_env_vars: false

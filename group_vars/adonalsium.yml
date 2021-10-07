@@ -423,9 +423,6 @@ containers:
     environment:
       - CREATE_CERTS_WITH_PW={{ secret_docker_api_tls }}
       - CERT_HOSTNAME=docker-remote.local
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     include_global_env_vars: false
   ###
   - service_name: portainer
@@ -437,9 +434,6 @@ containers:
     ports:
       - 9000:9000
       - 8000:8000
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     volumes:
       - /srv/docker/portainer:/data
       - /var/run/docker.sock:/var/run/docker.sock
@@ -455,9 +449,6 @@ containers:
     privileged: true
     ports:
       - 8080:8080
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     volumes:
       - "{{ appdata_path }}/scrutiny:/scrutiny/config"
       - /run/udev:/run/udev:ro
@@ -493,7 +484,4 @@ containers:
       - /dev/dri:/dev/dri
     environment:
       - TZ={{ ntp_timezone }}
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     include_global_env_vars: false

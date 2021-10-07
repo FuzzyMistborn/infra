@@ -144,9 +144,6 @@ containers:
       - "{{ appdata_path }}/radarr_uhd:/config"
       - /mnt/Media/UHD:/uhd
       - "/mnt/scratch/complete:/downloads"
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=ghcr.io"
     include_global_env_vars: true
   ###
   - service_name: sonarr
@@ -255,9 +252,6 @@ containers:
       - PHOTOVIEW_MEDIA_CACHE=/app/cache
       - GODEBUG=asyncpreemptoff=1
       - MAPBOX_TOKEN={{ secret_photoview_mapbox_token }}
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     include_global_env_vars: false
   ###
   - service_name: syncthing
@@ -339,9 +333,6 @@ containers:
     environment:
       - CREATE_CERTS_WITH_PW={{ secret_docker_api_tls }}
       - CERT_HOSTNAME=docker-remote.local
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     include_global_env_vars: false
   ###
   - service_name: portainer_agent
@@ -356,7 +347,4 @@ containers:
       - /var/lib/docker/volumes:/var/lib/docker/volumes
     environment:
       - AGENT_SECRET={{secret_portainer_key}}
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     include_global_env_vars: false

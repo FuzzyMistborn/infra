@@ -203,9 +203,6 @@ containers:
       - "{{ appdata_path }}/zwavejs:/usr/src/app/store"
     devices:
       - /dev/zwave:/dev/zwave
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     environment:
       - TZ={{ ntp_timezone }}
     include_global_env_vars: false
@@ -220,9 +217,6 @@ containers:
       - /dev/conbee:/dev/ttyACM1
     volumes:
       - "{{ appdata_path }}/deconz:/root/.local/share/dresden-elektronik/deCONZ"
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     environment:
       - DECONZ_VNC_MODE=1
       - DECONZ_VNC_PASSWORD={{secret_deconz_vnc_pass}}
@@ -297,9 +291,6 @@ containers:
       - /etc/localtime:/etc/localtime:ro
     environment:
       - TZ={{ ntp_timezone }}
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     depends_on:
       - homeassistant
     include_global_env_vars: false
@@ -378,7 +369,4 @@ containers:
       - /var/lib/docker/volumes:/var/lib/docker/volumes
     environment:
       - AGENT_SECRET={{secret_portainer_key}}
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     include_global_env_vars: false

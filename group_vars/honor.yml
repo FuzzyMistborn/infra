@@ -116,9 +116,6 @@ containers:
     volumes:
       - "{{ appdata_path }}/adguard/conf:/opt/adguardhome/conf"
       - "{{ appdata_path }}/adguard/work:/opt/adguardhome/work"
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     cap_add:
       - NET_ADMIN
     include_global_env_vars: false
@@ -162,9 +159,6 @@ containers:
       - /var/lib/docker/volumes:/var/lib/docker/volumes
     environment:
       - AGENT_SECRET={{secret_portainer_key}}
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     include_global_env_vars: false
   ###
   - service_name: remote-api
@@ -180,9 +174,6 @@ containers:
     environment:
       - CREATE_CERTS_WITH_PW={{ secret_docker_api_tls }}
       - CERT_HOSTNAME=docker-remote.local
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     include_global_env_vars: false
   ###
   - service_name: adguard-sync
