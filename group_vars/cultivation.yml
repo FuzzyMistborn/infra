@@ -179,7 +179,7 @@ containers:
   - service_name: collabora
     container_name: collabora
     active: true
-    image: collabora/code:6.4.11.3
+    image: collabora/code:6.4.13.1
     restart: always
     ports:
       - 9980:9980
