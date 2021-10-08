@@ -47,33 +47,33 @@ cronjobs:
     minute: '*/5'
 
 ### Autorestic Config
-autorestic_locations:
-  - name: docker
-    from: '/home/{{main_username}}/docker'
-    to:
-      - synology_docker
-      - b2_docker
-    options:
-      forget:
-        daily: 1
-        weekly: 8
-        monthly: 4
-
-autorestic_backends:
-  - name: synology_docker
-    type: s3
-    path: 'http://192.168.30.25:9000/honor'
-    key: "{{ secret_restic_repo_password }}"
-    env:
-      - "AWS_ACCESS_KEY_ID: {{ secret_minio_s3_access_key_id }}"
-      - "AWS_SECRET_ACCESS_KEY: {{ secret_minio_s3_access_key }}"
-  - name: b2_docker
-    type: b2
-    path: '{{ secret_restic_b2_bucket }}:/honor'
-    key: "{{ secret_restic_repo_password }}"
-    env:
-      - "B2_ACCOUNT_ID: {{ secret_restic_b2_account_id }}"
-      - "B2_ACCOUNT_KEY: {{ secret_restic_b2_account_key }}"
+autorestic_config_yaml:
+  backends:
+    synology_docker:
+      type: s3
+      path: 'http://192.168.30.25:9000/honor'
+      key: "{{ secret_restic_repo_password }}"
+      env:
+        - AWS_ACCESS_KEY_ID: "{{ secret_minio_s3_access_key_id }}"
+        - AWS_SECRET_ACCESS_KEY: "{{ secret_minio_s3_access_key }}"
+    b2_docker:
+      type: b2
+      path: "{{ secret_restic_b2_bucket }}:/honor"
+      key: "{{ secret_restic_repo_password }}"
+      env:
+        - B2_ACCOUNT_ID: "{{ secret_restic_b2_account_id }}"
+        - B2_ACCOUNT_KEY: "{{ secret_restic_b2_account_key }}"
+  locations:
+    docker:
+      from: '/home/{{main_username}}/docker'
+      to:
+        - synology_docker
+        - b2_docker
+      options:
+        forget:
+          keep-daily: 1
+          keep-weekly: 8
+          keep-monthly: 4
 
 ### Caddy Config
 caddy_systemd_capabilities_enabled: true
