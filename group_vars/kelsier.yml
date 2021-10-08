@@ -73,6 +73,7 @@ package_list:
   - name: spectacle
   - name: kdialog
   - name: nomacs
+  - name: skanlite
 
 data_disks:
   - path: /mnt/Games

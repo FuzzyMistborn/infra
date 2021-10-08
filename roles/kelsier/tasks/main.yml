@@ -74,6 +74,8 @@
       - psst
       - ventoy
       - remmina-git
+      - epsonscan2
+      - iscan-for-epson-v500-photo
       # - ckan  # Currently broken, use Mono
       # - ferdi # Conflict package, install manually
     state: present
@@ -91,7 +93,7 @@
 # - name: Install flatpaks
 #   community.general.flatpak:
 #     name:
-#       - 
+#       - example
 #     state: present
 #     method: user
 #   become_user: "{{main_username}}"
@@ -151,7 +153,7 @@
     dest: /etc/logid.cfg
     owner: root
     group: root
-    mode: 0644 
+    mode: 0644
 
 #### NUT
 

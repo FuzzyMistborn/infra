@@ -252,6 +252,9 @@ containers:
       - PHOTOVIEW_MEDIA_CACHE=/app/cache
       - GODEBUG=asyncpreemptoff=1
       - MAPBOX_TOKEN={{ secret_photoview_mapbox_token }}
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
     include_global_env_vars: false
   ###
   - service_name: syncthing

@@ -2,9 +2,24 @@
 extends: default
 
 rules:
-  line-length:
-    max: 175
-    level: warning
+  braces:
+    max-spaces-inside: 1
+    level: error
+  brackets:
+    max-spaces-inside: 1
+    level: error
+  colons:
+    max-spaces-after: -1
+    level: error
+  commas:
+    max-spaces-after: -1
+    level: error
+  comments-indentation: disable
+  empty-lines:
+    max: 3
+    level: error
+  line-length: disable
+  new-line-at-end-of-file: disable
   truthy:
     allowed-values: ['true', 'false', 'yes', 'no']
 
