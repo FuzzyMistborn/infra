@@ -130,7 +130,7 @@ autorestic_config_yaml:
   locations:
     docker:
       from: '/home/{{main_username}}/docker'
-      to: 
+      to:
         - b2_docker
       options:
         backup:
@@ -143,7 +143,7 @@ autorestic_config_yaml:
           keep-monthly: 3
     db:
       from: '/home/{{main_username}}/db_backups'
-      to: 
+      to:
         - b2_db
       options:
         forget:
@@ -152,7 +152,7 @@ autorestic_config_yaml:
           keep-monthly: 3
     certs:
       from: '/home/{{main_username}}/lego'
-      to: 
+      to:
         - b2_certs
       options:
         forget:

@@ -1,5 +1,4 @@
 ---
-
 - name: get status of syncthing_install_path
   stat:
     path: "{{ syncthing_install_path }}"

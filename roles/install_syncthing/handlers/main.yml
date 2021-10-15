@@ -1,2 +1,3 @@
+---
 - name: restart syncthing
   command: systemctl restart syncthing

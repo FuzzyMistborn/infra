@@ -63,10 +63,10 @@ autorestic_config_yaml:
   locations:
     docker:
       from: /home/{{main_username}}/docker
-      to: 
+      to:
         - synology_docker
         - b2_docker
-      options: 
+      options:
         forget:
           keep-daily: 1
           keep-weekly: 8

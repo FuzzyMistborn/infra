@@ -305,7 +305,7 @@ autorestic_config_yaml:
   locations:
     docker:
       from: '/home/{{main_username}}/docker'
-      to: 
+      to:
         - synology_docker
         - b2_docker
       options:
@@ -315,7 +315,7 @@ autorestic_config_yaml:
           keep-monthly: 4
     photos:
       from: '/mnt/Media/Photos'
-      to: 
+      to:
         - synology_photos
         - b2_photos
       options:
@@ -325,7 +325,7 @@ autorestic_config_yaml:
           keep-monthly: 4
     music:
       from: '/mnt/Media/Music'
-      to: 
+      to:
         - synology_music
         - b2_music
       options:
@@ -335,7 +335,7 @@ autorestic_config_yaml:
           keep-monthly: 4
     audiobooks:
       from: '/mnt/Media/Audiobooks'
-      to: 
+      to:
         - synology_audiobooks
         - b2_audiobooks
       options:
@@ -345,7 +345,7 @@ autorestic_config_yaml:
           keep-monthly: 4
     files:
       from: '/mnt/Media/Files'
-      to: 
+      to:
         - synology_files
         - b2_files
       options:

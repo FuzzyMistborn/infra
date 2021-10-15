@@ -59,4 +59,3 @@
         remote_src: yes
         mode: +x
   when: hugo_is_installed == False or ( hugo_is_installed == True and hugo_download_latest_ver == True and installed_version_registered.stdout != hugo_ver ) or ( hugo_is_installed == True and hugo_download_latest_ver == False and installed_version_registered.stdout != hugo_pinned_ver )
-
