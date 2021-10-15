@@ -11,6 +11,11 @@
         autoremove: yes
 
 - hosts: adonalsium
+  roles:
+    - role: install_mergerfs
+    - role: install_runitor
+    - role: install_telegraf
+      become: true
   tasks:
     - name: update all packages
       become: true
@@ -19,3 +24,24 @@
         cache_valid_time: 86400
         upgrade: dist
         autoremove: yes
+
+- hosts: ambition
+  roles:
+    - role: install_hugo
+    - role: install_lego
+    - role: install_runitor
+
+- hosts: honor
+  roles:
+    - role: install_lego
+    - role: install_runitor
+
+- hosts: dominion mercy omada
+  roles:
+    - role: install_runitor
+
+- hosts: endowment autonomy cultivation preservation kelsier
+  roles:
+    - role: install_runitor
+    - role: install_telegraf
+      become: true

@@ -17,6 +17,7 @@ This role has a number of variables that can be configured.
 | **runitor_pinned_ver**              | Desired version of runitor (overriden by above var).     | `0.8.0`
 | **runitor_distro**                  | Which distro to target for download.                     | `linux-amd64`
 | **runitor_install_directory**       | Where to install runitor binary.                         | `/usr/local/bin`
+| **runitor_url**                     | The default URL used by runitor to ping                  | `https://hc-ping.com`
 
 By default the role fetches and installs the latest available version.  You can disable this by pinning to a specific version.  Here's an example if you wanted to set the version.
 

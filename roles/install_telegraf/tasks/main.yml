@@ -3,6 +3,7 @@
 - name: install telegraf
   include: install.yml
   when: ansible_os_family == 'Debian'
+  tags: install
 
 - name: configure telegraf
   include: configure.yml
