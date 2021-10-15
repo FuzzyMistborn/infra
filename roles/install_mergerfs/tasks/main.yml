@@ -1,37 +1,56 @@
 ---
-- name: check whether package is installed
+- name: check whether mergerfs is installed
   shell: "dpkg-query -W 'mergerfs'"
   ignore_errors: true
   register: is_installed
   changed_when: "is_installed.rc != 0"
 
-- name: install package?
+- name: set mergerfs installed
   set_fact:
-    force_install: "{{ mergerfs_force_install == true or is_installed.failed == true }}"
+    mergerfs_is_installed: "{{ is_installed.failed == false }}"
+
+- name: check mergerfs version
+  shell: "/usr/bin/mergerfs --version | awk '{ print $3 }' | cut -c 1-"
+  changed_when: false
+  register: installed_version_registered
+  when: mergerfs_is_installed == True
 
 - name: get latest release
   uri:
     url: https://api.github.com/repos/trapexit/mergerfs/releases/latest
     return_content: true
-  register: release_latest
-  when: mergerfs_ver is undefined and force_install == True
+  register: release_version_registered
+  when: mergerfs_download_latest_ver == True
 
-- name: set version if not already
-  set_fact: mergerfs_ver="{{ release_latest.json.tag_name }}"
-  when: mergerfs_ver is undefined and force_install == True
+- name: set mergerfs version (latest)
+  set_fact:
+    mergerfs_ver: "{{ release_version_registered.json.tag_name|regex_replace('v') }}"
+  when: mergerfs_download_latest_ver == True
 
-- name: download release
-  when: force_install == True
-  get_url:
-    url: https://github.com/trapexit/mergerfs/releases/download/{{mergerfs_ver}}/mergerfs_{{mergerfs_ver}}.debian-bullseye_amd64.deb
-    dest: /tmp
+- name: set mergerfs version (pinned)
+  set_fact:
+    mergerfs_ver: "{{ mergerfs_pinned_ver }}"
+  when: mergerfs_download_latest_ver == False
 
-- name: set filename
-  set_fact: file_name="mergerfs_{{mergerfs_ver}}.debian-bullseye_amd64.deb"
-  when: force_install == True
+- block:
+    - name: ensure mergerfs_download_directory does not exist
+      file:
+        path: "{{ mergerfs_download_directory }}"
+        state: absent
 
-- name: install deb
-  apt:
-    deb: /tmp/{{ file_name }}
-    state: present
-  when: force_install == True
+    - name: create mergerfs_download_directory
+      file:
+        path: "{{ mergerfs_download_directory }}"
+        state: directory
+        mode: 0755
+
+    - name: download mergerfs
+      get_url:
+        url: "{{ mergerfs_gh_url }}/{{mergerfs_ver}}/mergerfs_{{mergerfs_ver}}.{{mergerfs_distro}}.deb"
+        dest: "{{ mergerfs_download_directory }}"
+
+    - name: install deb
+      apt:
+        deb: "{{mergerfs_download_directory}}/mergerfs_{{mergerfs_ver}}.{{mergerfs_distro}}.deb"
+        state: present
+  when: mergerfs_is_installed == False or ( mergerfs_is_installed == True and mergerfs_download_latest_ver == True and installed_version_registered.stdout != mergerfs_ver ) or ( mergerfs_is_installed == True and mergerfs_download_latest_ver == False and installed_version_registered.stdout != mergerfs_pinned_ver )

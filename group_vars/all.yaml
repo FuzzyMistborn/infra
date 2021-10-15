@@ -16,7 +16,6 @@ package_list:
   - name: sudo
   - name: wget
 
-# telegraf_force_install: false
 # telegraf_ver: 1.18.1
 telegraf_influx_url: 'http://192.168.50.22:8086'
 telegraf_influx_org: Cosmere
@@ -25,7 +24,7 @@ syncthing_user: "{{main_username}}"
 # autorestic_ver: 1.1.2
 autorestic_config_user: "{{main_username}}"
 # restic_ver: 0.12.1
-# runitor_ver: v0.8.0
+# runitor_ver: 0.8.0
 runitor_url: "{{secret_hc_ping_url}}"
 
 # geerlingguy.ntp

@@ -3,7 +3,6 @@ target_os: ubuntu
 hostname: odium
 
 ### Variables
-# nag_force_install: true
 # nag_version: 0.0.7
 
 ### Install packages with grog.package

@@ -187,9 +187,7 @@ lxc_mounts:
 install_nut: false
 pull_backup: false
 infrastructure: false
-# mergerfs_force_install: true
 # mergerfs_ver: 2.32.4
-# nag_force_install: true
 # nag_ver: 0.0.7
 
 ### Telegraf

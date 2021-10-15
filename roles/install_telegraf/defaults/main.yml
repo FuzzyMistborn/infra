@@ -1,10 +1,18 @@
 ---
+## Telegraf Install
+telegraf_download_latest_ver: true  # Change to 'false' to pin to a specific version
+telegraf_pinned_ver: 1.20.2  # Overriden by 'telegraf_download_latest_ver' variable
+telegraf_distro: amd64
 
+telegraf_gh_url: https://dl.influxdata.com/telegraf/releases
+telegraf_download_directory: "/tmp/telegraf"
+
+## Telegraf Config
 telegraf_config_path: "/etc/telegraf"
 telegraf_config_user: root
 telegraf_config_group: root
 
-telegraf_force_install: false
+## Influx Settings
 telegraf_influx_url: 'http://localhost:8086'
 telegraf_influx_token: change_me
 telegraf_influx_org: Influx

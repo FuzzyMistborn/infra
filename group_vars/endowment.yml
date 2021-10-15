@@ -25,8 +25,7 @@ smb_mountpoints:
 
 pull_backup: false
 
-# syncthing_ver: v1.18.2
-# syncthing_force_install: true
+# syncthing_ver: 1.18.2
 
 ### Telegraf
 telegraf_influx_token: "{{secret_telegraf_endowment}}"

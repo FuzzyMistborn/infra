@@ -1,37 +1,56 @@
 ---
-- name: check whether package is installed
+- name: check whether telegraf is installed
   shell: "dpkg-query -W 'telegraf'"
   ignore_errors: true
   register: is_installed
   changed_when: "is_installed.rc != 0"
 
-- name: install package?
+- name: set telegraf installed
   set_fact:
-    force_install: "{{ telegraf_force_install == true or is_installed.failed == true }}"
+    telegraf_is_installed: "{{ is_installed.failed == false }}"
+
+- name: check telegraf version
+  shell: "/usr/bin/telegraf --version | awk '{ print $2 }' | cut -c 1-"
+  changed_when: false
+  register: installed_version_registered
+  when: telegraf_is_installed == True
 
 - name: get latest release
   uri:
     url: https://api.github.com/repos/influxdata/telegraf/releases/latest
     return_content: true
-  register: release_latest
-  when: telegraf_ver is undefined and force_install == True
+  register: release_version_registered
+  when: telegraf_download_latest_ver == True
 
-- name: set version if not already
-  set_fact: telegraf_ver="{{ release_latest.json.tag_name }}"
-  when: telegraf_ver is undefined and force_install == True
+- name: set telegraf version (latest)
+  set_fact:
+    telegraf_ver: "{{ release_version_registered.json.tag_name|regex_replace('v') }}"
+  when: telegraf_download_latest_ver == True
 
-- name: download release
-  when: force_install == True
-  get_url:
-    url: https://dl.influxdata.com/telegraf/releases/telegraf_{{telegraf_ver | regex_replace('v')}}-1_amd64.deb
-    dest: /tmp
+- name: set telegraf version (pinned)
+  set_fact:
+    telegraf_ver: "{{ telegraf_pinned_ver }}"
+  when: telegraf_download_latest_ver == False
 
-- name: set filename
-  set_fact: file_name="telegraf_{{telegraf_ver | regex_replace('v')}}-1_amd64.deb"
-  when: force_install == True
+- block:
+    - name: ensure telegraf_download_directory does not exist
+      file:
+        path: "{{ telegraf_download_directory }}"
+        state: absent
 
-- name: install deb
-  apt:
-    deb: /tmp/{{ file_name }}
-    state: present
-  when: force_install == True
+    - name: create telegraf_download_directory
+      file:
+        path: "{{ telegraf_download_directory }}"
+        state: directory
+        mode: 0755
+
+    - name: download telegraf
+      get_url:
+        url: "{{ telegraf_gh_url }}/telegraf_{{telegraf_ver}}-1_{{telegraf_distro}}.deb"
+        dest: "{{ telegraf_download_directory }}"
+
+    - name: install deb
+      apt:
+        deb: "{{telegraf_download_directory}}/telegraf_{{telegraf_ver}}-1_{{telegraf_distro}}.deb"
+        state: present
+  when: telegraf_is_installed == False or ( telegraf_is_installed == True and telegraf_download_latest_ver == True and installed_version_registered.stdout != telegraf_ver ) or ( telegraf_is_installed == True and telegraf_download_latest_ver == False and installed_version_registered.stdout != telegraf_pinned_ver )
