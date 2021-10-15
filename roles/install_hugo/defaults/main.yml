@@ -1,4 +1,10 @@
 ---
+hugo_download_latest_ver: true  # Change to 'false' to pin to a specific version
+hugo_pinned_ver: 0.88.1  # Overriden by 'hugo_download_latest_ver' variable
+hugo_distro: Linux-64bit
 
-# Force install/update
-hugo_force_install: false
+hugo_gh_url: https://github.com/gohugoio/hugo/releases/download
+hugo_download_directory: "/tmp/hugo"
+
+hugo_install_directory: /usr/local/bin
+hugo_install_path: "{{ hugo_install_directory }}/hugo"

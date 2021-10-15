@@ -15,10 +15,8 @@ package_list:
   - name: wireguard
 
 pull_backup: false
-# hugo_ver: v0.88.1
-# hugo_force_install: true
-# lego_ver: v4.4.0
-# lego_force_install: true
+# hugo_ver: 0.88.1
+# lego_ver: 4.4.0
 
 ### Cronjobs
 cronjobs:

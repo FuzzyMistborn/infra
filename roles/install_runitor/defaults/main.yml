@@ -1,5 +1,11 @@
 ---
+runitor_download_latest_ver: true  # Change to 'false' to pin to a specific version
+runitor_pinned_ver: 0.8.0  # Overriden by 'runitor_download_latest_ver' variable
+runitor_distro: linux-amd64
 
-# Force install/update
-runitor_force_install: false
+runitor_gh_url: https://github.com/bdd/runitor/releases/download
+runitor_download_directory: "/tmp/runitor"
+
+runitor_install_directory: /usr/local/bin
+runitor_install_path: "{{ runitor_install_directory }}/runitor"
 runitor_url: https://hc-ping.com

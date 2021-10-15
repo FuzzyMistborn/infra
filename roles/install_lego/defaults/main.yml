@@ -1,4 +1,11 @@
 ---
 
-# Force install/update
-lego_force_install: false
+lego_download_latest_ver: true  # Change to 'false' to pin to a specific version
+lego_pinned_ver: 4.5.3  # Overriden by 'lego_download_latest_ver' variable
+lego_distro: linux_amd64
+
+lego_gh_url: https://github.com/go-acme/lego/releases/download
+lego_download_directory: "/tmp/lego"
+
+lego_install_directory: /usr/local/bin
+lego_install_path: "{{ lego_install_directory }}/lego"

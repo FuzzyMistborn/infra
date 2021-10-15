@@ -1,41 +1,62 @@
 ---
-
-- name: check whether installed
-  find:
-    paths: /usr/local/bin
-    patterns: hugo
+- name: get status of hugo_install_path
+  stat:
+    path: "{{ hugo_install_path }}"
   register: is_installed
 
-- name: install/update binary?
+- name: set hugo installed
   set_fact:
-    force_install: "{{ hugo_force_install == true or is_installed.matched == 0 }}"
+    hugo_is_installed: "{{ is_installed.stat.exists }}"
+
+- name: check hugo version
+  shell: "{{ hugo_install_path }} version | awk '{ print $2 }' | cut -c 2-7"
+  changed_when: false
+  register: installed_version_registered
+  when: hugo_is_installed == True
 
 - name: get latest release
   uri:
     url: https://api.github.com/repos/gohugoio/hugo/releases/latest
     return_content: true
-  register: release_latest
-  when: hugo_ver is undefined and force_install == True
+  register: release_version_registered
+  when: hugo_download_latest_ver == True
 
-- name: set version if not already
-  set_fact: hugo_ver="{{ release_latest.json.tag_name }}"
-  when: hugo_ver is undefined and force_install == True
+- name: set hugo version (latest)
+  set_fact:
+    hugo_ver: "{{ release_version_registered.json.tag_name|regex_replace('v') }}"
+  when: hugo_download_latest_ver == True
 
-- name: download release
-  unarchive:
-    src: https://github.com/gohugoio/hugo/releases/download/{{hugo_ver}}/hugo_{{hugo_ver | regex_replace('v')}}_Linux-64bit.tar.gz
-    dest: /usr/local/bin
-    remote_src: yes
-    owner: "{{main_username}}"
-    group: "{{main_username}}"
-    mode: +x
-  when: force_install == True
+- name: set hugo version (pinned)
+  set_fact:
+    hugo_ver: "{{ hugo_pinned_ver }}"
+  when: hugo_download_latest_ver == False
 
-- name: remove unneeded files
-  file:
-    path: /usr/local/bin/{{item}}
-    state: absent
-  with_items:
-    - LICENSE
-    - README.md
-  when: force_install == True
+- block:
+    - name: ensure hugo_download_directory does not exist
+      file:
+        path: "{{ hugo_download_directory }}"
+        state: absent
+
+    - name: create hugo_download_directory
+      file:
+        path: "{{ hugo_download_directory }}"
+        state: directory
+        mode: 0755
+
+    - name: download hugo
+      unarchive:
+        src: "{{ hugo_gh_url }}/v{{hugo_ver}}/hugo_{{hugo_ver}}_{{hugo_distro}}.tar.gz"
+        dest: "{{ hugo_download_directory }}"
+        remote_src: yes
+        owner: root
+        group: root
+        mode: +x
+
+    - name: move to hugo path
+      copy:
+        src: "{{hugo_download_directory}}/hugo"
+        dest: "{{hugo_install_directory}}"
+        remote_src: yes
+        mode: +x
+  when: hugo_is_installed == False or ( hugo_is_installed == True and hugo_download_latest_ver == True and installed_version_registered.stdout != hugo_ver ) or ( hugo_is_installed == True and hugo_download_latest_ver == False and installed_version_registered.stdout != hugo_pinned_ver )
+

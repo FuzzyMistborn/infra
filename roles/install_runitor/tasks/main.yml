@@ -1,42 +1,61 @@
 ---
-- name: check whether installed
-  find:
-    paths: /usr/local/bin
-    patterns: runitor
+- name: get status of runitor_install_path
+  stat:
+    path: "{{ runitor_install_path }}"
   register: is_installed
 
-- name: install/update binary?
+- name: set runitor installed
   set_fact:
-    force_install: "{{ runitor_force_install == true or is_installed.matched == 0 }}"
+    runitor_is_installed: "{{ is_installed.stat.exists }}"
+
+- name: check runitor version
+  shell: "{{ runitor_install_path }} --version | awk '{ print $2 }' | cut -c 2-"
+  changed_when: false
+  register: installed_version_registered
+  when: runitor_is_installed == True
 
 - name: get latest release
   uri:
     url: https://api.github.com/repos/bdd/runitor/releases/latest
     return_content: true
-  register: release_latest
-  when: runitor_ver is undefined and force_install == True
+  register: release_version_registered
+  when: runitor_download_latest_ver == True
 
-- name: set version if not already
-  set_fact: runitor_ver="{{ release_latest.json.tag_name }}"
-  when: runitor_ver is undefined and force_install == True
+- name: set runitor version (latest)
+  set_fact:
+    runitor_ver: "{{ release_version_registered.json.tag_name|regex_replace('v') }}"
+  when: runitor_download_latest_ver == True
 
-- name: download release
-  get_url:
-    url: https://github.com/bdd/runitor/releases/download/{{runitor_ver}}/runitor-{{runitor_ver}}-linux-amd64
-    dest: /tmp
-    force: yes
-    owner: "{{main_username}}"
-    group: "{{main_username}}"
-    mode: +x
-  when: force_install == True
+- name: set runitor version (pinned)
+  set_fact:
+    runitor_ver: "{{ runitor_pinned_ver }}"
+  when: runitor_download_latest_ver == False
 
-- name: set filename
-  set_fact: file_name="runitor-{{ runitor_ver }}-linux-amd64"
-  when: force_install == True
+- block:
+    - name: ensure runitor_download_directory does not exist
+      file:
+        path: "{{ runitor_download_directory }}"
+        state: absent
 
-- name: move to /usr/local/bin
-  shell: "mv /tmp/{{ file_name }} /usr/local/bin/runitor"
-  when: force_install == True
+    - name: create runitor_download_directory
+      file:
+        path: "{{ runitor_download_directory }}"
+        state: directory
+        mode: 0755
+
+    - name: download runitor
+      get_url:
+        url: "{{ runitor_gh_url }}/v{{runitor_ver}}/runitor-v{{runitor_ver}}-{{runitor_distro}}"
+        dest: "{{ runitor_download_directory }}"
+        force: yes
+        owner: root
+        group: root
+        mode: +x
+
+    - name: move to /usr/local/bin
+      shell: "mv {{ runitor_download_directory }}/runitor-v{{ runitor_ver }}-{{runitor_distro}} {{runitor_install_path}}"
+  
+  when: runitor_is_installed == False or ( runitor_is_installed == True and runitor_download_latest_ver == True and installed_version_registered.stdout != runitor_ver ) or ( runitor_is_installed == True and runitor_download_latest_ver == False and installed_version_registered.stdout != runitor_pinned_ver )
 
 - name: populate /etc/environment
   lineinfile:
@@ -44,4 +63,4 @@
     state: present
     regexp: "^HC_API_URL="
     line: "HC_API_URL={{runitor_url}}"
-  when: force_install == True
+  when: runitor_is_installed == False

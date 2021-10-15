@@ -1,41 +1,62 @@
 ---
 
-- name: check whether installed
-  find:
-    paths: /usr/local/bin
-    patterns: lego
+- name: get status of lego_install_path
+  stat:
+    path: "{{ lego_install_path }}"
   register: is_installed
 
-- name: install/update binary?
+- name: set lego installed
   set_fact:
-    force_install: "{{ lego_force_install == true or is_installed.matched == 0 }}"
+    lego_is_installed: "{{ is_installed.stat.exists }}"
+
+- name: check lego version
+  shell: "{{ lego_install_path }} --version | awk '{ print $3 }' | cut -c 1-"
+  changed_when: false
+  register: installed_version_registered
+  when: lego_is_installed == True
 
 - name: get latest release
   uri:
     url: https://api.github.com/repos/go-acme/lego/releases/latest
     return_content: true
-  register: release_latest
-  when: lego_ver is undefined and force_install == True
+  register: release_version_registered
+  when: lego_download_latest_ver == True
 
-- name: set version if not already
-  set_fact: lego_ver="{{ release_latest.json.tag_name }}"
-  when: lego_ver is undefined and force_install == True
+- name: set lego version (latest)
+  set_fact:
+    lego_ver: "{{ release_version_registered.json.tag_name|regex_replace('v') }}"
+  when: lego_download_latest_ver == True
 
-- name: download release
-  unarchive:
-    src: https://github.com/go-acme/lego/releases/download/{{lego_ver}}/lego_{{lego_ver}}_linux_amd64.tar.gz
-    dest: /usr/local/bin
-    remote_src: yes
-    owner: "{{main_username}}"
-    group: "{{main_username}}"
-    mode: +x
-  when: force_install == True
+- name: set lego version (pinned)
+  set_fact:
+    lego_ver: "{{ lego_pinned_ver }}"
+  when: lego_download_latest_ver == False
 
-- name: remove unneeded files
-  file:
-    path: /usr/local/bin/{{item}}
-    state: absent
-  with_items:
-    - LICENSE
-    - CHANGELOG.md
-  when: force_install == True
+- block:
+    - name: ensure lego_download_directory does not exist
+      file:
+        path: "{{ lego_download_directory }}"
+        state: absent
+
+    - name: create lego_download_directory
+      file:
+        path: "{{ lego_download_directory }}"
+        state: directory
+        mode: 0755
+
+    - name: download lego
+      unarchive:
+        src: "{{ lego_gh_url }}/v{{lego_ver}}/lego_v{{lego_ver}}_{{lego_distro}}.tar.gz"
+        dest: "{{ lego_download_directory }}"
+        remote_src: yes
+        owner: root
+        group: root
+        mode: +x
+
+    - name: move to lego path
+      copy:
+        src: "{{lego_download_directory}}/lego"
+        dest: "{{lego_install_directory}}"
+        remote_src: yes
+        mode: +x
+  when: lego_is_installed == False or ( lego_is_installed == True and lego_download_latest_ver == True and installed_version_registered.stdout != lego_ver ) or ( lego_is_installed == True and lego_download_latest_ver == False and installed_version_registered.stdout != lego_pinned_ver )

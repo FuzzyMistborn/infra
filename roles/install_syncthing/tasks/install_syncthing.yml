@@ -59,7 +59,7 @@
         dest: "{{syncthing_install_directory}}"
         remote_src: yes
         mode: +x
-  when: syncthing_is_installed == False or ( syncthing_is_installed == True and syncthing_download_latest_ver == False and installed_version_registered.stdout != syncthing_pinned_ver )
+  when: syncthing_is_installed == False or ( syncthing_is_installed == True and syncthing_download_latest_ver == True and installed_version_registered.stdout != syncthing_ver ) or ( syncthing_is_installed == True and syncthing_download_latest_ver == False and installed_version_registered.stdout != syncthing_pinned_ver )
 
 - name: Copy systemd service file
   template:
