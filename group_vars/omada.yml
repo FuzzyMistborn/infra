@@ -81,9 +81,9 @@ containers:
     include_global_env_vars: true
     ###
   - service_name: portainer_agent
-    container_name: portainer/agent:2.9.0
+    container_name: portainer_agent
     active: true
-    image: portainer/agent
+    image: portainer/agent:2.9.1
     restart: always
     ports:
       - 9001:9001

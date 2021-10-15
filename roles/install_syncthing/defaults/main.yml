@@ -1,5 +1,19 @@
 ---
+syncthing_download_latest_ver: true  # Change to 'false' to pin to a specific version
+syncthing_pinned_ver: 1.18.3  # Overriden by 'syncthing_download_latest_ver' variable
+syncthing_distro: linux-amd64
 
-# Force install/update
-syncthing_force_install: false
+syncthing_gh_url: https://github.com/syncthing/syncthing/releases/download
+syncthing_download_directory: /tmp/syncthing
+
+syncthing_install_directory: /usr/bin
+syncthing_install_path: /usr/bin/syncthing
+
 syncthing_user: root
+
+## Config
+syncthing_config_path: /home/{{syncthing_user}}/.config/syncthing/config.xml
+syncthing_webinterface_ip: 0.0.0.0:8384
+syncthing_localannounce: true
+syncthing_globalannounce: false
+syncthing_remove_default_folder: true

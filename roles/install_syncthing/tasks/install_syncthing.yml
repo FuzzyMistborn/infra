@@ -1,0 +1,77 @@
+---
+
+- name: get status of syncthing_install_path
+  stat:
+    path: "{{ syncthing_install_path }}"
+  register: is_installed
+
+- name: set syncthing installed
+  set_fact:
+    syncthing_is_installed: "{{ is_installed.stat.exists }}"
+
+- name: check syncthing version
+  shell: "{{ syncthing_install_path }} --version | awk '{ print $2 }' | cut -c 2-"
+  changed_when: false
+  register: installed_version_registered
+  when: syncthing_is_installed == True
+
+- name: get latest release
+  uri:
+    url: https://api.github.com/repos/syncthing/syncthing/releases/latest
+    return_content: true
+  register: release_version_registered
+  when: syncthing_download_latest_ver == True
+
+- name: set syncthing version (latest)
+  set_fact:
+    syncthing_ver: "{{ release_version_registered.json.tag_name|regex_replace('v') }}"
+  when: syncthing_download_latest_ver == True
+
+- name: set syncthing version (pinned)
+  set_fact:
+    syncthing_ver: "{{ syncthing_pinned_ver }}"
+  when: syncthing_download_latest_ver == False
+
+- block:
+    - name: ensure syncthing_download_directory does not exist
+      file:
+        path: "{{ syncthing_download_directory }}"
+        state: absent
+
+    - name: create syncthing_download_directory
+      file:
+        path: "{{ syncthing_download_directory }}"
+        state: directory
+        mode: 0755
+
+    - name: download syncthing
+      unarchive:
+        src: "{{ syncthing_gh_url }}/v{{syncthing_ver}}/syncthing-{{syncthing_distro}}-v{{syncthing_ver}}.tar.gz"
+        dest: "{{ syncthing_download_directory }}"
+        remote_src: yes
+        owner: root
+        group: root
+        mode: +x
+
+    - name: move to syncthing path
+      copy:
+        src: "{{syncthing_download_directory}}/syncthing-{{syncthing_distro}}-v{{syncthing_ver}}/syncthing"
+        dest: "{{syncthing_install_directory}}"
+        remote_src: yes
+        mode: +x
+  when: syncthing_is_installed == False or ( syncthing_is_installed == True and syncthing_download_latest_ver == False and installed_version_registered.stdout != syncthing_pinned_ver )
+
+- name: Copy systemd service file
+  template:
+    src: ../templates/syncthing.service.j2
+    dest: /etc/systemd/system/syncthing.service
+    owner: "{{ syncthing_user }}"
+    group: "{{ syncthing_user }}"
+    mode: 0644
+
+- name: Enable systemd service
+  systemd:
+    enabled: true
+    daemon-reload: true
+    state: started
+    name: syncthing.service

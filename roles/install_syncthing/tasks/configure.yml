@@ -1,0 +1,43 @@
+---
+- name: waiting for configfile (takes some time)
+  wait_for: path={{syncthing_config_path}}
+  when: syncthing_user != "root"
+
+- name: Config | set webinterface address
+  replace: 
+    path: "{{syncthing_config_path}}"
+    regexp: '    <gui enabled="true" tls="false" debugging="false">\n\        <address>[^<]+</address>'
+    replace: '    <gui enabled="true" tls="false" debugging="false">\n        <address>{{syncthing_webinterface_ip}}</address>'
+    backup: yes
+  notify: restart syncthing
+  when: syncthing_user != "root"
+
+- name: Config | set localannounceEnabled
+  lineinfile: 
+    dest: "{{syncthing_config_path}}"
+    regexp: "<localAnnounceEnabled>[^<]+</localAnnounceEnabled>"
+    line: "        <localAnnounceEnabled>{{syncthing_localannounce|lower}}</localAnnounceEnabled>"
+  notify: restart syncthing
+  when: syncthing_user != "root"
+
+- name: Config | set globalAnnounceEnabled
+  lineinfile: 
+    dest: "{{syncthing_config_path}}"
+    regexp: "<globalAnnounceEnabled>[^<]+</globalAnnounceEnabled>"
+    line: "        <globalAnnounceEnabled>{{syncthing_globalannounce|lower}}</globalAnnounceEnabled>"
+  notify: restart syncthing
+  when: syncthing_user != "root"
+
+- block:
+  - name: Config | remove default folder
+    replace: 
+      path: "{{syncthing_config_path}}"
+      regexp: '(<folder id="default"[\s\S]*)</folder>\n    <device'
+      replace: '<device'
+
+  - name: remove default folder
+    file:
+      path: /home/{{syncthing_user}}/Sync
+      state: absent
+  notify: restart syncthing
+  when: syncthing_user != "root" and syncthing_remove_default_folder == true

@@ -232,7 +232,7 @@ containers:
     restart: always
     ports:
       - "127.0.0.1:3030:3000"
-      - "222:22"
+      - "222:222"
     volumes:
       - "{{ appdata_path }}/gitea/data:/data"
       - /etc/timezone:/etc/timezone:ro

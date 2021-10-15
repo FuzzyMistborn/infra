@@ -1,5 +1,4 @@
 ---
-
 - name: SSH Keys
   authorized_key:
     user: "{{ main_username }}"
@@ -42,7 +41,6 @@
     content: "{{ secret_github_ssh }}"
 
 # Sudoers file
-
 - name: Add sudoers file for main user
   template:
     src: sudoers_main_user.j2
@@ -52,7 +50,6 @@
     mode: 0440
 
 ### AUR
-
 - name: Install AUR Packages
   kewlfft.aur.aur:
     use: yay
@@ -76,6 +73,7 @@
       - remmina-git
       - epsonscan2
       - iscan-for-epson-v500-photo
+      - heroic-games-launcher-bin
       # - ckan  # Currently broken, use Mono
       # - ferdi # Conflict package, install manually
     state: present
@@ -100,7 +98,6 @@
 #   become: yes
 
 # fstab/disk mounts
-
 - name: make sure disks unmounted
   mount:
     path: "{{ item.path }}"
@@ -156,7 +153,6 @@
     mode: 0644
 
 #### NUT
-
 - name: Copy nut folder
   copy:
     src: etc/nut/{{item}}
@@ -209,7 +205,6 @@
   when: pull_backup == true
 
 #### Bash Alias
-
 - name: Setup bash aliases
   lineinfile:
     dest: "/etc/bash_aliases"
@@ -231,7 +226,6 @@
     state: present
 
 #### Misc
-
 - name: Clean up Nautilus
   lineinfile:
     dest: "/home/{{main_username}}/.config/user-dirs.dirs"
@@ -249,6 +243,14 @@
     name: net.ipv4.ip_forward
     value: "1"
     reload: yes
+
+- name: Install plugin for MPV to use KDEConnect
+  get_url:
+    url: https://github.com/hoyon/mpv-mpris/releases/download/0.5/mpris.so
+    dest: /home/{{main_username}}/.config/mpv/scripts
+    force: yes
+    owner: "{{main_username}}"
+    group: "{{main_username}}"
 
 - name: Enable WOL ethtool
   command: ethtool -s eno1 wol g
