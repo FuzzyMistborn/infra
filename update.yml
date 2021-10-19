@@ -36,11 +36,11 @@
     - role: install_lego
     - role: install_runitor
 
-- hosts: dominion mercy omada
+- hosts: dominion mercy omada kelsier
   roles:
     - role: install_runitor
 
-- hosts: endowment autonomy cultivation preservation kelsier
+- hosts: endowment autonomy cultivation preservation
   roles:
     - role: install_runitor
     - role: install_telegraf

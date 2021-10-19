@@ -180,6 +180,15 @@
     - role: cronjobs
     - role: ironicbadger.ansible_role_docker_compose_generator
 
+- hosts: retroarch_pi
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+  roles:
+    - role: retroarch_pi
+    - role: retroarch
+    - role: install_syncthing
+
 - hosts: ambition
   become: true
   vars_files:

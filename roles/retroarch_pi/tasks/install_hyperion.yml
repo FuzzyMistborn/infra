@@ -1,0 +1,60 @@
+---
+- name: Install unmet dependencies for Hyperion
+  apt:
+    name: 
+      - libcec4
+      - libp8-platform2
+
+- name: check whether hyperion is installed
+  shell: "dpkg-query -W 'hyperion'"
+  ignore_errors: true
+  register: is_installed
+  changed_when: "is_installed.rc != 0"
+
+- name: set hyperion installed
+  set_fact:
+    hyperion_is_installed: "{{ is_installed.failed == false }}"
+
+- name: check hyperion version
+  shell: "/usr/bin/hyperiond --version | awk 'NR==2{ print $3 }' | cut -c 1-"
+  changed_when: false
+  register: installed_version_registered
+  when: hyperion_is_installed == True
+
+- name: get latest release
+  uri:
+    url: https://api.github.com/repos/hyperion-project/hyperion.ng/tags
+    return_content: true
+  register: release_version_registered
+
+- name: set hyperion version (latest)
+  set_fact:
+    hyperion_ver: "{{ release_version_registered.json.0.name }}"
+
+- name: set hyperion version (pinned)
+  set_fact:
+    hyperion_ver: "{{ hyperion_pinned_ver }}"
+  when: hyperion_download_latest_ver == False
+
+- block:
+    - name: ensure hyperion_download_directory does not exist
+      file:
+        path: "{{ hyperion_download_directory }}"
+        state: absent
+
+    - name: create hyperion_download_directory
+      file:
+        path: "{{ hyperion_download_directory }}"
+        state: directory
+        mode: 0755
+
+    - name: download hyperion
+      get_url:
+        url: "{{ hyperion_gh_url }}/{{hyperion_ver}}/Hyperion-{{hyperion_ver}}-{{hyperion_distro}}.deb"
+        dest: "{{ hyperion_download_directory }}"
+
+    - name: install deb
+      apt:
+        deb: "{{hyperion_download_directory}}/{{hyperion_ver}}/Hyperion-{{hyperion_ver}}-{{hyperion_distro}}.deb"
+        state: present
+  when: hyperion_is_installed == False or ( hyperion_is_installed == True and hyperion_download_latest_ver == True and installed_version_registered.stdout != hyperion_ver ) or ( hyperion_is_installed == True and hyperion_download_latest_ver == False and installed_version_registered.stdout != hyperion_pinned_ver )

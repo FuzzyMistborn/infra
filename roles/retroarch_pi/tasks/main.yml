@@ -1,0 +1,48 @@
+---
+### Basic Setup
+- name: create autologin directory
+  file:
+    path: /etc/systemd/system/getty@tty1.service.d/
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+
+- name: disable login for user
+  copy:
+    dest: /etc/systemd/system/getty@tty1.service.d/autologin.conf
+    owner: ubuntu
+    group: ubuntu
+    mode: 0664
+    content: |
+      [Service]
+      ExecStart=
+      ExecStart=-/sbin/agetty --skip-login --noissue --autologin ubuntu %I $TERM
+      Type=idle
+
+#- name: Add sudoers file for ubuntu
+#  copy:
+#    src: sudoer_ubuntu
+#    dest: /etc/sudoers.d/ubuntu
+#    owner: root
+#    group: root
+#    mode: 0440
+
+- name: disable cloud-init
+  file:
+    path: /etc/cloud/cloud-init.disabled
+    state: touch
+
+- name: remove/purge snap
+  apt:
+    name: snapd
+    state: absent
+    purge: yes
+
+### Retroarch
+
+- name: install retroarch
+  include: install_retroarch.yml
+
+### Hyperion
+- name: install hyperion
+  include: install_hyperion.yml

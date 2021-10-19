@@ -68,11 +68,11 @@
       - esphome
       - python-esphome-dashboard
       - popsicle
+      - rpi-imager
       - psst
       - ventoy
       - remmina-git
-      - epsonscan2
-      - iscan-for-epson-v500-photo
+      - epson-perfection-v10-v100-scanner-driver-aio
       - heroic-games-launcher-bin
       # - ckan  # Currently broken, use Mono
       # - ferdi # Conflict package, install manually
@@ -262,7 +262,7 @@
     regexp: "^WOL_DISABLE"
     line: "WOL_DISABLE=N"
 
-- name: Reload TLP/Cronie
+- name: Reload TLP/Cronie/bluetooth
   systemd:
     enabled: true
     daemon-reload: true
@@ -271,3 +271,11 @@
   with_items:
     - tlp
     - cronie
+    - bluetooth
+
+- name: enable bluetooth auto-power on
+  lineinfile:
+    dest: "/etc/bluetooth/main.conf"
+    state: present
+    regexp: "^AutoEnable"
+    line: "AutoEnable=true"

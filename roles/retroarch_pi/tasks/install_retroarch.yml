@@ -1,0 +1,69 @@
+---
+- name: install necessary packages
+  apt:
+    name:
+      - xorg
+      - openbox
+      - xinit
+      - xserver-xorg-video-fbdev
+      - dbus-x11
+    state: present
+    install_recommends: no
+
+- name: add retroarch repo
+  apt_repository:
+    repo: ppa:retroarch/stable
+    update_cache: yes
+
+- name: install retroarch and assets
+  apt:
+    name:
+      - retroarch
+      - retroarch-assets
+    state: present
+
+### Credit for below to https://github.com/MizterB/RetroPie-Setup-Ubuntu
+- name: Set bash profile
+  copy:
+    dest: /home/ubuntu/.bash_profile
+    owner: ubuntu
+    group: ubuntu
+    mode: 0664
+    content: |
+      if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
+        exec startx -- >/dev/null 2>&1
+      fi
+      dbus-launch gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ use-theme-colors false
+      dbus-launch gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ use-theme-transparency false
+      dbus-launch gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ foreground-color '#FFFFFF'
+      dbus-launch gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ background-color '#000000'
+      dbus-launch gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ cursor-blink-mode 'off'
+      dbus-launch gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ scrollbar-policy 'never'
+      dbus-launch gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ audible-bell 'false'
+      gsettings set org.gnome.Terminal.Legacy.Settings default-show-menubar false
+
+- name: Set xsession
+  copy:
+    dest: /home/ubuntu/.xsession
+    owner: ubuntu
+    group: ubuntu
+    mode: 0664
+    content: |
+      exec openbox-session
+
+- name: Set openbox autostart
+  copy:
+    dest: /home/ubuntu/.config/autostart
+    owner: ubuntu
+    group: ubuntu
+    mode: 0664
+    content: |
+      gnome-terminal --full-screen --hide-menubar -- retroarch
+
+- name: Copy rc.xml
+  copy:
+    src: rc.xml
+    dest: /home/ubuntu/.config/openbox/rc.xml
+    owner: ubuntu
+    group: ubuntu
+    mode: 0644
