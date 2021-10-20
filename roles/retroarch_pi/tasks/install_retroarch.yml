@@ -67,3 +67,16 @@
     owner: ubuntu
     group: ubuntu
     mode: 0644
+
+### Syncthing
+- name: Create .stignore file
+  copy:
+    dest: /mnt/roms
+    owner: "{{retroarch_user}}"
+    group: "{{retroarch_user}}"
+    mode: 0664
+    content: |
+      gc
+      n64
+      ps2
+      wii

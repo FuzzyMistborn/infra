@@ -46,6 +46,7 @@
     - role: install_runitor
     - role: install_telegraf
     - role: adonalsium
+    - role: install_syncthing
     - role: cronjobs
     - role: geerlingguy.docker
     - role: geerlingguy.ntp
@@ -217,6 +218,7 @@
     - role: fuzzymistborn.autorestic
     - role: install_runitor
     - role: kelsier
+    - role: install_syncthing
     - role: install_telegraf
     - role: cronjobs
 

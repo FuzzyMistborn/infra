@@ -74,6 +74,43 @@ nfs_mount:
     opts: defaults
     content: false
 
+### Syncthing/Retroarch
+retroarch_roms_dir: /mnt/Media/Files/Roms/RetroArch-ROMs
+retroarch_config_dir: /mnt/Media/Files/Roms/RetroArch
+
+syncthing_api_key: "{{secret_syncthing_api_adonalsium}}"
+
+syncthing_folders:
+  - id: "{{secret_syncthing_sys_folder_id}}"
+    label: "RetroArch - System"
+    path: "{{retroarch_config_dir}}"
+    type: "sendreceive" # options are 'sendreceive' 'sendonly' and 'receiveonly'
+    rescanInterval: 600 # time in seconds
+    devices:
+      - "{{secret_syncthing_kelsier_device}}"
+      - "{{secret_syncthing_retroarchpi_device}}"
+      - "{{secret_syncthing_steamdeck_device}}"
+  - id: "{{secret_syncthing_rom_folder_id}}"
+    label: "RetroArch - ROMs"
+    path: "{{retroarch_roms_dir}}"
+    type: "sendonly" # options are 'sendreceive' 'sendonly' and 'receiveonly'
+    rescanInterval: 600 # time in seconds
+    devices:
+      - "{{secret_syncthing_kelsier_device}}"
+      - "{{secret_syncthing_retroarchpi_device}}"
+      - "{{secret_syncthing_steamdeck_device}}"
+
+syncthing_devices:
+ - id: "{{secret_syncthing_retroarchpi_device}}"
+   name: RetroArch Pi
+   address: tcp://192.168.30.26:22000
+ - id: "{{secret_syncthing_kelsier_device}}"
+   name: Kelsier
+   address: tcp://192.168.10.10:22000
+ - id: "{{secret_syncthing_steamdeck_device}}"
+   name: SteamDeck
+   address: tcp://192.168.10.X:22000
+
 ### Infrastructure
 lxc:
   - name: Dominion

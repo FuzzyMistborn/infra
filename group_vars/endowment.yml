@@ -90,6 +90,9 @@ autorestic_config_yaml:
         - synology_docker
         - b2_docker
       options:
+        backup:
+          exclude:
+            - 'transcodes'
         forget:
           keep-daily: 1
           keep-weekly: 8

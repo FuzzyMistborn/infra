@@ -49,8 +49,36 @@
       - blueman
     state: present
 
-### Retroarch
+# fstab/disk mounts
+- name: make sure disks unmounted
+  mount:
+    path: "{{ item.path }}"
+    state: unmounted
+  with_items:
+    - "{{ roms_drive }}"
 
+- name: create /mnt points
+  file:
+    dest: "{{ item.path }}"
+    state: directory
+    owner: "{{main_username}}"
+    group: nobody
+    mode: 0777
+  with_items:
+    - "{{ roms_drive }}"
+
+- name: mount disks
+  mount:
+    path: "{{ item.path }}"
+    src: "{{ item.source }}"
+    fstype: "{{ item.fs }}"
+    opts: "{{ item.opts }}"
+    # change to 'mounted' to auto mount versus 'present' for just loaded into fstab
+    state: mounted
+  with_items:
+    - "{{ roms_drive }}"
+
+### Retroarch
 - name: install retroarch
   include: install_retroarch.yml
 

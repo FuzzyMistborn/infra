@@ -1,4 +1,43 @@
 ---
+roms_drive:
+  - path: /mnt/roms
+    source: /dev/disk/by-id/usb-SanDisk_Cruzer_Fit_4C530001171224108331-0:0-part1
+    fs: ext4
+    opts: defaults
+    content: true
+
 retroarch_distro: armhf
 retroarch_user: ubuntu
-retroarch_roms_dir: /mnt/Games/RetroArch/roms
+retroarch_roms_dir: /mnt/roms
+retroarch_config_dir: /home/ubuntu/.config/retroarch
+
+syncthing_api_key: "{{secret_syncthing_api_retroarch_pi}}"
+
+syncthing_folders:
+  - id: "{{secret_syncthing_sys_folder_id}}"
+    label: "RetroArch - System"
+    path: "{{retroarch_config_dir}}"
+    type: "sendreceive" # options are 'sendreceive' 'sendonly' and 'receiveonly'
+    rescanInterval: 600 # time in seconds
+    devices:
+      - "{{secret_syncthing_kelsier_device}}"
+      - "{{secret_syncthing_adonalsium_device}}"
+      - "{{secret_syncthing_steamdeck_device}}"
+  - id: "{{secret_syncthing_rom_folder_id}}"
+    label: "RetroArch - ROMs"
+    path: "{{retroarch_roms_dir}}"
+    type: "receiveonly" # options are 'sendreceive' 'sendonly' and 'receiveonly'
+    rescanInterval: 600 # time in seconds
+    devices:
+      - "{{secret_syncthing_adonalsium_device}}"
+
+syncthing_devices:
+ - id: "{{secret_syncthing_adonalsium_device}}"
+   name: Adonalsium
+   address: tcp://192.168.1.20:22000
+ - id: "{{secret_syncthing_kelsier_device}}"
+   name: Kelsier
+   address: tcp://192.168.10.10:22000
+ - id: "{{secret_syncthing_steamdeck_device}}"
+   name: SteamDeck
+   address: tcp://192.168.10.X:22000
