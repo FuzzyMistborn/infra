@@ -113,10 +113,13 @@ pull_backup: false
 pip_package: python-pip
 
 ### Syncthing/Retroarch
-retroarch_roms_dir: /mnt/Games/RetroArch/
+retroarch_roms_dir: /mnt/Games/RetroArch
 retroarch_config_dir: /home/{{main_username}}/.config/retroarch
 
 syncthing_api_key: "{{secret_syncthing_api_kelsier}}"
+syncthing_gui_authentication: true
+syncthing_gui_user: "{{main_username}}"
+syncthing_gui_pass: "{{secret_syncthing_gui_pass}}"
 
 syncthing_folders:
   - id: "{{secret_syncthing_sys_folder_id}}"

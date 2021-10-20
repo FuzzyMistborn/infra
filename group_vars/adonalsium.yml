@@ -79,6 +79,9 @@ retroarch_roms_dir: /mnt/Media/Files/Roms/RetroArch-ROMs
 retroarch_config_dir: /mnt/Media/Files/Roms/RetroArch
 
 syncthing_api_key: "{{secret_syncthing_api_adonalsium}}"
+syncthing_gui_authentication: true
+syncthing_gui_user: "{{main_username}}"
+syncthing_gui_pass: "{{secret_syncthing_gui_pass}}"
 
 syncthing_folders:
   - id: "{{secret_syncthing_sys_folder_id}}"

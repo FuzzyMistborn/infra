@@ -13,3 +13,6 @@ syncthing_install_path: /usr/bin/syncthing
 syncthing_user: root
 syncthing_config_path: /home/{{syncthing_user}}/.config/syncthing/config.xml
 syncthing_webinterface_ip: 0.0.0.0:8384
+syncthing_globalannounce: false
+syncthing_localannounce: true
+syncthing_gui_authentication: false

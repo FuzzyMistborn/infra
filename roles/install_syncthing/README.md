@@ -22,6 +22,11 @@ This role has a number of variables that can be configured.
 | **syncthing_install_directory**     | Where to install Syncthing binary.                       | `/usr/bin`
 | **syncthing_user**                  | User to install binary.  **SHOULD BE CHANGED!**          | `root`
 | **syncthing_webinterface_ip**       | IP:Port for webinterface.                                | `0.0.0.0:8384`
+| **syncthing_localannounce**         | enable/disable localAnnounce.                            | `true`
+| **syncthing_globalannounce**        | enable/disable globaleAnnounce.                          | `false`
+| **syncthing_api_key**               | API Key to use REST API                                  | `Optional`
+| **syncthing_gui_authentication**    | Whether to enable user/password for GUI.                 | `false`
+
 
 ### Installation
 
@@ -35,10 +40,13 @@ By setting a pinned version, a version will only be pulled if the installed vers
 
 ### Config.xml
 
-Below is an example variable set that you can set per host/group.  You'll need a unique API key.  I create mine manually in a disposable VM by starting syncthing, copying the generated key, stopping syncthing and deleting the config.xml file.  Rinse and repeat.
+Below is an example variable set that you can set per host/group.  An API key is optional if you want to use the REST API.  I create mine manually in a disposable VM by starting syncthing, copying the generated key, stopping syncthing and deleting the config.xml file.  Rinse and repeat.
 
 ```yaml
 syncthing_api_key: TV6e2UNAwPiokJvro8Qf4NN3dhSvtyVj
+syncthing_gui_authentication: true
+syncthing_gui_user: syncthing
+syncthing_gui_pass: $2a$12$fgHJda57iMiSC0dazGhLreitG7tpQzSirZYRaLcUQF.vI8tpWfVzC # change_me in bcrypt
 
 syncthing_folders:
   - id: "cpxh2-fva5j"

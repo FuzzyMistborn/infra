@@ -63,15 +63,23 @@
 {% endfor %}
     <gui enabled="true" tls="false" debugging="false">
         <address>{{syncthing_webinterface_ip}}</address>
+{% if syncthing_gui_authentication == true %}
+        <user>{{syncthing_gui_user}}</user>
+        <password>{{syncthing_gui_pass}}</password>
+{% else %}
+{% endif %}
+{% if syncthing_api_key is defined %}
         <apikey>{{syncthing_api_key}}</apikey>
-        <theme>{{syncthing_theme|lower | default("dark")}}</theme>
+{% else %}
+{% endif %}
+        <theme>{{syncthing_theme | default("dark" |lower)}}</theme>
     </gui>
     <ldap></ldap>
     <options>
         <listenAddress>default</listenAddress>
         <globalAnnounceServer>default</globalAnnounceServer>
-        <globalAnnounceEnabled>{{syncthing_globalannounce|lower}}</globalAnnounceEnabled>
-        <localAnnounceEnabled>{{syncthing_localannounce|lower}}</localAnnounceEnabled>
+        <globalAnnounceEnabled>{{syncthing_globalannounce |lower}}</globalAnnounceEnabled>
+        <localAnnounceEnabled>{{syncthing_localannounce |lower}}</localAnnounceEnabled>
         <localAnnouncePort>21027</localAnnouncePort>
         <localAnnounceMCAddr>[ff12::8384]:21027</localAnnounceMCAddr>
         <maxSendKbps>0</maxSendKbps>

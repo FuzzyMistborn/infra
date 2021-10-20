@@ -31,6 +31,10 @@
       value: '1'
     - option: 'ozone_menu_color_theme'
       value: '2'
+    - option: 'savestate_auto_save'
+      value: 'true'
+    - option: 'autosave_interval'
+      value: '300'
     - option: 'assets_directory'
       value: '"{{retroarch_config_path}}/assets"'
   when: retroarch_config.stat.exists == true
