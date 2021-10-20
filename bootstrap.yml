@@ -101,3 +101,46 @@
       service:
         name: sshd
         state: restarted
+
+- hosts: retroarch_pi
+  remote_user: ubuntu
+  gather_facts: true
+  vars_files:
+    - 'vars/vault.yaml'
+  tasks:
+    - name: Add ansible user
+      user:
+        name: ansible
+        password: "{{ secret_ansible_pass }}"
+        uid: 666
+        groups:
+          - sudo
+        system: yes
+        shell: /bin/bash
+    - name: Add sudoers file for ansible
+      copy:
+        src: sudoer_ansible
+        dest: /etc/sudoers.d/ansible
+        owner: root
+        group: root
+        mode: 0440
+    - name: Add SSH Keys
+      authorized_key:
+        user: "{{ item.user }}"
+        state: present
+        key: "{{ item.ssh }}"
+      loop:
+        - {user: ubuntu, ssh: "{{ secret_main_user_ssh }}"}
+        - {user: ubuntu, ssh: "{{ secret_main_user_alt_ssh }}"}
+        - {user: ansible, ssh: "{{ secret_ansible_ssh }}"}
+    - name: Add hardened SSH config
+      copy:
+        src: sshd_config
+        dest: /etc/ssh/sshd_config
+        owner: root
+        group: root
+        mode: 0600
+    - name: Restart ssh
+      service:
+        name: sshd
+        state: restarted

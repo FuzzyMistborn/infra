@@ -1,5 +1,9 @@
 ---
 ### Basic Setup
+- name: Set a hostname
+  hostname:
+    name: retroarch_pi
+
 - name: create autologin directory
   file:
     path: /etc/systemd/system/getty@tty1.service.d/
@@ -37,6 +41,13 @@
     name: snapd
     state: absent
     purge: yes
+
+- name: install bluetooth
+  apt:
+    name: 
+      - pi-bluetooth
+      - blueman
+    state: present
 
 ### Retroarch
 

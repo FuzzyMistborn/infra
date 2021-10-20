@@ -112,6 +112,9 @@ pull_backup: false
 
 pip_package: python-pip
 
+### RetroArch
+retroarch_roms_dir: /mnt/Games/RetroArch/roms
+
 ### Telegraf
 telegraf_influx_token: "{{secret_telegraf_kelsier}}"
 telegraf_influx_bucket: Kelsier

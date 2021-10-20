@@ -1,3 +1,4 @@
 ---
 retroarch_distro: armhf
 retroarch_user: ubuntu
+retroarch_roms_dir: /mnt/Games/RetroArch/roms

@@ -6,33 +6,48 @@
   register: retroarch_config
 
 - name: set config settings
-  lineinfile:
-    dest: "{{retroarch_config_path}}"
-    state: present
-    regexp: "{{item.existing}}"
-    line: '{{item.updated}}'
+  ini_file:
+    path: "{{retroarch_config_path}}"
+    section: null
+    option: "{{item.option}}"
+    value: "{{item.value}}"
+    backup: yes
   with_items:
-    - {existing: '^core_updater_buildbot_cores_url =', updated: 'core_updater_buildbot_cores_url = "http://buildbot.libretro.com/nightly/linux/{{retroarch_distro}}/latest/"'}
-    - {existing: '^content_show_images =', updated: 'content_show_images = "false"'}
-    - {existing: '^content_show_music =', updated: 'content_show_music = "false"'}
-    - {existing: '^content_show_netplay =', updated: 'content_show_netplay = "false"'}
-    - {existing: '^content_show_video =', updated: 'content_show_video = "false"'}
-    - {existing: '^menu_timedate_style =', updated: 'menu_timedate_style = "5"'}
-    - {existing: '^playlist_sublabel_last_played_style =', updated: 'playlist_sublabel_last_played_style = "1"'}
-    - {existing: '^ozone_menu_color_theme =', updated: 'ozone_menu_color_theme = "2"'}
-    - {existing: '^assets_directory =', updated: 'assets_directory = "{{retroarch_config_path}}/assets"'}
+    - option: 'core_updater_buildbot_cores_url'
+      value: '"http://buildbot.libretro.com/nightly/linux/{{retroarch_distro}}/latest/"'
+    - option: 'content_show_images'
+      value: 'false'
+    - option: 'content_show_music'
+      value: 'false'
+    - option: 'content_show_netplay'
+      value: 'false'
+    - option: 'content_show_video'
+      value: 'false'
+    - option: 'menu_swap_ok_cancel_buttons'
+      value: 'true'
+    - option: 'menu_timedate_style'
+      value: '5'
+    - option: playlist_sublabel_last_played_style'
+      value: '1'
+    - option: 'ozone_menu_color_theme'
+      value: '2'
+    - option: 'assets_directory'
+      value: '"{{retroarch_config_path}}/assets"'
   when: retroarch_config.stat.exists == true
 
-- name: set kelsier controller config settings
-  lineinfile:
-    dest: "{{retroarch_config_path}}"
-    state: present
-    regexp: "{{item.existing}}"
-    line: '{{item.updated}}'
+- name: set controller config settings
+  ini_file:
+    path: "{{retroarch_config_path}}"
+    section: null
+    option: "{{item.option}}"
+    value: "{{item.value}}"
+    backup: yes
   with_items:
-    - {existing: '^input_driver =', updated: 'input_driver = "sdl2"'}
-    - {existing: '^input_joypad_driver =', updated: 'input_joypad_driver = "sdl2"'}
-  when: hostname == 'kelsier' and retroarch_config.stat.exists == true
+    - option: 'input_driver'
+      value: 'sdl2'
+    - option: 'input_joypad_driver'
+      value: 'sdl2'
+  when: (hostname == 'kelsier' or hostname == 'retroarch_pi') and retroarch_config.stat.exists == true
 
 ### Cores
 - name: check for retroarch cores dir
@@ -64,7 +79,7 @@
     - blastem_libretro.so.zip
     - dolphin_libretro.so.zip
     - pcsx2_libretro.so.zip
-when: retroarch_core.stat.exists == true
+  when: retroarch_core.stat.exists == true
 
 - name: download cores (x86)
   unarchive:
@@ -93,7 +108,7 @@ when: retroarch_core.stat.exists == true
     group: "{{retroarch_user}}"
     mode: +x
 
-- name: Install CATT python package
+- name: run playlist generator script
   command: python3 {{retroarch_config_dir}}/create_playlist.py
   when: retroarch_playlist.stat.exists == true
 

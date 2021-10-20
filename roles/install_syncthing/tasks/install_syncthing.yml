@@ -9,7 +9,7 @@
     syncthing_is_installed: "{{ is_installed.stat.exists }}"
 
 - name: check syncthing version
-  shell: "{{ syncthing_install_path }} --version | awk '{ print $2 }' | cut -c 2-"
+  shell: '{{ syncthing_install_path }} --version | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+" | sed -n "1p"'
   changed_when: false
   register: installed_version_registered
   when: syncthing_is_installed == True
@@ -74,3 +74,11 @@
     daemon-reload: true
     state: started
     name: syncthing.service
+
+- name: Increase watches for syncthing.
+  sysctl:
+    name: fs.inotify.max_user_watches
+    value: '204800'
+    sysctl_set: yes
+    state: present
+    reload: yes
