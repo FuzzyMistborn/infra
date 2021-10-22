@@ -282,6 +282,6 @@
 
 - name: add main user to vboxusers group for USB
   user:
-    name: geoff
+    name: "{{main_username}}"
     append: yes 
     groups: vboxusers
