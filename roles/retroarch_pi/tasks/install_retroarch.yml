@@ -1,77 +1,93 @@
 ---
 - name: install necessary packages
   apt:
-    name:
-      - xorg
-      - openbox
-      - xinit
-      - xserver-xorg-video-fbdev
-      - dbus-x11
-    state: present
-    install_recommends: no
-
-- name: add retroarch repo
-  apt_repository:
-    repo: ppa:retroarch/stable
     update_cache: yes
-
-- name: install retroarch and assets
-  apt:
     name:
-      - retroarch
-      - retroarch-assets
+      - build-essential
+      - git
+      - libasound2-dev
+      - libavcodec-dev
+      - libavdevice-dev
+      - libavformat-dev
+      - libavresample-dev
+      - libdrm-common
+      - libdrm-dev
+      - libdrm2
+      - libegl1-mesa-dev
+      - libfreetype6-dev
+      - libgbm-dev
+      - libgbm1
+      - libgles2
+      - libgles2-mesa
+      - libgles2-mesa-dev
+      - libsdl-image1.2-dev
+      - libsdl2-dev
+      - libswresample-dev
+      - libswscale-dev
+      - libudev-dev
+      - libv4l-dev
+      - libxkbcommon-dev
+      - libxml2-dev
+      - yasm
+      - zlib1g-dev
     state: present
 
-### Credit for below to https://github.com/MizterB/RetroPie-Setup-Ubuntu
-- name: Set bash profile
+### Build RetroArch
+- name: Copy RetroArch build script
   copy:
-    dest: /home/ubuntu/.bash_profile
-    owner: ubuntu
-    group: ubuntu
+    src: build.sh
+    dest: /home/pi/build.sh
+    owner: pi
+    group: pi
+    mode: +x
+
+- name: get status of retroarch_install_path
+  stat:
+    path: /usr/local/bin/retroarch
+  register: is_installed
+
+- name: set retroarch installed
+  set_fact:
+    retroarch_is_installed: "{{ is_installed.stat.exists }}"
+
+- name: get latest release
+  uri:
+    url: https://api.github.com/repos/libretro/retroarch/releases/latest
+    return_content: true
+  register: release_version_registered
+  when: retroarch_download_latest_ver == True
+
+- name: set retroarch version (latest)
+  set_fact:
+    retroarch_ver: "{{ release_version_registered.json.tag_name|regex_replace('v') }}"
+  when: retroarch_download_latest_ver == True
+
+- name: set retroarch version (pinned)
+  set_fact:
+    retroarch_ver: "{{ retroarch_pinned_ver }}"
+  when: retroarch_download_latest_ver == False
+
+- name: Build Retroarch
+  command: sudo /usr/bin/bash build.sh {{ retroarch_ver|quote }}
+  args:
+    chdir: /home/pi
+  when: retroarch_is_installed == False or ( retroarch_is_installed == True and retroarch_download_latest_ver == True ) or ( retroarch_is_installed == True and retroarch_download_latest_ver == False and retroarch_download_pinned_ver == True )
+
+- name: Set bash profile to start retroarch
+  copy:
+    dest: /home/pi/.bash_profile
+    owner: pi
+    group: pi
     mode: 0664
     content: |
       if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
-        exec startx -- >/dev/null 2>&1
+        exec retroarch >/dev/null 2>&1
       fi
-      dbus-launch gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ use-theme-colors false
-      dbus-launch gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ use-theme-transparency false
-      dbus-launch gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ foreground-color '#FFFFFF'
-      dbus-launch gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ background-color '#000000'
-      dbus-launch gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ cursor-blink-mode 'off'
-      dbus-launch gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ scrollbar-policy 'never'
-      dbus-launch gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/ audible-bell 'false'
-      gsettings set org.gnome.Terminal.Legacy.Settings default-show-menubar false
-
-- name: Set xsession
-  copy:
-    dest: /home/ubuntu/.xsession
-    owner: ubuntu
-    group: ubuntu
-    mode: 0664
-    content: |
-      exec openbox-session
-
-- name: Set openbox autostart
-  copy:
-    dest: /home/ubuntu/.config/autostart
-    owner: ubuntu
-    group: ubuntu
-    mode: 0664
-    content: |
-      gnome-terminal --full-screen --hide-menubar -- retroarch
-
-- name: Copy rc.xml
-  copy:
-    src: rc.xml
-    dest: /home/ubuntu/.config/openbox/rc.xml
-    owner: ubuntu
-    group: ubuntu
-    mode: 0644
 
 ### Syncthing
 - name: Create .stignore file
   copy:
-    dest: /mnt/roms
+    dest: /mnt/roms/.stignore
     owner: "{{retroarch_user}}"
     group: "{{retroarch_user}}"
     mode: 0664
@@ -80,3 +96,4 @@
       n64
       ps2
       wii
+      lost+found

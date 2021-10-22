@@ -279,3 +279,9 @@
     state: present
     regexp: "^AutoEnable"
     line: "AutoEnable=true"
+
+- name: add main user to vboxusers group for USB
+  user:
+    name: geoff
+    append: yes 
+    groups: vboxusers

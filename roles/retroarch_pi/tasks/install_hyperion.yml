@@ -55,6 +55,27 @@
 
     - name: install deb
       apt:
-        deb: "{{hyperion_download_directory}}/{{hyperion_ver}}/Hyperion-{{hyperion_ver}}-{{hyperion_distro}}.deb"
+        deb: "{{hyperion_download_directory}}/Hyperion-{{hyperion_ver}}-{{hyperion_distro}}.deb"
         state: present
+
+    - name: delete hyperion@.service
+      file:
+        path: /etc/systemd/system/hyperion@.service
+        state: absent
+    
+    - name: Copy systemd service file
+      copy:
+        src: hyperion.service
+        dest: /etc/systemd/system/hyperion.service
+        owner: pi
+        group: pi
+        mode: 0644
+
+    - name: Enable systemd service
+      systemd:
+        enabled: true
+        daemon-reload: true
+        state: started
+        name: hyperion.service
+
   when: hyperion_is_installed == False or ( hyperion_is_installed == True and hyperion_download_latest_ver == True and installed_version_registered.stdout != hyperion_ver ) or ( hyperion_is_installed == True and hyperion_download_latest_ver == False and installed_version_registered.stdout != hyperion_pinned_ver )

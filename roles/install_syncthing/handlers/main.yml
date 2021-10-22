@@ -1,3 +1,5 @@
 ---
 - name: restart syncthing
-  command: systemctl restart syncthing
+  systemd:
+    name: syncthing
+    state: restarted

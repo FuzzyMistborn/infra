@@ -23,6 +23,6 @@
         chdir: /home/{{main_username}}/
 
     - name: Docker prune
-      command: "docker image prune -f"
+      command: "docker image prune -af"
   roles:
     - role: ironicbadger.ansible_role_docker_compose_generator

@@ -8,7 +8,7 @@
     - name: Folder config | copy config template
       template:
         src: config.xml.j2
-        dest: "syncthing_config_path"
+        dest: "{{syncthing_config_path}}"
         owner: "{{ syncthing_user }}"
         group: users
         mode: 0644

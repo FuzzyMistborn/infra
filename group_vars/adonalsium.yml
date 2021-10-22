@@ -79,6 +79,7 @@ retroarch_roms_dir: /mnt/Media/Files/Roms/RetroArch-ROMs
 retroarch_config_dir: /mnt/Media/Files/Roms/RetroArch
 
 syncthing_api_key: "{{secret_syncthing_api_adonalsium}}"
+syncthing_device_id: "{{secret_syncthing_adonalsium_device}}"
 syncthing_gui_authentication: true
 syncthing_gui_user: "{{main_username}}"
 syncthing_gui_pass: "{{secret_syncthing_gui_pass}}"
@@ -105,13 +106,13 @@ syncthing_folders:
 
 syncthing_devices:
  - id: "{{secret_syncthing_retroarchpi_device}}"
-   name: RetroArch Pi
+   name: retroarch-pi
    address: tcp://192.168.30.26:22000
  - id: "{{secret_syncthing_kelsier_device}}"
-   name: Kelsier
+   name: kelsier
    address: tcp://192.168.10.10:22000
  - id: "{{secret_syncthing_steamdeck_device}}"
-   name: SteamDeck
+   name: steamdeck
    address: tcp://192.168.10.X:22000
 
 ### Infrastructure

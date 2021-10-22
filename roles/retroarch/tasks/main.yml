@@ -11,32 +11,35 @@
     section: null
     option: "{{item.option}}"
     value: "{{item.value}}"
-    backup: yes
   with_items:
     - option: 'core_updater_buildbot_cores_url'
       value: '"http://buildbot.libretro.com/nightly/linux/{{retroarch_distro}}/latest/"'
+    - option: 'menu_show_core_updater'
+      value: '"true"'
     - option: 'content_show_images'
-      value: 'false'
+      value: '"false"'
     - option: 'content_show_music'
-      value: 'false'
+      value: '"false"'
     - option: 'content_show_netplay'
-      value: 'false'
+      value: '"false"'
     - option: 'content_show_video'
-      value: 'false'
+      value: '"false"'
     - option: 'menu_swap_ok_cancel_buttons'
-      value: 'true'
+      value: '"true"'
     - option: 'menu_timedate_style'
       value: '5'
     - option: playlist_sublabel_last_played_style'
-      value: '1'
+      value: '"1"'
     - option: 'ozone_menu_color_theme'
-      value: '2'
+      value: '"2"'
     - option: 'savestate_auto_save'
       value: 'true'
     - option: 'autosave_interval'
-      value: '300'
+      value: '"300"'
     - option: 'assets_directory'
-      value: '"{{retroarch_config_path}}/assets"'
+      value: '"{{retroarch_config_dir}}/assets"'
+    - option: 'input_menu_toggle_gamepad_combo'
+      value: '"4"'
   when: retroarch_config.stat.exists == true
 
 - name: set controller config settings
@@ -45,13 +48,12 @@
     section: null
     option: "{{item.option}}"
     value: "{{item.value}}"
-    backup: yes
   with_items:
     - option: 'input_driver'
       value: 'sdl2'
     - option: 'input_joypad_driver'
       value: 'sdl2'
-  when: (hostname == 'kelsier' or hostname == 'retroarch_pi') and retroarch_config.stat.exists == true
+  when: (ansible_hostname == 'kelsier' or ansible_hostname == 'retroarchpi') and retroarch_config.stat.exists == true
 
 ### Cores
 - name: check for retroarch cores dir
@@ -59,44 +61,52 @@
     path: "{{retroarch_config_dir}}/cores"
   register: retroarch_core
 
-- name: download core-info
-  git:
-      repo: https://github.com/libretro/libretro-core-info.git
-      dest: "{{retroarch_config_dir}}/cores"
-  when: retroarch_core.stat.exists == true
-
-- name: download cores (all)
+- name: download cores (x86)
   unarchive:
     src: https://buildbot.libretro.com/nightly/linux/{{retroarch_distro}}/latest/{{item}}
-    dest: "{{retroarch_config_path}}/cores"
+    dest: "{{retroarch_config_dir}}/cores"
     remote_src: yes
     owner: "{{retroarch_user}}"
     group: "{{retroarch_user}}"
   with_items:
     - duckstation_libretro.so.zip
-    - mupen64plus_next_libretro.so.zip
     - bsnes_libretro.so.zip
     - mgba_libretro.so.zip
     - gambatte_libretro.so.zip
     - nestopia_libretro.so.zip
     - stella_libretro.so.zip
     - blastem_libretro.so.zip
-    - dolphin_libretro.so.zip
-    - pcsx2_libretro.so.zip
-  when: retroarch_core.stat.exists == true
-
-- name: download cores (x86)
-  unarchive:
-    src: https://buildbot.libretro.com/nightly/linux/{{retroarch_distro}}/latest/{{item}}
-    dest: "{{retroarch_config_path}}/cores"
-    remote_src: yes
-    owner: "{{retroarch_user}}"
-    group: "{{retroarch_user}}"
-  with_items:
     - mupen64plus_next_libretro.so.zip
     - dolphin_libretro.so.zip
     - pcsx2_libretro.so.zip
   when: ansible_architecture == "x86_64" and retroarch_core.stat.exists == true
+
+- name: download cores (armv7l)
+  unarchive:
+    src: https://buildbot.libretro.com/nightly/linux/armv7-neon-hf/latest/{{item}}
+    dest: "{{retroarch_config_dir}}/cores"
+    remote_src: yes
+    owner: "{{retroarch_user}}"
+    group: "{{retroarch_user}}"
+  with_items:
+    - pcsx_rearmed_libretro.so.zip
+    - mgba_libretro.so.zip
+    - stella2014_libretro.so.zip
+    - nestopia_libretro.so.zip
+    - snes9x_libretro.so.zip
+    - gambatte_libretro.so.zip
+    - picodrive_libretro.so.zip
+    - genesis_plus_gx_libretro.so.zip
+  when: ansible_architecture == "armv7l" and retroarch_core.stat.exists == true
+
+- name: download cores (armv7l)
+  unarchive:
+    src: https://www.duckstation.org/libretro/duckstation_libretro_linux_armv7.zip
+    dest: "{{retroarch_config_dir}}/cores"
+    remote_src: yes
+    owner: "{{retroarch_user}}"
+    group: "{{retroarch_user}}"
+  when: ansible_architecture == "armv7l" and retroarch_core.stat.exists == true
 
 ### Add ROMs/create playlists
 - name: check for retroarch playlists dir
@@ -111,6 +121,7 @@
     owner: "{{retroarch_user}}"
     group: "{{retroarch_user}}"
     mode: +x
+  when: retroarch_playlist.stat.exists == true
 
 - name: run playlist generator script
   command: python3 {{retroarch_config_dir}}/create_playlist.py
@@ -119,7 +130,7 @@
 ### Syncthing
 - name: Create .stignore file
   copy:
-    dest: "{{retroarch_config_dir}}"
+    dest: "{{retroarch_config_dir}}/.stignore"
     owner: "{{retroarch_user}}"
     group: "{{retroarch_user}}"
     mode: 0664
@@ -130,3 +141,4 @@
       !/system
       !/thumbnails
       *
+  when: retroarch_config.stat.exists == true

@@ -103,11 +103,16 @@
         state: restarted
 
 - hosts: retroarch_pi
-  remote_user: ubuntu
+  remote_user: pi
   gather_facts: true
   vars_files:
     - 'vars/vault.yaml'
   tasks:
+    - name: Apt update
+      apt:
+        upgrade: 'yes'
+        update_cache: yes
+        cache_valid_time: 3600
     - name: Add ansible user
       user:
         name: ansible
@@ -130,8 +135,8 @@
         state: present
         key: "{{ item.ssh }}"
       loop:
-        - {user: ubuntu, ssh: "{{ secret_main_user_ssh }}"}
-        - {user: ubuntu, ssh: "{{ secret_main_user_alt_ssh }}"}
+        - {user: pi, ssh: "{{ secret_main_user_ssh }}"}
+        - {user: pi, ssh: "{{ secret_main_user_alt_ssh }}"}
         - {user: ansible, ssh: "{{ secret_ansible_ssh }}"}
     - name: Add hardened SSH config
       copy:

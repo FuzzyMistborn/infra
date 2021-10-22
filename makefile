@@ -30,8 +30,8 @@ omada:
 ambition:
 	ansible-playbook -b run.yml --limit ambition --vault-password-file .vault-password
 
-caddy:
-	ansible-playbook -b run.yml --limit caddy --vault-password-file .vault-password
+retropi:
+	ansible-playbook -b run.yml --limit retroarch_pi --vault-password-file .vault-password
 
 kelsier:
 	ansible-playbook -b run.yml --limit kelsier --vault-password-file .vault-password
@@ -63,8 +63,14 @@ proxmox:
 odium:
 	ansible-playbook -u root -b run.yml --limit odium --ask-pass --vault-password-file .vault-password
 
-bootstrap:
-	ansible-playbook -b bootstrap.yml --vault-password-file .vault-password
+bootstrap_lxc:
+	ansible-playbook -b bootstrap.yml --limit lxc ambition --vault-password-file .vault-password
+
+bootstrap_kelsier:
+	ansible-playbook -b bootstrap.yml --limit kelsier --vault-password-file .vault-password
+
+bootstrap_retropi:
+	ansible-playbook -b bootstrap.yml --ask-pass --limit retroarch_pi --vault-password-file .vault-password
 
 git:
 	@./gitupdate.sh

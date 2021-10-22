@@ -1,52 +1,49 @@
 ---
 ### Basic Setup
+- name: Apt update
+  apt:
+    upgrade: 'yes'
+    update_cache: yes
+    cache_valid_time: 3600
+
 - name: Set a hostname
   hostname:
-    name: retroarch_pi
+    name: retroarchpi
 
 - name: create autologin directory
   file:
     path: /etc/systemd/system/getty@tty1.service.d/
     state: directory
-    owner: ubuntu
-    group: ubuntu
+    owner: pi
+    group: pi
 
 - name: disable login for user
   copy:
     dest: /etc/systemd/system/getty@tty1.service.d/autologin.conf
-    owner: ubuntu
-    group: ubuntu
+    owner: pi
+    group: pi
     mode: 0664
     content: |
       [Service]
       ExecStart=
-      ExecStart=-/sbin/agetty --skip-login --noissue --autologin ubuntu %I $TERM
+      ExecStart=-/sbin/agetty --skip-login --noissue --autologin pi %I $TERM
       Type=idle
 
-#- name: Add sudoers file for ubuntu
-#  copy:
-#    src: sudoer_ubuntu
-#    dest: /etc/sudoers.d/ubuntu
-#    owner: root
-#    group: root
-#    mode: 0440
+- name: Set US locale
+  community.general.locale_gen:
+    name: en_US.UTF-8
+    state: present
 
-- name: disable cloud-init
-  file:
-    path: /etc/cloud/cloud-init.disabled
-    state: touch
-
-- name: remove/purge snap
-  apt:
-    name: snapd
+- name: Remove UK locale
+  community.general.locale_gen:
+    name: en_GB.UTF-8
     state: absent
-    purge: yes
 
-- name: install bluetooth
+- name: install bluetooth and other packages
   apt:
     name: 
       - pi-bluetooth
-      - blueman
+      - unzip
     state: present
 
 # fstab/disk mounts
@@ -61,8 +58,8 @@
   file:
     dest: "{{ item.path }}"
     state: directory
-    owner: "{{main_username}}"
-    group: nobody
+    owner: pi
+    group: pi
     mode: 0777
   with_items:
     - "{{ roms_drive }}"
@@ -75,6 +72,16 @@
     opts: "{{ item.opts }}"
     # change to 'mounted' to auto mount versus 'present' for just loaded into fstab
     state: mounted
+  with_items:
+    - "{{ roms_drive }}"
+
+- name: set ownership
+  file:
+    dest: "{{ item.path }}"
+    state: directory
+    owner: pi
+    group: pi
+    mode: 0777
   with_items:
     - "{{ roms_drive }}"
 

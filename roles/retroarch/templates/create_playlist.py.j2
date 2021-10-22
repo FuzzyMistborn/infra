@@ -112,22 +112,27 @@ def create_everything():
     for item in Playlist.playlists:
         item.create_playlist()
     print('\n[Done] Playlist(s) sucessfully created or updated.')
-    
+
 # Entry examples
 RETROARCH_PLAYLIST_PATH = r'{{retroarch_config_dir}}/playlists/'
 
-Playlist('Atari - 2600', r'{{retroarch_roms_dir}}/atari2600/', RETROARCH_PLAYLIST_PATH, core='{{retroarch_config_dir}}/cores/stella_libretro.so', core_name='Atari - 2600 (Stella)')
 Playlist('Nintendo - Game Boy Advance', r'{{retroarch_roms_dir}}/gba/', RETROARCH_PLAYLIST_PATH, core='{{retroarch_config_dir}}/cores/mgba_libretro.so', core_name='Nintendo - Game Boy Advance (mGBA)')
 Playlist('Nintendo - Game Boy Color', r'{{retroarch_roms_dir}}/gbc/', RETROARCH_PLAYLIST_PATH, core='{{retroarch_config_dir}}/cores/gambatte_libretro.so', core_name='Nintendo - Game Boy / Color (Gambatte)')
 Playlist('Nintendo - Game Boy', r'{{retroarch_roms_dir}}/gb/', RETROARCH_PLAYLIST_PATH, core='{{retroarch_config_dir}}/cores/gambatte_libretro.so', core_name='Nintendo - Game Boy / Color (Gambatte)')
 Playlist('Nintendo - Nintendo Entertainment System', r'{{retroarch_roms_dir}}/nes/', RETROARCH_PLAYLIST_PATH, core='{{retroarch_config_dir}}/cores/nestopia_libretro.so', core_name='Nintendo - NES / Famicom (Nestopia UE)')
-Playlist('Nintendo - Super Nintendo Entertainment System', r'{{retroarch_roms_dir}}/snes/', RETROARCH_PLAYLIST_PATH, core='{{retroarch_config_dir}}/cores/bsnes_libretro.so', core_name='Nintendo - SNES / SFC (bsnes)')
-Playlist('Sega - Mega Drive - Genesis', r'{{retroarch_roms_dir}}/genesis/', RETROARCH_PLAYLIST_PATH, core='{{retroarch_config_dir}}/cores/blastem_libretro.so', core_name='Sega - Mega Drive - Genesis (BlastEm)')
 Playlist('Sony - PlayStation', r'{{retroarch_roms_dir}}/psx/', RETROARCH_PLAYLIST_PATH, ['iso', 'cue'], core='{{retroarch_config_dir}}/cores/duckstation_libretro.so', core_name='Sony - Playstation (DuckStation)')
+{% if ansible_architecture == "armv7l" %}
+Playlist('Atari - 2600', r'{{retroarch_roms_dir}}/atari2600/', RETROARCH_PLAYLIST_PATH, core='{{retroarch_config_dir}}/cores/stella_libretro.so', core_name='Atari - 2600 (Stella 2014)')
+Playlist('Nintendo - Super Nintendo Entertainment System', r'{{retroarch_roms_dir}}/snes/', RETROARCH_PLAYLIST_PATH, core='{{retroarch_config_dir}}/cores/snes9x_libretro.so', core_name='Nintendo - SNES / SFC (Snes9x)')
+Playlist('Sega - Mega Drive - Genesis', r'{{retroarch_roms_dir}}/genesis/', RETROARCH_PLAYLIST_PATH, core='{{retroarch_config_dir}}/cores/picodrive_libretro.so', core_name='Sega - Mega Drive - Genesis (PicoDrive)')
+{% endif %}
 {% if ansible_architecture == "x86_64" %}
+Playlist('Atari - 2600', r'{{retroarch_roms_dir}}/atari2600/', RETROARCH_PLAYLIST_PATH, core='{{retroarch_config_dir}}/cores/stella_libretro.so', core_name='Atari - 2600 (Stella)')
 Playlist('Nintendo - Nintendo 64', r'{{retroarch_roms_dir}}/n64/', RETROARCH_PLAYLIST_PATH, core='{{retroarch_config_dir}}/cores/mupen64plus_next_libretro.so', core_name='Nintendo - Nintendo 64 (Mupen64Plus-Next)')
 Playlist('Nintendo - Wii', r'{{retroarch_roms_dir}}/wii/', RETROARCH_PLAYLIST_PATH, core='{{retroarch_config_dir}}/cores/dolphin_libretro.so', core_name='Nintendo - GameCube / Wii (Dolphin)')
 Playlist('Nintendo - GameCube', r'{{retroarch_roms_dir}}/gc/', RETROARCH_PLAYLIST_PATH, core='{{retroarch_config_dir}}/cores/dolphin_libretro.so', core_name='Nintendo - GameCube / Wii (Dolphin)')
+Playlist('Nintendo - Super Nintendo Entertainment System', r'{{retroarch_roms_dir}}/snes/', RETROARCH_PLAYLIST_PATH, core='{{retroarch_config_dir}}/cores/bsnes_libretro.so', core_name='Nintendo - SNES / SFC (bsnes)')
+Playlist('Sega - Mega Drive - Genesis', r'{{retroarch_roms_dir}}/genesis/', RETROARCH_PLAYLIST_PATH, core='{{retroarch_config_dir}}/cores/blastem_libretro.so', core_name='Sega - Mega Drive - Genesis (BlastEm)')
 Playlist('Sony - PlayStation 2', r'{{retroarch_roms_dir}}/ps2/', RETROARCH_PLAYLIST_PATH, ['iso', 'cue'], core='{{retroarch_config_dir}}/cores/duckstation_libretro.so', core_name='Sony - PlayStation 2 (PCSX2)')
 {% endif %}
 
