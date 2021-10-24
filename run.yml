@@ -46,6 +46,7 @@
     - role: install_runitor
     - role: install_telegraf
     - role: adonalsium
+    - role: bash_alias
     - role: install_syncthing
     - role: cronjobs
     - role: geerlingguy.docker
@@ -63,6 +64,7 @@
     - role: github
     - role: install_runitor
     - role: dominion
+    - role: bash_alias
     - role: cronjobs
 
 - hosts: endowment
@@ -78,6 +80,7 @@
     - role: install_telegraf
     - role: install_runitor
     - role: endowment
+    - role: bash_alias
     - role: cronjobs
     - role: ironicbadger.ansible_role_docker_compose_generator
 
@@ -94,6 +97,7 @@
     - role: install_telegraf
     - role: install_runitor
     - role: autonomy
+    - role: bash_alias
     - role: cronjobs
     - role: ironicbadger.ansible_role_docker_compose_generator
 
@@ -109,6 +113,7 @@
     - role: install_telegraf
     - role: install_runitor
     - role: cultivation
+    - role: bash_alias
     - role: cronjobs
     - role: ironicbadger.ansible_role_docker_compose_generator
 
@@ -125,6 +130,7 @@
     - role: install_runitor
     - role: ironicbadger.ansible_role_docker_compose_generator
     - role: preservation
+    - role: bash_alias
     - role: cronjobs
 
 - hosts: honor
@@ -140,6 +146,7 @@
     - role: install_runitor
     - role: caddy_ansible.caddy_ansible
     - role: honor
+    - role: bash_alias
     - role: cronjobs
     - role: install_fail2ban
     - role: ironicbadger.ansible_role_docker_compose_generator
@@ -153,6 +160,7 @@
     - role: geerlingguy.pip
     - role: geerlingguy.docker
     - role: valor
+    - role: bash_alias
     - role: ironicbadger.ansible_role_docker_compose_generator
 
 - hosts: mercy
@@ -178,6 +186,7 @@
     - role: fuzzymistborn.autorestic
     - role: install_runitor
     - role: omada
+    - role: bash_alias
     - role: cronjobs
     - role: ironicbadger.ansible_role_docker_compose_generator
 
@@ -188,6 +197,7 @@
   roles:
     - role: retroarch_pi
     - role: retroarch
+    - role: bash_alias
     - role: install_syncthing
 
 - hosts: ambition
@@ -204,6 +214,7 @@
     - role: install_runitor
     - role: caddy_ansible.caddy_ansible
     - role: ambition
+    - role: bash_alias
     - role: cronjobs
     - role: install_fail2ban
     - role: ironicbadger.ansible_role_docker_compose_generator
@@ -218,6 +229,7 @@
     - role: fuzzymistborn.autorestic
     - role: install_runitor
     - role: kelsier
+#    - role: bash_alias
     - role: install_syncthing
     - role: install_telegraf
     - role: cronjobs

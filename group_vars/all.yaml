@@ -21,6 +21,59 @@ telegraf_influx_url: 'http://192.168.50.22:8086'
 telegraf_influx_org: Cosmere
 syncthing_user: "{{main_username}}"
 
+# bash aliases
+bash_autorestic_aliases:
+  - alias: arsnapshot
+    command: autorestic exec -av -- snapshots
+  - alias: arbackup
+    command: autorestic backup -a
+  - alias: arprune
+    command: autorestic forget -a -- prune
+
+bash_apt_aliases:
+  - alias: agi
+    command: sudo apt install $c
+  - alias: agr
+    command: sudo apt remove $c
+  - alias: agu
+    command: sudo apt update && sudo apt upgrade
+
+bash_systemctl_aliases:
+  - alias: sc-start
+    command: sudo systemctl start $c
+  - alias: sc-stop
+    command: sudo systemctl stop $c
+  - alias: sc-restart
+    command: sudo systemctl restart $c
+  - alias: sc-enable
+    command: sudo systemctl enable $c
+  - alias: sc-disable
+    command: sudo systemctl disable $c
+  - alias: sc-status
+    command: sudo systemctl status $c
+  - alias: sc-reload
+    command: sudo systemctl daemon-reload
+
+bash_docker_aliases:
+  - alias: dc-up
+    command: docker-compose up -d $c
+  - alias: dc-down
+    command: docker-compose down $c
+  - alias: dc-pull
+    command: docker-compose pull $c
+  - alias: dc-exec
+    command: docker-compose exec $c
+  - alias: dc-ps
+    command: docker-compose ps
+  - alias: dc-start
+    command: docker-compose start $c
+  - alias: dc-stop
+    command: docker-compose stop $c
+  - alias: dc-restart
+    command: docker-compose restart $c
+  - alias: dc-rm
+    command: docker-compose rm $c
+
 # autorestic_ver: 1.1.2
 autorestic_config_user: "{{main_username}}"
 # restic_ver: 0.12.1

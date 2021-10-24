@@ -15,6 +15,14 @@ package_list:
 
 pull_backup: false
 
+### Bash Aliases
+
+bash_aliases:
+  - alias: gitcheck
+    command: /bin/bash /home/{{main_username}}/infra/git-vault-check.sh
+bash_systemctl: true
+bash_apt: true
+
 ### Cronjobs
 cronjobs:
   - name: Ansible Update

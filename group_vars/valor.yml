@@ -10,6 +10,12 @@ package_list:
   - name: sudo
   - name: wget
 
+### Bash Aliases
+
+bash_docker: true
+bash_systemctl: true
+bash_apt: true
+
 appdata_path: "/home/{{ main_username }}/docker"
 containers:
   ###

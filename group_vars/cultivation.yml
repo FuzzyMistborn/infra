@@ -23,6 +23,13 @@ telegraf_influx_token: "{{secret_telegraf_cultivation}}"
 telegraf_influx_bucket: Cultivation
 telegraf_influx_docker: true
 
+### Bash Aliases
+
+bash_docker: true
+bash_autorestic: true
+bash_systemctl: true
+bash_apt: true
+
 ### Cronjobs
 cronjobs:
   - name: Restic Prune

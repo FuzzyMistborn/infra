@@ -68,28 +68,6 @@
     state: absent
   when: pull_backup == true
 
-#### Bash Alias
-
-- name: Setup bash aliases
-  lineinfile:
-    dest: "/etc/bash_aliases"
-    create: yes
-    group: root
-    line: "alias {{ item.alias }}='{{ item.command }}'"
-    mode: 0644
-    owner: root
-    regexp: "^alias {{ item.alias }}="
-  with_items:
-    - {alias: "arsnapshot", command: "autorestic exec -av -- snapshots"}
-    - {alias: "arbackup", command: "autorestic backup -a"}
-    - {alias: "arprune", command: "autorestic forget -a -- prune"}
-
-- name: Source aliases file
-  lineinfile:
-    dest: /etc/bash.bashrc
-    line: 'source /etc/bash_aliases'
-    state: present
-
 ### Rsyslog
 - name: Copy rsyslog config templates
   template:

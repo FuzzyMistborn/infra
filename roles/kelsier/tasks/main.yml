@@ -152,6 +152,23 @@
     group: root
     mode: 0644
 
+### Dolphin
+- name: Copy dolphinrc file
+  copy:
+    src: kde/dolphinrc
+    dest: /home/{{main_uername}}/.config/dolphinrc
+    owner: "{{main_username}}"
+    group: "{{main_username}}"
+    mode: 0644
+
+- name: Copy dolphinui file
+  copy:
+    src: kde/dolphinui.rc
+    dest: /home/{{main_uername}}/.local/share/kxmlgui5/dolphin/
+    owner: "{{main_username}}"
+    group: "{{main_username}}"
+    mode: 0644
+
 #### NUT
 - name: Copy nut folder
   copy:
@@ -204,40 +221,7 @@
     state: absent
   when: pull_backup == true
 
-#### Bash Alias
-- name: Setup bash aliases
-  lineinfile:
-    dest: "/etc/bash_aliases"
-    create: yes
-    group: root
-    line: "alias {{ item.alias }}='{{ item.command }}'"
-    mode: 0644
-    owner: root
-    regexp: "^alias {{ item.alias }}="
-  with_items:
-    - {alias: "arsnapshot", command: "autorestic exec -av -- snapshots"}
-    - {alias: "arbackup", command: "autorestic backup -a"}
-    - {alias: "arprune", command: "autorestic forget -a -- prune"}
-
-- name: Source aliases file
-  lineinfile:
-    dest: /etc/bash.bashrc
-    line: 'source /etc/bash_aliases'
-    state: present
-
 #### Misc
-- name: Clean up Nautilus
-  lineinfile:
-    dest: "/home/{{main_username}}/.config/user-dirs.dirs"
-    regexp: "^{{ item.find }}"
-    line: "{{ item.replace }}"
-  with_items:
-    - {find: 'XDG_DESKTOP_DIR', replace: '#XDG_DESKTOP_DIR="$HOME/Desktop"'}
-    - {find: 'XDG_TEMPLATES_DIR', replace: '#XDG_TEMPLATES_DIR="$HOME/Templates"'}
-    - {find: 'XDG_PUBLICSHARE_DIR', replace: '#XDG_PUBLICSHARE_DIR="$HOME/Public"'}
-    - {find: 'XDG_MUSIC_DIR', replace: '#XDG_MUSIC_DIR="$HOME/Music"'}
-    - {find: 'XDG_VIDEOS_DIR', replace: '#XDG_VIDEOS_DIR="$HOME/Videos"'}
-
 - name: Enable IPv4 forwarding for wireguard
   sysctl:
     name: net.ipv4.ip_forward

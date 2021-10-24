@@ -40,6 +40,14 @@
       value: '"{{retroarch_config_dir}}/assets"'
     - option: 'input_menu_toggle_gamepad_combo'
       value: '"4"'
+    - option: "input_player1_analog_dpad_mode"
+      value: '"1"'
+    - option: "input_player2_analog_dpad_mode"
+      value: '"1"'
+    - option: "input_player3_analog_dpad_mode"
+      value: '"1"'
+    - option: "input_player4_analog_dpad_mode"
+      value: '"1"'
   when: retroarch_config.stat.exists == true
 
 - name: set controller config settings

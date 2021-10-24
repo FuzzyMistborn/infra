@@ -25,7 +25,12 @@ smb_mountpoints:
 
 pull_backup: false
 
-# syncthing_ver: 1.18.2
+### Bash Aliases
+
+bash_docker: true
+bash_autorestic: true
+bash_systemctl: true
+bash_apt: true
 
 ### Telegraf
 telegraf_influx_token: "{{secret_telegraf_endowment}}"

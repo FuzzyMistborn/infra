@@ -6,8 +6,6 @@ hostname: kelsier
 package_list:
   - name: dragon
     state: absent
-  - name: dolphin
-    state: absent
   - name: plank
     state: absent
   - name: gwenview
@@ -25,7 +23,6 @@ package_list:
   - name: wireguard-tools
   - name: restic
   - name: git
-  - name: nautilus
   - name: lm_sensors
   - name: python
   - name: screen
@@ -112,6 +109,16 @@ install_nut: true
 pull_backup: false
 
 pip_package: python-pip
+
+### Bash Aliases
+
+bash_aliases:
+  - alias: arsnapshot
+    command: autorestic exec -av -- snapshots
+  - alias: arbackup
+    command: autorestic backup -a
+  - alias: arprune
+    command: autorestic forget -a -- prune
 
 ### Syncthing/Retroarch
 retroarch_roms_dir: /mnt/Games/ROMs

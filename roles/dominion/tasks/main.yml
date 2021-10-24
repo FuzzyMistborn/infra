@@ -70,23 +70,3 @@
       cd /home/{{main_username}}/infra
       /usr/local/bin/ansible-playbook update.yml --vault-password-file .vault-password
       /usr/local/bin/ansible-playbook update.yml --vault-password-file .vault-password --tags "install"
-
-#### Bash Alias
-
-- name: Setup bash aliases
-  lineinfile:
-    dest: "/etc/bash_aliases"
-    create: yes
-    group: root
-    line: "alias {{ item.alias }}='{{ item.command }}'"
-    mode: 0644
-    owner: root
-    regexp: "^alias {{ item.alias }}="
-  with_items:
-    - {alias: "gitcheck", command: "/bin/bash /home/{{main_username}}/infra/git-vault-check.sh"}
-
-- name: Source aliases file
-  lineinfile:
-    dest: /etc/bash.bashrc
-    line: 'source /etc/bash_aliases'
-    state: present

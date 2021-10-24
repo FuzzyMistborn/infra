@@ -8,6 +8,12 @@ roms_drive:
     opts: defaults
     content: true
 
+### Bash Aliases
+bash_user: pi
+bash_systemctl: true
+bash_apt: true
+
+### Retroarch
 retroarch_distro: armv7-neon-hf
 retroarch_user: pi
 retroarch_roms_dir: /mnt/roms
@@ -18,6 +24,7 @@ retroarch_download_pinned_ver: false
 retroarch_download_latest_ver: true
 retroarch_pinned_ver: 1.19.11
 
+### Syncthing
 syncthing_user: pi
 syncthing_distro: linux-arm
 syncthing_api_key: "{{secret_syncthing_api_retroarch_pi}}"

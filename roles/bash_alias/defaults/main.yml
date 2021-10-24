@@ -1,0 +1,6 @@
+bash_user: "{{main_username}}"
+bash_aliases_path: "/home/{{bash_user}}/.bash_aliases"
+bash_docker: false
+bash_autorestic: false
+bash_systemctl: false
+bash_apt: false

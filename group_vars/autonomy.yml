@@ -21,6 +21,12 @@ package_list:
 clone_git: false
 pull_backup: false
 
+### Bash Aliases
+bash_docker: true
+bash_autorestic: true
+bash_systemctl: true
+bash_apt: true
+
 ### Telegraf
 telegraf_influx_token: "{{secret_telegraf_autonomy}}"
 telegraf_influx_bucket: Autonomy
