@@ -152,22 +152,27 @@
     group: root
     mode: 0644
 
-### Dolphin
-- name: Copy dolphinrc file
+### Dolphin/ZSH
+- name: Copy config files
   copy:
-    src: kde/dolphinrc
-    dest: /home/{{main_uername}}/.config/dolphinrc
-    owner: "{{main_username}}"
-    group: "{{main_username}}"
+    src: "{{item.src}}"
+    dest: "{{item.dest}}"
     mode: 0644
-
-- name: Copy dolphinui file
-  copy:
-    src: kde/dolphinui.rc
-    dest: /home/{{main_uername}}/.local/share/kxmlgui5/dolphin/
-    owner: "{{main_username}}"
-    group: "{{main_username}}"
-    mode: 0644
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+  with_items:
+    - src: "kde/dolphinrc"
+      dest: "/home/{{main_username}}/.config/dolphinrc"
+    - src: "kde/dolphinui.rc"
+      dest: "/home/{{main_username}}/.local/share/kxmlgui5/dolphin/dolphinui.rc"
+    - src: "kde/konsoleprofile"
+      dest: "/home/{{main_username}}/.local/share/konsole/ZSH.profile"
+    - src: "kde/Default.layout.latte"
+      dest: "/home/{{main_username}}/.config/latte/Default.layout.latte"
+    - src: "zsh/zshrc"
+      dest: "/home/{{main_username}}/.zshrc"
+    - src: "zsh/p10k.zsh"
+      dest: "/home/{{main_username}}/.p10k.zsh"
 
 #### NUT
 - name: Copy nut folder

@@ -39,6 +39,7 @@
     - role: install_nag-removal
     - role: grog.package
     - role: geerlingguy.pip
+    - role: install_pip_packages
     - role: geerlingguy.samba
     - role: geerlingguy.nfs
     - role: install_mergerfs
@@ -61,6 +62,7 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
+    - role: install_pip_packages
     - role: github
     - role: install_runitor
     - role: dominion
@@ -76,6 +78,7 @@
     - role: geerlingguy.samba
     - role: geerlingguy.docker
     - role: geerlingguy.pip
+    - role: install_pip_packages
     - role: fuzzymistborn.autorestic
     - role: install_telegraf
     - role: install_runitor
@@ -93,6 +96,7 @@
     - role: github
     - role: geerlingguy.docker
     - role: geerlingguy.pip
+    - role: install_pip_packages
     - role: fuzzymistborn.autorestic
     - role: install_telegraf
     - role: install_runitor
@@ -109,6 +113,7 @@
     - role: grog.package
     - role: geerlingguy.docker
     - role: geerlingguy.pip
+    - role: install_pip_packages
     - role: fuzzymistborn.autorestic
     - role: install_telegraf
     - role: install_runitor
@@ -125,6 +130,7 @@
     - role: grog.package
     - role: geerlingguy.docker
     - role: geerlingguy.pip
+    - role: install_pip_packages
     - role: fuzzymistborn.autorestic
     - role: install_telegraf
     - role: install_runitor
@@ -140,6 +146,7 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
+    - role: install_pip_packages
     - role: geerlingguy.docker
     - role: install_lego
     - role: fuzzymistborn.autorestic
@@ -158,6 +165,7 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
+    - role: install_pip_packages
     - role: geerlingguy.docker
     - role: valor
     - role: bash_alias
@@ -170,6 +178,7 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
+    - role: install_pip_packages
     - role: fuzzymistborn.autorestic
     - role: install_runitor
     - role: mercy
@@ -182,6 +191,8 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
+    - role: install_pip_packages
+    - role: install_pip_packages
     - role: geerlingguy.docker
     - role: fuzzymistborn.autorestic
     - role: install_runitor
@@ -190,12 +201,20 @@
     - role: cronjobs
     - role: ironicbadger.ansible_role_docker_compose_generator
 
-- hosts: retroarch_pi
+- hosts: hyperion
   become: true
   vars_files:
     - 'vars/vault.yaml'
   roles:
-    - role: retroarch_pi
+    - role: hyperion
+    - role: bash_alias
+
+- hosts: retroarch_tv
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+  roles:
+    - role: retroarch_tv
     - role: retroarch
     - role: bash_alias
     - role: install_syncthing
@@ -207,6 +226,7 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
+    - role: install_pip_packages
     - role: geerlingguy.docker
     - role: install_lego
     - role: install_hugo
@@ -226,10 +246,11 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
+    - role: install_pip_packages
     - role: fuzzymistborn.autorestic
     - role: install_runitor
     - role: kelsier
-#    - role: bash_alias
+    - role: bash_alias
     - role: install_syncthing
     - role: install_telegraf
     - role: cronjobs
@@ -256,6 +277,7 @@
     - role: install_nag-removal
     - role: grog.package
     - role: geerlingguy.pip
+    - role: install_pip_packages
     - role: odium
     - role: cronjobs
     - role: geerlingguy.docker

@@ -58,6 +58,13 @@
         deb: "{{hyperion_download_directory}}/Hyperion-{{hyperion_ver}}-{{hyperion_distro}}.deb"
         state: present
 
+    - name: Disable pre-installed systemd service
+      systemd:
+        enabled: false
+        daemon-reload: true
+        state: stopped
+        name: hyperion@pi.service
+
     - name: delete hyperion@.service
       file:
         path: /etc/systemd/system/hyperion@.service
@@ -67,8 +74,8 @@
       copy:
         src: hyperion.service
         dest: /etc/systemd/system/hyperion.service
-        owner: pi
-        group: pi
+        owner: root
+        group: root
         mode: 0644
 
     - name: Enable systemd service

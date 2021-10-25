@@ -77,6 +77,10 @@ package_list:
   - name: retroarch
   - name: nvidia-settings
 
+### Pip Packages
+pip_packages:
+  - thefuck
+
 data_disks:
   - path: /mnt/Games
     source: /dev/disk/by-id/ata-TEAM_T253X2001T_TPBF2006200010200009-part1
@@ -111,14 +115,19 @@ pull_backup: false
 pip_package: python-pip
 
 ### Bash Aliases
-
 bash_aliases:
-  - alias: arsnapshot
-    command: autorestic exec -av -- snapshots
-  - alias: arbackup
-    command: autorestic backup -a
-  - alias: arprune
-    command: autorestic forget -a -- prune
+  - alias: c
+    command: clear
+  - alias: e
+    command: exit
+  - alias: ssh-remove
+    command: ssh-keygen -f /home/{{main_username}}/.ssh/known_hosts -R $c
+  - alias: logi-restart
+    command: sudo systemctl restart logid
+bash_autorestic: true
+bash_systemctl: true
+bash_pacman: true
+bash_yay: true
 
 ### Syncthing/Retroarch
 retroarch_roms_dir: /mnt/Games/ROMs

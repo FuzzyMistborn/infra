@@ -57,3 +57,27 @@
     regexp: "^alias {{ item.alias }}="
   with_items: "{{ bash_autorestic_aliases }}"
   when: bash_autorestic != false
+
+- name: Bash Alias | Add pacman aliases
+  lineinfile:
+    dest: "{{ bash_aliases_path }}"
+    create: yes
+    owner: "{{bash_user}}"
+    group: "{{bash_user}}"
+    mode: 0644
+    line: "alias {{ item.alias }}='{{ item.command }}'"
+    regexp: "^alias {{ item.alias }}="
+  with_items: "{{ bash_pacman_aliases }}"
+  when: bash_pacman != false
+
+- name: Bash Alias | Add yay aliases
+  lineinfile:
+    dest: "{{ bash_aliases_path }}"
+    create: yes
+    owner: "{{bash_user}}"
+    group: "{{bash_user}}"
+    mode: 0644
+    line: "alias {{ item.alias }}='{{ item.command }}'"
+    regexp: "^alias {{ item.alias }}="
+  with_items: "{{ bash_yay_aliases }}"
+  when: bash_yay != false

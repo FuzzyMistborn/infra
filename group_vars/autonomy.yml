@@ -18,6 +18,11 @@ package_list:
   - name: wget
   - name: xvfb
 
+### Pip Packages
+pip_packages:
+  - yamllint
+  - thefuck
+
 clone_git: false
 pull_backup: false
 

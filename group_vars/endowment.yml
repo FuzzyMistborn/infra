@@ -17,6 +17,10 @@ package_list:
   - name: sudo
   - name: wget
 
+### Pip Packages
+pip_packages:
+  - thefuck
+
 smb_mountpoints:
   - path: "/mnt/Media"
     source: "//192.168.1.20/Media"

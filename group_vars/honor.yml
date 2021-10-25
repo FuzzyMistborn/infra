@@ -13,6 +13,10 @@ package_list:
   - name: wget
   - name: wireguard
 
+### Pip Packages
+pip_packages:
+  - thefuck
+
 pull_backup: false
 # lego_ver: 4.4.0
 

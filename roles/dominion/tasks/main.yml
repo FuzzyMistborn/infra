@@ -1,10 +1,4 @@
 ---
-- name: Install Ansible via Pip
-  pip:
-    name:
-      - ansible
-      - yamllint
-
 - name: Add Code-Server SSH Key
   authorized_key:
     user: "{{ main_username }}"

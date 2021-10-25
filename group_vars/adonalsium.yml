@@ -13,6 +13,11 @@ package_list:
   - name: rsyslog
   - name: wireguard
 
+### Pip Packages
+pip_packages:
+  - proxmoxer
+  - thefuck
+
 ### Disks
 mergerfs_mount:
   - path: /mnt/Media

@@ -22,6 +22,12 @@ telegraf_influx_org: Cosmere
 syncthing_user: "{{main_username}}"
 
 # bash aliases
+bash_aliases:
+  - alias: c
+    command: clear
+  - alias: e
+    command: exit
+
 bash_autorestic_aliases:
   - alias: arsnapshot
     command: autorestic exec -av -- snapshots
@@ -73,6 +79,30 @@ bash_docker_aliases:
     command: docker-compose restart $c
   - alias: dc-rm
     command: docker-compose rm $c
+
+bash_pacman_aliases:
+  - alias: pacup
+    command: sudo pacman -Syu
+  - alias: pacin
+    command: sudo pacman -S
+  - alias: pacloc
+    command: sudo pacman -Qi
+  - alias: pacmir
+    command: sudo pacman -Syy
+  - alias: pacrem
+    command: sudo pacman -Rns
+
+bash_yay_aliases:
+  - alias: yaup
+    command: sudo yay -Syu
+  - alias: yain
+    command: sudo yay -S
+  - alias: yaloc
+    command: sudo yay -Qi
+  - alias: yamir
+    command: sudo yay -Syy
+  - alias: yarem
+    command: sudo yay -Rns
 
 # autorestic_ver: 1.1.2
 autorestic_config_user: "{{main_username}}"

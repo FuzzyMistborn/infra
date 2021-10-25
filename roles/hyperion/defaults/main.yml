@@ -1,4 +1,3 @@
----
 hyperion_download_latest_ver: true  # Change to 'false' to pin to a specific version
 hyperion_pinned_ver: 2.0.0-alpha.11  # Overriden by 'hyperion_download_latest_ver' variable
 hyperion_distro: Linux-armv7l
@@ -6,5 +5,7 @@ hyperion_distro: Linux-armv7l
 hyperion_gh_url: https://github.com/hyperion-project/hyperion.ng/releases/download
 hyperion_download_directory: "/tmp/hyperion"
 
-retroarch_gh_url: https://github.com/libretro/RetroArch/archive/refs/tags
-retroarch_download_directory: "/tmp/retroarch"
+### Bash Aliases
+bash_user: pi
+bash_systemctl: true
+bash_apt: true

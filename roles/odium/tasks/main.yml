@@ -11,10 +11,6 @@
     repo: 'deb http://download.proxmox.com/debian/pve buster pve-no-subscription'
     state: present
 
-- name: Install Proxmoxer
-  pip:
-    name: proxmoxer
-
 - name: Ensure user groups exists
   group:
     name: "{{ main_username }}"

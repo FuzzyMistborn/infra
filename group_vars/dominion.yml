@@ -13,13 +13,25 @@ package_list:
   - name: sshpass
   - name: screen
 
+### Pip Packages
+pip_packages:
+  - ansible
+  - yamllint
+  - thefuck
+
 pull_backup: false
 
 ### Bash Aliases
 
 bash_aliases:
+  - alias: c
+    command: clear
+  - alias: e
+    command: exit
   - alias: gitcheck
     command: /bin/bash /home/{{main_username}}/infra/git-vault-check.sh
+  - alias: ssh-remove
+    command: ssh-keygen -f /home/{{main_username}}/.ssh/known_hosts -R $c
 bash_systemctl: true
 bash_apt: true
 

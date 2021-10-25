@@ -1,11 +1,6 @@
 ---
 
 ### Basic Setup
-
-- name: Install Proxmoxer
-  pip:
-    name: proxmoxer
-
 - name: Ensure user groups exists
   group:
     name: "{{ item }}"

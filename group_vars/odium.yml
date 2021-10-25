@@ -14,6 +14,11 @@ package_list:
   - name: ethtool
   - name: ifupdown2
 
+### Pip Packages
+pip_packages:
+  - proxmoxer
+  - thefuck
+
 ### Cronjobs
 cronjobs:
   - name: Daily Suspend
