@@ -1,6 +1,7 @@
 ---
 target_os: endeavour_os
 hostname: kelsier
+bootstrap_user: "{{main_username}}"
 
 ### Install packages with grog.package
 package_list:
@@ -10,72 +11,94 @@ package_list:
     state: absent
   - name: gwenview
     state: absent
+  - name: ansible
+  - name: bluedevil
   - name: bluez
   - name: bluez-utils
-  - name: bluedevil
-  - name: curl
-  - name: cronie
-  - name: htop
-  - name: net-tools
-  - name: ethtool
-  - name: sudo
-  - name: wget
-  - name: wireguard-tools
-  - name: restic
-  - name: git
-  - name: lm_sensors
-  - name: python
-  - name: screen
-  - name: wget
-  - name: ncdu
+  - name: calibre
   - name: cifs-utils
+  - name: cronie
+  - name: curl
+  - name: ethtool
+  - name: filezilla
+  - name: firefox
+  - name: flameshot
+  - name: flatpak
+  - name: gedit
+  - name: gimp
+  - name: git
+  - name: gparted
+  - name: handbrake
+  - name: hddtemp
+  - name: htop
+  - name: iperf3
+  - name: kdialog
+  - name: kolourpaint
+  - name: latte-dock
+  - name: libreoffice-still
+  - name: libvncserver
+  - name: lm_sensors
+  - name: lutris
+  - name: mkvtoolnix-gui
+  - name: mpv
+  - name: nano
+  - name: ncdu
+  - name: net-tools
+  - name: nextcloud-client
+  - name: nfs-utils
+  - name: nomacs
   - name: nut
+  - name: nvidia-settings
   - name: openssh
+  - name: pdfarranger
+  - name: pipewire-pulse
+  - name: plasma-browser-integration
+  - name: python
+  - name: restic
+  - name: retroarch
+  - name: screen
+  - name: scrot
+  - name: skanlite
+  - name: spectacle
+  - name: steam
+  - name: sudo
+  - name: system-config-printer
+  - name: thunderbird
+  - name: veracrypt
   - name: virtualbox
-  - name: virtualbox-host-dkms
   - name: virtualbox-ext-oracle
   - name: virtualbox-guest-iso
-  - name: calibre
-  - name: gimp
-  - name: mkvtoolnix-gui
-  - name: filezilla
-  - name: flameshot
-  - name: gedit
-  - name: gparted
-  - name: kolourpaint
-  - name: lutris
-  - name: mpv
-  - name: nextcloud-client
-  - name: pdfarranger
-  - name: thunderbird
-  - name: vlc
-  - name: handbrake
-  - name: ansible
-  - name: veracrypt
-  - name: flatpak
-  - name: hddtemp
-  - name: iperf3
-  - name: nano
-  - name: nfs-utils
-  - name: ntfs-3g
-  - name: pipewire-pulse
-  - name: steam
-  - name: thunderbird
-  - name: firefox
-  - name: wine
-  - name: plasma-browser-integration
-  - name: libreoffice-still
-  - name: system-config-printer
+  - name: virtualbox-host-dkms
   - name: vivaldi
-  - name: latte-dock
-  - name: libvncserver
-  - name: scrot
-  - name: spectacle
-  - name: kdialog
-  - name: nomacs
-  - name: skanlite
-  - name: retroarch
-  - name: nvidia-settings
+  - name: vlc
+  - name: wget
+  - name: wine
+  - name: wireguard-tools
+
+aur_installs:
+  - mqtt-explorer-appimage  # Other package broken
+  - telegraf
+  - visual-studio-code-bin
+  - squeezelite
+  - bauh
+  - logiops
+  - protonmail-bridge
+  - zoom
+  - jellyfin-media-player
+  - brother-hl2270dw
+  - gwe
+  - esphome
+  - python-esphome-dashboard
+  - popsicle
+  - rpi-imager
+  - psst
+  - ventoy
+  - remmina-git
+  - epson-perfection-v10-v100-scanner-driver-aio
+  - heroic-games-launcher-bin
+  - minecraft-launcher
+  # - ckan  # Currently broken, use Mono
+  # - ferdi # Conflict package, install manually
 
 ### Pip Packages
 pip_packages:
@@ -124,6 +147,10 @@ bash_aliases:
     command: ssh-keygen -f /home/{{main_username}}/.ssh/known_hosts -R $c
   - alias: logi-restart
     command: sudo systemctl restart logid
+  - alias: nut
+    command: sudo upsdrvctl start && sudo upsd
+  - alias: nut-reload
+    command: sudo upsdrvctl start && sudo upsd -c reload
 bash_autorestic: true
 bash_systemctl: true
 bash_pacman: true
@@ -146,7 +173,7 @@ syncthing_folders:
     type: "sendreceive" # options are 'sendreceive' 'sendonly' and 'receiveonly'
     rescanInterval: 600 # time in seconds
     devices:
-      - "{{secret_syncthing_kelsier_device}}"
+      - "{{secret_syncthing_retroarchtv_device}}"
       - "{{secret_syncthing_adonalsium_device}}"
       - "{{secret_syncthing_steamdeck_device}}"
   - id: "{{secret_syncthing_rom_folder_id}}"
@@ -161,9 +188,9 @@ syncthing_devices:
  - id: "{{secret_syncthing_adonalsium_device}}"
    name: adonalsium
    address: tcp://192.168.1.20:22000
- - id: "{{secret_syncthing_retroarchpi_device}}"
-   name: retroarch-pi
-   address: tcp://192.168.10.10:22000
+ - id: "{{secret_syncthing_retroarchtv_device}}"
+   name: retroarch-tv
+   address: tcp://192.168.30.10:22000
  - id: "{{secret_syncthing_steamdeck_device}}"
    name: steamdeck
    address: tcp://192.168.10.X:22000

@@ -94,15 +94,15 @@ bash_pacman_aliases:
 
 bash_yay_aliases:
   - alias: yaup
-    command: sudo yay -Syu
+    command: yay -Syu
   - alias: yain
-    command: sudo yay -S
+    command: yay -S
   - alias: yaloc
-    command: sudo yay -Qi
+    command: yay -Qi
   - alias: yamir
-    command: sudo yay -Syy
+    command: yay -Syy
   - alias: yarem
-    command: sudo yay -Rns
+    command: yay -Rns
 
 # autorestic_ver: 1.1.2
 autorestic_config_user: "{{main_username}}"

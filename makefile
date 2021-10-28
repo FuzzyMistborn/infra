@@ -30,8 +30,11 @@ omada:
 ambition:
 	ansible-playbook -b run.yml --limit ambition --vault-password-file .vault-password
 
-retropi:
-	ansible-playbook -b run.yml --limit retroarch_pi --vault-password-file .vault-password
+retroarch_tv:
+	ansible-playbook -b run.yml --limit retroarch_tv --vault-password-file .vault-password
+
+hyperion:
+	ansible-playbook -b run.yml --limit hyperion --vault-password-file .vault-password
 
 kelsier:
 	ansible-playbook -b run.yml --limit kelsier --vault-password-file .vault-password
@@ -69,8 +72,11 @@ bootstrap_lxc:
 bootstrap_kelsier:
 	ansible-playbook -b bootstrap.yml --limit kelsier --vault-password-file .vault-password
 
-bootstrap_retropi:
-	ansible-playbook -b bootstrap.yml --ask-pass --limit retroarch_pi --vault-password-file .vault-password
+bootstrap_retroarchtv:
+	ansible-playbook -b bootstrap.yml --limit retroarch_tv --vault-password-file .vault-password
+
+bootstrap_hyperion:
+	ansible-playbook -b bootstrap.yml --ask-pass --limit hyperion --vault-password-file .vault-password
 
 git:
 	@./gitupdate.sh

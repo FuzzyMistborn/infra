@@ -61,7 +61,7 @@
       value: 'sdl2'
     - option: 'input_joypad_driver'
       value: 'sdl2'
-  when: (ansible_hostname == 'kelsier' or ansible_hostname == 'retroarchpi') and retroarch_config.stat.exists == true
+  when: (ansible_hostname == 'kelsier' or ansible_hostname == 'retroarch-tv') and retroarch_config.stat.exists == true
 
 ### Cores
 - name: check for retroarch cores dir
@@ -105,15 +105,6 @@
     - gambatte_libretro.so.zip
     - picodrive_libretro.so.zip
     - genesis_plus_gx_libretro.so.zip
-  when: ansible_architecture == "armv7l" and retroarch_core.stat.exists == true
-
-- name: download cores (armv7l)
-  unarchive:
-    src: https://www.duckstation.org/libretro/duckstation_libretro_linux_armv7.zip
-    dest: "{{retroarch_config_dir}}/cores"
-    remote_src: yes
-    owner: "{{retroarch_user}}"
-    group: "{{retroarch_user}}"
   when: ansible_architecture == "armv7l" and retroarch_core.stat.exists == true
 
 ### Add ROMs/create playlists

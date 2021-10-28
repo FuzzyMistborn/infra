@@ -1,186 +1,77 @@
 ---
-### Basic Setup
-- name: Apt update
-  apt:
-    upgrade: 'yes'
-    update_cache: yes
-    cache_valid_time: 3600
-
 - name: Set a hostname
   hostname:
-    name: retroarchpi
+    name: retroarch-tv
 
-- name: create autologin directory
-  file:
-    path: /etc/systemd/system/getty@tty1.service.d/
-    state: directory
-    owner: pi
-    group: pi
-
-- name: disable login for user
-  copy:
-    dest: /etc/systemd/system/getty@tty1.service.d/autologin.conf
-    owner: pi
-    group: pi
-    mode: 0664
-    content: |
-      [Service]
-      ExecStart=
-      ExecStart=-/sbin/agetty --skip-login --noissue --autologin pi %I $TERM
-      Type=idle
-
-- name: Set US locale
-  community.general.locale_gen:
-    name: en_US.UTF-8
+- name: SSH Keys
+  authorized_key:
+    user: retro
     state: present
+    key: "{{ item }}"
+  loop:
+    - "{{ secret_main_user_ssh }}"
+    - "{{ secret_main_user_alt_ssh }}"
 
-- name: Remove UK locale
-  community.general.locale_gen:
-    name: en_GB.UTF-8
-    state: absent
+- name: create /media/roms
+  file:
+    dest: /media/roms
+    state: directory
+    owner: retro
+    group: retro
+    mode: 0777
 
-- name: install bluetooth and other packages
-  apt:
-    name: 
-      - pi-bluetooth
-      - unzip
+### Flatpak
+- name: Add the flathub flatpak repository remote
+  community.general.flatpak_remote:
+    name: flathub
     state: present
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+    method: system
 
-# fstab/disk mounts
-- name: make sure disks unmounted
-  mount:
-    path: "{{ item.path }}"
-    state: unmounted
-  with_items:
-    - "{{ roms_drive }}"
-
-- name: create /mnt points
-  file:
-    dest: "{{ item.path }}"
-    state: directory
-    owner: pi
-    group: pi
-    mode: 0777
-  with_items:
-    - "{{ roms_drive }}"
-
-- name: mount disks
-  mount:
-    path: "{{ item.path }}"
-    src: "{{ item.source }}"
-    fstype: "{{ item.fs }}"
-    opts: "{{ item.opts }}"
-    # change to 'mounted' to auto mount versus 'present' for just loaded into fstab
-    state: mounted
-  with_items:
-    - "{{ roms_drive }}"
-
-- name: set ownership
-  file:
-    dest: "{{ item.path }}"
-    state: directory
-    owner: pi
-    group: pi
-    mode: 0777
-  with_items:
-    - "{{ roms_drive }}"
-
----
-- name: install necessary packages
-  apt:
-    update_cache: yes
+- name: Install flatpaks
+  community.general.flatpak:
     name:
-      - build-essential
-      - git
-      - libasound2-dev
-      - libavcodec-dev
-      - libavdevice-dev
-      - libavformat-dev
-      - libavresample-dev
-      - libdrm-common
-      - libdrm-dev
-      - libdrm2
-      - libegl1-mesa-dev
-      - libfreetype6-dev
-      - libgbm-dev
-      - libgbm1
-      - libgles2
-      - libgles2-mesa
-      - libgles2-mesa-dev
-      - libsdl-image1.2-dev
-      - libsdl2-dev
-      - libswresample-dev
-      - libswscale-dev
-      - libudev-dev
-      - libv4l-dev
-      - libxkbcommon-dev
-      - libxml2-dev
-      - yasm
-      - zlib1g-dev
+      - com.valvesoftware.SteamLink
     state: present
+    method: user
+  become_user: retro
+  become: yes
 
-### Build RetroArch
-- name: Copy RetroArch build script
-  copy:
-    src: build.sh
-    dest: /home/pi/build.sh
-    owner: pi
-    group: pi
-    mode: +x
+- name: Enable WOL ethtool
+  command: ethtool -s eno1 wol g
 
-- name: get status of retroarch_install_path
-  stat:
-    path: /usr/local/bin/retroarch
-  register: is_installed
+- name: enable WOL tlp.conf
+  lineinfile:
+    dest: "/etc/tlp.conf"
+    state: present
+    regexp: "^WOL_DISABLE"
+    line: "WOL_DISABLE=N"
 
-- name: set retroarch installed
-  set_fact:
-    retroarch_is_installed: "{{ is_installed.stat.exists }}"
+- name: Reload TLP/Cronie/bluetooth
+  systemd:
+    enabled: true
+    daemon-reload: true
+    state: restarted
+    name: "{{ item }}"
+  with_items:
+    - tlp
+    - cronie
+    - bluetooth
 
-- name: get latest release
-  uri:
-    url: https://api.github.com/repos/libretro/retroarch/releases/latest
-    return_content: true
-  register: release_version_registered
-  when: retroarch_download_latest_ver == True
-
-- name: set retroarch version (latest)
-  set_fact:
-    retroarch_ver: "{{ release_version_registered.json.tag_name|regex_replace('v') }}"
-  when: retroarch_download_latest_ver == True
-
-- name: set retroarch version (pinned)
-  set_fact:
-    retroarch_ver: "{{ retroarch_pinned_ver }}"
-  when: retroarch_download_latest_ver == False
-
-- name: Build Retroarch
-  command: sudo /usr/bin/bash build.sh {{ retroarch_ver|quote }}
-  args:
-    chdir: /home/pi
-  when: retroarch_is_installed == False or ( retroarch_is_installed == True and retroarch_download_latest_ver == True ) or ( retroarch_is_installed == True and retroarch_download_latest_ver == False and retroarch_download_pinned_ver == True )
+- name: enable bluetooth auto-power on
+  lineinfile:
+    dest: "/etc/bluetooth/main.conf"
+    state: present
+    regexp: "^AutoEnable"
+    line: "AutoEnable=true"
 
 - name: Set bash profile to start retroarch
   copy:
-    dest: /home/pi/.bash_profile
-    owner: pi
-    group: pi
+    dest: /home/retro/.bash_profile
+    owner: retro
+    group: retro
     mode: 0664
     content: |
       if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
         exec retroarch >/dev/null 2>&1
       fi
-
-### Syncthing
-- name: Create .stignore file
-  copy:
-    dest: /mnt/roms/.stignore
-    owner: "{{retroarch_user}}"
-    group: "{{retroarch_user}}"
-    mode: 0664
-    content: |
-      gc
-      n64
-      ps2
-      wii
-      lost+found

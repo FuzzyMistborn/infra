@@ -35,7 +35,7 @@ zstyle ':z4h:term-title:local' precmd  '%m : %~'
 
 # Enable ('yes') or disable ('no') automatic teleportation of z4h over
 # ssh when connecting to these hosts.
-zstyle ':z4h:ssh:retroarch_tv' enable 'no'
+zstyle ':z4h:ssh:retro*' enable 'no'
 zstyle ':z4h:ssh:hyperion' enable 'no'
 zstyle ':z4h:ssh:192.168.*' enable 'no'
 # The default value if none of the overrides above match the hostname.

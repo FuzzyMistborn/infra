@@ -1,22 +1,51 @@
 ---
-hostname: retroarch-pi
+target_os: endeavour_os
+hostname: retroarch-tv
+bootstrap_user: retro
 
-roms_drive:
-  - path: /mnt/roms
-    source: /dev/disk/by-id/usb-SanDisk_Cruzer_Fit_4C530001171224108331-0:0-part1
-    fs: ext4
-    opts: defaults
-    content: true
+## Install packages with grog.package
+package_list:
+  - name: dragon
+    state: absent
+  - name: plank
+    state: absent
+  - name: gwenview
+    state: absent
+  - name: curl
+  - name: cronie
+  - name: htop
+  - name: net-tools
+  - name: ethtool
+  - name: sudo
+  - name: wget
+  - name: git
+  - name: python
+  - name: openssh
+  - name: nano
+  - name: steam
+  - name: retroarch
+  - name: unclutter
 
 ### Bash Aliases
-bash_user: pi
+bash_user: retro
 bash_systemctl: true
-bash_apt: true
+bash_pacman: true
+bash_yay: true
+
+pip_packages:
+  - thefuck
+
+### Cronjobs
+cronjobs:
+  - name: Daily Suspend
+    job: /usr/bin/systemctl suspend
+    user: root
+    minute: 0
+    hour: 0
 
 ### Retroarch
-retroarch_distro: armv7-neon-hf
-retroarch_user: pi
-retroarch_roms_dir: /mnt/roms
+retroarch_user: retro
+retroarch_roms_dir: /media/roms
 retroarch_config_dir: /home/{{retroarch_user}}/.config/retroarch
 retroarch_config_path: "{{retroarch_config_dir}}/retroarch.cfg"
 
@@ -25,10 +54,9 @@ retroarch_download_latest_ver: true
 retroarch_pinned_ver: 1.19.11
 
 ### Syncthing
-syncthing_user: pi
-syncthing_distro: linux-arm
-syncthing_api_key: "{{secret_syncthing_api_retroarch_pi}}"
-syncthing_device_id: "{{secret_syncthing_retroarchpi_device}}"
+syncthing_user: retro
+syncthing_api_key: "{{secret_syncthing_api_retroarch_tv}}"
+syncthing_device_id: "{{secret_syncthing_retroarchtv_device}}"
 syncthing_gui_authentication: true
 syncthing_gui_user: "{{main_username}}"
 syncthing_gui_pass: "{{secret_syncthing_gui_pass}}"

@@ -1,5 +1,4 @@
 ---
-adonalsium_ip: 192.168.30.10
 hostname: adonalsium
 
 ### Install packages with grog.package
@@ -97,7 +96,7 @@ syncthing_folders:
     rescanInterval: 600 # time in seconds
     devices:
       - "{{secret_syncthing_kelsier_device}}"
-      - "{{secret_syncthing_retroarchpi_device}}"
+      - "{{secret_syncthing_retroarchtv_device}}"
       - "{{secret_syncthing_steamdeck_device}}"
   - id: "{{secret_syncthing_rom_folder_id}}"
     label: "RetroArch - ROMs"
@@ -106,13 +105,13 @@ syncthing_folders:
     rescanInterval: 600 # time in seconds
     devices:
       - "{{secret_syncthing_kelsier_device}}"
-      - "{{secret_syncthing_retroarchpi_device}}"
+      - "{{secret_syncthing_retroarchtv_device}}"
       - "{{secret_syncthing_steamdeck_device}}"
 
 syncthing_devices:
- - id: "{{secret_syncthing_retroarchpi_device}}"
-   name: retroarch-pi
-   address: tcp://192.168.30.26:22000
+ - id: "{{secret_syncthing_retroarchtv_device}}"
+   name: retroarch-tv
+   address: tcp://192.168.30.10:22000
  - id: "{{secret_syncthing_kelsier_device}}"
    name: kelsier
    address: tcp://192.168.10.10:22000

@@ -54,31 +54,12 @@
   kewlfft.aur.aur:
     use: yay
     name:
-      - mqtt-explorer-appimage  # Other package broken
-      - telegraf
-      - visual-studio-code-bin
-      - squeezelite
-      - bauh
-      - logiops
-      - protonmail-bridge
-      - zoom
-      - jellyfin-media-player
-      - brother-hl2270dw
-      - gwe
-      - esphome
-      - python-esphome-dashboard
-      - popsicle
-      - rpi-imager
-      - psst
-      - ventoy
-      - remmina-git
-      - epson-perfection-v10-v100-scanner-driver-aio
-      - heroic-games-launcher-bin
-      # - ckan  # Currently broken, use Mono
-      # - ferdi # Conflict package, install manually
+      - "{{ item }}"
     state: present
   become_user: ansible
   become: yes
+  with_items:
+    - "{{ aur_installs }}"
 
 ### Flatpak
 - name: Add the flathub flatpak repository remote
