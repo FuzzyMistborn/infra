@@ -75,7 +75,7 @@ package_list:
   - name: wine
   - name: wireguard-tools
 
-aur_installs:
+aur_package_list:
   - mqtt-explorer-appimage  # Other package broken
   - telegraf
   - visual-studio-code-bin

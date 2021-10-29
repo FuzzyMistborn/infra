@@ -5,6 +5,18 @@
     state: present
     key: "{{secret_kelsier_hass_ssh}}"
 
+- name: Fix SFTP for Ansible
+  lineinfile:
+    dest: "/etc/ssh/sshd_config"
+    state: present
+    regexp: "Subsystem sftp*"
+    line: "Subsystem sftp internal-sftp"
+
+- name: Restart ssh
+  service:
+    name: sshd
+    state: restarted
+
 - name: Copy SSH files
   template:
     src: "{{item.src}}"
@@ -54,12 +66,12 @@
   kewlfft.aur.aur:
     use: yay
     name:
-      - "{{ item }}"
+      - "{{ item.name }}"
     state: present
   become_user: ansible
   become: yes
   with_items:
-    - "{{ aur_installs }}"
+    - "{{ aur_package_list }}"
 
 ### Flatpak
 - name: Add the flathub flatpak repository remote
@@ -74,9 +86,7 @@
 #     name:
 #       - example
 #     state: present
-#     method: user
-#   become_user: "{{main_username}}"
-#   become: yes
+#     method: system
 
 # fstab/disk mounts
 - name: make sure disks unmounted

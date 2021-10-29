@@ -49,9 +49,14 @@ Host valor
     User {{main_username}}
     IdentityFile ~/.ssh/kelsier_lxcs
 
-Host retroarch
+Host hyperion
     HostName 192.168.30.21
     User pi
+    IdentityFile ~/.ssh/kelsier_lxcs
+
+Host retroarch
+    HostName 192.168.30.10
+    User retro
     IdentityFile ~/.ssh/kelsier_lxcs
 
 Host linode

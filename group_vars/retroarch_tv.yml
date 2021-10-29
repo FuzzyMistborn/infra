@@ -25,6 +25,10 @@ package_list:
   - name: steam
   - name: retroarch
   - name: unclutter
+  - name: flatpak
+
+aur_package_list:
+  - name: gamehub
 
 ### Bash Aliases
 bash_user: retro

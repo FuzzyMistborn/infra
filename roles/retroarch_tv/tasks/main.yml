@@ -1,8 +1,4 @@
 ---
-- name: Set a hostname
-  hostname:
-    name: retroarch-tv
-
 - name: SSH Keys
   authorized_key:
     user: retro
@@ -12,6 +8,18 @@
     - "{{ secret_main_user_ssh }}"
     - "{{ secret_main_user_alt_ssh }}"
 
+- name: Fix SFTP for Ansible
+  lineinfile:
+    dest: "/etc/ssh/sshd_config"
+    state: present
+    regexp: "^Subsystem sftp  /usr/lib/openssh/sftp-server"
+    line: "Subsystem sftp internal-sftp"
+
+- name: Restart ssh
+  service:
+    name: sshd
+    state: restarted
+
 - name: create /media/roms
   file:
     dest: /media/roms
@@ -19,6 +27,18 @@
     owner: retro
     group: retro
     mode: 0777
+
+### AUR
+- name: Install AUR Packages
+  kewlfft.aur.aur:
+    use: yay
+    name:
+      - "{{ item.name }}"
+    state: present
+  become_user: ansible
+  become: yes
+  with_items:
+    - "{{ aur_package_list }}"
 
 ### Flatpak
 - name: Add the flathub flatpak repository remote
@@ -33,9 +53,7 @@
     name:
       - com.valvesoftware.SteamLink
     state: present
-    method: user
-  become_user: retro
-  become: yes
+    method: system
 
 - name: Enable WOL ethtool
   command: ethtool -s eno1 wol g

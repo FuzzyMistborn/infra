@@ -30,7 +30,7 @@ omada:
 ambition:
 	ansible-playbook -b run.yml --limit ambition --vault-password-file .vault-password
 
-retroarch_tv:
+retroarchtv:
 	ansible-playbook -b run.yml --limit retroarch_tv --vault-password-file .vault-password
 
 hyperion:
@@ -70,10 +70,10 @@ bootstrap_lxc:
 	ansible-playbook -b bootstrap.yml --limit lxc ambition --vault-password-file .vault-password
 
 bootstrap_kelsier:
-	ansible-playbook -b bootstrap.yml --limit kelsier --vault-password-file .vault-password
+	ansible-playbook -b bootstrap.yml --limit kelsier --ask-pass --ask-become-pass --vault-password-file .vault-password
 
 bootstrap_retroarchtv:
-	ansible-playbook -b bootstrap.yml --limit retroarch_tv --vault-password-file .vault-password
+	ansible-playbook -b bootstrap.yml --limit retroarch_tv --ask-pass --ask-become-pass --vault-password-file .vault-password
 
 bootstrap_hyperion:
 	ansible-playbook -b bootstrap.yml --ask-pass --limit hyperion --vault-password-file .vault-password

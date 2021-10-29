@@ -215,6 +215,7 @@
   vars_files:
     - 'vars/vault.yaml'
   roles:
+    - role: grog.package
     - role: retroarch_tv
     - role: retroarch
     - role: bash_alias
