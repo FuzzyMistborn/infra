@@ -19,7 +19,7 @@ package_list:
 # telegraf_ver: 1.18.1
 telegraf_influx_url: 'http://192.168.50.22:8086'
 telegraf_influx_org: Cosmere
-syncthing_user: "{{main_username}}"
+syncthing_user: "{{ main_username }}"
 
 # bash aliases
 bash_aliases:
@@ -105,10 +105,10 @@ bash_yay_aliases:
     command: yay -Rns
 
 # autorestic_ver: 1.1.2
-autorestic_config_user: "{{main_username}}"
+autorestic_config_user: "{{ main_username }}"
 # restic_ver: 0.12.1
 # runitor_ver: 0.8.0
-runitor_url: "{{secret_hc_ping_url}}"
+runitor_url: "{{ secret_hc_ping_url }}"
 
 # geerlingguy.ntp
 ntp_timezone: America/New_York
@@ -118,7 +118,7 @@ docker_users:
   - "{{ main_username }}"
 
 # ironicbadger.docker_compose_generator
-appdata_path: /home/{{main_username}}/docker
+appdata_path: /home/{{ main_username }}/docker
 global_env_vars:
   - "UID={{ main_uid }}"
   - "GID={{ main_gid }}"

@@ -29,16 +29,16 @@ bash_aliases:
   - alias: e
     command: exit
   - alias: gitcheck
-    command: /bin/bash /home/{{main_username}}/infra/git-vault-check.sh
+    command: /bin/bash /home/{{ main_username }}/infra/git-vault-check.sh
   - alias: ssh-remove
-    command: ssh-keygen -f /home/{{main_username}}/.ssh/known_hosts -R $c
+    command: ssh-keygen -f /home/{{ main_username }}/.ssh/known_hosts -R $c
 bash_systemctl: true
 bash_apt: true
 
 ### Cronjobs
 cronjobs:
   - name: Ansible Update
-    job: /usr/local/bin/runitor -uuid {{secret_hc_ansible_update}} -- /home/{{ main_username }}/update.sh
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_ansible_update }} -- /home/{{ main_username }}/update.sh
     user: "{{ main_username }}"
     minute: 30
     hour: 19

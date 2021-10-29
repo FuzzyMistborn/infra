@@ -13,9 +13,9 @@ Description=TG Sync for Passcodes
 After=network-online.target
 
 [Service]
-ExecStart=/home/{{main_username}}/scripts/run.sh
-WorkingDirectory=/home/{{main_username}}/scripts
-User={{main_username}}
+ExecStart=/home/{{ main_username }}/scripts/run.sh
+WorkingDirectory=/home/{{ main_username }}/scripts
+User={{ main_username }}
 
 Restart=always
 RestartSec=10

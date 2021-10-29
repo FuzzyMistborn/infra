@@ -1,7 +1,7 @@
 ---
 - name: create config directories
   file:
-    path: "/home/{{main_username}}/{{ item }}"
+    path: "/home/{{ main_username }}/{{ item }}"
     state: directory
     owner: "{{ main_username }}"
     group: "{{ main_groupname }}"

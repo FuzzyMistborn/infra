@@ -2,7 +2,7 @@
 
 - name: create config directories
   file:
-    path: "/home/{{main_username}}/{{ item }}"
+    path: "/home/{{ main_username }}/{{ item }}"
     state: directory
     owner: "{{ main_username }}"
     group: "{{ main_groupname }}"
@@ -27,8 +27,8 @@
 
 - name: Copy db backup script template
   template:
-    src: "{{item.src}}"
-    dest: /home/{{ main_username }}/scripts/{{item.dest}}
+    src: "{{ item.src }}"
+    dest: /home/{{ main_username }}/scripts/{{ item.dest }}
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
     mode: +x
@@ -45,12 +45,12 @@
     mode: +x
     content: |
       #!/bin/bash
-      /usr/local/bin/autorestic restore -f -l db_backups --from synology_db --to /home/{{main_username}}/db_backups
+      /usr/local/bin/autorestic restore -f -l db_backups --from synology_db --to /home/{{ main_username }}/db_backups
   when: pull_backup == true
 - name: Run restore script
   command: /bin/bash ./restore.sh
   args:
-    chdir: "/home/{{main_username}}"
+    chdir: "/home/{{ main_username }}"
   when: pull_backup == true
 - name: Remove restore script
   file:
@@ -62,5 +62,5 @@
 - name: Run DB Restore Script
   command: /bin/bash ./db_restore.sh
   args:
-    chdir: "/home/{{main_username}}/scripts"
+    chdir: "/home/{{ main_username }}/scripts"
   when: pull_backup == true

@@ -61,11 +61,11 @@
 
 - name: Copy backup scripts
   copy:
-    src: "{{item.src}}"
-    dest: "{{item.dest}}"
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     mode: +x
   loop:
-    - {src: "backup.sh", dest: "/home/{{secret_main_user}}/backup.sh"}
+    - {src: "backup.sh", dest: "/home/{{ secret_main_user }}/backup.sh"}
 
 ### udev Rules
 - name: Add udev rules
@@ -112,8 +112,8 @@
 
 - name: Copy nut folder
   copy:
-    src: etc/nut/{{item}}
-    dest: /etc/nut/{{item}}
+    src: etc/nut/{{ item }}
+    dest: /etc/nut/{{ item }}
     owner: root
     group: nut
     mode: 0640
@@ -128,15 +128,15 @@
 - name: Copy NUT script
   copy:
     src: nut.sh
-    dest: /home/{{main_username}}
+    dest: /home/{{ main_username }}
     mode: +x
   when: install_nut == true
 
 - name: Run NUT script
   command: /bin/bash ./nut.sh
   args:
-    chdir: /home/{{main_username}}
-    creates: /home/{{main_username}}/nut.sh
+    chdir: /home/{{ main_username }}
+    creates: /home/{{ main_username }}/nut.sh
   when: install_nut == true
 
 ### Backup Restore
@@ -148,12 +148,12 @@
     mode: +x
     content: |
       #!/bin/bash
-      /usr/local/bin/autorestic restore -f -l docker --from synology_docker --to /home/{{main_username}}/docker
+      /usr/local/bin/autorestic restore -f -l docker --from synology_docker --to /home/{{ main_username }}/docker
   when: pull_backup == true
 - name: Run restore script
   command: /bin/bash ./restore.sh
   args:
-    chdir: "/home/{{main_username}}"
+    chdir: "/home/{{ main_username }}"
   when: pull_backup == true
 - name: Remove restore script
   file:

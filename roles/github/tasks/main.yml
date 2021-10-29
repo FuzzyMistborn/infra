@@ -25,7 +25,7 @@
 - name: Run Github Script
   command: /bin/bash ./github.sh
   args:
-    chdir: "/home/{{main_username}}"
+    chdir: "/home/{{ main_username }}"
 - name: Remove Github script
   file:
     path: /home/{{ main_username }}/github.sh

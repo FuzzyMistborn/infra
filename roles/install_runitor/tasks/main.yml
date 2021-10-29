@@ -45,7 +45,7 @@
 
     - name: download runitor
       get_url:
-        url: "{{ runitor_gh_url }}/v{{runitor_ver}}/runitor-v{{runitor_ver}}-{{runitor_distro}}"
+        url: "{{ runitor_gh_url }}/v{{ runitor_ver }}/runitor-v{{ runitor_ver }}-{{ runitor_distro }}"
         dest: "{{ runitor_download_directory }}"
         force: yes
         owner: root
@@ -53,7 +53,7 @@
         mode: +x
 
     - name: move to /usr/local/bin
-      shell: "mv {{ runitor_download_directory }}/runitor-v{{ runitor_ver }}-{{runitor_distro}} {{runitor_install_path}}"
+      shell: "mv {{ runitor_download_directory }}/runitor-v{{ runitor_ver }}-{{ runitor_distro }} {{ runitor_install_path }}"
 
   when: runitor_is_installed == False or ( runitor_is_installed == True and runitor_download_latest_ver == True and installed_version_registered.stdout != runitor_ver ) or ( runitor_is_installed == True and runitor_download_latest_ver == False and installed_version_registered.stdout != runitor_pinned_ver )
 
@@ -62,5 +62,5 @@
     dest: "/etc/environment"
     state: present
     regexp: "^HC_API_URL="
-    line: "HC_API_URL={{runitor_url}}"
+    line: "HC_API_URL={{ runitor_url }}"
   when: runitor_is_installed == False

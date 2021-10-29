@@ -19,7 +19,7 @@ module(load="imuxsock") # provides support for local system logging
 
 # provides TCP syslog reception
 module(load="imtcp")
-input(type="imtcp" port="{{secret_rsyslog_port}}")
+input(type="imtcp" port="{{ secret_rsyslog_port }}")
 #$AllowedSender TCP, 127.0.0.1, 192.168.10.0/24, *.example.com
 
 # provides kernel logging support and enable non-kernel klog messages

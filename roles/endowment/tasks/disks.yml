@@ -19,13 +19,13 @@
 
 - name: Add smbcredentials
   copy:
-    dest: /home/{{main_username}}/.smbcredentials
+    dest: /home/{{ main_username }}/.smbcredentials
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
     mode: 0600
     content: |
       user=samba
-      password={{secret_samba_pass}}
+      password={{ secret_samba_pass }}
       domain=cosmere
 
 - name: mount disks

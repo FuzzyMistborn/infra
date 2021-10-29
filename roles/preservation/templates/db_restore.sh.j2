@@ -1,31 +1,31 @@
 #!/bin/bash
 
-cd /home/{{main_username}}
+cd /home/{{ main_username }}
 docker-compose up -d nextcloud-db bitwarden-db wallabag-db hass-db influx-db
 
 sleep 30s
 echo Restoring Nextcloud DB
-cd /home/{{main_username}}/db_backups/nextcloud
+cd /home/{{ main_username }}/db_backups/nextcloud
 LAST_NEXTCLOUD=$(ls -t | head -n 1)
-docker exec -i nextcloud-db /usr/bin/mysql -u {{ main_username }} -p{{ secret_nextcloud_db_pass }} nextcloud < /home/{{main_username}}/db_backups/nextcloud/$LAST_NEXTCLOUD
+docker exec -i nextcloud-db /usr/bin/mysql -u {{ main_username }} -p{{ secret_nextcloud_db_pass }} nextcloud < /home/{{ main_username }}/db_backups/nextcloud/$LAST_NEXTCLOUD
 
 echo Restoring Bitwarden DB
-cd /home/{{main_username}}/db_backups/bitwarden
+cd /home/{{ main_username }}/db_backups/bitwarden
 LAST_BITWARDEN=$(ls -t | head -n 1)
-docker exec -i bitwarden-db /usr/bin/mysql -u bitwarden -p{{ secret_bitwarden_db_pass }} bitwarden_rs < /home/{{main_username}}/db_backups/bitwarden/$LAST_BITWARDEN
+docker exec -i bitwarden-db /usr/bin/mysql -u bitwarden -p{{ secret_bitwarden_db_pass }} bitwarden_rs < /home/{{ main_username }}/db_backups/bitwarden/$LAST_BITWARDEN
 
 echo Restoring Wallabag DB
-cd /home/{{main_username}}/db_backups/wallabag
+cd /home/{{ main_username }}/db_backups/wallabag
 LAST_WALLABAG=$(ls -t | head -n 1)
-docker exec -i wallabag-db /usr/bin/mysql -u root -p{{ secret_wallabag_db_pass }} symfony < /home/{{main_username}}/db_backups/wallabag/$LAST_WALLABAG
+docker exec -i wallabag-db /usr/bin/mysql -u root -p{{ secret_wallabag_db_pass }} symfony < /home/{{ main_username }}/db_backups/wallabag/$LAST_WALLABAG
 
 echo Restoring HASS DB
-cd /home/{{main_username}}/db_backups/hass
+cd /home/{{ main_username }}/db_backups/hass
 LAST_HASS=$(ls -t | head -n 1)
-docker exec -i hass-db /usr/bin/mysql -u hass -p{{ secret_hass_db_pass }} homeassistant < /home/{{main_username}}/db_backups/hass/$LAST_HASS
+docker exec -i hass-db /usr/bin/mysql -u hass -p{{ secret_hass_db_pass }} homeassistant < /home/{{ main_username }}/db_backups/hass/$LAST_HASS
 
 #echo Restoring InfluxDB
 # Run `docker exec -it influx-db` and then run below commands
-# influx setup -t {{secret_influxdb_token}}
+# influx setup -t {{ secret_influxdb_token }}
 # influx restore --full /media/backup/DATE
 # Lots of user input data, probably not easy to automate/ansible-ize

@@ -3,32 +3,32 @@
 # Nextcloud DB Backup
 echo Backing up Nextcloud DB
 today=$(date +"%Y_%m_%d")
-docker exec nextcloud-db sh -c 'exec mysqldump --single-transaction -h localhost -u {{ main_username }} -p{{ secret_nextcloud_db_pass }} nextcloud' > /home/{{main_username}}/db_backups/nextcloud/nextcloudDB_$today.sql
+docker exec nextcloud-db sh -c 'exec mysqldump --single-transaction -h localhost -u {{ main_username }} -p{{ secret_nextcloud_db_pass }} nextcloud' > /home/{{ main_username }}/db_backups/nextcloud/nextcloudDB_$today.sql
 
 #### Bitwarden DB Backup
 echo Backing up Bitwarden DB
 today=$(date +"%Y_%m_%d")
-docker exec bitwarden-db sh -c 'exec mysqldump --single-transaction -h localhost -u bitwarden -p{{ secret_bitwarden_db_pass }} bitwarden_rs' > /home/{{main_username}}/db_backups/bitwarden/bitwardenDB_$today.sql
+docker exec bitwarden-db sh -c 'exec mysqldump --single-transaction -h localhost -u bitwarden -p{{ secret_bitwarden_db_pass }} bitwarden_rs' > /home/{{ main_username }}/db_backups/bitwarden/bitwardenDB_$today.sql
 
 #### Wallabag DB Backup
 echo Backing up Wallabag DB
 today=$(date +"%Y_%m_%d")
-docker exec wallabag-db sh -c 'exec mysqldump --single-transaction -h localhost -u root -p{{ secret_wallabag_db_pass }} symfony' > /home/{{main_username}}/db_backups/wallabag/wallabagDB_$today.sql
+docker exec wallabag-db sh -c 'exec mysqldump --single-transaction -h localhost -u root -p{{ secret_wallabag_db_pass }} symfony' > /home/{{ main_username }}/db_backups/wallabag/wallabagDB_$today.sql
 
 #### Hass DB Backup
 echo Backing up Hass DB
 today=$(date +"%Y_%m_%d")
-docker exec hass-db sh -c 'exec mysqldump --single-transaction -h localhost -u hass -p{{ secret_hass_db_pass }} homeassistant' > /home/{{main_username}}/db_backups/hass/hassDB_$today.sql
+docker exec hass-db sh -c 'exec mysqldump --single-transaction -h localhost -u hass -p{{ secret_hass_db_pass }} homeassistant' > /home/{{ main_username }}/db_backups/hass/hassDB_$today.sql
 
 #### InfluxDB Backup
 echo Backing up InfluxDB
 docker exec influx-db sh -c 'influx backup \
   /media/backup/$(date +"%Y.%m.%d") \
-  -t {{secret_influxdb_token}} && chmod 777 -R /media/backup'
+  -t {{ secret_influxdb_token }} && chmod 777 -R /media/backup'
 
 #### Delete Old
-find /home/{{main_username}}/db_backups/* -mtime +6 -type f -delete
-find /home/{{main_username}}/db_backups/influxdb -mtime +6 -type d -delete
+find /home/{{ main_username }}/db_backups/* -mtime +6 -type f -delete
+find /home/{{ main_username }}/db_backups/influxdb -mtime +6 -type d -delete
 
 #### Backup the backups
-/usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml
+/usr/local/bin/autorestic backup -a -c /home/{{ main_username }}/.autorestic.yml

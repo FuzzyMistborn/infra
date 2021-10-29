@@ -59,16 +59,16 @@
   ## Multiple URLs can be specified for a single cluster, only ONE of the
   ## urls will be written to each interval.
   ## urls exp: http://127.0.0.1:8086
-  urls = ["{{telegraf_influx_url}}"]
+  urls = ["{{ telegraf_influx_url }}"]
 
   ## Token for authentication.
-  token = "{{telegraf_influx_token}}"
+  token = "{{ telegraf_influx_token }}"
 
   ## Organization is the name of the organization you wish to write to; must exist.
-  organization = "{{telegraf_influx_org}}"
+  organization = "{{ telegraf_influx_org }}"
 
   ## Destination bucket to write into.
-  bucket = "{{telegraf_influx_bucket}}"
+  bucket = "{{ telegraf_influx_bucket }}"
 [[inputs.cpu]]
   ## Whether to report per-cpu stats or not
   percpu = true
@@ -81,7 +81,7 @@
 [[inputs.disk]]
   ## By default stats will be gathered for all mount points.
   ## Set mount_points will restrict the stats to only the specified mount points.
-  mount_points = [{{telegraf_influx_disk_mounts}}]
+  mount_points = [{{ telegraf_influx_disk_mounts }}]
   ## Ignore mount points by filesystem type.
   ignore_fs = ["tmpfs", "devtmpfs", "devfs", "overlay", "aufs", "squashfs"]
 [[inputs.diskio]]
@@ -136,7 +136,7 @@
 [[inputs.proxmox]]
   ## API connection configuration. The API token was introduced in Proxmox v6.2. Required permissions for user and token: PVEAuditor role on /.
   base_url = "https://localhost:8006/api2/json"
-  api_token = "{{telegraf_influx_pve_api}}"
+  api_token = "{{ telegraf_influx_pve_api }}"
   ## Node name, defaults to OS hostname
   # node_name = "adonalsium"
 

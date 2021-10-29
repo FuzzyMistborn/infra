@@ -6,7 +6,7 @@
 
 - name: create config directories
   file:
-    path: "/home/{{main_username}}/{{ item }}"
+    path: "/home/{{ main_username }}/{{ item }}"
     state: directory
     owner: "{{ main_username }}"
     group: "{{ main_groupname }}"
@@ -32,12 +32,12 @@
     mode: +x
     content: |
       #!/bin/bash
-      /usr/local/bin/autorestic restore -f -l docker --from synology_docker --to /home/{{main_username}}/docker
+      /usr/local/bin/autorestic restore -f -l docker --from synology_docker --to /home/{{ main_username }}/docker
   when: pull_backup == true
 - name: Run restore script
   command: /bin/bash ./restore.sh
   args:
-    chdir: "/home/{{main_username}}"
+    chdir: "/home/{{ main_username }}"
   when: pull_backup == true
 - name: Remove restore script
   file:

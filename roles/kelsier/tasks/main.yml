@@ -3,7 +3,7 @@
   authorized_key:
     user: "{{ main_username }}"
     state: present
-    key: "{{secret_kelsier_hass_ssh}}"
+    key: "{{ secret_kelsier_hass_ssh }}"
 
 - name: Fix SFTP for Ansible
   lineinfile:
@@ -19,14 +19,14 @@
 
 - name: Copy SSH files
   template:
-    src: "{{item.src}}"
-    dest: "{{item.dest}}"
-    mode: "{{item.mode}}"
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
   loop:
-    - {src: "auth_commands.sh.j2", dest: "/home/{{main_username}}/.ssh/auth_commands.sh", mode: "755"}
-    - {src: "ssh_config.j2", dest: "/home/{{main_username}}/.ssh/config", mode: "600"}
+    - {src: "auth_commands.sh.j2", dest: "/home/{{ main_username }}/.ssh/auth_commands.sh", mode: "755"}
+    - {src: "ssh_config.j2", dest: "/home/{{ main_username }}/.ssh/config", mode: "600"}
 
 - name: Add Kelsier LXC SSH Key
   copy:
@@ -56,7 +56,7 @@
 - name: Add sudoers file for main user
   template:
     src: sudoers_main_user.j2
-    dest: /etc/sudoers.d/{{main_username}}
+    dest: /etc/sudoers.d/{{ main_username }}
     owner: root
     group: root
     mode: 0440
@@ -102,7 +102,7 @@
   file:
     dest: "{{ item.path }}"
     state: directory
-    owner: "{{main_username}}"
+    owner: "{{ main_username }}"
     group: nobody
     mode: 0777
   with_items:
@@ -112,13 +112,13 @@
 
 - name: Add smbcredentials
   copy:
-    dest: /home/{{main_username}}/.smbcredentials
+    dest: /home/{{ main_username }}/.smbcredentials
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
     mode: 0600
     content: |
       user=samba
-      password={{secret_samba_pass}}
+      password={{ secret_samba_pass }}
       domain=cosmere
 
 - name: mount disks
@@ -146,30 +146,30 @@
 ### Dolphin/ZSH
 - name: Copy config files
   copy:
-    src: "{{item.src}}"
-    dest: "{{item.dest}}"
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     mode: 0644
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
   with_items:
     - src: "kde/dolphinrc"
-      dest: "/home/{{main_username}}/.config/dolphinrc"
+      dest: "/home/{{ main_username }}/.config/dolphinrc"
     - src: "kde/dolphinui.rc"
-      dest: "/home/{{main_username}}/.local/share/kxmlgui5/dolphin/dolphinui.rc"
+      dest: "/home/{{ main_username }}/.local/share/kxmlgui5/dolphin/dolphinui.rc"
     - src: "kde/konsoleprofile"
-      dest: "/home/{{main_username}}/.local/share/konsole/ZSH.profile"
+      dest: "/home/{{ main_username }}/.local/share/konsole/ZSH.profile"
     - src: "kde/Default.layout.latte"
-      dest: "/home/{{main_username}}/.config/latte/Default.layout.latte"
+      dest: "/home/{{ main_username }}/.config/latte/Default.layout.latte"
     - src: "zsh/zshrc"
-      dest: "/home/{{main_username}}/.zshrc"
+      dest: "/home/{{ main_username }}/.zshrc"
     - src: "zsh/p10k.zsh"
-      dest: "/home/{{main_username}}/.p10k.zsh"
+      dest: "/home/{{ main_username }}/.p10k.zsh"
 
 #### NUT
 - name: Copy nut folder
   copy:
-    src: etc/nut/{{item}}
-    dest: /etc/nut/{{item}}
+    src: etc/nut/{{ item }}
+    dest: /etc/nut/{{ item }}
     owner: root
     group: nut
     mode: 0640
@@ -184,15 +184,15 @@
 - name: Copy NUT script
   copy:
     src: nut.sh
-    dest: /home/{{main_username}}
+    dest: /home/{{ main_username }}
     mode: +x
   when: install_nut == true
 
 - name: Run NUT script
   command: /bin/bash ./nut.sh
   args:
-    chdir: /home/{{main_username}}
-    creates: /home/{{main_username}}/nut.sh
+    chdir: /home/{{ main_username }}
+    creates: /home/{{ main_username }}/nut.sh
   when: install_nut == true
 
 ### Backup Restore
@@ -204,12 +204,12 @@
     mode: +x
     content: |
       #!/bin/bash
-      /usr/local/bin/autorestic restore -f -l home --from synology_docker --to /home/{{main_username}}/docker
+      /usr/local/bin/autorestic restore -f -l home --from synology_docker --to /home/{{ main_username }}/docker
   when: pull_backup == true
 - name: Run restore script
   command: /bin/bash ./restore.sh
   args:
-    chdir: "/home/{{main_username}}"
+    chdir: "/home/{{ main_username }}"
   when: pull_backup == true
 - name: Remove restore script
   file:
@@ -227,10 +227,10 @@
 - name: Install plugin for MPV to use KDEConnect
   get_url:
     url: https://github.com/hoyon/mpv-mpris/releases/download/0.5/mpris.so
-    dest: /home/{{main_username}}/.config/mpv/scripts
+    dest: /home/{{ main_username }}/.config/mpv/scripts
     force: yes
-    owner: "{{main_username}}"
-    group: "{{main_username}}"
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
 
 - name: Enable WOL ethtool
   command: ethtool -s eno1 wol g
@@ -262,6 +262,6 @@
 
 - name: add main user to vboxusers group for USB
   user:
-    name: "{{main_username}}"
+    name: "{{ main_username }}"
     append: yes
     groups: vboxusers

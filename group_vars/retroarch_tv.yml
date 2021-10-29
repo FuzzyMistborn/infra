@@ -50,8 +50,8 @@ cronjobs:
 ### Retroarch
 retroarch_user: retro
 retroarch_roms_dir: /media/roms
-retroarch_config_dir: /home/{{retroarch_user}}/.config/retroarch
-retroarch_config_path: "{{retroarch_config_dir}}/retroarch.cfg"
+retroarch_config_dir: /home/{{ retroarch_user }}/.config/retroarch
+retroarch_config_path: "{{ retroarch_config_dir }}/retroarch.cfg"
 
 retroarch_download_pinned_ver: false
 retroarch_download_latest_ver: true
@@ -59,37 +59,37 @@ retroarch_pinned_ver: 1.19.11
 
 ### Syncthing
 syncthing_user: retro
-syncthing_api_key: "{{secret_syncthing_api_retroarch_tv}}"
-syncthing_device_id: "{{secret_syncthing_retroarchtv_device}}"
+syncthing_api_key: "{{ secret_syncthing_api_retroarch_tv }}"
+syncthing_device_id: "{{ secret_syncthing_retroarchtv_device }}"
 syncthing_gui_authentication: true
-syncthing_gui_user: "{{main_username}}"
-syncthing_gui_pass: "{{secret_syncthing_gui_pass}}"
+syncthing_gui_user: "{{ main_username }}"
+syncthing_gui_pass: "{{ secret_syncthing_gui_pass }}"
 
 syncthing_folders:
-  - id: "{{secret_syncthing_sys_folder_id}}"
+  - id: "{{ secret_syncthing_sys_folder_id }}"
     label: "RetroArch - System"
-    path: "{{retroarch_config_dir}}"
+    path: "{{ retroarch_config_dir }}"
     type: "sendreceive"  # options are 'sendreceive' 'sendonly' and 'receiveonly'
     rescanInterval: 600  # time in seconds
     devices:
-      - "{{secret_syncthing_kelsier_device}}"
-      - "{{secret_syncthing_adonalsium_device}}"
-      - "{{secret_syncthing_steamdeck_device}}"
-  - id: "{{secret_syncthing_rom_folder_id}}"
+      - "{{ secret_syncthing_kelsier_device }}"
+      - "{{ secret_syncthing_adonalsium_device }}"
+      - "{{ secret_syncthing_steamdeck_device }}"
+  - id: "{{ secret_syncthing_rom_folder_id }}"
     label: "RetroArch - ROMs"
-    path: "{{retroarch_roms_dir}}"
+    path: "{{ retroarch_roms_dir }}"
     type: "receiveonly"  # options are 'sendreceive' 'sendonly' and 'receiveonly'
     rescanInterval: 600  # time in seconds
     devices:
-      - "{{secret_syncthing_adonalsium_device}}"
+      - "{{ secret_syncthing_adonalsium_device }}"
 
 syncthing_devices:
-  - id: "{{secret_syncthing_adonalsium_device}}"
+  - id: "{{ secret_syncthing_adonalsium_device }}"
     name: adonalsium
     address: tcp://192.168.1.20:22000
-  - id: "{{secret_syncthing_kelsier_device}}"
+  - id: "{{ secret_syncthing_kelsier_device }}"
     name: kelsier
     address: tcp://192.168.10.10:22000
-  - id: "{{secret_syncthing_steamdeck_device}}"
+  - id: "{{ secret_syncthing_steamdeck_device }}"
     name: steamdeck
     address: tcp://192.168.10.X:22000

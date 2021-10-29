@@ -2,18 +2,18 @@
 ### Configuration
 - name: check for retroarch config file
   stat:
-    path: "{{retroarch_config_path}}"
+    path: "{{ retroarch_config_path }}"
   register: retroarch_config
 
 - name: set config settings
   ini_file:
-    path: "{{retroarch_config_path}}"
+    path: "{{ retroarch_config_path }}"
     section: null
-    option: "{{item.option}}"
-    value: "{{item.value}}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
   with_items:
     - option: 'core_updater_buildbot_cores_url'
-      value: '"http://buildbot.libretro.com/nightly/linux/{{retroarch_distro}}/latest/"'
+      value: '"http://buildbot.libretro.com/nightly/linux/{{ retroarch_distro }}/latest/"'
     - option: 'menu_show_core_updater'
       value: '"true"'
     - option: 'content_show_images'
@@ -37,7 +37,7 @@
     - option: 'autosave_interval'
       value: '"300"'
     - option: 'assets_directory'
-      value: '"{{retroarch_config_dir}}/assets"'
+      value: '"{{ retroarch_config_dir }}/assets"'
     - option: 'input_menu_toggle_gamepad_combo'
       value: '"4"'
     - option: "input_player1_analog_dpad_mode"
@@ -52,10 +52,10 @@
 
 - name: set controller config settings
   ini_file:
-    path: "{{retroarch_config_path}}"
+    path: "{{ retroarch_config_path }}"
     section: null
-    option: "{{item.option}}"
-    value: "{{item.value}}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
   with_items:
     - option: 'input_driver'
       value: 'sdl2'
@@ -66,16 +66,16 @@
 ### Cores
 - name: check for retroarch cores dir
   stat:
-    path: "{{retroarch_config_dir}}/cores"
+    path: "{{ retroarch_config_dir }}/cores"
   register: retroarch_core
 
 - name: download cores (x86)
   unarchive:
-    src: https://buildbot.libretro.com/nightly/linux/{{retroarch_distro}}/latest/{{item}}
-    dest: "{{retroarch_config_dir}}/cores"
+    src: https://buildbot.libretro.com/nightly/linux/{{ retroarch_distro }}/latest/{{ item }}
+    dest: "{{ retroarch_config_dir }}/cores"
     remote_src: yes
-    owner: "{{retroarch_user}}"
-    group: "{{retroarch_user}}"
+    owner: "{{ retroarch_user }}"
+    group: "{{ retroarch_user }}"
   with_items:
     - duckstation_libretro.so.zip
     - bsnes_libretro.so.zip
@@ -91,11 +91,11 @@
 
 - name: download cores (armv7l)
   unarchive:
-    src: https://buildbot.libretro.com/nightly/linux/armv7-neon-hf/latest/{{item}}
-    dest: "{{retroarch_config_dir}}/cores"
+    src: https://buildbot.libretro.com/nightly/linux/armv7-neon-hf/latest/{{ item }}
+    dest: "{{ retroarch_config_dir }}/cores"
     remote_src: yes
-    owner: "{{retroarch_user}}"
-    group: "{{retroarch_user}}"
+    owner: "{{ retroarch_user }}"
+    group: "{{ retroarch_user }}"
   with_items:
     - pcsx_rearmed_libretro.so.zip
     - mgba_libretro.so.zip
@@ -110,28 +110,28 @@
 ### Add ROMs/create playlists
 - name: check for retroarch playlists dir
   stat:
-    path: "{{retroarch_config_dir}}/playlists"
+    path: "{{ retroarch_config_dir }}/playlists"
   register: retroarch_playlist
 
 - name: Copy playlist generator script
   template:
     src: create_playlist.py.j2
-    dest: "{{retroarch_config_dir}}/create_playlist.py"
-    owner: "{{retroarch_user}}"
-    group: "{{retroarch_user}}"
+    dest: "{{ retroarch_config_dir }}/create_playlist.py"
+    owner: "{{ retroarch_user }}"
+    group: "{{ retroarch_user }}"
     mode: +x
   when: retroarch_playlist.stat.exists == true
 
 - name: run playlist generator script
-  command: python3 {{retroarch_config_dir}}/create_playlist.py
+  command: python3 {{ retroarch_config_dir }}/create_playlist.py
   when: retroarch_playlist.stat.exists == true
 
 ### Syncthing
 - name: Create .stignore file
   copy:
-    dest: "{{retroarch_config_dir}}/.stignore"
-    owner: "{{retroarch_user}}"
-    group: "{{retroarch_user}}"
+    dest: "{{ retroarch_config_dir }}/.stignore"
+    owner: "{{ retroarch_user }}"
+    group: "{{ retroarch_user }}"
     mode: 0664
     content: |
       !/assets

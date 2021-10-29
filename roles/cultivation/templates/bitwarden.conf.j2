@@ -1,10 +1,10 @@
 $ModLoad imfile
 $InputFilePollInterval 3
 # Bitwarden
-$InputFileName /home/{{main_username}}/docker/bitwarden/data/bitwarden.log
+$InputFileName /home/{{ main_username }}/docker/bitwarden/data/bitwarden.log
 $InputFileTag bitwarden:
 
 $InputFileStateFile bitwarden-error
 $InputRunFileMonitor
 
-*.* @@{{secret_linode_ip}}:{{secret_rsyslog_port}}
+*.* @@{{ secret_linode_ip }}:{{ secret_rsyslog_port }}

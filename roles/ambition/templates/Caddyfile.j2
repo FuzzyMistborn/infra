@@ -1,12 +1,12 @@
 {
 	log {
-		output file /home/{{main_username}}/caddy/access.log {
+		output file /home/{{ main_username }}/caddy/access.log {
 			roll_size 10mb
 			roll_keep 5
 			roll_keep_for 168h
 		}
 	}
-	email {{secret_email}}
+	email {{ secret_email }}
 }
 (fuzzy_headers) {
 	header {
@@ -27,9 +27,9 @@
 		X-XSS-Protection "1; mode=block"
 		X-Content-Type-Options "nosniff"
 		Referrer-Policy "same-origin"
-		Content-Security-Policy "frame-ancestors {{secret_personal_url}} *.{{secret_personal_url}}"
+		Content-Security-Policy "frame-ancestors {{ secret_personal_url }} *.{{ secret_personal_url }}"
 		-Server
-		Permissions-Policy "geolocation=(self {{secret_personal_url}} *.{{secret_personal_url}}), microphone=()"
+		Permissions-Policy "geolocation=(self {{ secret_personal_url }} *.{{ secret_personal_url }}), microphone=()"
 	}
 }
 (no_robots) {
@@ -44,7 +44,7 @@ fuzzymistborn.com {
 }
 
 *.fuzzymistborn.com {
-	tls /home/{{main_username}}/lego/certificates/_.fuzzymistborn.com.crt /home/{{main_username}}/lego/certificates/_.fuzzymistborn.com.key
+	tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key
 
 	@hc host hc.fuzzymistborn.com
 	handle @hc {
@@ -61,7 +61,7 @@ fuzzymistborn.com {
 	@blog host blog.fuzzymistborn.com
 	handle @blog {
 		file_server
-		root * /home/{{main_username}}/blog/public
+		root * /home/{{ main_username }}/blog/public
 		import fuzzy_headers
 	}
 
@@ -82,50 +82,50 @@ fuzzymistborn.com {
 
 	# Fallback for otherwise unhandled domains
 	handle {
-		redir {{secret_redirect}}
+		redir {{ secret_redirect }}
 	}
 }
 
-*.{{secret_personal_url}} {
-	tls /home/{{main_username}}/lego/certificates/_.{{secret_personal_url}}.crt /home/{{main_username}}/lego/certificates/_.{{secret_personal_url}}.key
+*.{{ secret_personal_url }} {
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 
-	@git host git.{{secret_personal_url}}
+	@git host git.{{ secret_personal_url }}
 	handle @git {
 		reverse_proxy localhost:3030
 		import personal_headers
 		import no_robots
 	}
 
-	@gotify host gotify.{{secret_personal_url}}
+	@gotify host gotify.{{ secret_personal_url }}
 	handle @gotify {
 		reverse_proxy localhost:8090
 		import personal_headers
 		import no_robots
 	}
 
-	@uptime host uptime.{{secret_personal_url}}
+	@uptime host uptime.{{ secret_personal_url }}
 	handle @uptime {
 		reverse_proxy localhost:3001
 		import personal_headers
 		import no_robots
 	}
 
-	@smarthome host smarthome.{{secret_personal_url}}
+	@smarthome host smarthome.{{ secret_personal_url }}
 	handle @smarthome {
 		reverse_proxy https://10.10.10.10:443 {
 			transport http {
-				tls_server_name smarthome.{{secret_personal_url}}
+				tls_server_name smarthome.{{ secret_personal_url }}
 			}
 		}
 		import personal_headers
 		import no_robots
 	}
 
-	@cloud host cloud.{{secret_personal_url}}
+	@cloud host cloud.{{ secret_personal_url }}
 	handle @cloud {
 		reverse_proxy https://10.10.10.10:443 {
 			transport http {
-				tls_server_name cloud.{{secret_personal_url}}
+				tls_server_name cloud.{{ secret_personal_url }}
 			}
 		}
 		encode gzip
@@ -135,21 +135,21 @@ fuzzymistborn.com {
 		redir /.well-known/caldav /remote.php/dav 301
 	}
 
-	@calendar host calendar.{{secret_personal_url}}
+	@calendar host calendar.{{ secret_personal_url }}
 	handle @calendar {
-		redir /* https://cloud.{{secret_personal_url}}/apps/calendar/ 301
+		redir /* https://cloud.{{ secret_personal_url }}/apps/calendar/ 301
 	}
 
-	@tasks host tasks.{{secret_personal_url}}
+	@tasks host tasks.{{ secret_personal_url }}
 	handle @tasks {
-		redir /* https://cloud.{{secret_personal_url}}/apps/tasks/ 301
+		redir /* https://cloud.{{ secret_personal_url }}/apps/tasks/ 301
 	}
 
-	@bitwarden host bitwarden.{{secret_personal_url}}
+	@bitwarden host bitwarden.{{ secret_personal_url }}
 	handle @bitwarden {
 		reverse_proxy https://10.10.10.10:443 {
 			transport http {
-				tls_server_name bitwarden.{{secret_personal_url}}
+				tls_server_name bitwarden.{{ secret_personal_url }}
 			}
 		}
 		header Host {http.reverse_proxy.upstream.hostporti}
@@ -158,45 +158,45 @@ fuzzymistborn.com {
 		respond /admin* "The admin panel is disabled, please configure the 'ADMIN_TOKEN' variable to enable it"
 	}
 
-	@news host news.{{secret_personal_url}}
+	@news host news.{{ secret_personal_url }}
 	handle @news {
 		reverse_proxy https://10.10.10.10:443 {
 			transport http {
-				tls_server_name news.{{secret_personal_url}}
+				tls_server_name news.{{ secret_personal_url }}
 			}
 		}
 		import personal_headers
 		import no_robots
 	}
 
-	@code host code.{{secret_personal_url}}
+	@code host code.{{ secret_personal_url }}
 	handle @code {
 		reverse_proxy https://10.10.10.10:443 {
 			transport http {
-				tls_server_name code.{{secret_personal_url}}
+				tls_server_name code.{{ secret_personal_url }}
 			}
 		}
 		import personal_headers
 		import no_robots
 	}
 
-	@media host media.{{secret_personal_url}}
+	@media host media.{{ secret_personal_url }}
 	handle @media {
 		reverse_proxy https://10.10.10.10:443 {
 			transport http {
-				tls_server_name media.{{secret_personal_url}}
+				tls_server_name media.{{ secret_personal_url }}
 			}
 		}
 		import personal_headers
 		import no_robots
 	}
 
-	@office host office.{{secret_personal_url}}
+	@office host office.{{ secret_personal_url }}
 	handle @office {
 		encode gzip
 		reverse_proxy 10.10.10.10:443 {
 			transport http {
-				tls_server_name dashboard.{{secret_personal_url}}
+				tls_server_name dashboard.{{ secret_personal_url }}
 			}
 		}
 		import personal_headers
@@ -204,55 +204,55 @@ fuzzymistborn.com {
 		respond /loleaflet/dist/admin/* "The admin panel is disabled"
 	}
 
-	@dashboard host dashboard.{{secret_personal_url}}
+	@dashboard host dashboard.{{ secret_personal_url }}
 	handle @dashboard {
 		reverse_proxy https://10.10.10.10:443 {
 			transport http {
-				tls_server_name dashboard.{{secret_personal_url}}
+				tls_server_name dashboard.{{ secret_personal_url }}
 			}
 		}
 		import personal_headers
 		import no_robots
 	}
 
-	@photos host photos.{{secret_personal_url}}
+	@photos host photos.{{ secret_personal_url }}
 	handle @photos {
 		reverse_proxy https://10.10.10.10:443 {
 			transport http {
-				tls_server_name photos.{{secret_personal_url}}
+				tls_server_name photos.{{ secret_personal_url }}
 			}
 		}
 		import personal_headers
 		import no_robots
 	}
 
-	@radarr host radarr.{{secret_personal_url}}
+	@radarr host radarr.{{ secret_personal_url }}
 	handle @radarr {
 		reverse_proxy https://10.10.10.10:443 {
 			transport http {
-				tls_server_name radarr.{{secret_personal_url}}
+				tls_server_name radarr.{{ secret_personal_url }}
 			}
 		}
 		import personal_headers
 		import no_robots
 	}
 
-	@sonarr host sonarr.{{secret_personal_url}}
+	@sonarr host sonarr.{{ secret_personal_url }}
 	handle @sonarr {
 		reverse_proxy https://10.10.10.10:443 {
 			transport http {
-				tls_server_name sonarr.{{secret_personal_url}}
+				tls_server_name sonarr.{{ secret_personal_url }}
 			}
 		}
 		import personal_headers
 		import no_robots
 	}
 
-	@wallabag host wallabag.{{secret_personal_url}}
+	@wallabag host wallabag.{{ secret_personal_url }}
 	handle @wallabag {
 		reverse_proxy https://10.10.10.10:443 {
 			transport http {
-				tls_server_name wallabag.{{secret_personal_url}}
+				tls_server_name wallabag.{{ secret_personal_url }}
 			}
 		}
 		import personal_headers
@@ -261,6 +261,6 @@ fuzzymistborn.com {
 
 	# Fallback for otherwise unhandled domains
 	handle {
-		redir {{secret_redirect}}
+		redir {{ secret_redirect }}
 	}
 }

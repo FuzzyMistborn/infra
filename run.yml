@@ -36,7 +36,7 @@
         update_cache: yes
         cache_valid_time: 3600
   roles:
-    - role: install_nag-removal
+    - role: install_nag_removal
     - role: grog.package
     - role: geerlingguy.pip
     - role: install_pip_packages
@@ -276,7 +276,7 @@
         update_cache: yes
         cache_valid_time: 3600
   roles:
-    - role: install_nag-removal
+    - role: install_nag_removal
     - role: grog.package
     - role: geerlingguy.pip
     - role: install_pip_packages

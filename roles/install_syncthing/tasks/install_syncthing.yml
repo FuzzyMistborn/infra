@@ -45,7 +45,7 @@
 
     - name: download syncthing
       unarchive:
-        src: "{{ syncthing_gh_url }}/v{{syncthing_ver}}/syncthing-{{syncthing_distro}}-v{{syncthing_ver}}.tar.gz"
+        src: "{{ syncthing_gh_url }}/v{{ syncthing_ver }}/syncthing-{{ syncthing_distro }}-v{{ syncthing_ver }}.tar.gz"
         dest: "{{ syncthing_download_directory }}"
         remote_src: yes
         owner: root
@@ -54,8 +54,8 @@
 
     - name: move to syncthing path
       copy:
-        src: "{{syncthing_download_directory}}/syncthing-{{syncthing_distro}}-v{{syncthing_ver}}/syncthing"
-        dest: "{{syncthing_install_directory}}"
+        src: "{{ syncthing_download_directory }}/syncthing-{{ syncthing_distro }}-v{{ syncthing_ver }}/syncthing"
+        dest: "{{ syncthing_install_directory }}"
         remote_src: yes
         mode: +x
   when: syncthing_is_installed == False or ( syncthing_is_installed == True and syncthing_download_latest_ver == True and installed_version_registered.stdout != syncthing_ver ) or ( syncthing_is_installed == True and syncthing_download_latest_ver == False and installed_version_registered.stdout != syncthing_pinned_ver )

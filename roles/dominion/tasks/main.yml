@@ -10,7 +10,7 @@
     repo: git@github.com:FuzzyMistborn/infra.git
     dest: /home/{{ main_username }}/infra
     accept_hostkey: true
-    key_file: /home/{{main_username}}/.ssh/github
+    key_file: /home/{{ main_username }}/.ssh/github
 
 - name: Add Linode SSH Key
   copy:
@@ -61,6 +61,6 @@
     mode: +x
     content: |
       #!/bin/bash
-      cd /home/{{main_username}}/infra
+      cd /home/{{ main_username }}/infra
       /usr/local/bin/ansible-playbook update.yml --vault-password-file .vault-password
       /usr/local/bin/ansible-playbook update.yml --vault-password-file .vault-password --tags "install"

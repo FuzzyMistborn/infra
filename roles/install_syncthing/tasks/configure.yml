@@ -1,21 +1,21 @@
 ---
 
 - name: waiting for configfile (takes some time)
-  wait_for: path={{syncthing_config_path}}
+  wait_for: path={{ syncthing_config_path }}
   when: syncthing_user != "root"
 
 - block:
     - name: Folder config | copy config template
       template:
         src: config.xml.j2
-        dest: "{{syncthing_config_path}}"
+        dest: "{{ syncthing_config_path }}"
         owner: "{{ syncthing_user }}"
         group: users
         mode: 0644
 
     - name: Folder config | remove default folder
       file:
-        path: /home/{{syncthing_user}}/Sync
+        path: /home/{{ syncthing_user }}/Sync
         state: absent
   notify: restart syncthing
   when: syncthing_user != "root"

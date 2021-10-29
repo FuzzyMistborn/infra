@@ -12,9 +12,9 @@ Description=PhantomBot
 After=network-online.target
 
 [Service]
-ExecStart=/home/{{main_username}}/scripts/RunPhantomBot.sh 
-WorkingDirectory=/home/{{main_username}}/scripts/
-User={{main_username}}
+ExecStart=/home/{{ main_username }}/scripts/RunPhantomBot.sh 
+WorkingDirectory=/home/{{ main_username }}/scripts/
+User={{ main_username }}
 
 Restart=always
 RestartSec=10

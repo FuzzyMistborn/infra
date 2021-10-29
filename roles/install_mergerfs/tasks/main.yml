@@ -46,11 +46,11 @@
 
     - name: download mergerfs
       get_url:
-        url: "{{ mergerfs_gh_url }}/{{mergerfs_ver}}/mergerfs_{{mergerfs_ver}}.{{mergerfs_distro}}.deb"
+        url: "{{ mergerfs_gh_url }}/{{ mergerfs_ver }}/mergerfs_{{ mergerfs_ver }}.{{ mergerfs_distro }}.deb"
         dest: "{{ mergerfs_download_directory }}"
 
     - name: install deb
       apt:
-        deb: "{{mergerfs_download_directory}}/mergerfs_{{mergerfs_ver}}.{{mergerfs_distro}}.deb"
+        deb: "{{ mergerfs_download_directory }}/mergerfs_{{ mergerfs_ver }}.{{ mergerfs_distro }}.deb"
         state: present
   when: mergerfs_is_installed == False or ( mergerfs_is_installed == True and mergerfs_download_latest_ver == True and installed_version_registered.stdout != mergerfs_ver ) or ( mergerfs_is_installed == True and mergerfs_download_latest_ver == False and installed_version_registered.stdout != mergerfs_pinned_ver )

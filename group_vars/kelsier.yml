@@ -1,7 +1,7 @@
 ---
 target_os: endeavour_os
 hostname: kelsier
-bootstrap_user: "{{main_username}}"
+bootstrap_user: "{{ main_username }}"
 
 ### Install packages with grog.package
 package_list:
@@ -125,11 +125,11 @@ smb_mountpoints:
   - path: "/mnt/Media"
     source: "//192.168.1.20/Media"
     fs: cifs
-    opts: "_netdev,noauto,nofail,x-systemd.automount,uid=1000,gid=1000,credentials=/home/{{main_username}}/.smbcredentials"
-  - path: "/home/{{main_username}}/RetroPie"
+    opts: "_netdev,noauto,nofail,x-systemd.automount,uid=1000,gid=1000,credentials=/home/{{ main_username }}/.smbcredentials"
+  - path: "/home/{{ main_username }}/RetroPie"
     source: "//192.168.1.20/Media/Files/Roms/Retropie"
     fs: cifs
-    opts: "_netdev,noauto,nofail,x-systemd.automount,uid=1000,gid=1000,credentials=/home/{{main_username}}/.smbcredentials"
+    opts: "_netdev,noauto,nofail,x-systemd.automount,uid=1000,gid=1000,credentials=/home/{{ main_username }}/.smbcredentials"
 
 ### Variables
 install_nut: true
@@ -144,7 +144,7 @@ bash_aliases:
   - alias: e
     command: exit
   - alias: ssh-remove
-    command: ssh-keygen -f /home/{{main_username}}/.ssh/known_hosts -R $c
+    command: ssh-keygen -f /home/{{ main_username }}/.ssh/known_hosts -R $c
   - alias: logi-restart
     command: sudo systemctl restart logid
   - alias: nut
@@ -158,45 +158,45 @@ bash_yay: true
 
 ### Syncthing/Retroarch
 retroarch_roms_dir: /mnt/Games/ROMs
-retroarch_config_dir: /home/{{main_username}}/.config/retroarch
+retroarch_config_dir: /home/{{ main_username }}/.config/retroarch
 
-syncthing_api_key: "{{secret_syncthing_api_kelsier}}"
-syncthing_device_id: "{{secret_syncthing_kelsier_device}}"
+syncthing_api_key: "{{ secret_syncthing_api_kelsier }}"
+syncthing_device_id: "{{ secret_syncthing_kelsier_device }}"
 syncthing_gui_authentication: true
-syncthing_gui_user: "{{main_username}}"
-syncthing_gui_pass: "{{secret_syncthing_gui_pass}}"
+syncthing_gui_user: "{{ main_username }}"
+syncthing_gui_pass: "{{ secret_syncthing_gui_pass }}"
 
 syncthing_folders:
-  - id: "{{secret_syncthing_sys_folder_id}}"
+  - id: "{{ secret_syncthing_sys_folder_id }}"
     label: "RetroArch - System"
-    path: "{{retroarch_config_dir}}"
+    path: "{{ retroarch_config_dir }}"
     type: "sendreceive"  # options are 'sendreceive' 'sendonly' and 'receiveonly'
     rescanInterval: 600  # time in seconds
     devices:
-      - "{{secret_syncthing_retroarchtv_device}}"
-      - "{{secret_syncthing_adonalsium_device}}"
-      - "{{secret_syncthing_steamdeck_device}}"
-  - id: "{{secret_syncthing_rom_folder_id}}"
+      - "{{ secret_syncthing_retroarchtv_device }}"
+      - "{{ secret_syncthing_adonalsium_device }}"
+      - "{{ secret_syncthing_steamdeck_device }}"
+  - id: "{{ secret_syncthing_rom_folder_id }}"
     label: "RetroArch - ROMs"
-    path: "{{retroarch_roms_dir}}"
+    path: "{{ retroarch_roms_dir }}"
     type: "receiveonly"  # options are 'sendreceive' 'sendonly' and 'receiveonly'
     rescanInterval: 600  # time in seconds
     devices:
-      - "{{secret_syncthing_adonalsium_device}}"
+      - "{{ secret_syncthing_adonalsium_device }}"
 
 syncthing_devices:
-  - id: "{{secret_syncthing_adonalsium_device}}"
+  - id: "{{ secret_syncthing_adonalsium_device }}"
     name: adonalsium
     address: tcp://192.168.1.20:22000
-  - id: "{{secret_syncthing_retroarchtv_device}}"
+  - id: "{{ secret_syncthing_retroarchtv_device }}"
     name: retroarch-tv
     address: tcp://192.168.30.10:22000
-  - id: "{{secret_syncthing_steamdeck_device}}"
+  - id: "{{ secret_syncthing_steamdeck_device }}"
     name: steamdeck
     address: tcp://192.168.10.X:22000
 
 ### Telegraf
-telegraf_influx_token: "{{secret_telegraf_kelsier}}"
+telegraf_influx_token: "{{ secret_telegraf_kelsier }}"
 telegraf_influx_bucket: Kelsier
 telegraf_influx_disk_mounts: '"/","/mnt/Games"'
 
@@ -212,7 +212,7 @@ autorestic_config_yaml:
         - AWS_SECRET_ACCESS_KEY: "{{ secret_minio_s3_access_key }}"
   locations:
     docker:
-      from: /home/{{main_username}}
+      from: /home/{{ main_username }}
       to:
         - synology_docker
       options:
@@ -237,19 +237,19 @@ cronjobs:
     hour: 19
     day: '*/3'
   - name: Restic Prune
-    job: /usr/local/bin/runitor -uuid {{secret_hc_kelsier_purge}} -- /usr/local/bin/autorestic forget -a -- prune
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_kelsier_purge }} -- /usr/local/bin/autorestic forget -a -- prune
     user: "{{ main_username }}"
     minute: 0
     hour: 20
     weekday: 1
   - name: Restic Check
-    job: /usr/local/bin/runitor -uuid {{secret_hc_restic_check_kelsier}} -- /usr/local/bin/autorestic exec -a -- check
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_check_kelsier }} -- /usr/local/bin/autorestic exec -a -- check
     user: "{{ main_username }}"
     minute: 0
     hour: 19
     day: 1
   - name: Media Backup
-    job: /usr/local/bin/runitor -uuid {{secret_hc_kelsier_media}} -- /usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_kelsier_media }} -- /usr/local/bin/autorestic backup -a -c /home/{{ main_username }}/.autorestic.yml
     user: root
     minute: 0
     hour: 21

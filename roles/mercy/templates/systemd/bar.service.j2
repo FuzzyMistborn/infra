@@ -13,9 +13,9 @@ Description=BARBot
 After=network-online.target
 
 [Service] 
-ExecStart=/home/{{main_username}}/scripts/RunBARBot.sh 
-WorkingDirectory=/home/{{main_username}}/scripts/
-User={{main_username}}
+ExecStart=/home/{{ main_username }}/scripts/RunBARBot.sh 
+WorkingDirectory=/home/{{ main_username }}/scripts/
+User={{ main_username }}
 
 Restart=always
 RestartSec=10

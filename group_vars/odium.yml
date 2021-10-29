@@ -28,7 +28,7 @@ cronjobs:
     hour: 0
 
 ### Docker-Compose with ironicbadger.docker_compose_generator
-appdata_path: /home/{{main_username}}/docker
+appdata_path: /home/{{ main_username }}/docker
 containers:
   ###
   - service_name: matrix
@@ -74,7 +74,7 @@ containers:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker/volumes:/var/lib/docker/volumes
     environment:
-      - AGENT_SECRET={{secret_portainer_key}}
+      - AGENT_SECRET={{ secret_portainer_key }}
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"

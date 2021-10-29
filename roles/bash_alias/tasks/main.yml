@@ -3,8 +3,8 @@
   lineinfile:
     dest: "{{ bash_aliases_path }}"
     create: yes
-    owner: "{{bash_user}}"
-    group: "{{bash_user}}"
+    owner: "{{ bash_user }}"
+    group: "{{ bash_user }}"
     mode: 0644
     line: "alias {{ item.alias }}='{{ item.command }}'"
     regexp: "^alias {{ item.alias }}="
@@ -15,8 +15,8 @@
   lineinfile:
     dest: "{{ bash_aliases_path }}"
     create: yes
-    owner: "{{bash_user}}"
-    group: "{{bash_user}}"
+    owner: "{{ bash_user }}"
+    group: "{{ bash_user }}"
     mode: 0644
     line: "alias {{ item.alias }}='{{ item.command }}'"
     regexp: "^alias {{ item.alias }}="
@@ -27,8 +27,8 @@
   lineinfile:
     dest: "{{ bash_aliases_path }}"
     create: yes
-    owner: "{{bash_user}}"
-    group: "{{bash_user}}"
+    owner: "{{ bash_user }}"
+    group: "{{ bash_user }}"
     mode: 0644
     line: "alias {{ item.alias }}='{{ item.command }}'"
     regexp: "^alias {{ item.alias }}="
@@ -39,8 +39,8 @@
   lineinfile:
     dest: "{{ bash_aliases_path }}"
     create: yes
-    owner: "{{bash_user}}"
-    group: "{{bash_user}}"
+    owner: "{{ bash_user }}"
+    group: "{{ bash_user }}"
     mode: 0644
     line: "alias {{ item.alias }}='{{ item.command }}'"
     regexp: "^alias {{ item.alias }}="
@@ -51,8 +51,8 @@
   lineinfile:
     dest: "{{ bash_aliases_path }}"
     create: yes
-    owner: "{{bash_user}}"
-    group: "{{bash_user}}"
+    owner: "{{ bash_user }}"
+    group: "{{ bash_user }}"
     mode: 0644
     line: "alias {{ item.alias }}='{{ item.command }}'"
     regexp: "^alias {{ item.alias }}="
@@ -63,8 +63,8 @@
   lineinfile:
     dest: "{{ bash_aliases_path }}"
     create: yes
-    owner: "{{bash_user}}"
-    group: "{{bash_user}}"
+    owner: "{{ bash_user }}"
+    group: "{{ bash_user }}"
     mode: 0644
     line: "alias {{ item.alias }}='{{ item.command }}'"
     regexp: "^alias {{ item.alias }}="
@@ -75,8 +75,8 @@
   lineinfile:
     dest: "{{ bash_aliases_path }}"
     create: yes
-    owner: "{{bash_user}}"
-    group: "{{bash_user}}"
+    owner: "{{ bash_user }}"
+    group: "{{ bash_user }}"
     mode: 0644
     line: "alias {{ item.alias }}='{{ item.command }}'"
     regexp: "^alias {{ item.alias }}="

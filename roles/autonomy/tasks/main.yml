@@ -51,19 +51,19 @@
 
 - name: Copy scripts
   copy:
-    src: scripts/{{item.path}}
-    dest: /home/{{ main_username }}/scripts/{{item.path}}
+    src: scripts/{{ item.path }}
+    dest: /home/{{ main_username }}/scripts/{{ item.path }}
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-    mode: "{{item.mode}}"
+    mode: "{{ item.mode }}"
   with_items:
     - {path: "auth_commands.sh", mode: "+x"}
     - {path: "rtl2mqtt.py", mode: "0664"}
 
 - name: Copy backup script templates
   template:
-    src: "{{item.src}}"
-    dest: /home/{{ main_username }}/scripts/{{item.dest}}
+    src: "{{ item.src }}"
+    dest: /home/{{ main_username }}/scripts/{{ item.dest }}
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
     mode: +x
@@ -79,7 +79,7 @@
 
 - name: Set CATT Defaults
   copy:
-    dest: /home/{{main_username}}/.config/catt/catt.cfg
+    dest: /home/{{ main_username }}/.config/catt/catt.cfg
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
     mode: 0644
@@ -104,7 +104,7 @@
     repo: git@github.com:FuzzyMistborn/hass-docker.git
     dest: /home/{{ main_username }}/hass_docker
     accept_hostkey: true
-    key_file: /home/{{main_username}}/.ssh/github
+    key_file: /home/{{ main_username }}/.ssh/github
   when: clone_git == true
 
 - name: Clone NodeRed GitHub Repo
@@ -112,7 +112,7 @@
     repo: git@github.com:FuzzyMistborn/hass-nodered.git
     dest: /home/{{ main_username }}/docker/nodered
     accept_hostkey: true
-    key_file: /home/{{main_username}}/.ssh/github
+    key_file: /home/{{ main_username }}/.ssh/github
   when: clone_git == true
 
 ### Backup Restore
@@ -124,14 +124,14 @@
     mode: +x
     content: |
       #!/bin/bash
-      /usr/local/bin/autorestic restore -f -l docker --from synology_docker --to /home/{{main_username}}/docker
-      /usr/local/bin/autorestic restore -f -l hass_docker --from synology_hass_docker --to /home/{{main_username}}/hass_docker
-      /usr/local/bin/autorestic restore -f -l hass_docker_beta --from synology_hass_docker_beta --to /home/{{main_username}}/hass_docker_beta
+      /usr/local/bin/autorestic restore -f -l docker --from synology_docker --to /home/{{ main_username }}/docker
+      /usr/local/bin/autorestic restore -f -l hass_docker --from synology_hass_docker --to /home/{{ main_username }}/hass_docker
+      /usr/local/bin/autorestic restore -f -l hass_docker_beta --from synology_hass_docker_beta --to /home/{{ main_username }}/hass_docker_beta
   when: pull_backup == true
 - name: Run restore script
   command: /bin/bash ./restore.sh
   args:
-    chdir: "/home/{{main_username}}"
+    chdir: "/home/{{ main_username }}"
   when: pull_backup == true
 - name: Remove restore script
   file:
@@ -142,8 +142,8 @@
 ### Rsyslog
 - name: Copy rsyslog config templates
   template:
-    src: "{{item.src}}"
-    dest: /etc/{{item.dest}}
+    src: "{{ item.src }}"
+    dest: /etc/{{ item.dest }}
     owner: root
     group: root
     mode: 0644

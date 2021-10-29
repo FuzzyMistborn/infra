@@ -50,12 +50,12 @@
 
     - name: download hyperion
       get_url:
-        url: "{{ hyperion_gh_url }}/{{hyperion_ver}}/Hyperion-{{hyperion_ver}}-{{hyperion_distro}}.deb"
+        url: "{{ hyperion_gh_url }}/{{ hyperion_ver }}/Hyperion-{{ hyperion_ver }}-{{ hyperion_distro }}.deb"
         dest: "{{ hyperion_download_directory }}"
 
     - name: install deb
       apt:
-        deb: "{{hyperion_download_directory}}/Hyperion-{{hyperion_ver}}-{{hyperion_distro}}.deb"
+        deb: "{{ hyperion_download_directory }}/Hyperion-{{ hyperion_ver }}-{{ hyperion_distro }}.deb"
         state: present
 
     - name: Disable pre-installed systemd service

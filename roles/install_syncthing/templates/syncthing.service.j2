@@ -3,7 +3,7 @@ Description=Syncthing File Synchronization
 After=network.target
 
 [Service]
-User={{syncthing_user}}
+User={{ syncthing_user }}
 ExecStart=/usr/bin/syncthing serve --no-restart --logflags=0
 Restart=on-failure
 RestartSec=1

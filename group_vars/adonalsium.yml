@@ -82,40 +82,40 @@ nfs_mount:
 retroarch_roms_dir: /mnt/Media/Files/Roms/RetroArch-ROMs
 retroarch_config_dir: /mnt/Media/Files/Roms/RetroArch
 
-syncthing_api_key: "{{secret_syncthing_api_adonalsium}}"
-syncthing_device_id: "{{secret_syncthing_adonalsium_device}}"
+syncthing_api_key: "{{ secret_syncthing_api_adonalsium }}"
+syncthing_device_id: "{{ secret_syncthing_adonalsium_device }}"
 syncthing_gui_authentication: true
-syncthing_gui_user: "{{main_username}}"
-syncthing_gui_pass: "{{secret_syncthing_gui_pass}}"
+syncthing_gui_user: "{{ main_username }}"
+syncthing_gui_pass: "{{ secret_syncthing_gui_pass }}"
 
 syncthing_folders:
-  - id: "{{secret_syncthing_sys_folder_id}}"
+  - id: "{{ secret_syncthing_sys_folder_id }}"
     label: "RetroArch - System"
-    path: "{{retroarch_config_dir}}"
+    path: "{{ retroarch_config_dir }}"
     type: "sendreceive"  # options are 'sendreceive' 'sendonly' and 'receiveonly'
     rescanInterval: 600  # time in seconds
     devices:
-      - "{{secret_syncthing_kelsier_device}}"
-      - "{{secret_syncthing_retroarchtv_device}}"
-      - "{{secret_syncthing_steamdeck_device}}"
-  - id: "{{secret_syncthing_rom_folder_id}}"
+      - "{{ secret_syncthing_kelsier_device }}"
+      - "{{ secret_syncthing_retroarchtv_device }}"
+      - "{{ secret_syncthing_steamdeck_device }}"
+  - id: "{{ secret_syncthing_rom_folder_id }}"
     label: "RetroArch - ROMs"
-    path: "{{retroarch_roms_dir}}"
+    path: "{{ retroarch_roms_dir }}"
     type: "sendonly"  # options are 'sendreceive' 'sendonly' and 'receiveonly'
     rescanInterval: 600  # time in seconds
     devices:
-      - "{{secret_syncthing_kelsier_device}}"
-      - "{{secret_syncthing_retroarchtv_device}}"
-      - "{{secret_syncthing_steamdeck_device}}"
+      - "{{ secret_syncthing_kelsier_device }}"
+      - "{{ secret_syncthing_retroarchtv_device }}"
+      - "{{ secret_syncthing_steamdeck_device }}"
 
 syncthing_devices:
-  - id: "{{secret_syncthing_retroarchtv_device}}"
+  - id: "{{ secret_syncthing_retroarchtv_device }}"
     name: retroarch-tv
     address: tcp://192.168.30.10:22000
-  - id: "{{secret_syncthing_kelsier_device}}"
+  - id: "{{ secret_syncthing_kelsier_device }}"
     name: kelsier
     address: tcp://192.168.10.10:22000
-  - id: "{{secret_syncthing_steamdeck_device}}"
+  - id: "{{ secret_syncthing_steamdeck_device }}"
     name: steamdeck
     address: tcp://192.168.10.X:22000
 
@@ -242,39 +242,39 @@ infrastructure: false
 # nag_ver: 0.0.7
 
 ### Telegraf
-telegraf_influx_token: "{{secret_telegraf_adonalsium}}"
+telegraf_influx_token: "{{ secret_telegraf_adonalsium }}"
 telegraf_influx_bucket: Adonalsium
 telegraf_influx_disk_mounts: '"/","/mnt/Media"'
 telegraf_influx_docker: true
 telegraf_influx_pve: true
-telegraf_influx_pve_api: "{{secret_telegraf_adonalsium_api}}"
+telegraf_influx_pve_api: "{{ secret_telegraf_adonalsium_api }}"
 
 ### Cronjobs
 cronjobs:
   - name: Scrutiny
-    job: /usr/local/bin/runitor -uuid {{secret_hc_adonalsium_scrutiny}} -- docker exec scrutiny /scrutiny/bin/scrutiny-collector-metrics run > /dev/null 2>&1
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_adonalsium_scrutiny }} -- docker exec scrutiny /scrutiny/bin/scrutiny-collector-metrics run > /dev/null 2>&1
     user: "{{ main_username }}"
     minute: 0
     hour: '*/6'
   - name: Restic Prune
-    job: /usr/local/bin/runitor -uuid {{secret_hc_adonalsium_purge}} -- /usr/local/bin/autorestic forget -a -- prune
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_adonalsium_purge }} -- /usr/local/bin/autorestic forget -a -- prune
     user: "{{ main_username }}"
     minute: 0
     hour: 1
     weekday: 1
   - name: Restic Check
-    job: /usr/local/bin/runitor -uuid {{secret_hc_restic_check_adonalsium}} -- /usr/local/bin/autorestic check
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_check_adonalsium }} -- /usr/local/bin/autorestic check
     user: "{{ main_username }}"
     minute: 30
     hour: 3
     day: 1
   - name: Media Backup (Docker)
-    job: /usr/local/bin/runitor -uuid {{secret_hc_adonalsium_media_docker}} -- /usr/local/bin/autorestic backup -l docker -c /home/{{main_username}}/.autorestic.yml
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_adonalsium_media_docker }} -- /usr/local/bin/autorestic backup -l docker -c /home/{{ main_username }}/.autorestic.yml
     user: root
     minute: 45
     hour: 23
   - name: Media Backup (Everything Else)
-    job: /usr/local/bin/runitor -uuid {{secret_hc_adonalsium_media_all}} -- /usr/local/bin/autorestic backup -l photos -l files -l music -l audiobooks -c /home/{{main_username}}/.autorestic.yml
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_adonalsium_media_all }} -- /usr/local/bin/autorestic backup -l photos -l files -l music -l audiobooks -c /home/{{ main_username }}/.autorestic.yml
     user: root
     minute: 15
     hour: 1
@@ -355,7 +355,7 @@ autorestic_config_yaml:
         - B2_ACCOUNT_KEY: "{{ secret_media_b2_account_key }}"
   locations:
     docker:
-      from: '/home/{{main_username}}/docker'
+      from: '/home/{{ main_username }}/docker'
       to:
         - synology_docker
         - b2_docker
@@ -419,9 +419,9 @@ snapraid_runner_smtp_host: "{{ secret_snapraid_smtp_host }}"
 snapraid_runner_smtp_port: 8025
 snapraid_runner_use_ssl: false
 snapraid_runner_touch: false
-snapraid_runner_command: "python3 {{ snapraid_run_bin }} -c {{ snapraid_run_conf}}"
+snapraid_runner_command: "python3 {{ snapraid_run_bin }} -c {{ snapraid_run_conf }}"
 snapraid_runner_cron_jobs:
-  - {job: '/usr/local/bin/runitor -uuid {{secret_hc_adonalsium_snapraid}} -- {{ snapraid_run_command }}', name: 'snapraid_runner', weekday: '*', hour: '04'}
+  - {job: '/usr/local/bin/runitor -uuid {{ secret_hc_adonalsium_snapraid }} -- {{ snapraid_run_command }}', name: 'snapraid_runner', weekday: '*', hour: '04'}
 snapraid_config_excludes:
   - "*.unrecoverable"
   - "/tmp/"
@@ -487,7 +487,7 @@ containers:
       - /srv/docker/portainer:/data
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - AGENT_SECRET={{secret_portainer_key}}
+      - AGENT_SECRET={{ secret_portainer_key }}
     include_global_env_vars: false
   ###
   - service_name: scrutiny

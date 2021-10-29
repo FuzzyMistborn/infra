@@ -40,7 +40,7 @@
 - name: Make TG CLI
   shell: ./configure --enable-python && make
   args:
-    chdir: "/home/{{main_username}}/tg"
+    chdir: "/home/{{ main_username }}/tg"
 
 ### Install HO bot
 - name: Clone HO Bot GitHub Repo
@@ -61,14 +61,14 @@
 - name: Install Requirements
   command: pip3 install -r requirements.txt
   args:
-    chdir: "/home/{{main_username}}/hangoutsbot"
+    chdir: "/home/{{ main_username }}/hangoutsbot"
   become: yes
   become_user: root
 
 - name: Copy systemd service files
   template:
-    src: "{{item.src}}"
-    dest: /etc/systemd/system/{{item.dest}}
+    src: "{{ item.src }}"
+    dest: /etc/systemd/system/{{ item.dest }}
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
     mode: 0644
@@ -80,8 +80,8 @@
 
 - name: Copy scripts files
   template:
-    src: "{{item.src}}"
-    dest: /home/{{ main_username }}/{{item.dest}}
+    src: "{{ item.src }}"
+    dest: /home/{{ main_username }}/{{ item.dest }}
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
     mode: +x
@@ -101,14 +101,14 @@
     mode: +x
     content: |
       #!/bin/bash
-      /usr/local/bin/autorestic restore -f -l plugins --from synology_plugins --to /home/{{main_username}}/hangoutsbot/hangupsbot/plugins
-      /usr/local/bin/autorestic restore -f -l local --from synology_local --to /home/{{main_username}}/.local/share/hangupsbot
-      /usr/local/bin/autorestic restore -f -l telegram --from synology_telegram --to /home/{{main_username}}/
+      /usr/local/bin/autorestic restore -f -l plugins --from synology_plugins --to /home/{{ main_username }}/hangoutsbot/hangupsbot/plugins
+      /usr/local/bin/autorestic restore -f -l local --from synology_local --to /home/{{ main_username }}/.local/share/hangupsbot
+      /usr/local/bin/autorestic restore -f -l telegram --from synology_telegram --to /home/{{ main_username }}/
   when: pull_backup == true
 - name: Run restore script
   command: /bin/bash ./restore.sh
   args:
-    chdir: "/home/{{main_username}}"
+    chdir: "/home/{{ main_username }}"
   when: pull_backup == true
 - name: Remove restore script
   file:
@@ -121,7 +121,7 @@
     enabled: true
     daemon-reload: true
     state: started
-    name: "{{item}}"
+    name: "{{ item }}"
   loop:
     - bar
     - phantom

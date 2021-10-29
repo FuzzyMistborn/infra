@@ -55,21 +55,21 @@ autorestic_config_yaml:
         - AWS_SECRET_ACCESS_KEY: "{{ secret_minio_s3_access_key }}"
   locations:
     plugins:
-      from: '/home/{{main_username}}/hangoutsbot/hangupsbot/plugins'
+      from: '/home/{{ main_username }}/hangoutsbot/hangupsbot/plugins'
       to:
         - synology_plugins
       options:
         forget:
           keep-last: 10
     local:
-      from: '/home/{{main_username}}/.local/share/hangupsbot'
+      from: '/home/{{ main_username }}/.local/share/hangupsbot'
       to:
         - synology_local
       options:
         forget:
           keep-last: 10
     telegram:
-      from: '/home/{{main_username}}/.telegram-cli'
+      from: '/home/{{ main_username }}/.telegram-cli'
       to:
         - synology_telegram
       options:
@@ -79,39 +79,39 @@ autorestic_config_yaml:
 ### Cronjobs
 cronjobs:
   - name: Restic Prune
-    job: /usr/local/bin/runitor -uuid {{secret_hc_mercy_purge}} -- /usr/local/bin/autorestic forget -a -- prune
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_mercy_purge }} -- /usr/local/bin/autorestic forget -a -- prune
     user: "{{ main_username }}"
     minute: 0
     hour: 21
     weekday: 1
   - name: Restic Check
-    job: /usr/local/bin/runitor -uuid {{secret_hc_restic_check_mercy}} -- /usr/local/bin/autorestic exec -a -- check
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_check_mercy }} -- /usr/local/bin/autorestic exec -a -- check
     user: "{{ main_username }}"
     minute: 30
     hour: 21
     day: 1
   - name: Restart BARbot
-    job: /usr/local/bin/runitor -no-start-ping=true -uuid {{secret_hc_mercy_bar}} -- systemctl restart bar.service
+    job: /usr/local/bin/runitor -no-start-ping=true -uuid {{ secret_hc_mercy_bar }} -- systemctl restart bar.service
     user: root
     minute: 0
     hour: 3
   - name: Restart MATHBot
-    job: /usr/local/bin/runitor -no-start-ping=true -uuid {{secret_hc_mercy_math}} -- systemctl restart math.service
+    job: /usr/local/bin/runitor -no-start-ping=true -uuid {{ secret_hc_mercy_math }} -- systemctl restart math.service
     user: root
     minute: 1
     hour: 3
   - name: Restart PhantomBot
-    job: /usr/local/bin/runitor -no-start-ping=true -uuid {{secret_hc_mercy_phantom}} -- systemctl restart phantom.service
+    job: /usr/local/bin/runitor -no-start-ping=true -uuid {{ secret_hc_mercy_phantom }} -- systemctl restart phantom.service
     user: root
     minute: 2
     hour: 3
   - name: Restart TG Sync
-    job: /usr/local/bin/runitor -no-start-ping=true -uuid {{secret_hc_mercy_tg}} -- systemctl restart tg-sync.service
+    job: /usr/local/bin/runitor -no-start-ping=true -uuid {{ secret_hc_mercy_tg }} -- systemctl restart tg-sync.service
     user: root
     minute: 3
     hour: 3
   - name: Backup Media
-    job: /usr/local/bin/runitor -uuid {{secret_hc_mercy_media}}/ -- /usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_mercy_media }}/ -- /usr/local/bin/autorestic backup -a -c /home/{{ main_username }}/.autorestic.yml
     user: root
     minute: 59
     hour: 2

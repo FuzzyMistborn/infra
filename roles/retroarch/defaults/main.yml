@@ -1,6 +1,6 @@
 ---
 retroarch_distro: x86_64
-retroarch_user: "{{main_username}}"
-retroarch_config_dir: /home/{{retroarch_user}}/.config/retroarch
-retroarch_config_path: "{{retroarch_config_dir}}/retroarch.cfg"
-retroarch_roms_dir: /home/{{retroarch_user}}/.config/retroarch/roms
+retroarch_user: "{{ main_username }}"
+retroarch_config_dir: /home/{{ retroarch_user }}/.config/retroarch
+retroarch_config_path: "{{ retroarch_config_dir }}/retroarch.cfg"
+retroarch_roms_dir: /home/{{ retroarch_user }}/.config/retroarch/roms

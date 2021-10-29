@@ -45,7 +45,7 @@
 
     - name: download hugo
       unarchive:
-        src: "{{ hugo_gh_url }}/v{{hugo_ver}}/hugo_{{hugo_ver}}_{{hugo_distro}}.tar.gz"
+        src: "{{ hugo_gh_url }}/v{{ hugo_ver }}/hugo_{{ hugo_ver }}_{{ hugo_distro }}.tar.gz"
         dest: "{{ hugo_download_directory }}"
         remote_src: yes
         owner: root
@@ -54,8 +54,8 @@
 
     - name: move to hugo path
       copy:
-        src: "{{hugo_download_directory}}/hugo"
-        dest: "{{hugo_install_directory}}"
+        src: "{{ hugo_download_directory }}/hugo"
+        dest: "{{ hugo_install_directory }}"
         remote_src: yes
         mode: +x
   when: hugo_is_installed == False or ( hugo_is_installed == True and hugo_download_latest_ver == True and installed_version_registered.stdout != hugo_ver ) or ( hugo_is_installed == True and hugo_download_latest_ver == False and installed_version_registered.stdout != hugo_pinned_ver )

@@ -25,7 +25,7 @@ smb_mountpoints:
   - path: "/mnt/Media"
     source: "//192.168.1.20/Media"
     fs: cifs
-    opts: "defaults,uid=1000,gid=1000,credentials=/home/{{main_username}}/.smbcredentials"
+    opts: "defaults,uid=1000,gid=1000,credentials=/home/{{ main_username }}/.smbcredentials"
 
 pull_backup: false
 
@@ -37,7 +37,7 @@ bash_systemctl: true
 bash_apt: true
 
 ### Telegraf
-telegraf_influx_token: "{{secret_telegraf_endowment}}"
+telegraf_influx_token: "{{ secret_telegraf_endowment }}"
 telegraf_influx_bucket: Endowment
 telegraf_influx_docker: true
 
@@ -53,13 +53,13 @@ cronjobs:
     hour: 2
     minute: 30
   - name: Restic Prune
-    job: /usr/local/bin/runitor -uuid {{secret_hc_endowment_purge}} -- /usr/local/bin/autorestic forget -a -- prune
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_endowment_purge }} -- /usr/local/bin/autorestic forget -a -- prune
     user: "{{ main_username }}"
     minute: 30
     hour: 22
     weekday: 1
   - name: Restic Check
-    job: /usr/local/bin/runitor -uuid {{secret_hc_restic_check_endowment}} -- /usr/local/bin/autorestic exec -a -- check
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_check_endowment }} -- /usr/local/bin/autorestic exec -a -- check
     user: "{{ main_username }}"
     minute: 30
     hour: 2
@@ -70,7 +70,7 @@ cronjobs:
     minute: 0
     hour: 3
   - name: Media Backup
-    job: /usr/local/bin/runitor -uuid {{secret_hc_endowment_media}} -- /usr/local/bin/autorestic backup -a -c /home/{{main_username}}/.autorestic.yml
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_endowment_media }} -- /usr/local/bin/autorestic backup -a -c /home/{{ main_username }}/.autorestic.yml
     user: root
     minute: 30
     hour: 0
@@ -94,7 +94,7 @@ autorestic_config_yaml:
         - B2_ACCOUNT_KEY: "{{ secret_restic_b2_account_key }}"
   locations:
     docker:
-      from: '/home/{{main_username}}/docker'
+      from: '/home/{{ main_username }}/docker'
       to:
         - synology_docker
         - b2_docker
@@ -341,5 +341,5 @@ containers:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker/volumes:/var/lib/docker/volumes
     environment:
-      - AGENT_SECRET={{secret_portainer_key}}
+      - AGENT_SECRET={{ secret_portainer_key }}
     include_global_env_vars: false

@@ -46,6 +46,6 @@
   command: pveam update
 
 - name: Download container templates
-  command: pveam download local {{item}}
+  command: pveam download local {{ item }}
   with_items:
     - ubuntu-20.04-standard_20.04-1_amd64.tar.gz

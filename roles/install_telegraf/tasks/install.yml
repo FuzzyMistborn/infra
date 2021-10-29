@@ -46,11 +46,11 @@
 
     - name: download telegraf
       get_url:
-        url: "{{ telegraf_gh_url }}/telegraf_{{telegraf_ver}}-1_{{telegraf_distro}}.deb"
+        url: "{{ telegraf_gh_url }}/telegraf_{{ telegraf_ver }}-1_{{ telegraf_distro }}.deb"
         dest: "{{ telegraf_download_directory }}"
 
     - name: install deb
       apt:
-        deb: "{{telegraf_download_directory}}/telegraf_{{telegraf_ver}}-1_{{telegraf_distro}}.deb"
+        deb: "{{ telegraf_download_directory }}/telegraf_{{ telegraf_ver }}-1_{{ telegraf_distro }}.deb"
         state: present
   when: telegraf_is_installed == False or ( telegraf_is_installed == True and telegraf_download_latest_ver == True and installed_version_registered.stdout != telegraf_ver ) or ( telegraf_is_installed == True and telegraf_download_latest_ver == False and installed_version_registered.stdout != telegraf_pinned_ver )

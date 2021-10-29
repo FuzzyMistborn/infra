@@ -46,7 +46,7 @@
 
     - name: download lego
       unarchive:
-        src: "{{ lego_gh_url }}/v{{lego_ver}}/lego_v{{lego_ver}}_{{lego_distro}}.tar.gz"
+        src: "{{ lego_gh_url }}/v{{ lego_ver }}/lego_v{{ lego_ver }}_{{ lego_distro }}.tar.gz"
         dest: "{{ lego_download_directory }}"
         remote_src: yes
         owner: root
@@ -55,8 +55,8 @@
 
     - name: move to lego path
       copy:
-        src: "{{lego_download_directory}}/lego"
-        dest: "{{lego_install_directory}}"
+        src: "{{ lego_download_directory }}/lego"
+        dest: "{{ lego_install_directory }}"
         remote_src: yes
         mode: +x
   when: lego_is_installed == False or ( lego_is_installed == True and lego_download_latest_ver == True and installed_version_registered.stdout != lego_ver ) or ( lego_is_installed == True and lego_download_latest_ver == False and installed_version_registered.stdout != lego_pinned_ver )

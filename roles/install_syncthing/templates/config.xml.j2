@@ -51,7 +51,7 @@
             introducer="false"
             skipIntroductionRemovals="false"
             introducedBy="">
-        <address>{{device.address | default("dynamic")}}</address>
+        <address>{{ device.address | default("dynamic") }}</address>
         <paused>false</paused>
         <autoAcceptFolders>false</autoAcceptFolders>
         <maxSendKbps>0</maxSendKbps>
@@ -62,24 +62,24 @@
     </device>
 {% endfor %}
     <gui enabled="true" tls="false" debugging="false">
-        <address>{{syncthing_webinterface_ip}}</address>
+        <address>{{ syncthing_webinterface_ip }}</address>
 {% if syncthing_gui_authentication == true %}
-        <user>{{syncthing_gui_user}}</user>
-        <password>{{syncthing_gui_pass}}</password>
+        <user>{{ syncthing_gui_user }}</user>
+        <password>{{ syncthing_gui_pass }}</password>
 {% else %}
 {% endif %}
 {% if syncthing_api_key is defined %}
-        <apikey>{{syncthing_api_key}}</apikey>
+        <apikey>{{ syncthing_api_key }}</apikey>
 {% else %}
 {% endif %}
-        <theme>{{syncthing_theme | default("dark" |lower)}}</theme>
+        <theme>{{ syncthing_theme | default("dark" |lower) }}</theme>
     </gui>
     <ldap></ldap>
     <options>
         <listenAddress>default</listenAddress>
         <globalAnnounceServer>default</globalAnnounceServer>
-        <globalAnnounceEnabled>{{syncthing_globalannounce |lower}}</globalAnnounceEnabled>
-        <localAnnounceEnabled>{{syncthing_localannounce |lower}}</localAnnounceEnabled>
+        <globalAnnounceEnabled>{{ syncthing_globalannounce |lower }}</globalAnnounceEnabled>
+        <localAnnounceEnabled>{{ syncthing_localannounce |lower }}</localAnnounceEnabled>
         <localAnnouncePort>21027</localAnnouncePort>
         <localAnnounceMCAddr>[ff12::8384]:21027</localAnnounceMCAddr>
         <maxSendKbps>0</maxSendKbps>
@@ -129,7 +129,7 @@
     <defaults>
         <folder id="" label="" path="~" type="sendreceive" rescanIntervalS="3600" fsWatcherEnabled="true" fsWatcherDelayS="10" ignorePerms="false" autoNormalize="true">
             <filesystemType>basic</filesystemType>
-            <device id="{{syncthing_device_id}}" introducedBy="">
+            <device id="{{ syncthing_device_id }}" introducedBy="">
                 <encryptionPassword></encryptionPassword>
             </device>
             <minDiskFree unit="%">1</minDiskFree>

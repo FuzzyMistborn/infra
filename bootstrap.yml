@@ -66,7 +66,7 @@
 
 ### Arch Bootstrap
 - hosts: kelsier retroarch_tv
-  remote_user: "{{bootstrap_user}}"
+  remote_user: "{{ bootstrap_user }}"
   gather_facts: true
   vars_files:
     - 'vars/vault.yaml'

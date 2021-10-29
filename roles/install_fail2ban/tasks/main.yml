@@ -7,8 +7,8 @@
 
 - name: Copy F2B config
   template:
-    src: fail2ban/{{item.src}}
-    dest: /etc/fail2ban/{{item.dest}}
+    src: fail2ban/{{ item.src }}
+    dest: /etc/fail2ban/{{ item.dest }}
     owner: root
     group: root
     mode: 0644
@@ -37,7 +37,7 @@
 
 - name: Ambition Fail2ban
   lineinfile:
-    path: /etc/fail2ban/jail.d/{{item}}.local
+    path: /etc/fail2ban/jail.d/{{ item }}.local
     regexp: "^enabled*"
     line: "enabled = true"
   with_items:

@@ -23,11 +23,11 @@
 - name: download release
   when: force_install == True
   get_url:
-    url: https://github.com/Jamesits/pve-fake-subscription/releases/download/{{nag_ver}}/pve-fake-subscription_{{nag_ver | regex_replace('v') }}_all.deb
+    url: https://github.com/Jamesits/pve-fake-subscription/releases/download/{{ nag_ver }}/pve-fake-subscription_{{ nag_ver | regex_replace('v') }}_all.deb
     dest: /tmp
 
 - name: set filename
-  set_fact: file_name="pve-fake-subscription_{{nag_ver | regex_replace('v') }}_all.deb"
+  set_fact: file_name="pve-fake-subscription_{{ nag_ver | regex_replace('v') }}_all.deb"
   when: force_install == True
 
 - name: install deb

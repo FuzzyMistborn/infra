@@ -5,7 +5,7 @@
   command: pveam update
 
 - name: Download container templates
-  command: pveam download local {{item}}
+  command: pveam download local {{ item }}
   with_items:
     - ubuntu-20.04-standard_20.04-1_amd64.tar.gz
     - ubuntu-18.04-standard_18.04.1-1_amd64.tar.gz
@@ -14,67 +14,67 @@
 - name: Create Shard LXCs
   proxmox:
     proxmox_default_behavior: no_defaults
-    vmid: "{{item.vmid}}"
-    hostname: "{{item.name}}"
-    unprivileged: "{{item.privileged}}"
-    onboot: "{{item.onboot | default ('true') }}"
+    vmid: "{{ item.vmid }}"
+    hostname: "{{ item.name }}"
+    unprivileged: "{{ item.privileged }}"
+    onboot: "{{ item.onboot | default ('true') }}"
     state: present
     node: adonalsium
     storage: local-lvm
-    disk: "{{item.disk}}"
+    disk: "{{ item.disk }}"
     cpus: '1'
     cpuunits: '1000'
-    cores: "{{item.cores}}"
-    memory: "{{item.memory}}"
-    swap: "{{item.swap | default ('512') }}"
+    cores: "{{ item.cores }}"
+    memory: "{{ item.memory }}"
+    swap: "{{ item.swap | default ('512') }}"
     api_user: root@pam
     api_host: localhost
     api_token_id: Ansible
-    api_token_secret: "{{secret_proxmox_api_token}}"
+    api_token_secret: "{{ secret_proxmox_api_token }}"
     pubkey: "{{ secret_proxmox_ct_ssh }}"
     password: "{{ secret_proxmox_pass }}"
-    netif: "{'net0':'name=eth0,gw={{item.gw}},ip={{item.ip}}/24,bridge={{item.bridge | default ('vmbr1') }} '}"
-    ostemplate: "{{item.template| default ('local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz')}}"
+    netif: "{'net0':'name=eth0,gw={{ item.gw }},ip={{ item.ip }}/24,bridge={{ item.bridge | default ('vmbr1') }} '}"
+    ostemplate: "{{ item.template| default ('local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz') }}"
     features:
-      - nesting={{item.nesting | default ('0')}}
-      - keyctl={{item.keyctl | default ('0')}}
+      - nesting={{ item.nesting | default ('0') }}
+      - keyctl={{ item.keyctl | default ('0') }}
   with_items:
     - "{{ lxc }}"
 
 - name: Create LXC CT w/ Mounts
   proxmox:
     proxmox_default_behavior: no_defaults
-    vmid: "{{item.vmid}}"
-    hostname: "{{item.name}}"
-    unprivileged: "{{item.privileged}}"
-    onboot: "{{item.onboot | default ('true') }}"
+    vmid: "{{ item.vmid }}"
+    hostname: "{{ item.name }}"
+    unprivileged: "{{ item.privileged }}"
+    onboot: "{{ item.onboot | default ('true') }}"
     state: present
     node: adonalsium
     storage: local-lvm
-    disk: "{{item.disk}}"
+    disk: "{{ item.disk }}"
     cpus: '1'
     cpuunits: '1000'
-    cores: "{{item.cores}}"
-    memory: "{{item.memory}}"
-    swap: "{{item.swap | default ('512') }}"
+    cores: "{{ item.cores }}"
+    memory: "{{ item.memory }}"
+    swap: "{{ item.swap | default ('512') }}"
     api_user: root@pam
     api_host: localhost
     api_token_id: Ansible
-    api_token_secret: "{{secret_proxmox_api_token}}"
+    api_token_secret: "{{ secret_proxmox_api_token }}"
     pubkey: "{{ secret_proxmox_ct_ssh }}"
     password: "{{ secret_proxmox_pass }}"
-    netif: "{'net0':'name=eth0,gw={{item.gw}},ip={{item.ip}}/24,bridge={{item.bridge | default ('vmbr0') }} '}"
-    ostemplate: "{{item.template| default ('local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz')}}"
+    netif: "{'net0':'name=eth0,gw={{ item.gw }},ip={{ item.ip }}/24,bridge={{ item.bridge | default ('vmbr0') }} '}"
+    ostemplate: "{{ item.template| default ('local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz') }}"
     mounts: "{'mp0':'/dev/disk/by-id/ata-Crucial_CT256MX100SSD1_14420D84F328-part1,mp=/mnt/scratch,backup=0'}"
     features:
-      - nesting={{item.nesting | default ('0')}}
-      - keyctl={{item.keyctl | default ('0')}}
-      - mount={{item.fsmount}}
+      - nesting={{ item.nesting | default ('0') }}
+      - keyctl={{ item.keyctl | default ('0') }}
+      - mount={{ item.fsmount }}
   with_items:
     - "{{ lxc_mounts }}"
 
 - name: Set boot order
-  shell: pct set {{item.lxc}} --startup order={{item.order}}
+  shell: pct set {{ item.lxc }} --startup order={{ item.order }}
   with_items:
     - {"lxc":"200", "order":"9"}
     - {"lxc":"201", "order":"1"}
