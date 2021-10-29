@@ -1,7 +1,7 @@
 ---
 - name: Install unmet dependencies for Hyperion
   apt:
-    name: 
+    name:
       - libcec4
       - libp8-platform2
 
@@ -69,7 +69,7 @@
       file:
         path: /etc/systemd/system/hyperion@.service
         state: absent
-    
+
     - name: Copy systemd service file
       copy:
         src: hyperion.service

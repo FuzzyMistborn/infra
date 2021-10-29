@@ -92,8 +92,8 @@ syncthing_folders:
   - id: "{{secret_syncthing_sys_folder_id}}"
     label: "RetroArch - System"
     path: "{{retroarch_config_dir}}"
-    type: "sendreceive" # options are 'sendreceive' 'sendonly' and 'receiveonly'
-    rescanInterval: 600 # time in seconds
+    type: "sendreceive"  # options are 'sendreceive' 'sendonly' and 'receiveonly'
+    rescanInterval: 600  # time in seconds
     devices:
       - "{{secret_syncthing_kelsier_device}}"
       - "{{secret_syncthing_retroarchtv_device}}"
@@ -101,23 +101,23 @@ syncthing_folders:
   - id: "{{secret_syncthing_rom_folder_id}}"
     label: "RetroArch - ROMs"
     path: "{{retroarch_roms_dir}}"
-    type: "sendonly" # options are 'sendreceive' 'sendonly' and 'receiveonly'
-    rescanInterval: 600 # time in seconds
+    type: "sendonly"  # options are 'sendreceive' 'sendonly' and 'receiveonly'
+    rescanInterval: 600  # time in seconds
     devices:
       - "{{secret_syncthing_kelsier_device}}"
       - "{{secret_syncthing_retroarchtv_device}}"
       - "{{secret_syncthing_steamdeck_device}}"
 
 syncthing_devices:
- - id: "{{secret_syncthing_retroarchtv_device}}"
-   name: retroarch-tv
-   address: tcp://192.168.30.10:22000
- - id: "{{secret_syncthing_kelsier_device}}"
-   name: kelsier
-   address: tcp://192.168.10.10:22000
- - id: "{{secret_syncthing_steamdeck_device}}"
-   name: steamdeck
-   address: tcp://192.168.10.X:22000
+  - id: "{{secret_syncthing_retroarchtv_device}}"
+    name: retroarch-tv
+    address: tcp://192.168.30.10:22000
+  - id: "{{secret_syncthing_kelsier_device}}"
+    name: kelsier
+    address: tcp://192.168.10.10:22000
+  - id: "{{secret_syncthing_steamdeck_device}}"
+    name: steamdeck
+    address: tcp://192.168.10.X:22000
 
 ### Infrastructure
 lxc:

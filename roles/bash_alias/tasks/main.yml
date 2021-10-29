@@ -1,3 +1,4 @@
+---
 - name: Bash Alias | Add general aliases
   lineinfile:
     dest: "{{ bash_aliases_path }}"
