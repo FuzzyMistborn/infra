@@ -12,7 +12,7 @@
   lineinfile:
     dest: "/etc/ssh/sshd_config"
     state: present
-    regexp: "^Subsystem sftp  /usr/lib/openssh/sftp-server"
+    regexp: "Subsystem sftp*"
     line: "Subsystem sftp internal-sftp"
 
 - name: Restart ssh
@@ -20,13 +20,15 @@
     name: sshd
     state: restarted
 
-- name: create /media/roms
+- name: create folderspoints
   file:
-    dest: /media/roms
+    dest: "{{ item }}"
     state: directory
     owner: retro
     group: retro
     mode: 0777
+  with_items:
+    - /media/roms
 
 ### AUR
 - name: Install AUR Packages
@@ -40,20 +42,16 @@
   with_items:
     - "{{ aur_package_list }}"
 
-### Flatpak
-- name: Add the flathub flatpak repository remote
-  community.general.flatpak_remote:
-    name: flathub
-    state: present
-    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
-    method: system
-
-- name: Install flatpaks
-  community.general.flatpak:
-    name:
-      - com.valvesoftware.SteamLink
-    state: present
-    method: system
+- name: Disable screen autolock
+  ini_file:
+    path: /home/retro/.config/kscreenlockerrc
+    section: Daemon
+    option: "{{item}}"
+    value: 'false'
+    mode: '0600'
+  with_items:
+    - Autolock
+    - LockOnResume
 
 - name: Enable WOL ethtool
   command: ethtool -s eno1 wol g
@@ -83,13 +81,12 @@
     regexp: "^AutoEnable"
     line: "AutoEnable=true"
 
-- name: Set bash profile to start retroarch
-  copy:
-    dest: /home/retro/.bash_profile
-    owner: retro
-    group: retro
-    mode: 0664
-    content: |
-      if [[ -z $DISPLAY ]] && [[ $(tty) = /dev/tty1 ]]; then
-        exec retroarch >/dev/null 2>&1
-      fi
+#- name: SteamLink bash script
+#  copy:
+#    dest: /usr/local/bin/SteamLink.sh
+#    owner: retro
+#    group: retro
+#    mode: 0664
+#    content: |
+#      #!/bin/bash
+#      /usr/bin/flatpak run com.valvesoftware.SteamLink

@@ -237,6 +237,16 @@ containers:
       - TZ={{ ntp_timezone }}
     include_global_env_vars: false
   ###
+  - service_name: esphome
+    container_name: esphome
+    active: true
+    image: esphome/esphome:2021.10.3
+    restart: always
+    network_mode: host
+    volumes:
+      - "{{ appdata_path }}/esphome:/config"
+    include_global_env_vars: false
+  ###
   - service_name: iobroker
     container_name: iobroker
     active: true

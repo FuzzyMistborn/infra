@@ -207,7 +207,7 @@
     - 'vars/vault.yaml'
     - 'roles/hyperion/defaults/main.yml'
   roles:
-#    - role: hyperion
+    - role: hyperion
     - role: bash_alias
 
 - hosts: retroarch_tv
@@ -217,8 +217,10 @@
   roles:
     - role: grog.package
     - role: retroarch_tv
-    - role: retroarch
+    - role: config_retroarch
+    - role: config_pegasus
     - role: bash_alias
+    - role: cronjobs
     - role: install_syncthing
 
 - hosts: ambition
@@ -253,6 +255,8 @@
     - role: install_runitor
     - role: kelsier
     - role: bash_alias
+    - role: config_retroarch
+    - role: config_pegasus
     - role: install_syncthing
     - role: install_telegraf
     - role: cronjobs

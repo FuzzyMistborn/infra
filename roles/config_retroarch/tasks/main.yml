@@ -13,41 +13,43 @@
     value: "{{ item.value }}"
   with_items:
     - option: 'core_updater_buildbot_cores_url'
-      value: '"http://buildbot.libretro.com/nightly/linux/{{ retroarch_distro }}/latest/"'
+      value: 'http://buildbot.libretro.com/nightly/linux/x86_64/latest/'
     - option: 'menu_show_core_updater'
-      value: '"true"'
+      value: 'true'
     - option: 'content_show_images'
-      value: '"false"'
+      value: 'false'
     - option: 'content_show_music'
-      value: '"false"'
+      value: 'false'
     - option: 'content_show_netplay'
-      value: '"false"'
+      value: 'false'
     - option: 'content_show_video'
-      value: '"false"'
+      value: 'false'
     - option: 'menu_swap_ok_cancel_buttons'
-      value: '"true"'
+      value: 'true'
     - option: 'menu_timedate_style'
       value: '5'
     - option: playlist_sublabel_last_played_style'
-      value: '"1"'
+      value: '1'
     - option: 'ozone_menu_color_theme'
-      value: '"2"'
+      value: '2'
     - option: 'savestate_auto_save'
       value: 'true'
     - option: 'autosave_interval'
-      value: '"300"'
+      value: '300'
     - option: 'assets_directory'
-      value: '"{{ retroarch_config_dir }}/assets"'
+      value: '{{ retroarch_config_dir }}/assets'
     - option: 'input_menu_toggle_gamepad_combo'
-      value: '"4"'
+      value: '4'
     - option: "input_player1_analog_dpad_mode"
-      value: '"1"'
+      value: '1'
     - option: "input_player2_analog_dpad_mode"
-      value: '"1"'
+      value: '1'
     - option: "input_player3_analog_dpad_mode"
-      value: '"1"'
+      value: '1'
     - option: "input_player4_analog_dpad_mode"
-      value: '"1"'
+      value: '1'
+    - option: "video_driver"
+      value: '"vulkan"'
   when: retroarch_config.stat.exists == true
 
 - name: set controller config settings
@@ -61,7 +63,18 @@
       value: 'sdl2'
     - option: 'input_joypad_driver'
       value: 'sdl2'
-  when: (ansible_hostname == 'kelsier' or ansible_hostname == 'retroarch-tv') and retroarch_config.stat.exists == true
+  when: (ansible_hostname == 'kelsier' or ansible_hostname == 'RetroArch-TV') and retroarch_config.stat.exists == true
+
+- name: set full screen setting
+  ini_file:
+    path: "{{ retroarch_config_path }}"
+    section: null
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+  with_items:
+    - option: 'video_fullscreen'
+      value: 'true'
+  when: ansible_hostname == 'RetroArch-TV' and retroarch_config.stat.exists == true
 
 ### Cores
 - name: check for retroarch cores dir
@@ -113,7 +126,7 @@
     path: "{{ retroarch_config_dir }}/playlists"
   register: retroarch_playlist
 
-- name: Copy playlist generator script
+- name: Copy playlist generator python script
   template:
     src: create_playlist.py.j2
     dest: "{{ retroarch_config_dir }}/create_playlist.py"
@@ -122,8 +135,22 @@
     mode: +x
   when: retroarch_playlist.stat.exists == true
 
+- name: Create playlist generator bash script
+  copy:
+    dest: "{{ retroarch_config_dir }}/create_playlist.sh"
+    owner: "{{ retroarch_user }}"
+    group: "{{ retroarch_user }}"
+    mode: +x
+    content: |
+      #!/bin/bash
+      cd {{ retroarch_config_dir }}
+      python3 create_playlist.py
+      sed -i 's/\.nkit\"/"/g' "playlists/Nintendo - Wii.lpl"
+      sed -i 's/\.nkit\"/"/g' "playlists/Nintendo - GameCube.lpl"
+  when: retroarch_playlist.stat.exists == true
+
 - name: run playlist generator script
-  command: python3 {{ retroarch_config_dir }}/create_playlist.py
+  command: /usr/bin/bash {{ retroarch_config_dir }}/create_playlist.sh
   when: retroarch_playlist.stat.exists == true
 
 ### Syncthing

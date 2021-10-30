@@ -76,27 +76,28 @@ package_list:
   - name: wireguard-tools
 
 aur_package_list:
-  - mqtt-explorer-appimage  # Other package broken
-  - telegraf
-  - visual-studio-code-bin
-  - squeezelite
-  - bauh
-  - logiops
-  - protonmail-bridge
-  - zoom
-  - jellyfin-media-player
-  - brother-hl2270dw
-  - gwe
-  - esphome
-  - python-esphome-dashboard
-  - popsicle
-  - rpi-imager
-  - psst
-  - ventoy
-  - remmina-git
-  - epson-perfection-v10-v100-scanner-driver-aio
-  - heroic-games-launcher-bin
-  - minecraft-launcher
+  - name: mqtt-explorer-appimage  # Other package broken
+  - name: telegraf
+  - name: visual-studio-code-bin
+  - name: squeezelite
+  - name: bauh
+  - name: logiops
+  - name: protonmail-bridge
+  - name: zoom
+  - name: jellyfin-media-player
+  - name: brother-hl2270dw
+  - name: gwe
+  - name: esphome
+  - name: pegasus-frontend-git
+  - name: python-esphome-dashboard
+  - name: popsicle
+  - name: rpi-imager
+  - name: psst
+  - name: ventoy
+  - name: remmina-git
+  - name: epson-perfection-v10-v100-scanner-driver-aio
+  - name: heroic-games-launcher-bin
+  - name: minecraft-launcher
   # - ckan  # Currently broken, use Mono
   # - ferdi # Conflict package, install manually
 

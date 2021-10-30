@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This example simply exports the raw unedited versions of each artwork type coming directly from the scraping source -->
+<artwork>
+  <output type="cover"/>
+  <output type="screenshot"/>
+  <output type="wheel"/>
+  <output type="marquee"/>
+</artwork>
