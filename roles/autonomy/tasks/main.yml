@@ -58,7 +58,6 @@
     mode: "{{ item.mode }}"
   with_items:
     - {path: "auth_commands.sh", mode: "+x"}
-    - {path: "rtl2mqtt.py", mode: "0664"}
 
 - name: Copy backup script templates
   template:

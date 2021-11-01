@@ -3,6 +3,6 @@ pegasus_user: "{{ main_username }}"
 pegasus_config_dir: /home/{{ pegasus_user }}/.config/pegasus-frontend
 pegasus_metadata_dir: "{{ pegasus_config_dir }}/metadata"
 pegasus_roms_dir: /mnt/roms
-pegasus_core_dir: /home/retro/.config/retroarch/cores
+pegasus_core_dir: /home/{{ pegasus_user }}/.config/retroarch/cores
 
 skyscraper_config_path: "{{ pegasus_config_dir }}/metadata/config.ini"

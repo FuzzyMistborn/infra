@@ -1,4 +1,4 @@
-general.theme: :/themes/pegasus-theme-grid/
+general.theme: themes/gameOS/
 general.verify-files: true
 general.input-mouse-support: true
 general.fullscreen: true

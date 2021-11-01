@@ -28,6 +28,7 @@ package_list:
   - name: retroarch
   - name: unclutter
   - name: p7zip
+  - name: vulkan-intel
 
 aur_package_list:
   - name: pegasus-frontend-git
@@ -35,6 +36,7 @@ aur_package_list:
   - name: minecraft-launcher
   - name: steamlink
   - name: skyscraper-git
+  - name: antimicroxf
 
 ### Bash Aliases
 bash_user: retro

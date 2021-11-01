@@ -98,6 +98,10 @@ aur_package_list:
   - name: epson-perfection-v10-v100-scanner-driver-aio
   - name: heroic-games-launcher-bin
   - name: minecraft-launcher
+  - name: pegasus-frontend-git
+  - name: skyscraper-git
+  - name: antimicrox
+  - name: proton
   # - ckan  # Currently broken, use Mono
   # - ferdi # Conflict package, install manually
 
@@ -160,6 +164,8 @@ bash_yay: true
 ### Syncthing/Retroarch
 retroarch_roms_dir: /mnt/Games/ROMs
 retroarch_config_dir: /home/{{ main_username }}/.config/retroarch
+
+pegasus_roms_dir: "{{ retroarch_roms_dir }}"
 
 syncthing_api_key: "{{ secret_syncthing_api_kelsier }}"
 syncthing_device_id: "{{ secret_syncthing_kelsier_device }}"
