@@ -111,7 +111,7 @@
       lxc.cgroup2.devices.allow: c 166:* rwm
       lxc.mount.entry: /dev/conbee dev/conbee none bind,optional,create=file
       lxc.mount.entry: /dev/zwave dev/zwave none bind,optional,create=file
-      lxc.mount.entry: /dev/bus/usb/001/006 dev/bus/usb/001/006 none bind,optional,create=file
+      lxc.mount.entry: /dev/rtl433 dev/rtl433 none bind,optional,create=file
       lxc.apparmor.profile: unconfined
       lxc.cgroup2.devices.allow: a
       lxc.cap.drop:
