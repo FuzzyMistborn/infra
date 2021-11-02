@@ -1,4 +1,4 @@
-general.theme: themes/gameOS/
+general.theme: themes/gameOS-master/
 general.verify-files: true
 general.input-mouse-support: true
 general.fullscreen: true

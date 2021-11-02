@@ -233,7 +233,10 @@
     group: "{{ main_username }}"
 
 - name: Enable WOL ethtool
-  command: ethtool -s eno1 wol g
+  command: ethtool -s eno1 wol bg
+
+- name: Enable WOL nmcli
+  command: sudo nmcli c modify "Wired connection 1" 802-3-ethernet.wake-on-lan magic
 
 - name: enable WOL tlp.conf
   lineinfile:
