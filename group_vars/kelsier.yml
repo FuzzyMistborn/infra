@@ -101,7 +101,7 @@ aur_package_list:
   - name: minecraft-launcher
   - name: pegasus-frontend-git
   - name: skyscraper-git
-  - name: antimicrox
+  - name: key-mapper-git
   - name: dxvk-bin
   - name: lib32-nvidia-utils
   # - ckan  # Currently broken, use Mono
@@ -263,3 +263,7 @@ cronjobs:
     minute: 0
     hour: 21
     weekday: 0,3,5
+  - name: PS4 Key Mapper
+    job: /usr/bin/key-mapper-control --command autoload --device 'Wireless Controller'
+    user: "{{ main_username }}"
+    special_time: reboot

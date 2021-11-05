@@ -84,12 +84,9 @@
     regexp: "^AutoEnable"
     line: "AutoEnable=true"
 
-#- name: SteamLink bash script
-#  copy:
-#    dest: /usr/local/bin/SteamLink.sh
-#    owner: retro
-#    group: retro
-#    mode: 0664
-#    content: |
-#      #!/bin/bash
-#      /usr/bin/flatpak run com.valvesoftware.SteamLink
+- name: add bash_aliases source to bashrc
+  lineinfile:
+    dest: /home/retro/.bashrc
+    state: present
+    regexp: "source ~/.bash_aliases"
+    line: "source ~/.bash_aliases"

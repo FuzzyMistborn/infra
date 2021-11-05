@@ -1,5 +1,5 @@
 ---
-- name: Install Cronjobs
+- name: Install Normal Cronjobs
   cron:
     name: "{{ item.name }}"
     job: "{{ item.job }}"
@@ -12,3 +12,16 @@
     state: present
   with_items:
     - "{{ cronjobs }}"
+  when: item.special_time is not defined
+
+- name: Install Special Time Cronjobs
+  cron:
+    name: "{{ item.name }}"
+    job: "{{ item.job }}"
+    user: "{{ item.user | default ('root') }}"
+    special_time: "{{ item.special_time }}"
+    state: present
+  with_items:
+    - "{{ cronjobs }}"
+  when: item.special_time is defined
+

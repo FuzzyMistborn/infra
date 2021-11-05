@@ -36,7 +36,7 @@ aur_package_list:
   - name: minecraft-launcher
   - name: steamlink
   - name: skyscraper-git
-  - name: antimicroxf
+  - name: key-mapper-git
 
 ### Bash Aliases
 bash_user: retro
@@ -54,6 +54,10 @@ cronjobs:
     user: root
     minute: 0
     hour: 0
+  - name: PS4 Key Mapper
+    job: /usr/bin/key-mapper-control --command autoload --device 'Wireless Controller'
+    user: retro
+    special_time: reboot
 
 ### Pegasus
 pegasus_user: retro
