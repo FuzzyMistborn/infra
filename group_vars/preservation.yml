@@ -105,7 +105,7 @@ containers:
   - service_name: influx-db
     container_name: influx-db
     active: true
-    image: influxdb:2.0.9
+    image: influxdb:2.1.0
     restart: always
     ports:
       - 8086:8086
