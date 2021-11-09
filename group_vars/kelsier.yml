@@ -63,6 +63,7 @@ package_list:
   - name: steam
   - name: sudo
   - name: system-config-printer
+  - name: tailscale
   - name: thunderbird
   - name: veracrypt
   - name: virtualbox

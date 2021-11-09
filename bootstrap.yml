@@ -48,6 +48,7 @@
       loop:
         - {user: "{{ main_username }}", ssh: "{{ secret_main_user_ssh }}"}
         - {user: "{{ main_username }}", ssh: "{{ secret_main_user_alt_ssh }}"}
+        - {user: "{{ main_username }}", ssh: "{{ secret_main_user_pixel_ssh }}"}
         - {user: ansible, ssh: "{{ secret_ansible_ssh }}"}
 
     - name: Add hardened SSH config
@@ -140,6 +141,7 @@
       loop:
         - {user: pi, ssh: "{{ secret_main_user_ssh }}"}
         - {user: pi, ssh: "{{ secret_main_user_alt_ssh }}"}
+        - {user: pi, ssh: "{{ secret_main_user_pixel_ssh }}"}
         - {user: ansible, ssh: "{{ secret_ansible_ssh }}"}
     - name: Add hardened SSH config
       copy:

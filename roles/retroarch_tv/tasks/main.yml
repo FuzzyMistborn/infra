@@ -7,6 +7,7 @@
   loop:
     - "{{ secret_main_user_ssh }}"
     - "{{ secret_main_user_alt_ssh }}"
+    - "{{ secret_main_user_pixel_ssh }}"
 
 - name: Fix SFTP for Ansible
   lineinfile:
