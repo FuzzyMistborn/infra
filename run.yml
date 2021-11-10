@@ -223,6 +223,18 @@
     - role: cronjobs
     - role: install_syncthing
 
+- hosts: drone
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+  roles:
+    - role: grog.package
+    - role: geerlingguy.pip
+    - role: install_pip_packages
+    - role: geerlingguy.docker
+    - role: bash_alias
+    - role: ironicbadger.ansible_role_docker_compose_generator
+
 - hosts: ambition
   become: true
   vars_files:

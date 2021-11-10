@@ -1,0 +1,60 @@
+---
+target_os: ubuntu
+hostname: drone
+
+### Install packages with grog.package
+package_list:
+  - name: curl
+  - name: git
+  - name: htop
+  - name: net-tools
+  - name: python
+  - name: sudo
+  - name: wget
+
+### Pip Packages
+pip_packages:
+  - thefuck
+
+
+### Bash Aliases
+
+bash_docker: true
+bash_autorestic: true
+bash_systemctl: true
+bash_apt: true
+
+### Docker-Compose with ironicbadger.docker_compose_generator
+appdata_path: "/home/{{ main_username }}/docker"
+containers:
+  ###
+  - service_name: drone-runner
+    container_name: drone-runner
+    active: true
+    image: drone/drone-runner-docker:1.7.0
+    restart: always
+    ports:
+      - 4300:3000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DRONE_RPC_PROTO=https
+      - DRONE_RPC_HOST=drone.fuzzymistborn.com
+      - DRONE_RPC_SECRET={{ secret_drone_rpc }}
+      - DRONE_RUNNER_CAPACITY=2
+      - DRONE_RUNNER_NAME=Adonalsium
+    include_global_env_vars: false
+  ###
+  - service_name: portainer_agent
+    container_name: portainer_agent
+    active: true
+    image: portainer/agent:2.9.2
+    restart: always
+    ports:
+      - 9001:9001
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    environment:
+      - AGENT_SECRET={{ secret_portainer_key }}
+    include_global_env_vars: false

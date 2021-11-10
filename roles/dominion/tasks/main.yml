@@ -45,9 +45,10 @@
     content: |
       Host github.com
         IdentityFile ~/.ssh/github
-      Host gitea
-        HostName {{ secret_linode_ip }}
-        Port {{ secret_gitea_port }}
+      Host git.fuzzymistborn.com
+        user git
+        HostName remote.fuzzymistborn.com
+        Port 222
         IdentityFile ~/.ssh/gitea
       Host linode
         HostName {{ secret_linode_ip }}

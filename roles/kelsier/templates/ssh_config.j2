@@ -24,6 +24,11 @@ Host autonomy
     User {{ main_username }}
     IdentityFile ~/.ssh/kelsier_lxcs
 
+Host drone
+    HostName 192.168.50.15
+    User {{ main_username }}
+    IdentityFile ~/.ssh/kelsier_lxcs
+
 Host cultivation
     HostName 192.168.50.21
     User {{ main_username }}

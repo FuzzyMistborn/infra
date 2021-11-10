@@ -72,6 +72,20 @@ fuzzymistborn.com {
 		import no_robots
 	}
 
+	@git host git.fuzzymistborn.com
+	handle @git {
+		reverse_proxy localhost:3030
+		import fuzzy_headers
+		import no_robots
+	}
+
+	@drone host drone.fuzzymistborn.com
+	handle @drone {
+		reverse_proxy localhost:4000
+		import fuzzy_headers
+		import no_robots
+	}
+
 	@paste host paste.fuzzymistborn.com
 	handle @paste {
 		reverse_proxy localhost:8080
@@ -88,13 +102,6 @@ fuzzymistborn.com {
 
 *.{{ secret_personal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
-
-	@git host git.{{ secret_personal_url }}
-	handle @git {
-		reverse_proxy localhost:3030
-		import personal_headers
-		import no_robots
-	}
 
 	@gotify host gotify.{{ secret_personal_url }}
 	handle @gotify {

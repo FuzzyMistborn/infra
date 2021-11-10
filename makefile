@@ -30,6 +30,9 @@ omada:
 ambition:
 	ansible-playbook -b run.yml --limit ambition --vault-password-file .vault-password
 
+drone:
+	ansible-playbook -b run.yml --limit drone --vault-password-file .vault-password
+
 retroarchtv:
 	ansible-playbook -b run.yml --limit retroarch_tv --vault-password-file .vault-password
 

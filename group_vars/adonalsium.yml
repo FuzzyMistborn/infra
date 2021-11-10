@@ -181,12 +181,23 @@ lxc:
     disk: 'local-lvm:30'
     cores: 2
     memory: 2048
+  - name: Drone
+    vmid: 206
+    privileged: false
+    gw: 192.168.50.1
+    ip: 192.168.50.15
+    bridge: vmbr2
+    disk: 'local-lvm25'
+    cores: 12
+    memory: 2048
+    nesting: 1
+    keyctl: 1
   - name: Autonomy
     vmid: 251
     privileged: false
     gw: 192.168.30.1
     ip: 192.168.30.12
-    disk: 'local-lvm510'
+    disk: 'local-lvm50'
     cores: 12
     memory: 5120
     nesting: 1
