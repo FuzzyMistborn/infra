@@ -44,7 +44,7 @@
 
 #### Mount disks
 - name: Set up disks/mounts
-  include: disks.yml
+  include_tasks: disks.yml
 
 ### Backup Restore
 - name: Create restore script
