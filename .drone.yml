@@ -22,7 +22,7 @@ steps:
     settings:
       token:
         from_secret: tg_token
-      to: 
+      to:
         from_secret: tg_id
       format: markdown
      message: "*Alert*: Build for {{repo.name}} has failed.  Check status [here]({{build.link}})!"
