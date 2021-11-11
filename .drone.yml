@@ -5,8 +5,7 @@ name: default
 
 steps:
   - name: ansible-lint
-    image: python:3.8-slim-bullseye
+    image: fuzzymistborn/docker-linting
     commands:
-      - pip3 install "ansible-lint[core,yamllint]"
       - "ansible-lint ."
       - "yamllint ."
