@@ -31,13 +31,13 @@ steps:
 
           📝  Commit - {{ commit.message }}
 
-          🌐  Check output - [ {{build.link}} ](here)
+          🌐  Check output - [Link]({{build.link}})
         {{else}}
           ❌  Build for `{{repo.name}}` has *FAILED*!
 
           📝  Commit - {{ commit.message }}
 
-          🌐  Check status - [ {{build.link}} ](here)
+          🌐  Check status - [Link]({{build.link}})
         {{/success}}
     when:
       status: [ success, failure ]
