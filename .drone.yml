@@ -16,8 +16,6 @@ steps:
       - "yamllint ."
       - echo $VAULT_PW > .vault-password
       - "find . -maxdepth 1 -name '*.yml' | sort | grep -v '.drone.yml' | xargs ansible-playbook --syntax-check --list-tasks --vault-password-file .vault-password"
-<<<<<<< HEAD
-=======
 
   - name: Send TG Notification
     image: appleboy/drone-telegram
@@ -35,4 +33,3 @@ steps:
         {{/success}}
     when:
       status: [ success, failure ]
->>>>>>> dev
