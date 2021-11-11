@@ -272,8 +272,8 @@ containers:
     mem_limit: 200M
     include_global_env_vars: false
   ###
-  - service_name: drone
-    container_name: drone
+  - service_name: drone-gh
+    container_name: drone-gh
     active: true
     image: drone/drone:2.4.0
     restart: always
@@ -282,21 +282,43 @@ containers:
       - 127.0.0.1:9000:9000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - "{{ appdata_path }}/drone:/data"
+      - "{{ appdata_path }}/drone-gh:/data"
     environment:
       - DRONE_DATABASE_DRIVER=sqlite3
       - DRONE_DATABASE_DATASOURCE=/data/database.sqlite
-      - DRONE_GITEA_SERVER=https://git.fuzzymistborn.com
       - DRONE_GIT_ALWAYS_AUTH=false
       - DRONE_USER_FILTER=FuzzyMistborn
       - DRONE_USER_CREATE=username:FuzzyMistborn,admin:true
       - DRONE_RPC_SECRET={{ secret_drone_rpc }}
       - DRONE_SERVER_PROTO=https
-      - DRONE_SERVER_HOST=drone.fuzzymistborn.com
-      - DRONE_GITEA_CLIENT_ID={{ secret_drone_gitea_id }}
-      - DRONE_GITEA_CLIENT_SECRET={{ secret_drone_gitea_secret }}
+      - DRONE_SERVER_HOST=dronegithub.fuzzymistborn.com
       - DRONE_GITHUB_CLIENT_ID={{ secret_drone_github_id }}
       - DRONE_GITHUB_CLIENT_SECRET={{ secret_drone_github_secret }}
+    include_global_env_vars: false
+  ###
+  - service_name: drone-gitea
+    container_name: drone-gitea
+    active: true
+    image: drone/drone:2.4.0
+    restart: always
+    ports:
+      - 127.0.0.1:4001:80
+      - 127.0.0.1:9002:9000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - "{{ appdata_path }}/drone-gitea:/data"
+    environment:
+      - DRONE_DATABASE_DRIVER=sqlite3
+      - DRONE_DATABASE_DATASOURCE=/data/database.sqlite
+      - DRONE_GIT_ALWAYS_AUTH=false
+      - DRONE_USER_FILTER=FuzzyMistborn
+      - DRONE_USER_CREATE=username:FuzzyMistborn,admin:true
+      - DRONE_RPC_SECRET={{ secret_drone_rpc }}
+      - DRONE_SERVER_PROTO=https
+      - DRONE_SERVER_HOST=dronegitea.fuzzymistborn.com
+      - DRONE_GITEA_SERVER=https://git.fuzzymistborn.com
+      - DRONE_GITEA_CLIENT_ID={{ secret_drone_gitea_id }}
+      - DRONE_GITEA_CLIENT_SECRET={{ secret_drone_gitea_secret }}
     include_global_env_vars: false
   ###
   - service_name: gotify

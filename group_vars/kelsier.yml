@@ -34,6 +34,8 @@ package_list:
   - name: iperf3
   - name: kdialog
   - name: kolourpaint
+  - name: krename
+  - name: kwalletmanager
   - name: latte-dock
   - name: libreoffice-still
   - name: libvncserver
@@ -53,6 +55,7 @@ package_list:
   - name: pdfarranger
   - name: pipewire-pulse
   - name: plasma-browser-integration
+  - name: plasma-systemmonitor
   - name: python
   - name: restic
   - name: retroarch
@@ -105,6 +108,7 @@ aur_package_list:
   - name: key-mapper-git
   - name: dxvk-bin
   - name: lib32-nvidia-utils
+  - name: ms-office-electron-git
   # - ckan  # Currently broken, use Mono
   # - ferdi # Conflict package, install manually
 

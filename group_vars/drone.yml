@@ -28,8 +28,8 @@ bash_apt: true
 appdata_path: "/home/{{ main_username }}/docker"
 containers:
   ###
-  - service_name: drone-runner
-    container_name: drone-runner
+  - service_name: drone-runner-gh
+    container_name: drone-runner-gh
     active: true
     image: drone/drone-runner-docker:1.7.0
     restart: always
@@ -39,10 +39,27 @@ containers:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - DRONE_RPC_PROTO=https
-      - DRONE_RPC_HOST=drone.fuzzymistborn.com
+      - DRONE_RPC_HOST=dronegithub.fuzzymistborn.com
       - DRONE_RPC_SECRET={{ secret_drone_rpc }}
       - DRONE_RUNNER_CAPACITY=2
-      - DRONE_RUNNER_NAME=Adonalsium
+      - DRONE_RUNNER_NAME=Adonalsium-GitHub
+    include_global_env_vars: false
+  ###
+  - service_name: drone-runner-gitea
+    container_name: drone-runner-gitea
+    active: true
+    image: drone/drone-runner-docker:1.7.0
+    restart: always
+    ports:
+      - 4301:3000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DRONE_RPC_PROTO=https
+      - DRONE_RPC_HOST=dronegitea.fuzzymistborn.com
+      - DRONE_RPC_SECRET={{ secret_drone_rpc }}
+      - DRONE_RUNNER_CAPACITY=2
+      - DRONE_RUNNER_NAME=Adonalsium-Gitea
     include_global_env_vars: false
   ###
   - service_name: portainer_agent

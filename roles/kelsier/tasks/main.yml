@@ -268,3 +268,19 @@
     name: "{{ main_username }}"
     append: yes
     groups: vboxusers
+
+### OneDrive
+- name: Copy OneDrive config file
+  template:
+    src: onedrive_config.j2
+    dest: /home/{{ main_username }}/.config/onedrive/config
+    mode: 0644
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+
+- name: Enable onedrive systemd service
+  systemd:
+    enabled: true
+    daemon-reload: true
+    state: stopped
+    name: onedrive@{{ main_username }}.service

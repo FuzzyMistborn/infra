@@ -79,9 +79,16 @@ fuzzymistborn.com {
 		import no_robots
 	}
 
-	@drone host drone.fuzzymistborn.com
-	handle @drone {
+	@dronegithub host dronegithub.fuzzymistborn.com
+	handle @dronegithub {
 		reverse_proxy localhost:4000
+		import fuzzy_headers
+		import no_robots
+	}
+
+	@dronegitea host dronegitea.fuzzymistborn.com
+	handle @dronegitea {
+		reverse_proxy localhost:4001
 		import fuzzy_headers
 		import no_robots
 	}
