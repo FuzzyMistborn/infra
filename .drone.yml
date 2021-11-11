@@ -5,7 +5,7 @@ name: default
 
 steps:
   - name: ansible-lint
-    image: ubuntu:20.04
+    image: python:3.8-slim-bullseye
     commands:
       - pip3 install "ansible-lint[community,yamllint]"
       - "ansibl-lint ."
