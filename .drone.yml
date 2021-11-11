@@ -27,9 +27,9 @@ steps:
       format: html
       message: >
         {{#success build.status}}
-          "\u2714\ufe0f" Build for <b>{{repo.name}}</b> was <b>successful</b>.  Check output <a href= '{{build.link}}'>here</a>!
+          U+1F4A9 Build for <b>{{repo.name}}</b> was <b>successful</b>.  Check output <a href= '{{build.link}}'>here</a>
         {{else}}
-          "\u274c" Build for <b>{{repo.name}}</b> has <b>FAILED</b>!  Check status <a href= '{{build.link}}'>here</a>!
+          <b>WARNING</b>: Build for <b>{{repo.name}}</b> has <b>FAILED</b>!  Check status <a href= '{{build.link}}'>here</a>
         {{/success}}
     when:
       status: [ success, failure ]
