@@ -29,7 +29,7 @@ steps:
         {{#success build.status}}
           ✅  Build for `{{repo.name}}` was *successful*!
 
-          📝  {{ commit.message }}
+          📝  Commit - {{ commit.message }}
 
           🌐  Check output - [ {{build.link}} ](here)
         {{else}}
