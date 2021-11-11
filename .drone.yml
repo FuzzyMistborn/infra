@@ -24,7 +24,7 @@ steps:
         from_secret: tg_token
       to:
         from_secret: tg_id
-      format: markdown
-      message: "*Alert*: Build for {{repo.name}} has failed.  Check status [here]({{build.link}})!"
+      format: html
+      message: "<b>Alert</b>: Build for {{repo.name}} has failed.  Check status <a href= '{{build.link}}'>here</a>!"
     when:
       status: [ success, failure ]
