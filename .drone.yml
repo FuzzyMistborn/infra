@@ -5,8 +5,8 @@ name: default
 
 steps:
   - name: ansible-lint
-    image: geerlingguy/docker-ubuntu2004-ansible:latest
+    image: ubuntu:20.04
     commands:
-      - pip3 install yamllint
-#      - "find . -maxdepth 1 -name '*.yml' | sort | grep -v '.drone.yml' | xargs ansible-lint"
+      - pip3 install "ansible-lint[community,yamllint]"
+      - "ansibl-lint ."
       - "yamllint ."
