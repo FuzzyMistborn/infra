@@ -24,12 +24,12 @@ steps:
         from_secret: tg_token
       to:
         from_secret: tg_id
-      format: html
+      format: markdown
       message: >
         {{#success build.status}}
-          Build for <b>{{repo.name}}</b> was <b>successful</b>.  Check output <a href= '{{build.link}}'>here</a>
+          Build for *{{repo.name}}* was *successful*.  Check output [{{build.link}}](here)
         {{else}}
-          <b>WARNING</b>: Build for <b>{{repo.name}}</b> has <b>FAILED</b>!  Check status <a href= '{{build.link}}'>here</a>
+          *WARNING*: Build for *{{repo.name}}* has *FAILED*!  Check status [{{build.link}}](here)
         {{/success}}
     when:
       status: [ success, failure ]
