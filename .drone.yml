@@ -1,0 +1,18 @@
+---
+kind: pipeline
+type: docker
+name: Infra Checks
+
+steps:
+  - name: ansible-lint + yamllint
+    image: fuzzymistborn/docker-linting:latest
+    environment:
+      VAULT_PW:
+        from_secret: ansible_vault_password
+    commands:
+      - ansible-galaxy role install -r requirements.yaml
+      - ansible-galaxy collection install -r requirements.yaml
+      - "ansible-lint ."
+      - "yamllint ."
+      - echo $VAULT_PW > .vault-password
+      - "find . -maxdepth 1 -name '*.yml' | sort | grep -v '.drone.yml' | xargs ansible-playbook --syntax-check --list-tasks --vault-password-file .vault-password"

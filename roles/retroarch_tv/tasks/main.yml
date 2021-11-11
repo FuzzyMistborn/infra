@@ -47,7 +47,7 @@
   ini_file:
     path: /home/retro/.config/kscreenlockerrc
     section: Daemon
-    option: "{{item}}"
+    option: "{{ item }}"
     value: 'false'
     mode: '0600'
   with_items:

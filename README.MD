@@ -45,7 +45,7 @@ Most of my servers are named after Shards of Adonalsium from my favorite fantasy
 `make update` - Runs apt update and apt upgrade on the servers, and pushes an updated docker-compose.yml file
 `make docker` - Runs docker-compose pull {{ containers }} and docker-compose up -d {{ container }} on host and containers specified
 
-### If you appreciate my work, please consider buying me a beer (or cofee, or whatever)
+### If you appreciate my work, please consider buying me a beer (or coffee, or whatever)
 [![BuyMeCoffee][buymecoffee-shield]][buymecoffee-link]
 
 [buymecoffee-link]: https://www.buymeacoffee.com/fuzzymistborn

@@ -92,10 +92,10 @@
 
 ### Infrastructure
 - name: Set up disks/mounts
-  include: disks.yml
+  include_tasks: disks.yml
 
 - name: Set up containers
-  include: infrastructure.yml
+  include_tasks: infrastructure.yml
   when: infrastructure == true
 
 - name: Install samba config
