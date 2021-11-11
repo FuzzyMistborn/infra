@@ -7,6 +7,6 @@ steps:
   - name: ansible-lint
     image: python:3.8-slim-bullseye
     commands:
-      - pip3 install "ansible-lint[yamllint]"
+      - pip3 install "ansible-lint[core,yamllint]"
       - "ansible-lint ."
       - "yamllint ."
