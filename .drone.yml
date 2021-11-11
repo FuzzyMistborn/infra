@@ -27,9 +27,9 @@ steps:
       format: markdown
       message: >
         {{#success build.status}}
-          Build for *{{repo.name}}* was *successful*.  Check output [{{build.link}}](here)
+          Build for *{{repo.name}}* was *successful*.  Check output - {{build.link}}] \uD83D\uDCA9
         {{else}}
-          *WARNING*: Build for *{{repo.name}}* has *FAILED*!  Check status [{{build.link}}](here)
+          *WARNING*: Build for *{{repo.name}}* has *FAILED*!  Check status - {{build.link}}
         {{/success}}
     when:
       status: [ success, failure ]
