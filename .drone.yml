@@ -7,4 +7,6 @@ steps:
   - name: ansible-lint
     image: geerlingguy/docker-ubuntu2004-ansible:latest
     commands:
-      - "find . -maxdepth 1 -name '*.yml' | sort | grep -v '.drone.yml' | xargs ansible-playbook --syntax-check --list-tasks --vault-password-file .vault-password"
+      - pip3 install yamllint
+      - "ansible-lint ."
+      - "yamllint ."
