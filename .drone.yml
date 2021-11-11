@@ -16,3 +16,23 @@ steps:
       - "yamllint ."
       - echo $VAULT_PW > .vault-password
       - "find . -maxdepth 1 -name '*.yml' | sort | grep -v '.drone.yml' | xargs ansible-playbook --syntax-check --list-tasks --vault-password-file .vault-password"
+<<<<<<< HEAD
+=======
+
+  - name: Send TG Notification
+    image: appleboy/drone-telegram
+    settings:
+      token:
+        from_secret: tg_token
+      to:
+        from_secret: tg_id
+      format: html
+      message: >
+        {{#success build.status}}
+          Build for <b>{{repo.name}}</b> was <b>successful</b>.  Check output <a href= '{{build.link}}'>here</a>
+        {{else}}
+          <b>WARNING</b>: Build for <b>{{repo.name}}</b> has <b>FAILED</b>!  Check status <a href= '{{build.link}}'>here</a>
+        {{/success}}
+    when:
+      status: [ success, failure ]
+>>>>>>> dev
