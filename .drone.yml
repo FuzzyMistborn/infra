@@ -5,7 +5,7 @@ name: default
 
 steps:
   - name: ansible-lint
-    image: fuzzymistborn/docker-linting
+    image: fuzzymistborn/docker-linting:latest
     commands:
       - "ansible-lint ."
       - "yamllint ."
