@@ -24,7 +24,7 @@ steps:
         from_secret: tg_token
       to:
         from_secret: tg_id
-      format: html
+      format: markdown
       message: >
         {{#success build.status}}
           \u2714\ufe0f Build for <b>{{repo.name}}</b> was <b>successful</b>.  Check output <a href= '{{build.link}}'>here</a>!
