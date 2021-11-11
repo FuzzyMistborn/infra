@@ -1,0 +1,10 @@
+---
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: ansible-lint
+    image: geerlingguy/docker-ubuntu2004-ansible:testing
+    commands:
+      - "find . -maxdepth 1 -name '*.yml' | sort | grep -v '.drone.yml' | xargs ansible-playbook --syntax-check --list-tasks --vault-password-file .vault-password"
