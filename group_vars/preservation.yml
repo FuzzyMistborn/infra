@@ -105,7 +105,7 @@ containers:
   - service_name: influx-db
     container_name: influx-db
     active: true
-    image: influxdb:2.1.0
+    image: influxdb:2.1.1
     restart: always
     ports:
       - 8086:8086
@@ -225,7 +225,7 @@ containers:
   - service_name: portainer_agent
     container_name: portainer_agent
     active: true
-    image: portainer/agent:2.9.2
+    image: portainer/agent:2.10.0
     restart: always
     ports:
       - 9001:9001
