@@ -81,34 +81,34 @@ package_list:
   - name: wireguard-tools
 
 aur_package_list:
-  - name: mqtt-explorer-appimage  # Other package broken
-  - name: telegraf
-  - name: visual-studio-code-bin
-  - name: squeezelite
   - name: bauh
-  - name: logiops
-  - name: protonmail-bridge
-  - name: zoom
-  - name: jellyfin-media-player
   - name: brother-hl2270dw
-  - name: gwe
-  - name: esphome
-  - name: pegasus-frontend-git
-  - name: python-esphome-dashboard
-  - name: popsicle
-  - name: rpi-imager
-  - name: psst
-  - name: ventoy
-  - name: remmina-git
-  - name: epson-perfection-v10-v100-scanner-driver-aio
-  - name: heroic-games-launcher-bin
-  - name: minecraft-launcher
-  - name: pegasus-frontend-git
-  - name: skyscraper-git
-  - name: key-mapper-git
   - name: dxvk-bin
+  - name: epson-perfection-v10-v100-scanner-driver-aio
+  - name: esphome
+  - name: gwe
+  - name: heroic-games-launcher-bin
+  - name: jellyfin-media-player
+  - name: key-mapper-git
   - name: lib32-nvidia-utils
+  - name: logiops
+  - name: minecraft-launcher
+  - name: mqtt-explorer-appimage  # Other package broken
   - name: ms-office-electron-git
+  - name: pegasus-frontend-git
+  - name: pegasus-frontend-git
+  - name: popsicle
+  - name: protonmail-bridge
+  - name: psst
+  - name: python-esphome-dashboard
+  - name: remmina-git
+  - name: rpi-imager
+  - name: skyscraper-git
+  - name: squeezelite
+  - name: telegraf
+  - name: ventoy
+  - name: visual-studio-code-bin
+  - name: zoom
   # - ckan  # Currently broken, use Mono
   # - ferdi # Conflict package, install manually
 
