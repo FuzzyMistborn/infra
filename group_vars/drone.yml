@@ -16,7 +16,6 @@ package_list:
 pip_packages:
   - thefuck
 
-
 ### Bash Aliases
 
 bash_docker: true
