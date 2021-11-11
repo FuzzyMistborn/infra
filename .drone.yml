@@ -27,7 +27,7 @@ steps:
       format: html
       message: >
         {{#success build.status}}
-          U+1F4A9 Build for <b>{{repo.name}}</b> was <b>successful</b>.  Check output <a href= '{{build.link}}'>here</a>
+          Build for <b>{{repo.name}}</b> was <b>successful</b>.  Check output <a href= '{{build.link}}'>here</a>
         {{else}}
           <b>WARNING</b>: Build for <b>{{repo.name}}</b> has <b>FAILED</b>!  Check status <a href= '{{build.link}}'>here</a>
         {{/success}}
