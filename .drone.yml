@@ -11,6 +11,8 @@ steps:
       - ansible-galaxy collection install -r requirements.yaml
       - "ansible-lint ."
       - "yamllint ."
-      - echo $${ansible_vault_password} > .vault-password
+      - pwd
+      - ls
+      - echo $${ansible_vault_password} 
       - "find . -maxdepth 1 -name '*.yml' | sort | grep -v '.drone.yml' | xargs ansible-playbook --syntax-check --list-tasks --vault-password-file .vault-password"
     secrets: [ ansible_vault_password ]
