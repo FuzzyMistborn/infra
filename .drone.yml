@@ -8,5 +8,5 @@ steps:
     image: geerlingguy/docker-ubuntu2004-ansible:latest
     commands:
       - pip3 install yamllint
-      - "ansible-lint ."
+      - "find . -maxdepth 1 -name '*.yml' | sort | grep -v '.drone.yml' | xargs ansible-lint"
       - "yamllint ."
