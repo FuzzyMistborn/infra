@@ -25,19 +25,6 @@ steps:
       to:
         from_secret: tg_id
       format: markdown
-      message: >
-        {{#success build.status}}
-          ✅  Build for `{{repo.name}}` was *successful*!
-
-          📝  Commit - {{ commit.message }}
-
-          🌐  Check output - [Link]({{build.link}})
-        {{else}}
-          ❌  Build for `{{repo.name}}` has *FAILED*!
-
-          📝  Commit - {{ commit.message }}
-
-          🌐  Check status - [Link]({{build.link}})
-        {{/success}}
+      message: "{{#success build.status}}✅  Build for `{{repo.name}}` was *successful*!{{else}}❌  Build for `{{repo.name}}` has *FAILED*!{{/success}} \n🌐  [Output]({{build.link}})\n📝  Commit: {{ commit.message }}"
     when:
       status: [ success, failure ]

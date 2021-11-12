@@ -45,7 +45,7 @@
 
     - name: download hugo
       unarchive:
-        src: "{{ hugo_gh_url }}/v{{ hugo_ver }}/hugo_{{ hugo_ver }}_{{ hugo_distro }}.tar.gz"
+        src: "{{ hugo_gh_url }}/v{{ hugo_ver }}/hugo_extended_{{ hugo_ver }}_{{ hugo_distro }}.tar.gz"
         dest: "{{ hugo_download_directory }}"
         remote_src: yes
         owner: root

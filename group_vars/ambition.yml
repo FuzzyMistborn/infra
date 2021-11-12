@@ -291,7 +291,7 @@ containers:
       - DRONE_USER_CREATE=username:FuzzyMistborn,admin:true
       - DRONE_RPC_SECRET={{ secret_drone_rpc }}
       - DRONE_SERVER_PROTO=https
-      - DRONE_SERVER_HOST=dronegithub.fuzzymistborn.com
+      - DRONE_SERVER_HOST=github.ci.fuzzymistborn.com
       - DRONE_GITHUB_CLIENT_ID={{ secret_drone_github_id }}
       - DRONE_GITHUB_CLIENT_SECRET={{ secret_drone_github_secret }}
     include_global_env_vars: false
@@ -315,7 +315,7 @@ containers:
       - DRONE_USER_CREATE=username:FuzzyMistborn,admin:true
       - DRONE_RPC_SECRET={{ secret_drone_rpc }}
       - DRONE_SERVER_PROTO=https
-      - DRONE_SERVER_HOST=dronegitea.fuzzymistborn.com
+      - DRONE_SERVER_HOST=gitea.ci.fuzzymistborn.com
       - DRONE_GITEA_SERVER=https://git.fuzzymistborn.com
       - DRONE_GITEA_CLIENT_ID={{ secret_drone_gitea_id }}
       - DRONE_GITEA_CLIENT_SECRET={{ secret_drone_gitea_secret }}

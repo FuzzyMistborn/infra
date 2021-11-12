@@ -38,7 +38,7 @@ containers:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - DRONE_RPC_PROTO=https
-      - DRONE_RPC_HOST=dronegithub.fuzzymistborn.com
+      - DRONE_RPC_HOST=github.ci.fuzzymistborn.com
       - DRONE_RPC_SECRET={{ secret_drone_rpc }}
       - DRONE_RUNNER_CAPACITY=2
       - DRONE_RUNNER_NAME=Adonalsium-GitHub
@@ -55,7 +55,7 @@ containers:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - DRONE_RPC_PROTO=https
-      - DRONE_RPC_HOST=dronegitea.fuzzymistborn.com
+      - DRONE_RPC_HOST=gitea.ci.fuzzymistborn.com
       - DRONE_RPC_SECRET={{ secret_drone_rpc }}
       - DRONE_RUNNER_CAPACITY=2
       - DRONE_RUNNER_NAME=Adonalsium-Gitea
