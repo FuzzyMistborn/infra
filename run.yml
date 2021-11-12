@@ -259,6 +259,18 @@
   become: true
   vars_files:
     - 'vars/vault.yaml'
+  pre_tasks:
+    - name: Remove pulseaudio
+      community.general.pacman:
+        name:
+          - paprefs
+          - pavucontrol
+          - pulseaudio-qt
+          - pulseaudio
+          - pulseaudio-jack
+          - pulseaudio-alsa
+        state: absent
+        force: yes
   roles:
     - role: grog.package
     - role: geerlingguy.pip

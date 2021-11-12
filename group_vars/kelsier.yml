@@ -32,7 +32,9 @@ package_list:
   - name: hddtemp
   - name: htop
   - name: iperf3
+  - name: kcharselect
   - name: kdialog
+  - name: kdeplasma-addons
   - name: kolourpaint
   - name: krename
   - name: kwalletmanager
@@ -49,10 +51,15 @@ package_list:
   - name: nextcloud-client
   - name: nfs-utils
   - name: nomacs
+  - name: noto-fonts-emoji
   - name: nut
   - name: nvidia-settings
   - name: openssh
   - name: pdfarranger
+  - name: pipewire
+  - name: pipewire-alsa 
+  - name: pipewire-jack
+  - name: pipewire-zeroconf
   - name: pipewire-pulse
   - name: plasma-browser-integration
   - name: plasma-systemmonitor
@@ -79,6 +86,8 @@ package_list:
   - name: wine
   - name: winetricks
   - name: wireguard-tools
+  - name: xdg-desktop-portal
+  - name: xdg-desktop-portal-kde
 
 aur_package_list:
   - name: bauh

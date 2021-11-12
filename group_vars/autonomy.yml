@@ -264,6 +264,7 @@ containers:
       - "diun.regopt=docker.io"
     environment:
       - LANGUAGE="en_US:en"
+    mem_limit: 900M
     include_global_env_vars: false
   ###
   - service_name: mqtt

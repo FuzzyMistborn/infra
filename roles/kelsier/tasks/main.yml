@@ -81,13 +81,6 @@
     flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
     method: system
 
-# - name: Install flatpaks
-#   community.general.flatpak:
-#     name:
-#       - example
-#     state: present
-#     method: system
-
 # fstab/disk mounts
 - name: make sure disks unmounted
   mount:
@@ -245,7 +238,7 @@
     regexp: "^WOL_DISABLE"
     line: "WOL_DISABLE=N"
 
-- name: Reload TLP/Cronie/bluetooth
+- name: Reload TLP/Cronie/bluetooth/fstrim
   systemd:
     enabled: true
     daemon-reload: true
@@ -255,6 +248,7 @@
     - tlp
     - cronie
     - bluetooth
+    - fstrim.timer
 
 - name: enable bluetooth auto-power on
   lineinfile:
@@ -284,3 +278,24 @@
     daemon-reload: true
     state: stopped
     name: onedrive@{{ main_username }}.service
+
+### Fix Shutdown
+- name: Copy kwin shutdown files
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: +x
+    owner: root
+    group: root
+  with_items:
+    - src: "kill_kwin.service"
+      dest: "/etc/systemd/system/kill_kwin.service"
+    - src: "kill_kwin.shutdown"
+      dest: "/usr/lib/systemd/system-shutdown/kill_kwin.shutdown"
+
+- name: Enable kill_kwin systemd service
+  systemd:
+    enabled: true
+    daemon-reload: true
+    state: started
+    name: kill_kwin.service
