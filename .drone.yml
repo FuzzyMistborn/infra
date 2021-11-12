@@ -29,15 +29,15 @@ steps:
         {{#success build.status}}
           ✅  Build for `{{repo.name}}` was *successful*!
 
-          📝  Commit - {{ commit.message }}
+          📝  {{ commit.message }}
 
-          🌐  Check output - [Link]({{build.link}})
+          🌐  [Output]({{build.link}})
         {{else}}
           ❌  Build for `{{repo.name}}` has *FAILED*!
 
-          📝  Commit - {{ commit.message }}
+          📝  {{ commit.message }}
 
-          🌐  Check status - [Link]({{build.link}})
+          🌐  [Output]({{build.link}})
         {{/success}}
     when:
       status: [ success, failure ]

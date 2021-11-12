@@ -57,7 +57,7 @@ package_list:
   - name: openssh
   - name: pdfarranger
   - name: pipewire
-  - name: pipewire-alsa 
+  - name: pipewire-alsa
   - name: pipewire-jack
   - name: pipewire-zeroconf
   - name: pipewire-pulse
