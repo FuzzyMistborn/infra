@@ -35,7 +35,7 @@ steps:
         🌐  [Output]({{build.link}})
         {{else}}
         ❌  Build for `{{repo.name}}` has *FAILED*!
-        
+
 
         📝  {{ commit.message }}
 
