@@ -27,17 +27,17 @@ steps:
       format: markdown
       message: >
         {{#success build.status}}
-          ✅  Build for `{{repo.name}}` was *successful*!
+        ✅  Build for `{{repo.name}}` was *successful*!
 
-          📝  {{ commit.message }}
+        📝  {{ commit.message }}
 
-          🌐  [Output]({{build.link}})
+        🌐  [Output]({{build.link}})
         {{else}}
-          ❌  Build for `{{repo.name}}` has *FAILED*!
+        ❌  Build for `{{repo.name}}` has *FAILED*!
 
-          📝  {{ commit.message }}
+        📝  {{ commit.message }}
 
-          🌐  [Output]({{build.link}})
+        🌐  [Output]({{build.link}})
         {{/success}}
     when:
       status: [ success, failure ]

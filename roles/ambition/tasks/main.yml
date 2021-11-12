@@ -18,6 +18,17 @@
     - scripts
     - caddy
 
+- name: create blog directories
+  file:
+    path: /var/{{ item }}
+    state: directory
+    owner: "{{ main_username }}"
+    group: "{{ main_groupname }}"
+  loop:
+    - www
+    - www/blog
+    - www/staging
+
 #### Add Extra SSH keys
 - name: Update SSH Keys
   authorized_key:

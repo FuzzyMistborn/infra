@@ -51,14 +51,14 @@ www.fuzzymistborn.com {
 
 blog.fuzzymistborn.com {
         file_server
-        root * /home/{{ main_username }}/blog/public
+        root * /var/www/blog/public
         tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key
         import fuzzy_headers
 }
 
 blog.ci.fuzzymistborn.com {
         file_server
-        root * /home/{{ main_username }}/blog/public
+        root * /var/www/staging/public
         tls /home/{{ main_username }}/lego/certificates/_.ci.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.ci.fuzzymistborn.com.key
         import fuzzy_headers
 }
@@ -274,4 +274,9 @@ wallabag.{{ secret_personal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
 	import no_robots
+}
+
+*.{{ secret_personal_url }} {
+	redir {{ secret_redirect }}
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 }
