@@ -282,6 +282,7 @@ containers:
       - 127.0.0.1:9000:9000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
       - "{{ appdata_path }}/drone-gh:/data"
     environment:
       - DRONE_DATABASE_DRIVER=sqlite3
@@ -306,6 +307,7 @@ containers:
       - 127.0.0.1:9002:9000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
       - "{{ appdata_path }}/drone-gitea:/data"
     environment:
       - DRONE_DATABASE_DRIVER=sqlite3
