@@ -36,6 +36,7 @@ containers:
       - 4300:3000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
     environment:
       - DRONE_RPC_PROTO=https
       - DRONE_RPC_HOST=github.ci.fuzzymistborn.com
@@ -53,6 +54,7 @@ containers:
       - 4301:3000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
     environment:
       - DRONE_RPC_PROTO=https
       - DRONE_RPC_HOST=gitea.ci.fuzzymistborn.com
