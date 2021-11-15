@@ -3,6 +3,7 @@
 ansible-galaxy role install -r requirements.yaml
 echo "Ansible Galaxy roles installed"
 ansible-galaxy collection install -r requirements.yaml
+ansible-galaxy collection install community-general
 echo "Ansible Galaxy collections installed"
 ./git-init.sh
 echo "Ansible vault git pre-commit hook installed"
