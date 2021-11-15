@@ -5,7 +5,7 @@ name: Infra Checks
 
 steps:
   - name: ansible-lint + yamllint
-    image: fuzzymistborn/docker-linting:dev
+    image: fuzzymistborn/docker-linting:latest
     environment:
       VAULT_PW:
         from_secret: ansible_vault_password
