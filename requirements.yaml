@@ -12,7 +12,6 @@ roles:
 - src: fuzzymistborn.autorestic
 
 collections:
-- community.general
 - community.docker
 - ansible.posix
 - kewlfft.aur
