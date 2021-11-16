@@ -223,16 +223,13 @@ containers:
   - service_name: nextcloud
     container_name: nextcloud
     active: true
-    image: fuzzymistborn/nextcloud-docker:22.2.0
+    image: fuzzymistborn/nextcloud-docker:22.2.2
     restart: always
     ports:
       - 3491:80
       - 3492:443
     volumes:
       - "{{ appdata_path }}/nextcloud_docker/html:/var/www/html"
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     mem_limit: 1000M
     include_global_env_vars: true
   ###
