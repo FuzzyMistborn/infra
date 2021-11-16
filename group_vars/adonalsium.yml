@@ -364,6 +364,10 @@ autorestic_config_yaml:
       env:
         - B2_ACCOUNT_ID: "{{ secret_media_b2_account_id }}"
         - B2_ACCOUNT_KEY: "{{ secret_media_b2_account_key }}"
+      options:
+        backup:
+          exclude:
+            - '*.iso'
   locations:
     docker:
       from: '/home/{{ main_username }}/docker'
