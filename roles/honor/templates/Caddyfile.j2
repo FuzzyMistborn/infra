@@ -15,6 +15,7 @@
 		Strict-Transport-Security "max-age=31536000; includeSubdomains"
 		X-XSS-Protection "1; mode=block"
 		X-Content-Type-Options "nosniff"
+		X-Robots-Tag noindex, nofollow
 		Referrer-Policy "same-origin"
 		Content-Security-Policy "frame-ancestors {{ secret_personal_url }} *.{{ secret_personal_url }}"
 		-Server

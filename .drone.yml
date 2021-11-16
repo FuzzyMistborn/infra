@@ -4,7 +4,7 @@ type: docker
 name: Infra Checks
 
 steps:
-  - name: ansible-lint + yamllint
+  - name: ansible-lint and yamllint
     image: fuzzymistborn/docker-linting:latest
     environment:
       VAULT_PW:

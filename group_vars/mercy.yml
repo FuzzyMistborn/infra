@@ -111,7 +111,7 @@ cronjobs:
     minute: 3
     hour: 3
   - name: Backup Media
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_mercy_media }}/ -- /usr/local/bin/autorestic backup -a -c /home/{{ main_username }}/.autorestic.yml
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_mercy_media }} -- /usr/local/bin/autorestic backup -a -c /home/{{ main_username }}/.autorestic.yml
     user: root
     minute: 59
     hour: 2

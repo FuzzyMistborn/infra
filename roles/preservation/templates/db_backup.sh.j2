@@ -29,6 +29,7 @@ docker exec influx-db sh -c 'influx backup \
 #### Delete Old
 find /home/{{ main_username }}/db_backups/* -mtime +6 -type f -delete
 find /home/{{ main_username }}/db_backups/influxdb -mtime +6 -type d -delete
+find /home/{{ main_username }}/db_backups/influxdb -type d -empty -delete
 
 #### Backup the backups
 /usr/local/bin/autorestic backup -a -c /home/{{ main_username }}/.autorestic.yml

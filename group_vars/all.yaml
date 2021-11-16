@@ -110,6 +110,11 @@ autorestic_config_user: "{{ main_username }}"
 # runitor_ver: 0.8.0
 runitor_url: "{{ secret_hc_ping_url }}"
 
+### Github API
+github_api_user: fuzzymistborn
+github_api_pass: "{{ secret_github_api_pass }}"
+github_api_auth: yes
+
 # geerlingguy.ntp
 ntp_timezone: America/New_York
 
