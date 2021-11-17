@@ -200,6 +200,18 @@ containers:
       - "{{ appdata_path }}/uptime:/app/data"
     include_global_env_vars: false
   ###
+  - service_name: libreddit
+    container_name: libreddit
+    active: true
+    image: spikecodes/libreddit:latest
+    restart: always
+    ports:
+      - 127.0.0.1:8100:8080
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false
+  ###
   - service_name: umami
     container_name: umami
     active: true
