@@ -76,15 +76,16 @@
 - name: Set boot order
   shell: pct set {{ item.lxc }} --startup order={{ item.order }}
   with_items:
-    - {"lxc":"200", "order":"9"}
+    - {"lxc":"200", "order":"5"}
     - {"lxc":"201", "order":"1"}
-    - {"lxc":"202", "order":"8"}
-    - {"lxc":"203", "order":"7"}
-    - {"lxc":"204", "order":"6"}
-    - {"lxc":"205", "order":"10"}
+    - {"lxc":"202", "order":"4"}
+    - {"lxc":"203", "order":"5"}
+    - {"lxc":"204", "order":"4"}
+    - {"lxc":"205", "order":"4"}
+    - {"lxc":"206", "order":"5"}
     - {"lxc":"250", "order":"3"}
-    - {"lxc":"251", "order":"4"}
-    - {"lxc":"252", "order":"5"}
+    - {"lxc":"251", "order":"3"}
+    - {"lxc":"252", "order":"3"}
     - {"lxc":"253", "order":"2"}
 
 - name: Endowment - Add iGPU passthrough/disable apparmor
