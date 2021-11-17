@@ -210,7 +210,7 @@ lxc:
     bridge: vmbr2
     disk: 'local-lvm:40'
     cores: 4
-    memory: 2048
+    memory: 3096
     nesting: 1
     keyctl: 1
   - name: Preservation
@@ -234,7 +234,7 @@ lxc_mounts:
     bridge: vmbr2
     disk: 'local-lvm:75'
     cores: 8
-    memory: 6144
+    memory: 5120
     nesting: 1
     keyctl: 0
     fsmount: cifs
