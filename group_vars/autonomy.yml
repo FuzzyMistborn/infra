@@ -221,13 +221,13 @@ containers:
   - service_name: deconz
     container_name: deconz
     active: true
-    image: marthoc/deconz:2.12.06
+    image: deconzcommunity/deconz:2.12.06
     restart: always
     network_mode: host
     devices:
       - /dev/conbee:/dev/ttyACM1
     volumes:
-      - "{{ appdata_path }}/deconz:/root/.local/share/dresden-elektronik/deCONZ"
+      - "{{ appdata_path }}/deconz:/opt/deCONZ"
     environment:
       - DECONZ_VNC_MODE=1
       - DECONZ_VNC_PASSWORD={{ secret_deconz_vnc_pass }}
