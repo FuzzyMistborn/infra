@@ -283,24 +283,6 @@ containers:
       - "diun.regopt=docker.io"
     include_global_env_vars: false
   ###
-  - service_name: rtl433
-    container_name: rtl433
-    active: true
-    image: hertzg/rtl_433:master
-    restart: always
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
-    command:
-      - '-Fmqtt://192.168.30.12:1883,user=homeassistant,pass={{ secret_mqtt_pass }},retain=1,devices=rtl_433[/model][/id]'
-      - '-Csi'
-      - '-R40'
-      - '-R41'
-      - '-X n=digoo,m=OOK_PWM,bits=>24,s=464,l=1404,r=1800,t=200,get=@0:{20}:id,get=@20:{4}:event:[2:LOW_BATTERY 6:CLOSE 12:OPEN],unique'
-    devices:
-      - /dev/rtl433:/dev/bus/usb/001/016
-    include_global_env_vars: false
-  ###
   - service_name: nodered
     container_name: nodered
     active: true

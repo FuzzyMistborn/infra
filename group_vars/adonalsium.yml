@@ -23,7 +23,7 @@ mergerfs_mount:
 
 parity_disks:
   - path: /mnt/parity1
-    source: /dev/disk/by-id/ata-ST8000NM0055-1RM112_ZA11KJXC-part1
+    source: /dev/disk/by-id/ata-WDC_WD140EDGZ-11B1PA0_81GE39SV-part1
     fs: ext4
     opts: defaults
     content: false
@@ -50,12 +50,12 @@ data_disks:
     opts: defaults
     content: true
   - path: /mnt/disk5
-    source: /dev/disk/by-id/ata-WDC_WD60EFRX-68MYMN1_WD-WX21D25R5VX9-part1
+    source: /dev/disk/by-id/ata-ST8000NM0055-1RM112_ZA11KJXC-part1
     fs: ext4
     opts: defaults
     content: true
   - path: /mnt/disk6
-    source: /dev/disk/by-id/ata-WDC_WD60EFRX-68MYMN1_WD-WX31D25040NC-part1
+    source: /dev/disk/by-id/ata-WDC_WD140EDGZ-11B1PA0_9MGWV2JJ-part1
     fs: ext4
     opts: defaults
     content: true
@@ -178,7 +178,7 @@ lxc:
     privileged: true
     gw: 192.168.30.1
     ip: 192.168.30.16
-    disk: 'local-lvm:30'
+    disk: 'local-lvm:15'
     cores: 2
     memory: 2048
   - name: Drone
@@ -197,7 +197,7 @@ lxc:
     privileged: false
     gw: 192.168.30.1
     ip: 192.168.30.12
-    disk: 'local-lvm50'
+    disk: 'local-lvm35'
     cores: 12
     memory: 5120
     nesting: 1
@@ -208,7 +208,7 @@ lxc:
     gw: 192.168.50.1
     ip: 192.168.50.21
     bridge: vmbr2
-    disk: 'local-lvm:40'
+    disk: 'local-lvm:20'
     cores: 4
     memory: 3096
     nesting: 1
@@ -219,7 +219,7 @@ lxc:
     gw: 192.168.50.1
     ip: 192.168.50.22
     bridge: vmbr2
-    disk: 'local-lvm:40'
+    disk: 'local-lvm:30'
     cores: 4
     memory: 3072
     nesting: 1
@@ -232,7 +232,7 @@ lxc_mounts:
     gw: 192.168.50.1
     ip: 192.168.50.20
     bridge: vmbr2
-    disk: 'local-lvm:75'
+    disk: 'local-lvm:50'
     cores: 8
     memory: 5120
     nesting: 1
@@ -548,4 +548,22 @@ containers:
       - /dev/dri:/dev/dri
     environment:
       - TZ={{ ntp_timezone }}
+    include_global_env_vars: false
+  ###
+  - service_name: rtl433
+    container_name: rtl433
+    active: true
+    image: hertzg/rtl_433:master
+    restart: always
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    command:
+      - '-Fmqtt://192.168.30.12:1883,user=homeassistant,pass={{ secret_mqtt_pass }},retain=1,devices=rtl_433[/model][/id]'
+      - '-Csi'
+      - '-R40'
+      - '-R41'
+      - '-X n=digoo,m=OOK_PWM,bits=>24,s=464,l=1404,r=1800,t=200,get=@0:{20}:id,get=@20:{4}:event:[2:LOW_BATTERY 6:CLOSE 12:OPEN],unique'
+    devices:
+      - /dev/rtl433:/dev/bus/usb/001/016
     include_global_env_vars: false
