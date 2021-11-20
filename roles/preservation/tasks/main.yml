@@ -35,6 +35,7 @@
   with_items:
     - {src: 'db_backup.sh.j2', dest: 'db_backup.sh'}
     - {src: 'db_restore.sh.j2', dest: 'db_restore.sh'}
+    - {src: 'postgres_cleanup.sh.j2', dest: 'postgres_cleanup.sh'}
 
 ### Backup Restore
 - name: Create restore script

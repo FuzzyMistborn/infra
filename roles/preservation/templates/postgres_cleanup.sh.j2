@@ -1,0 +1,4 @@
+#!/bin/bash
+
+docker exec -i invidious-db /usr/bin/psql invidious -U kemal -c "DELETE FROM nonces * WHERE expire < current_timestamp"
+docker exec -i invidious-db /usr/bin/psql invidious -U kemal -c "TRUNCATE TABLE videos"

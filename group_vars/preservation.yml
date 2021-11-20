@@ -43,6 +43,12 @@ cronjobs:
     minute: 45
     hour: 2
     day: 1
+  - name: PSQL Prune
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_invidious_psql_prune }} -- /home/{{ main_username }}/scripts/postgres_cleanup.sh
+    user: "{{ main_username }}"
+    minute: 30
+    hour: 3
+    weekday: 5
 
 ### Telegraf
 telegraf_influx_token: "{{ secret_telegraf_preservation }}"
@@ -190,6 +196,27 @@ containers:
       - MYSQL_USER=photoview
       - MYSQL_PASSWORD={{ secret_photoview_db_pass }}
     mem_limit: 300M
+    include_global_env_vars: false
+  ###
+  - service_name: invidious-db
+    container_name: invidious-db
+    active: true
+    image: postgres:14.1
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - "{{ appdata_path }}/postgres/data:/var/lib/postgresql/data"
+      - "{{ appdata_path }}/docker/postgres/config/sql:/config/sql"
+      - "{{ appdata_path }}/docker/postgres/init-invidious-db.sh:/docker-entrypoint-initdb.d/init-invidious-db.sh"
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    environment:
+      - POSTGRES_DB=invidious
+      - POSTGRES_USER=kemal
+      - POSTGRES_PASSWORD={{ secret_invidious_db_pass }}
+    mem_limit: 200M
     include_global_env_vars: false
   ###
   - service_name: remote-api

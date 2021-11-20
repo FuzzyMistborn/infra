@@ -268,6 +268,20 @@ containers:
       - USERMAP_GID={{ main_gid }}
     include_global_env_vars: false
   ###
+  - service_name: invidious
+    container_name: invidious
+    active: true
+    image: quay.io/invidious/invidious:latest
+    restart: always
+    ports:
+      - 3500:3000
+    volumes:
+      - "{{ appdata_path }}/invidious:/invidious/config"
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false
+  ###
   - service_name: remote-api
     container_name: remote-api
     active: true
