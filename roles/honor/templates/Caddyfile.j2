@@ -126,6 +126,12 @@ wallabag.{{ secret_personal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import headers
 }
+# Invidious
+video.{{ secret_personal_url }} {
+	reverse_proxy http://192.168.50.21:3500
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	import headers
+}
 
 ######
 
