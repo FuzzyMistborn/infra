@@ -1,0 +1,7 @@
+#/bin/bash
+
+nextcloud_docker=$(/usr/local/bin/skopeo inspect docker://docker.io/nextcloud:latest | grep -o 'NEXTCLOUD_VERSION=[0-9]*.[0-9]*.[0-9]*' | cut -c 19-30)
+hass_docker=$(/usr/local/bin/skopeo inspect docker://docker.io/homeassistant/home-assistant:latest | grep -ioE '"io.hass.version": "[0-9]*.[0-9]*.[0-9]*"' | grep -o "\b[0-9]*.[0-9]*.[0-9]")
+
+mosquitto_pub -h 192.168.30.12 -u homeassistant -P {{ secret_mqtt_pass }} -t dockertags/Nextcloud --retain -m "$nextcloud_docker"
+mosquitto_pub -h 192.168.30.12 -u homeassistant -P {{ secret_mqtt_pass }} -t dockertags/HomeAssistant --retain -m "$hass_docker"
