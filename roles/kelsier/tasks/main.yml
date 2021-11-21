@@ -217,6 +217,14 @@
     value: "1"
     reload: yes
 
+- name: Create wireguard conf
+  copy:
+    dest: /etc/wireguard/wg0.conf
+    owner: root
+    group: root
+    mode: 0600
+    content: "{{ secret_parents_wireguard_config }}"
+
 - name: Install plugin for MPV to use KDEConnect
   get_url:
     url: https://github.com/hoyon/mpv-mpris/releases/download/0.5/mpris.so

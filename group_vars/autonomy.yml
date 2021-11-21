@@ -11,9 +11,11 @@ package_list:
   - name: lm-sensors
   - name: net-tools
   - name: fail2ban
+  - name: mosquitto-clients
   - name: python
   - name: restic
   - name: rsyslog
+  - name: skopeo
   - name: sudo
   - name: wget
   - name: xvfb
@@ -51,6 +53,10 @@ cronjobs:
     minute: '*/30'
     hour: 9-15
     weekday: 1-5
+  - name: Docker Version Check
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_docker_version_check }} -- bash -c /home/{{ main_username }}/scripts/docker.sh > /dev/null
+    user: "{{ main_username }}"
+    minute: '*/30'
   - name: NodeRed Github
     job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_nr_git }} -- /home/{{ main_username }}/docker/nodered/github_cron.sh
     user: "{{ main_username }}"

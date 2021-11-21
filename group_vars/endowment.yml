@@ -277,6 +277,7 @@ containers:
       - "diun.regopt=ghcr.io"
     volumes:
       - "{{ appdata_path }}/jellyfin/config:/config"
+      - "/mnt/scratch/transcode:/transcode"
       - /mnt/Media/Movies:/mnt/movies
       - /mnt/Media/UHD:/mnt/UHD
       - '/mnt/Media/TV Shows:/mnt/tv'
