@@ -147,6 +147,8 @@
   with_items:
     - src: "kde/dolphinrc"
       dest: "/home/{{ main_username }}/.config/dolphinrc"
+    - src: "kde/khotkeysrc"
+      dest: "/home/{{ main_username }}/.config/khotkeysrc"
     - src: "kde/dolphinui.rc"
       dest: "/home/{{ main_username }}/.local/share/kxmlgui5/dolphin/dolphinui.rc"
     - src: "kde/konsoleprofile"
