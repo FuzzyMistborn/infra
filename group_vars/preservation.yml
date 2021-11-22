@@ -57,6 +57,7 @@ telegraf_influx_docker: true
 
 ### Autorestic Config
 autorestic_config_yaml:
+  version: 2
   backends:
     synology_db:
       type: s3

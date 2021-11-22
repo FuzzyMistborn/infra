@@ -82,6 +82,7 @@ cronjobs:
 
 ### Autorestic Config
 autorestic_config_yaml:
+  version: 2
   backends:
     synology_docker:
       type: s3

@@ -115,6 +115,7 @@ caddy_config: "{{ lookup('template', 'roles/ambition/templates/Caddyfile.j2') }}
 
 ### Autorestic Config
 autorestic_config_yaml:
+  version: 2
   backends:
     b2_docker:
       type: b2
