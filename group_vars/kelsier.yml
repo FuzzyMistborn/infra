@@ -178,6 +178,7 @@ bash_autorestic: true
 bash_systemctl: true
 bash_pacman: true
 bash_yay: true
+bash_git: true
 
 ### Syncthing/Retroarch
 retroarch_roms_dir: /mnt/Games/ROMs

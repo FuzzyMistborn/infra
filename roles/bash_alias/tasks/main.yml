@@ -47,6 +47,18 @@
   with_items: "{{ bash_apt_aliases }}"
   when: bash_apt != false
 
+- name: Bash Alias | Add git aliases
+  lineinfile:
+    dest: "{{ bash_aliases_path }}"
+    create: yes
+    owner: "{{ bash_user }}"
+    group: "{{ bash_user }}"
+    mode: 0644
+    line: "alias {{ item.alias }}='{{ item.command }}'"
+    regexp: "^alias {{ item.alias }}="
+  with_items: "{{ bash_git_aliases }}"
+  when: bash_git != false
+
 - name: Bash Alias | Add autorestic aliases
   lineinfile:
     dest: "{{ bash_aliases_path }}"

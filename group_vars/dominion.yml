@@ -34,6 +34,7 @@ bash_aliases:
     command: ssh-keygen -f /home/{{ main_username }}/.ssh/known_hosts -R $c
 bash_systemctl: true
 bash_apt: true
+bash_git: true
 
 ### Cronjobs
 cronjobs:
