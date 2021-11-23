@@ -44,6 +44,38 @@ bash_apt_aliases:
   - alias: agu
     command: sudo apt update && sudo apt upgrade
 
+bash_git_aliases:
+  - alias: ga
+    command: git add --all
+  - alias: gp
+    command: git push $c
+  - alias: gpdry
+    command: git push --dry-run
+  - alias: gpf
+    command: git push --force
+  - alias: gb
+    command: git branch
+  - alias: gbd
+    command: git branch -d $c
+  - alias: gcam
+    command: git commit -am $c
+  - alias: gcm
+    command: git commit -m $c
+  - alias: gcheck
+    command: git checkout
+  - alias: gm
+    command: git merge $c
+  - alias: gms
+    command: git merge --squash $c
+  - alias: gst
+    command: git status
+  - alias: gpl
+    command: git pull
+  - alias: glast
+    command: git log -1 HEAD --stat
+  - alias: greset
+    command: git reset --soft HEAD~1
+
 bash_systemctl_aliases:
   - alias: sc-start
     command: sudo systemctl start $c
