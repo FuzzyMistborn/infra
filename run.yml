@@ -296,7 +296,7 @@
         path: /etc/apt/sources.list.d/pve-enterprise.list
     - name: Switch to community repo
       apt_repository:
-        repo: 'deb http://download.proxmox.com/debian/pve buster pve-no-subscription'
+        repo: 'deb http://download.proxmox.com/debian/pve bullseye pve-no-subscription'
         state: present
     - name: Apt update
       apt:
