@@ -28,29 +28,22 @@
     - {src: "auth_commands.sh.j2", dest: "/home/{{ main_username }}/.ssh/auth_commands.sh", mode: "755"}
     - {src: "ssh_config.j2", dest: "/home/{{ main_username }}/.ssh/config", mode: "600"}
 
-- name: Add Kelsier LXC SSH Key
+- name: Add SSH Keys
   copy:
-    dest: /home/{{ main_username }}/.ssh/kelsier_lxcs
+    dest: /home/{{ main_username }}/.ssh/{{item.dest}}
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
     mode: 0600
-    content: "{{ secret_kelsier_lxc_ssh }}"
-
-- name: Add Kelsier VPS SSH Key
-  copy:
-    dest: /home/{{ main_username }}/.ssh/kelsier_vps
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: 0600
-    content: "{{ secret_kelsier_vps_ssh }}"
-
-- name: Add Github SSH Key
-  copy:
-    dest: /home/{{ main_username }}/.ssh/github
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: 0600
-    content: "{{ secret_github_ssh }}"
+    content: "{{ item.key }}"
+  with_items:
+    - dest: kelsier_lxcs
+      key: "{{ secret_kelsier_lxc_ssh }}"
+    - dest: kelsier_vps
+      key: "{{ secret_kelsier_vps_ssh }}"
+    - dest: parentsvpn
+      key: "{{ secret_parentsvpn_ssh }}"
+    - dest: github
+      key: "{{ secret_github_ssh }}"
 
 # Sudoers file
 - name: Add sudoers file for main user
