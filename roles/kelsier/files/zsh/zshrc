@@ -39,6 +39,7 @@ zstyle ':z4h:ssh:retro*' enable 'no'
 zstyle ':z4h:ssh:hyperion' enable 'no'
 zstyle ':z4h:ssh:100.*' enable 'no'
 zstyle ':z4h:ssh:192.168.*' enable 'no'
+zstyle ':z4h:ssh:parentsvpn' enable 'no'
 # The default value if none of the overrides above match the hostname.
 zstyle ':z4h:ssh:*'                   enable 'yes'
 

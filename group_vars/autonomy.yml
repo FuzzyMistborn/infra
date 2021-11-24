@@ -56,7 +56,7 @@ cronjobs:
   - name: Docker Version Check
     job: /usr/local/bin/runitor -uuid {{ secret_hc_docker_version_check }} -- bash -c /home/{{ main_username }}/scripts/docker.sh > /dev/null
     user: "{{ main_username }}"
-    minute: '*/30'
+    minute: '*/20'
   - name: NodeRed Github
     job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_nr_git }} -- /home/{{ main_username }}/docker/nodered/github_cron.sh
     user: "{{ main_username }}"
