@@ -30,7 +30,7 @@
 
 - name: Add SSH Keys
   copy:
-    dest: /home/{{ main_username }}/.ssh/{{item.dest}}
+    dest: /home/{{ main_username }}/.ssh/{{ item.dest }}
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
     mode: 0600
