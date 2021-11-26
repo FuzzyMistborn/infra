@@ -212,7 +212,7 @@ containers:
   - service_name: zwavejs
     container_name: zwavejs
     active: true
-    image: zwavejs/zwavejs2mqtt:5.12.0
+    image: zwavejs/zwavejs2mqtt:6.0.2
     restart: always
     ports:
       - 8091:8091
