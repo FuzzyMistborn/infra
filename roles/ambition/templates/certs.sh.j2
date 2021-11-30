@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #/usr/local/bin/lego --email="fuzzymistborn@protonmail.com" --domains="*.fuzzymistborn.com" --dns="linode" --dns.resolvers="9.9.9.9:53" --accept-tos --path /home/{{ main_username }}/lego run
-#/usr/local/bin/lego --email="fuzzymistborn@protonmail.com" --domains="*.ci.fuzzymistborn.com" --dns="linode" --dns.resolvers="9.9.9.9:53" --accept-tos --path /home/geoff/lego run
+#/usr/local/bin/lego --email="fuzzymistborn@protonmail.com" --domains="*.ci.fuzzymistborn.com" --dns="linode" --dns.resolvers="9.9.9.9:53" --accept-tos --path /home/{{ main_username }}/lego run
 #/usr/local/bin/lego --email="{{ secret_new_email }}" --domains="*.{{ secret_personal_url }}" --dns="linode" --dns.resolvers="9.9.9.9:53" --accept-tos --path /home/{{ main_username }}/lego run
 
 /usr/local/bin/lego --email="fuzzymistborn@protonmail.com" --domains="*.fuzzymistborn.com" --dns="linode" --dns.resolvers="9.9.9.9:53" --path /home/{{ main_username }}/lego renew --days 45

@@ -26,7 +26,8 @@ bash_apt: true
 ### Cronjobs
 cronjobs:
   - name: Restic Prune
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_omada_purge }} -- /usr/local/bin/autorestic forget -a -- prune
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_omada_purge }} -- /usr/local/bin/autorestic exec -a -- forget --keep-daily 1 --keep-weekly 4 --keep-monthly 2 --prune
+#    job: /usr/local/bin/runitor -uuid {{ secret_hc_omada_purge }} -- /usr/local/bin/autorestic forget -a -- prune
     user: "{{ main_username }}"
     minute: 20
     hour: 22

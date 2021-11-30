@@ -63,7 +63,8 @@ cronjobs:
     minute: 0
     hour: 23
   - name: Restic Prune
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_purge }} -- /usr/local/bin/autorestic forget -a -- prune
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_purge }} -- /usr/local/bin/autorestic exec -a -- forget --keep-daily 1 --keep-weekly 8 --keep-monthly 4 --prune
+#    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_purge }} -- /usr/local/bin/autorestic forget -a -- prune
     user: "{{ main_username }}"
     minute: 0
     hour: 22
@@ -271,6 +272,7 @@ containers:
       - "diun.regopt=docker.io"
     environment:
       - LANGUAGE="en_US:en"
+      - PACKAGES="iputils-ping"
     mem_limit: 900M
     include_global_env_vars: false
   ###
