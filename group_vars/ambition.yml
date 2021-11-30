@@ -36,7 +36,8 @@ cronjobs:
     minute: 0
     hour: 5
   - name: Restic Prune
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_linode_restic_prune }} -- /usr/local/bin/autorestic forget -a -- prune
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_linode_restic_prune }} -- /usr/local/bin/autorestic exec -a -- forget --keep-daily 1 --keep-weekly 6 --keep-monthly 3 --prune
+#    job: /usr/local/bin/runitor -uuid {{ secret_hc_linode_restic_prune }} -- /usr/local/bin/autorestic forget -a -- prune
     user: "{{ main_username }}"
     minute: 0
     hour: 6
