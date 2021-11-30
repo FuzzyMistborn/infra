@@ -80,7 +80,7 @@ autorestic_config_yaml:
 ### Cronjobs
 cronjobs:
   - name: Restic Prune
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_mercy_purge }} -- /usr/local/bin/autorestic exec -a -- forget --keep-last 10 --prune 
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_mercy_purge }} -- /usr/local/bin/autorestic exec -a -- forget --keep-last 10 --prune
 #    job: /usr/local/bin/runitor -uuid {{ secret_hc_mercy_purge }} -- /usr/local/bin/autorestic forget -a -- prune
     user: "{{ main_username }}"
     minute: 0
