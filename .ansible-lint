@@ -2,7 +2,6 @@
 exclude_paths:
   - galaxy_roles/
   - galaxy_collections/
-  - FUNDING.yml
 
 skip_list:
   - no-relative-paths
