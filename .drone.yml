@@ -15,7 +15,7 @@ steps:
       - "ansible-lint ."
       - "yamllint ."
       - echo $VAULT_PW > .vault-password
-      - "find . -maxdepth 1 -name '*.yml' | sort | grep -v '.drone.yml FUNDING.yaml' | xargs ansible-playbook --syntax-check --list-tasks --vault-password-file .vault-password"
+      - "find . -maxdepth 1 -name '*.yml' | sort | grep -v '.drone.yml' | xargs ansible-playbook --syntax-check --list-tasks --vault-password-file .vault-password"
 
   - name: Send TG Notification
     image: appleboy/drone-telegram
