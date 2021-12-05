@@ -28,3 +28,4 @@ ignore: |
   test.yml
   requirements.yaml
   vars/vault.yaml
+  FUNDING.yml
