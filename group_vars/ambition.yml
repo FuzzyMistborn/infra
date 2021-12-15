@@ -289,7 +289,7 @@ containers:
   - service_name: drone-gh
     container_name: drone-gh
     active: true
-    image: drone/drone:2.6.0
+    image: drone/drone:2.7.0
     restart: always
     ports:
       - 127.0.0.1:4000:80
@@ -314,7 +314,7 @@ containers:
   - service_name: drone-gitea
     container_name: drone-gitea
     active: true
-    image: drone/drone:2.6.0
+    image: drone/drone:2.7.0
     restart: always
     ports:
       - 127.0.0.1:4001:80
