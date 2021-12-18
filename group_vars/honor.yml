@@ -177,7 +177,7 @@ containers:
   - service_name: remote-api
     container_name: remote-api
     active: true
-    image: kekru/docker-remote-api-tls:v0.3.0
+    image: kekru/docker-remote-api-tls:v0.4.0
     restart: always
     ports:
       - 2376:443
