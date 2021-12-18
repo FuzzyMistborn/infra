@@ -229,7 +229,7 @@ containers:
   - service_name: deconz
     container_name: deconz
     active: true
-    image: deconzcommunity/deconz:2.12.06
+    image: deconzcommunity/deconz:2.13.04
     restart: always
     network_mode: host
     devices:
