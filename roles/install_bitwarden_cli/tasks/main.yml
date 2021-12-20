@@ -1,0 +1,65 @@
+---
+
+- name: get status of bw_install_path
+  stat:
+    path: "{{ bw_install_path }}"
+  register: is_installed
+
+- name: set bw installed
+  set_fact:
+    bw_is_installed: "{{ is_installed.stat.exists }}"
+
+- name: check bw version
+  shell: "{{ bw_install_path }} --version"
+  changed_when: false
+  register: installed_version_registered
+  when: bw_is_installed == True
+
+- name: get latest release
+  uri:
+    url: https://api.github.com/repos/bitwarden/cli/releases/latest
+    url_username: "{{ github_api_user | default (omit) }}"
+    url_password: "{{ github_api_pass | default (omit) }}"
+    return_content: true
+    force_basic_auth: "{{ github_api_auth | default (omit) }}"
+  register: release_version_registered
+  when: bw_download_latest_ver == True
+
+- name: set bw version (latest)
+  set_fact:
+    bw_ver: "{{ release_version_registered.json.tag_name|regex_replace('v') }}"
+  when: bw_download_latest_ver == True
+
+- name: set bw version (pinned)
+  set_fact:
+    bw_ver: "{{ bw_pinned_ver }}"
+  when: bw_download_latest_ver == False
+
+- block:
+    - name: ensure bw_download_directory does not exist
+      file:
+        path: "{{ bw_download_directory }}"
+        state: absent
+
+    - name: create bw_download_directory
+      file:
+        path: "{{ bw_download_directory }}"
+        state: directory
+        mode: 0755
+
+    - name: download bw
+      unarchive:
+        src: "{{ bw_gh_url }}/v{{ bw_ver }}/bw-{{ bw_distro }}-{{ bw_ver }}.zip"
+        dest: "{{ bw_download_directory }}"
+        remote_src: yes
+        owner: root
+        group: root
+        mode: +x
+
+    - name: move to bw path
+      copy:
+        src: "{{ bw_download_directory }}/bw"
+        dest: "{{ bw_install_directory }}"
+        remote_src: yes
+        mode: +x
+  when: bw_is_installed == False or ( bw_is_installed == True and bw_download_latest_ver == True and installed_version_registered.stdout != bw_ver ) or ( bw_is_installed == True and bw_download_latest_ver == False and installed_version_registered.stdout != bw_pinned_ver )

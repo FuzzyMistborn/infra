@@ -10,8 +10,8 @@ package_list:
   - name: git
   - name: wget
   - name: make
-  - name: sshpass
   - name: screen
+  - name: unzip
 
 ### Pip Packages
 pip_packages:
