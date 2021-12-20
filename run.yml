@@ -64,6 +64,7 @@
     - role: geerlingguy.pip
     - role: install_pip_packages
     - role: github
+    - role: install_bitwarden_cli
     - role: install_runitor
     - role: dominion
     - role: bash_alias

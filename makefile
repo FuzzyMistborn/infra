@@ -1,85 +1,85 @@
 ### Shard Plays
 
 dominion:
-	ansible-playbook -b run.yml --limit dominion --vault-password-file .vault-password
+	ansible-playbook -b run.yml --limit dominion
 
 endowment:
-	ansible-playbook -b run.yml --limit endowment --vault-password-file .vault-password
+	ansible-playbook -b run.yml --limit endowment
 
 autonomy:
-	ansible-playbook -b run.yml --limit autonomy --vault-password-file .vault-password
+	ansible-playbook -b run.yml --limit autonomy
 
 cultivation:
-	ansible-playbook -b run.yml --limit cultivation --vault-password-file .vault-password
+	ansible-playbook -b run.yml --limit cultivation
 
 preservation:
-	ansible-playbook -b run.yml --limit preservation --vault-password-file .vault-password
+	ansible-playbook -b run.yml --limit preservation
 
 honor:
-	ansible-playbook -b run.yml --limit honor --vault-password-file .vault-password
+	ansible-playbook -b run.yml --limit honor
 
 valor:
-	ansible-playbook -b run.yml --limit valor --vault-password-file .vault-password
+	ansible-playbook -b run.yml --limit valor
 
 mercy:
-	ansible-playbook -b run.yml --limit mercy --vault-password-file .vault-password
+	ansible-playbook -b run.yml --limit mercy
 
 omada:
-	ansible-playbook -b run.yml --limit omada --vault-password-file .vault-password
+	ansible-playbook -b run.yml --limit omada
 
 ambition:
-	ansible-playbook -b run.yml --limit ambition --vault-password-file .vault-password
+	ansible-playbook -b run.yml --limit ambition
 
 drone:
-	ansible-playbook -b run.yml --limit drone --vault-password-file .vault-password
+	ansible-playbook -b run.yml --limit drone
 
 retroarchtv:
-	ansible-playbook -b run.yml --limit retroarch_tv --vault-password-file .vault-password
+	ansible-playbook -b run.yml --limit retroarch_tv
 
 hyperion:
-	ansible-playbook -b run.yml --limit hyperion --vault-password-file .vault-password
+	ansible-playbook -b run.yml --limit hyperion
 
 kelsier:
-	ansible-playbook -b run.yml --limit kelsier --vault-password-file .vault-password
+	ansible-playbook -b run.yml --limit kelsier
 
 adonalsium:
-	ansible-playbook -b run.yml --limit adonalsium --vault-password-file .vault-password
+	ansible-playbook -b run.yml --limit adonalsium
 
 ### Updates
 update:
-	ansible-playbook update.yml --vault-password-file .vault-password
+	ansible-playbook update.yml
 
 docker:
-	ansible-playbook docker.yml --vault-password-file .vault-password
+	ansible-playbook docker.yml
 
 test:
-	ansible-playbook -b test.yml --vault-password-file .vault-password
+	ansible-playbook -b test.yml
 
 ### Vault
 decrypt:
-	ansible-vault decrypt --vault-password-file .vault-password vars/vault.yaml
+	ansible-vault decrypt vars/vault.yaml
 
 encrypt:
-	ansible-vault encrypt --vault-password-file .vault-password vars/vault.yaml
+	ansible-vault encrypt vars/vault.yaml
 
 ### Setup
 proxmox:
-	ansible-playbook -u root -b run.yml --limit adonalsium --ask-pass --vault-password-file .vault-password
+	ansible-playbook -u root -b run.yml --limit adonalsium --ask-pass
 
 odium:
-	ansible-playbook -u root -b run.yml --limit odium --ask-pass --vault-password-file .vault-password
+	ansible-playbook -u root -b run.yml --limit odium --ask-pass
 
 bootstrap_lxc:
-	ansible-playbook -b bootstrap.yml --limit lxc ambition --vault-password-file .vault-password
+	ansible-playbook -b bootstrap.yml --limit lxc ambition
 
 bootstrap_kelsier:
-	ansible-playbook -b bootstrap.yml --limit kelsier --ask-pass --ask-become-pass --vault-password-file .vault-password
+	ansible-playbook -b bootstrap.yml --limit kelsier --ask-pass --ask-become-pass
 
 bootstrap_retroarchtv:
-	ansible-playbook -b bootstrap.yml --limit retroarch_tv --ask-pass --ask-become-pass --vault-password-file .vault-password
+	ansible-playbook -b bootstrap.yml --limit retroarch_tv --ask-pass --ask-become-pass
 
 bootstrap_hyperion:
-	ansible-playbook -b bootstrap.yml --ask-pass --limit hyperion --vault-password-file .vault-password
+	ansible-playbook -b bootstrap.yml --ask-pass --limit hyperion
 
 git:
 	@./gitupdate.sh

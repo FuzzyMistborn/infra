@@ -1,0 +1,11 @@
+---
+
+bw_download_latest_ver: true  # Change to 'false' to pin to a specific version
+bw_pinned_ver: 1.20.0  # Overriden by 'lego_download_latest_ver' variable
+bw_distro: linux
+
+bw_gh_url: https://github.com/bitwarden/cli/releases/download/
+bw_download_directory: "/tmp/bw"
+
+bw_install_directory: /usr/local/bin
+bw_install_path: "{{ bw_install_directory }}/bw"

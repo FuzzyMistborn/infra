@@ -65,3 +65,29 @@
       cd /home/{{ main_username }}/infra
       /usr/local/bin/ansible-playbook update.yml --vault-password-file .vault-password
       /usr/local/bin/ansible-playbook update.yml --vault-password-file .vault-password --tags "install"
+
+- name: Set BW CLI version
+  shell: "bw --version"
+  changed_when: false
+  register: bw_ver
+
+- name: Set BW CLI Config
+  copy:
+    dest: "/home/{{ main_username }}/.config/Bitwarden CLI/data.json"
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0644
+    content: |
+      {
+        "installedVersion": "{{ bw_ver.stdout }}",
+        "environmentUrls": {
+          "base": "{{ secret_bitwarden_url }}",
+          "api": null,
+          "identity": null,
+          "webVault": null,
+          "icons": null,
+          "notifications": null,
+          "events": null,
+          "keyConnector": null
+        }
+      }
