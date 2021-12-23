@@ -63,8 +63,8 @@
     content: |
       #!/bin/bash
       cd /home/{{ main_username }}/infra
-      /usr/local/bin/ansible-playbook update.yml --vault-password-file .vault-password
-      /usr/local/bin/ansible-playbook update.yml --vault-password-file .vault-password --tags "install"
+      /usr/local/bin/ansible-playbook update.yml
+      /usr/local/bin/ansible-playbook update.yml --tags "install"
 
 - name: Set BW CLI version
   shell: "bw --version"
