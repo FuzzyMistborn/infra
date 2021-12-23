@@ -205,7 +205,7 @@ office.{{ secret_personal_url }} {
 	encode gzip
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
-	respond /browser/dist/admin/* "The admin panel is disabled"
+	respond /loleaflet/dist/admin/* "The admin panel is disabled"
 }
 
 dashboard.{{ secret_personal_url }} {
