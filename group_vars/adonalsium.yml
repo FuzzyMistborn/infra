@@ -232,7 +232,7 @@ lxc_mounts:
     gw: 192.168.50.1
     ip: 192.168.50.20
     bridge: vmbr2
-    disk: 'local-lvm:50'
+    disk: 'local-lvm:60'
     cores: 8
     memory: 5120
     nesting: 1

@@ -12,8 +12,6 @@
     - "{{ pegasus_metadata_dir }}/apps"
     - "{{ pegasus_config_dir }}/themes"
     - "{{ pegasus_config_dir }}/theme_settings"
-    - "/home/{{ pegasus_user }}/.config/key-mapper/presets/Wireless Controller"
-    - "/home/{{ pegasus_user }}/.config/key-mapper/presets/USB,2-axis 8-button gamepad  "
 
 - name: copy files
   copy:
@@ -29,12 +27,6 @@
       path: "{{ pegasus_metadata_dir }}/artwork.xml"
     - name: gameOS.json
       path: "{{ pegasus_config_dir }}/theme_settings/gameOS-master.json"
-    - name: "key-mapper/config.json"
-      path: "/home/{{ pegasus_user }}/.config/key-mapper/config.json"
-    - name: "key-mapper/PS4 DualShock.json"
-      path: "/home/{{ pegasus_user }}/.config/key-mapper/presets/Wireless Controller/PS4 DualShock.json"
-    - name: "key-mapper/Buffalo NES.json"
-      path: "/home/{{ pegasus_user }}/.config/key-mapper/presets/USB,2-axis 8-button gamepad  /Buffalo NES.json"
 
 - name: create template files
   template:

@@ -90,6 +90,7 @@ package_list:
   - name: xdg-desktop-portal-kde
 
 aur_package_list:
+  - name: antimicrox
   - name: bauh
   - name: brother-hl2270dw
   - name: crossover
@@ -99,7 +100,6 @@ aur_package_list:
   - name: gwe
   - name: heroic-games-launcher-bin
   - name: jellyfin-media-player
-  - name: key-mapper-git
   - name: lib32-nvidia-utils
   - name: logiops
   - name: minecraft-launcher
@@ -281,7 +281,3 @@ cronjobs:
     minute: 0
     hour: 21
     weekday: 0,3,5
-  - name: PS4 Key Mapper
-    job: /usr/bin/key-mapper-control --command autoload --device 'Wireless Controller'
-    user: "{{ main_username }}"
-    special_time: reboot
