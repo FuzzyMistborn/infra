@@ -31,8 +31,8 @@ package_list:
   - name: vulkan-intel
 
 aur_package_list:
+  - name: antimicrox
   - name: jellyfin-media-player
-  - name: key-mapper-git
   - name: minecraft-launcher
   - name: pegasus-frontend-git
   - name: skyscraper-git
@@ -54,10 +54,6 @@ cronjobs:
     user: root
     minute: 0
     hour: 0
-  - name: PS4 Key Mapper
-    job: /usr/bin/key-mapper-control --command autoload --device 'Wireless Controller'
-    user: retro
-    special_time: reboot
 
 ### Pegasus
 pegasus_user: retro

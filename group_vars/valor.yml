@@ -23,25 +23,10 @@ bash_apt: true
 appdata_path: "/home/{{ main_username }}/docker"
 containers:
   ###
-  - service_name: diun
-    container_name: diun
-    active: true
-    image: crazymax/diun:4.20.1
-    restart: always
-    volumes:
-      - "{{ appdata_path }}/diun/data:/data"
-      - "{{ appdata_path }}/diun/config.yml:/diun.yml:ro"
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - LOG_LEVEL=info
-      - LOG_JSON=false
-    hostname: "{{ hostname }}"
-    include_global_env_vars: true
-  ###
   - service_name: adguard
     container_name: adguard
     active: true
-    image: adguard/adguardhome:v0.106.3
+    image: adguard/adguardhome:v0.107.2
     restart: always
     ports:
       - "53:53/tcp"
@@ -53,9 +38,6 @@ containers:
     volumes:
       - "{{ appdata_path }}/adguard/conf:/opt/adguardhome/conf"
       - "{{ appdata_path }}/adguard/work:/opt/adguardhome/work"
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     cap_add:
       - NET_ADMIN
     include_global_env_vars: false

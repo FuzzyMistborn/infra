@@ -213,7 +213,7 @@ containers:
   - service_name: zwavejs
     container_name: zwavejs
     active: true
-    image: zwavejs/zwavejs2mqtt:6.1.1
+    image: zwavejs/zwavejs2mqtt:6.2.0
     restart: always
     ports:
       - 8091:8091
@@ -229,7 +229,7 @@ containers:
   - service_name: deconz
     container_name: deconz
     active: true
-    image: deconzcommunity/deconz:2.13.04
+    image: deconzcommunity/deconz:2.12.06
     restart: always
     network_mode: host
     devices:
