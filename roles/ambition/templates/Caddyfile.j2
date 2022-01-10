@@ -77,6 +77,12 @@ stats.fuzzymistborn.com {
 	import fuzzy_headers
 }
 
+change.fuzzymistborn.com {
+	reverse_proxy localhost:5000
+	tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key
+	import fuzzy_headers
+}
+
 git.fuzzymistborn.com {
 	reverse_proxy localhost:3030
 	tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key

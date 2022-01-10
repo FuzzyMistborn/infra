@@ -194,7 +194,7 @@ containers:
   - service_name: uptime
     container_name: uptime
     active: true
-    image: louislam/uptime-kuma:1.11.1
+    image: louislam/uptime-kuma:1.11.3
     restart: always
     ports:
       - 127.0.0.1:3001:3001
@@ -212,6 +212,19 @@ containers:
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
+    include_global_env_vars: false
+  ###
+  - service_name: changedetection
+    container_name: changedetection
+    active: true
+    image: ghcr.io/dgtlmoon/changedetection.io:0.39.6
+    restart: always
+    ports:
+      - 127.0.0.1:5000:5000
+    environment:
+      - BASE_URL=https://change.fuzzymistborn.com
+    volumes:
+      - "{{ appdata_path }}/change:/datastore"
     include_global_env_vars: false
   ###
   - service_name: umami
@@ -289,7 +302,7 @@ containers:
   - service_name: drone-gh
     container_name: drone-gh
     active: true
-    image: drone/drone:2.7.2
+    image: drone/drone:2.7.3
     restart: always
     ports:
       - 127.0.0.1:4000:80
@@ -314,7 +327,7 @@ containers:
   - service_name: drone-gitea
     container_name: drone-gitea
     active: true
-    image: drone/drone:2.7.2
+    image: drone/drone:2.7.3
     restart: always
     ports:
       - 127.0.0.1:4001:80
