@@ -102,9 +102,9 @@ aur_package_list:
   - name: jellyfin-media-player
   - name: lib32-nvidia-utils
   - name: logiops
-  - name: minecraft-launcher
   - name: mqtt-explorer-appimage  # Other package broken
   - name: pegasus-frontend-git
+  - name: polymc
   - name: popsicle
   - name: protonmail-bridge
   - name: psst

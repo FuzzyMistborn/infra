@@ -116,8 +116,9 @@ containers:
     environment:
       - SMTP_HOST={{ secret_snapraid_smtp_host }}
       - SMTP_FROM={{ secret_bitwarden_email }}
-      - SMTP_PORT=587
+      - SMTP_PORT=465
       - SMTP_SSL=true
+      - SMTP_EXPLICIT_TLS=true
       - SMTP_USERNAME={{ secret_snapraid_email_address }}
       - SMTP_PASSWORD={{ secret_snapraid_email_pass }}
       - ADMIN_TOKEN={{ secret_bitwarden_token }}

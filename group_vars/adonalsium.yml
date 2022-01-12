@@ -432,9 +432,11 @@ snapraid_runner: false
 snapraid_bin_path: /usr/bin/snapraid
 snapraid_runner_email_address_from: "{{ secret_snapraid_email_from }}"
 snapraid_runner_email_address_to: "{{ secret_snapraid_email_to }}"
+snapraid_runner_email_address: "{{ secret_snapraid_email_address }}"
+snapraid_runner_email_pass: "{{ secret_snapraid_email_pass }}"
 snapraid_runner_smtp_host: "{{ secret_snapraid_smtp_host }}"
-snapraid_runner_smtp_port: 8025
-snapraid_runner_use_ssl: false
+snapraid_runner_smtp_port: 465
+snapraid_runner_use_ssl: true
 snapraid_runner_touch: false
 snapraid_runner_command: "python3 {{ snapraid_run_bin }} -c {{ snapraid_run_conf }}"
 snapraid_runner_cron_jobs:
