@@ -402,9 +402,12 @@ containers:
     environment:
       - SITE_ROOT=hc.fuzzymistborn.com
       - SITE_NAME=Cosmere Health Checks
-      - DEFAULT_FROM_EMAIL=healthchecks@fuzzymistborn.com
-      - EMAIL_HOST=mailrise
-      - EMAIL_PORT=8025
+      - DEFAULT_FROM_EMAIL=do_not_reply@fuzzymistborn.com
+      - EMAIL_HOST={{ secret_snapraid_smtp_host }}
+      - EMAIL_PORT=587
+      - EMAIL_HOST_USER={{ secret_snapraid_email_address }}
+      - EMAIL_HOST_PASSWORD={{ secret_snapraid_email_pass }}
+      - EMAIL_USE_TLS=True
       - ALLOWED_HOSTS=*
       - SUPERUSER_EMAIL={{ secret_email }}
       - SUPERUSER_PASSWORD={{ secret_healtchecks_pass }}
@@ -415,16 +418,6 @@ containers:
       - TELEGRAM_TOKEN="{{ secret_healthchecks_tg_token }}"
       - DOCKER_MODS=linuxserver/mods:healthchecks-apprise
     include_global_env_vars: true
-  ###
-  - service_name: mailrise
-    container_name: mailrise
-    active: true
-    image: yoryan/mailrise:release-1.2.0
-    restart: always
-    ports:
-      - 127.0.0.1:8025:8025
-    volumes:
-      - "{{ appdata_path }}/mailrise/mailrise.conf:/etc/mailrise.conf"
   ###
   - service_name: privatebin
     container_name: privatebin
