@@ -113,7 +113,15 @@ containers:
   - service_name: influx-db
     container_name: influx-db
     active: true
-    image: influxdb:2.1.1
+  #  image: influxdb:2.1.1
+    image: quay.io/influxdb/influxdb:2.1-nightly
+  # NOTE: quay.io image does not include influx client.  To install, run following:
+  # apt install wget -y
+  # wget https://dl.influxdata.com/influxdb/releases/influxdb2-client-2.2.0-linux-amd64.tar.gz
+  # tar xvzf influxdb2-client-2.2.0-linux-amd64.tar.gz
+  # cp influxdb2-client-2.2.0-linux-amd64/influx /usr/local/bin/
+  # rm -r influxdb2-client-2.2.0-linux-amd64
+  # rm influxdb2-client-2.2.0-linux-amd64.tar.gz
     restart: always
     ports:
       - 8086:8086
@@ -183,23 +191,6 @@ containers:
     mem_limit: 300M
     include_global_env_vars: false
   ###
-  - service_name: photoview-db
-    container_name: photoview-db
-    active: true
-    image: mariadb:10.7.1
-    restart: always
-    ports:
-      - 3310:3306
-    volumes:
-      - "{{ appdata_path }}/photoview_db:/var/lib/mysql"
-    environment:
-      - MYSQL_ROOT_PASSWORD={{ secret_db_root_pass }}
-      - MYSQL_DATABASE=photoview
-      - MYSQL_USER=photoview
-      - MYSQL_PASSWORD={{ secret_photoview_db_pass }}
-    mem_limit: 300M
-    include_global_env_vars: false
-  ###
   - service_name: invidious-db
     container_name: invidious-db
     active: true
@@ -209,8 +200,8 @@ containers:
       - 5432:5432
     volumes:
       - "{{ appdata_path }}/postgres/data:/var/lib/postgresql/data"
-      - "{{ appdata_path }}/docker/postgres/config/sql:/config/sql"
-      - "{{ appdata_path }}/docker/postgres/init-invidious-db.sh:/docker-entrypoint-initdb.d/init-invidious-db.sh"
+      - "{{ appdata_path }}/postgres/config/sql:/config/sql"
+      - "{{ appdata_path }}/postgres/init-invidious-db.sh:/docker-entrypoint-initdb.d/init-invidious-db.sh"
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"

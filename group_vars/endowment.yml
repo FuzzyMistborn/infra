@@ -245,28 +245,6 @@ containers:
       - "diun.regopt=docker.io"
     include_global_env_vars: false
   ###
-  - service_name: photoview
-    container_name: photoview
-    active: true
-    image: viktorstrate/photoview:2.3
-    restart: always
-    network_mode: host
-    volumes:
-      - "{{ appdata_path }}/photoview/api_cache:/app/cache"
-      - /mnt/Media/Photos:/photos:ro
-    environment:
-      - PHOTOVIEW_DATABASE_DRIVER=mysql
-      - PHOTOVIEW_MYSQL_URL=photoview:{{ secret_photoview_db_pass }}@tcp(192.168.50.22:3310)/photoview
-      - PHOTOVIEW_LISTEN_IP=photoview
-      - PHOTOVIEW_LISTEN_PORT=8000
-      - PHOTOVIEW_MEDIA_CACHE=/app/cache
-      - GODEBUG=asyncpreemptoff=1
-      - MAPBOX_TOKEN={{ secret_photoview_mapbox_token }}
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
-    include_global_env_vars: false
-  ###
   - service_name: jellyfin
     container_name: jellyfin
     active: true
