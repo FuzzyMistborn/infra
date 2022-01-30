@@ -263,7 +263,7 @@ containers:
   - service_name: gitea
     container_name: gitea
     active: true
-    image: gitea/gitea:1.15
+    image: gitea/gitea:1.16
     restart: always
     ports:
       - "127.0.0.1:3030:3000"
