@@ -248,7 +248,7 @@ containers:
   - service_name: esphome
     container_name: esphome
     active: true
-    image: esphome/esphome:2022.1.2
+    image: esphome/esphome:2022.1.3
     restart: always
     network_mode: host
     volumes:
@@ -289,7 +289,7 @@ containers:
   - service_name: rtsp-simple
     container_name: rtsp-simple
     active: true
-    image: aler9/rtsp-simple-server:v0.17.15
+    image: aler9/rtsp-simple-server:v0.17.16
     network_mode: host
     restart: always
     include_global_env_vars: false
@@ -376,7 +376,7 @@ containers:
   - service_name: portainer_agent
     container_name: portainer_agent
     active: true
-    image: portainer/agent:2.11.0
+    image: portainer/agent:2.11.1
     restart: always
     ports:
       - 9001:9001
