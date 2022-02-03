@@ -1,0 +1,6 @@
+[General]
+Command=/usr/local/bin/zsh
+LocalTabTitleFormat=%w
+Name=ZSH
+Parent=FALLBACK/
+RemoteTabTitleFormat=%w

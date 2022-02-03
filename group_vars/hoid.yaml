@@ -1,0 +1,200 @@
+---
+target_os: endeavour_os
+hostname: hoid
+bootstrap_user: "{{ main_username }}"
+
+### Install packages with grog.package
+package_list:
+  - name: dragon
+    state: absent
+  - name: plank
+    state: absent
+  - name: gwenview
+    state: absent
+  - name: ansible
+  - name: bluedevil
+  - name: bluez
+  - name: bluez-utils
+  - name: calibre
+  - name: cifs-utils
+  - name: cronie
+  - name: curl
+  - name: ethtool
+  - name: filezilla
+  - name: firefox
+  - name: flameshot
+  - name: flatpak
+  - name: gimp
+  - name: git
+  - name: gparted
+  - name: hddtemp
+  - name: htop
+  - name: iperf3
+  - name: kcharselect
+  - name: kdialog
+  - name: kdeplasma-addons
+  - name: kolourpaint
+  - name: krename
+  - name: kwalletmanager
+  - name: latte-dock
+  - name: libreoffice-still
+  - name: mpv
+  - name: nano
+  - name: ncdu
+  - name: net-tools
+  - name: nextcloud-client
+  - name: nfs-utils
+  - name: nomacs
+  - name: noto-fonts-emoji
+  - name: openssh
+  - name: pdfarranger
+  - name: pipewire
+  - name: pipewire-alsa
+  - name: pipewire-jack
+  - name: pipewire-zeroconf
+  - name: pipewire-pulse
+  - name: plasma-browser-integration
+  - name: plasma-systemmonitor
+  - name: python
+  - name: restic
+  - name: screen
+  - name: scrot
+  - name: skanlite
+  - name: spectacle
+  - name: sudo
+  - name: system-config-printer
+  - name: thunderbird
+  - name: veracrypt
+  - name: virtualbox
+  - name: virtualbox-guest-iso
+  - name: virtualbox-host-dkms
+  - name: vivaldi
+  - name: vlc
+  - name: wget
+  - name: wine
+  - name: winetricks
+  - name: wireguard-tools
+  - name: xdg-desktop-portal
+  - name: xdg-desktop-portal-kde
+
+aur_package_list:
+  - name: bauh
+  - name: brother-hl2270dw
+  - name: crossover
+  - name: dxvk-bin
+  - name: epson-perfection-v10-v100-scanner-driver-aio
+  - name: esphome
+  - name: jellyfin-media-player
+  - name: logiops
+  - name: mqtt-explorer-appimage  # Other package broken
+  - name: popsicle
+  - name: psst
+  - name: remmina-git
+  - name: rpi-imager
+  - name: squeezelite
+  - name: steamlink
+  - name: timeshift
+  - name: timeshift-autosnap
+  - name: ventoy
+  - name: visual-studio-code-bin
+  - name: zoom
+  # - ckan  # Currently broken, use Mono
+  # - ferdi # Conflict package, install manually
+
+### Pip Packages
+pip_packages:
+  - thefuck
+
+nfs_mount:
+  - path: /mnt/Backup
+    source: 192.168.10.20:/volume1/Backup/
+    fs: nfs
+    opts: "_netdev,noauto,nofail,x-systemd.automount"
+  - path: /mnt/NVR
+    source: 192.168.10.20:/volume1/BlueIris/
+    fs: nfs
+    opts: "_netdev,noauto,nofail,x-systemd.automount"
+
+smb_mountpoints:
+  - path: "/mnt/Media"
+    source: "//192.168.1.20/Media"
+    fs: cifs
+    opts: "_netdev,noauto,nofail,x-systemd.automount,uid=1000,gid=1000,credentials=/home/{{ main_username }}/.smbcredentials"
+
+### Variables
+pull_backup: false
+
+pip_package: python-pip
+
+### Bash Aliases
+bash_aliases:
+  - alias: c
+    command: clear
+  - alias: e
+    command: exit
+  - alias: ssh-remove
+    command: ssh-keygen -f /home/{{ main_username }}/.ssh/known_hosts -R $c
+  - alias: logi-restart
+    command: sudo systemctl restart logid
+bash_autorestic: true
+bash_systemctl: true
+bash_pacman: true
+bash_yay: true
+bash_git: true
+
+### Autorestic Config
+autorestic_config_yaml:
+  version: 2
+  backends:
+    synology_docker:
+      type: s3
+      path: 'http://192.168.10.20:9000/hoid'
+      key: "{{ secret_restic_repo_password }}"
+      env:
+        - AWS_ACCESS_KEY_ID: "{{ secret_minio_s3_access_key_id }}"
+        - AWS_SECRET_ACCESS_KEY: "{{ secret_minio_s3_access_key }}"
+  locations:
+    docker:
+      from: /home/{{ main_username }}
+      to:
+        - synology_docker
+      options:
+        backup:
+          exclude:
+            - '.cache*'
+            - 'Nextcloud'
+            - 'Downloads'
+            - 'git'
+            - '*steam*'
+        forget:
+          keep-daily: 3
+          keep-weekly: 4
+          keep-monthly: 2
+
+### Cronjobs
+cronjobs:
+  - name: App Backup
+    job: /mnt/Backup/Kelsier/app_backup.sh
+    user: "{{ main_username }}"
+    minute: 0
+    hour: 19
+    day: '*/3'
+  - name: Restic Prune
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_kelsier_purge }} -- /usr/local/bin/autorestic exec -a -- forget --keep-daily 3 --keep-weekly 4 --keep-monthly 2 --prune
+#    job: /usr/local/bin/runitor -uuid {{ secret_hc_kelsier_purge }} -- /usr/local/bin/autorestic forget -a -- prune
+    user: "{{ main_username }}"
+    minute: 0
+    hour: 20
+    weekday: 1
+  - name: Restic Check
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_check_kelsier }} -- /usr/local/bin/autorestic exec -a -- check
+    user: "{{ main_username }}"
+    minute: 0
+    hour: 19
+    day: 1
+  - name: Media Backup
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_kelsier_media }} -- /usr/local/bin/autorestic backup -a -c /home/{{ main_username }}/.autorestic.yml
+    user: root
+    minute: 0
+    hour: 21
+    weekday: 0,3,5
