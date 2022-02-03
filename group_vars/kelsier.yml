@@ -32,6 +32,7 @@ package_list:
   - name: hddtemp
   - name: htop
   - name: iperf3
+  - name: img2pdf
   - name: kcharselect
   - name: kdialog
   - name: kdeplasma-addons
@@ -77,7 +78,6 @@ package_list:
   - name: thunderbird
   - name: veracrypt
   - name: virtualbox
-  - name: virtualbox-ext-oracle
   - name: virtualbox-guest-iso
   - name: virtualbox-host-dkms
   - name: vivaldi
@@ -94,6 +94,7 @@ aur_package_list:
   - name: bauh
   - name: brother-hl2270dw
   - name: crossover
+  - name: deezer
   - name: dxvk-bin
   - name: epson-perfection-v10-v100-scanner-driver-aio
   - name: esphome
@@ -107,7 +108,6 @@ aur_package_list:
   - name: polymc
   - name: popsicle
   - name: protonmail-bridge
-  - name: psst
   - name: python-esphome-dashboard
   - name: remmina-git
   - name: rpi-imager
@@ -146,10 +146,6 @@ nfs_mount:
 smb_mountpoints:
   - path: "/mnt/Media"
     source: "//192.168.1.20/Media"
-    fs: cifs
-    opts: "_netdev,noauto,nofail,x-systemd.automount,uid=1000,gid=1000,credentials=/home/{{ main_username }}/.smbcredentials"
-  - path: "/home/{{ main_username }}/RetroPie"
-    source: "//192.168.1.20/Media/Files/Roms/Retropie"
     fs: cifs
     opts: "_netdev,noauto,nofail,x-systemd.automount,uid=1000,gid=1000,credentials=/home/{{ main_username }}/.smbcredentials"
 

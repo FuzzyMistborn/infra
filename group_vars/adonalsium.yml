@@ -64,7 +64,7 @@ fstab_mergerfs:
   - source: "/mnt/disk*"
     mountpoint: "/mnt/Media"
     fs: fuse.mergerfs
-    opts: "direct_io,defaults,allow_other,minfreespace=50G,fsname=mergerfs"
+    opts: "defaults,nonempty,allow_other,use_ino,cache.files=off,moveonenospc=true,category.create=mfs,dropcacheonclose=true,minfreespace=100G,fsname=mergerfs"
 
 nfs_mount:
   - path: /mnt/synology_backup
@@ -569,5 +569,5 @@ containers:
       - '-R41'
       - '-X n=digoo,m=OOK_PWM,bits=>24,s=464,l=1404,r=1800,t=200,get=@0:{20}:id,get=@20:{4}:event:[2:LOW_BATTERY 6:CLOSE 12:OPEN],unique'
     devices:
-      - /dev/rtl433:/dev/bus/usb/001/027
+      - /dev/rtl433:/dev/bus/usb/001/002
     include_global_env_vars: false

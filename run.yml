@@ -286,6 +286,32 @@
     - role: install_telegraf
     - role: cronjobs
 
+- hosts: hoid
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+  pre_tasks:
+    - name: Remove pulseaudio
+      community.general.pacman:
+        name:
+          - paprefs
+          - pavucontrol
+          - pulseaudio-qt
+          - pulseaudio
+          - pulseaudio-jack
+          - pulseaudio-alsa
+        state: absent
+        force: yes
+  roles:
+    - role: grog.package
+    - role: geerlingguy.pip
+    - role: install_pip_packages
+#    - role: fuzzymistborn.autorestic
+    - role: install_runitor
+    - role: hoid
+    - role: bash_alias
+#    - role: cronjobs
+
 - hosts: odium
   become: true
   vars_files:

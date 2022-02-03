@@ -42,6 +42,9 @@ hyperion:
 kelsier:
 	ansible-playbook -b run.yml --limit kelsier
 
+hoid:
+	ansible-playbook -b run.yml --limit hoid
+
 adonalsium:
 	ansible-playbook -b run.yml --limit adonalsium
 
@@ -74,6 +77,9 @@ bootstrap_lxc:
 
 bootstrap_kelsier:
 	ansible-playbook -b bootstrap.yml --limit kelsier --ask-pass --ask-become-pass
+
+bootstrap_hoid:
+	ansible-playbook -b bootstrap.yml --limit hoid --ask-pass --ask-become-pass
 
 bootstrap_retroarchtv:
 	ansible-playbook -b bootstrap.yml --limit retroarch_tv --ask-pass --ask-become-pass

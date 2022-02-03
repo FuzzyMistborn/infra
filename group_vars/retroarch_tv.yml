@@ -33,7 +33,7 @@ package_list:
 aur_package_list:
   - name: antimicrox
   - name: jellyfin-media-player
-  - name: minecraft-launcher
+  - name: polymc
   - name: pegasus-frontend-git
   - name: skyscraper-git
   - name: steamlink
