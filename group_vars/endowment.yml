@@ -292,22 +292,6 @@ containers:
       - "diun.regopt=ghcr.io"
     include_global_env_vars: false
   ###
-  - service_name: beets
-    container_name: beets
-    active: true
-    image: ghcr.io/linuxserver/beets:1.6.0-ls116
-    restart: always
-    ports:
-      - 8337:8337
-    volumes:
-      - "{{ appdata_path }}/beets/config:/config"
-      - "/mnt/scratch/music:/downloads"
-      - "/mnt/Media/Music:/downloads"
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=ghcr.io"
-    include_global_env_vars: true
-  ###
   - service_name: remote-api
     container_name: remote-api
     active: true
