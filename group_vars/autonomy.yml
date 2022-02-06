@@ -274,7 +274,7 @@ containers:
   - service_name: eufy-security
     container_name: eufy-security
     active: true
-    image: bropat/eufy-security-ws:0.7.0
+    image: bropat/eufy-security-ws:0.8.0
     restart: always
     ports:
       - 3005:3000
