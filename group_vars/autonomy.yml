@@ -190,7 +190,7 @@ containers:
       - "/home/{{ main_username }}/hass_docker:/config"
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
-      - /mnt/Media:/mnt/Media:ro
+      - /mnt/Media:/media:ro
     depends_on:
       - mqtt
     include_global_env_vars: false
@@ -274,7 +274,7 @@ containers:
   - service_name: eufy-security
     container_name: eufy-security
     active: true
-    image: bropat/eufy-security-ws:0.8.3
+    image: bropat/eufy-security-ws:0.8.4
     restart: always
     ports:
       - 3005:3000
