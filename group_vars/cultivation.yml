@@ -167,7 +167,7 @@ containers:
   - service_name: wallabag
     container_name: wallabag
     active: true
-    image: wallabag/wallabag:2.4.2
+    image: wallabag/wallabag:2.4.3
     restart: always
     ports:
       - 300:80
