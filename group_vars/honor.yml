@@ -57,6 +57,10 @@ cronjobs:
     job: /home/{{ main_username }}/wg-check.sh
     user: root
     minute: '*/5'
+  - name: Linode DynDNS
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_linode_dyndns_check }} -- /home/{{ main_username }}/linode.sh
+    user: "{{ main_username }}"
+    minute: '*/10'
 
 ### Autorestic Config
 autorestic_config_yaml:

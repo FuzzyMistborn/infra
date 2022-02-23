@@ -27,6 +27,7 @@
     mode: +x
   with_items:
     - {src: 'certs.sh.j2', dest: 'certs.sh'}
+    - {src: 'linode.sh.j2', dest: 'linode.sh'}
 
 #### DIUN
 - name: Copy DIUN Config Template
