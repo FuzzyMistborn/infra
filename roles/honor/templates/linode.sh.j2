@@ -1,0 +1,21 @@
+#!/bin/bash
+
+### Get the IP address from anywhere that will echo it
+ip=`curl -s http://ipecho.net/plain`
+
+### Set Linode Items
+# Obtain a Linode API key that has Domain and IP scopes read/write scopes
+token={{ secret_linode_dyndns_api }}
+# Obtain domain_id via https://www.linode.com/docs/api/domains/#domains-list
+domain_id={{ secret_linode_dyndns_domain_id }}
+# Obtain record_id via https://www.linode.com/docs/api/domains/#domain-records-list
+record_id={{ secret_linode_dyndns_record_id }}
+# The record you're trying to update
+dns_name=remote
+# Workaround for bash variable expansion inside quotes, do not change
+json_string='{"type":"A","name":"'"$dns_name"'","target":"'"$ip"'"}'
+
+curl -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $token" \
+    -X PUT -d $json_string \
+    https://api.linode.com/v4/domains/$domain_id/records/$record_id
