@@ -54,6 +54,16 @@
         HostName {{ secret_linode_ip }}
         IdentityFile ~/.ssh/linode
 
+- name: Copy update template script
+  template:
+    src: "{{ item.src }}"
+    dest: /home/{{ main_username }}/{{ item.dest }}
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: +x
+  with_items:
+    - {src: 'update.sh.j2', dest: 'update.sh'}
+
 - name: Create update script
   copy:
     dest: /home/{{ main_username }}/update.sh

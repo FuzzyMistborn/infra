@@ -1,0 +1,11 @@
+#!/bin/bash
+
+sed -i "s|vault_password_file = ./vault.sh|# \0|" /home/{{ main_username }}/infra/ansible.cfg
+echo "{{ secret_vault_pw }}" > /tmp/vault.txt
+
+cd /home/{{ main_username }}/infra
+/usr/local/bin/ansible-playbook --vault-password-file /tmp/vault.txt update.yml
+/usr/local/bin/ansible-playbook --vault-password-file /tmp/vault.txt update.yml --tags "install"
+
+sed -i "s|# \(vault_password_file = ./vault.sh\)|\1|" /home/{{ main_username }}/infra/ansible.cfg
+rm /tmp/vault.txt
