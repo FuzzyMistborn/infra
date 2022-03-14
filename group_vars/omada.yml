@@ -6,6 +6,7 @@ hostname: omada
 package_list:
   - name: sudo
   - name: git
+  - name: fuse-overlayfs
   - name: curl
   - name: restic
   - name: wget
@@ -96,7 +97,7 @@ containers:
   - service_name: portainer_agent
     container_name: portainer_agent
     active: true
-    image: portainer/agent:2.12.0
+    image: portainer/agent:2.12.1
     restart: always
     ports:
       - 9001:9001

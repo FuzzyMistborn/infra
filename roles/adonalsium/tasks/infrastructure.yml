@@ -38,6 +38,7 @@
     features:
       - nesting={{ item.nesting | default ('0') }}
       - keyctl={{ item.keyctl | default ('0') }}
+      - fuse={{ item.fuse | default ('0') }}
   with_items:
     - "{{ lxc }}"
 
@@ -70,6 +71,7 @@
       - nesting={{ item.nesting | default ('0') }}
       - keyctl={{ item.keyctl | default ('0') }}
       - mount={{ item.fsmount }}
+      - fuse={{ item.fuse | default ('0') }}
   with_items:
     - "{{ lxc_mounts }}"
 

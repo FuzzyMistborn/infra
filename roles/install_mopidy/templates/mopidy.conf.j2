@@ -1,0 +1,69 @@
+[core]
+cache_dir = /var/cache/mopidy
+config_dir = /etc/mopidy
+data_dir = /var/lib/mopidy
+restore_state = {{ mopidy_restore_state }}
+
+[logging]
+color = true
+
+[audio]
+output = {{ mopidy_audio_output }}
+
+[file]
+enabled = {{ mopidy_file_enabled }}
+{% if mopidy_file_enabled -%}
+media_dirs =
+    {{ mopidy_file_media_dirs }}
+excluded_file_extensions =
+  .directory
+  .html
+  .jpeg
+  .jpg
+  .log
+  .nfo
+  .pdf
+  .png
+  .txt
+  .zip
+show_dotfiles = false
+follow_symlinks = false
+{%- endif %}
+
+[m3u]
+enabled = {{ mopidy_m3u_enabled }}
+{% if mopidy_m3u_enabled -%}
+base_dir = {{ mopidy_m3u_base_dir }}
+playlists_dir = {{ mopidy_m3u_playlists_dir }}
+{%- endif %}
+
+[http]
+enabled = true
+hostname = {{ mopidy_hostname }}
+port = 6680
+static_dir =
+default_app = iris
+zeroconf = Mopidy HTTP server on $hostname
+
+[iris]
+enabled = true
+country = {{ mopidy_iris_country }}
+locale = {{ mopidy_iris_locale }}
+
+[mpd]
+enabled = true
+hostname = 0.0.0.0
+port = 6600
+connection_timeout = 300
+
+[jellyfin]
+enabled = true
+username = Geoffrey
+password = Amazing.Matilda2
+hostname = 192.168.50.20:8096
+libraries = Music
+#albumartistsort =
+#port = 8096
+#album_format =
+#max_bitrate = 320
+#watched_status = false

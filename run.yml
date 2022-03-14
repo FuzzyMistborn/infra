@@ -228,6 +228,18 @@
   become: true
   vars_files:
     - 'vars/vault.yaml'
+  tasks:
+    - name: Add docker deamon file
+      copy:
+        src: docker-daemon.sjon
+        dest: /etc/docker/daemon.json
+        owner: root
+        group: root
+        mode: 0644
+    - name: Restart docker
+      service:
+        name: docker
+        state: restarted
   roles:
     - role: grog.package
     - role: geerlingguy.pip

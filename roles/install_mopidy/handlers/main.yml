@@ -1,0 +1,7 @@
+---
+- name: "Restart Mopdiy"
+  listen: "restart mopidy"
+  become: true
+  service:
+    name: mopidy
+    state: restarted
