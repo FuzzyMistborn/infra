@@ -20,4 +20,3 @@ package_list:
 
 bash_systemctl: true
 bash_apt: true
-
