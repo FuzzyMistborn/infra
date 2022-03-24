@@ -7,7 +7,6 @@ package_list:
   - name: curl
   - name: htop
   - name: fail2ban
-  - name: fuse-overlayfs
   - name: net-tools
   - name: sudo
   - name: restic

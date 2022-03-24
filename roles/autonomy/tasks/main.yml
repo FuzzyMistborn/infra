@@ -11,19 +11,6 @@
     - docker/diun
     - scripts
 
-### Docker
-- name: Add docker deamon file
-  copy:
-    src: docker-daemon.sjon
-    dest: /etc/docker/daemon.json
-    owner: root
-    group: root
-    mode: 0644
-- name: Restart docker
-  service:
-    name: docker
-    state: restarted
-
 ### SSH
 - name: SSH Keys
   authorized_key:

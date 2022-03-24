@@ -6,7 +6,6 @@ hostname: autonomy
 package_list:
   - name: curl
   - name: cutycapt
-  - name: fuse-overlayfs
   - name: git
   - name: htop
   - name: lm-sensors

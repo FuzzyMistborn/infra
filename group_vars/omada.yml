@@ -6,7 +6,6 @@ hostname: omada
 package_list:
   - name: sudo
   - name: git
-  - name: fuse-overlayfs
   - name: curl
   - name: restic
   - name: wget

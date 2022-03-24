@@ -18,3 +18,12 @@
     mode: 0640
   notify:
     - restart mopidy
+
+- name: "Create Mopidy Music directory"
+  become: true
+  file:
+    path: /home/{{ mopidy_user }}/Music
+    state: directory
+    owner: "{{ mopidy_user }}"
+    group: "{{ mopidy_user }}"
+    mode: 0755

@@ -39,6 +39,9 @@ retroarchtv:
 hyperion:
 	ansible-playbook -b run.yml --limit hyperion
 
+soundmachine:
+	ansible-playbook -b run.yml --limit soundmachine
+
 kelsier:
 	ansible-playbook -b run.yml --limit kelsier
 
@@ -86,6 +89,9 @@ bootstrap_retroarchtv:
 
 bootstrap_hyperion:
 	ansible-playbook -b bootstrap.yml --ask-pass --limit hyperion
+
+bootstrap_soundmachine:
+	ansible-playbook -b bootstrap.yml --limit soundmachine --ask-pass --ask-become-pass
 
 git:
 	@./gitupdate.sh
