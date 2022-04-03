@@ -3,7 +3,7 @@
   become: true
   tasks:
     - name: Set timezone
-      timezone:
+      community.general.timezone:
         name: "{{ ntp_timezone }}"
       when: ansible_distribution == 'Ubuntu'
     - name: Remove Ubuntu motd spam

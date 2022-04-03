@@ -10,6 +10,9 @@ color = true
 [audio]
 output = {{ mopidy_audio_output }}
 
+[local]
+media_dir = {{ mopidy_file_media_dirs }}
+
 [file]
 enabled = {{ mopidy_file_enabled }}
 {% if mopidy_file_enabled -%}

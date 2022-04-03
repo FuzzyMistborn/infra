@@ -234,13 +234,6 @@
 - name: Enable WOL nmcli
   command: sudo nmcli c modify "Wired connection 1" 802-3-ethernet.wake-on-lan magic
 
-- name: enable WOL tlp.conf
-  lineinfile:
-    dest: "/etc/tlp.conf"
-    state: present
-    regexp: "^WOL_DISABLE"
-    line: "WOL_DISABLE=N"
-
 - name: Reload TLP/Cronie/bluetooth/fstrim
   systemd:
     enabled: true
@@ -248,7 +241,6 @@
     state: restarted
     name: "{{ item }}"
   with_items:
-    - tlp
     - cronie
     - bluetooth
     - fstrim.timer
@@ -282,23 +274,10 @@
     state: stopped
     name: onedrive@{{ main_username }}.service
 
-### Fix Shutdown
-- name: Copy kwin shutdown files
-  copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    mode: +x
-    owner: root
-    group: root
-  with_items:
-    - src: "kill_kwin.service"
-      dest: "/etc/systemd/system/kill_kwin.service"
-    - src: "kill_kwin.shutdown"
-      dest: "/usr/lib/systemd/system-shutdown/kill_kwin.shutdown"
-
-- name: Enable kill_kwin systemd service
-  systemd:
-    enabled: true
-    daemon-reload: true
-    state: started
-    name: kill_kwin.service
+### Fix Delayed Shutdown
+- name: Fix Delayed Shutdown
+  lineinfile:
+    dest: "/etc/systemd/system.conf"
+    state: present
+    regexp: "#DefaultTimeoutStopSec"
+    line: "DefaultTimeoutStopSec=15s"

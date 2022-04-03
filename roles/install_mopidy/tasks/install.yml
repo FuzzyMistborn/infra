@@ -35,6 +35,7 @@
     - Mopidy-Iris
     - Mopidy-Jellyfin
     - Mopidy-mpd
+    - Mopidy-Local
   notify:
     - restart mopidy
 

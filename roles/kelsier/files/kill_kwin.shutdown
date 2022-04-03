@@ -1,4 +1,0 @@
-#!/bin/sh
-
-# Kill KWin immediately to prevent stalled shutdowns/reboots
-pkill -KILL kwin_x11

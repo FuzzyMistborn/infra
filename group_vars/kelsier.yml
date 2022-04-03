@@ -132,6 +132,11 @@ data_disks:
     fs: ext4
     opts: defaults
     content: true
+  - path: /mnt/Games_HDD
+    source: /dev/disk/by-id/ata-WDC_WD15EZRX-00DC0B0_WD-WMC300346947-part1
+    fs: ext4
+    opts: defaults
+    content: true
 
 nfs_mount:
   - path: /mnt/Backup
@@ -219,7 +224,7 @@ syncthing_devices:
 ### Telegraf
 telegraf_influx_token: "{{ secret_telegraf_kelsier }}"
 telegraf_influx_bucket: Kelsier
-telegraf_influx_disk_mounts: '"/","/mnt/Games"'
+telegraf_influx_disk_mounts: '"/","/mnt/Games","/mnt/Games_HDD"'
 
 ### Autorestic Config
 autorestic_config_yaml:

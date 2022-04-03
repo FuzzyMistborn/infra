@@ -131,7 +131,7 @@ containers:
   - service_name: radarr
     container_name: radarr
     active: true
-    image: ghcr.io/linuxserver/radarr:version-3.2.2.5080
+    image: ghcr.io/linuxserver/radarr:3.2.2
     restart: always
     ports:
       - 7878:7878
@@ -149,7 +149,7 @@ containers:
   - service_name: radarr_uhd
     container_name: radarr_uhd
     active: true
-    image: ghcr.io/linuxserver/radarr:version-3.2.2.5080
+    image: ghcr.io/linuxserver/radarr:3.2.2
     restart: always
     ports:
       - 7879:7878
@@ -162,7 +162,7 @@ containers:
   - service_name: sonarr
     container_name: sonarr
     active: true
-    image: ghcr.io/linuxserver/sonarr:version-3.0.6.1342
+    image: ghcr.io/linuxserver/sonarr:3.0.7
     restart: always
     ports:
       - 8989:8989
