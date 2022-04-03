@@ -2,10 +2,6 @@
 - hosts: all
   become: true
   tasks:
-    - name: Set timezone
-      community.general.timezone:
-        name: "{{ ntp_timezone }}"
-      when: ansible_distribution == 'Ubuntu'
     - name: Remove Ubuntu motd spam
       file:
         path: "/etc/update-motd.d/{{ item }}"
