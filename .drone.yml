@@ -14,7 +14,7 @@ steps:
       - ansible-galaxy collection install -r requirements.yaml
       - "ansible-lint ."
       - "yamllint ."
-      - sed -i '8d' ansible.cfg  #  Delete vault_password_file from ansible.cfg
+      - sed -i '9d' ansible.cfg  #  Delete vault_password_file from ansible.cfg
       - echo $VAULT_PW > .vault-password
       - "find . -maxdepth 1 -name '*.yml' | grep -v '.drone.yml' | grep -v 'FUNDING.yml' | xargs ansible-playbook --syntax-check --list-tasks --vault-password-file .vault-password"
 
