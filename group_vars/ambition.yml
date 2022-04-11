@@ -422,7 +422,7 @@ containers:
   - service_name: privatebin
     container_name: privatebin
     active: true
-    image: privatebin/nginx-fpm-alpine:1.3.5
+    image: privatebin/nginx-fpm-alpine:1.4.0
     restart: always
     ports:
       - 127.0.0.1:8080:8080
