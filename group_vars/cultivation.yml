@@ -279,6 +279,16 @@ containers:
       - "diun.regopt=docker.io"
     include_global_env_vars: false
   ###
+  - service_name: diagrams
+    container_name: diagrams
+    active: true
+    image: jgraph/drawio:17.4.3
+    restart: always
+    ports:
+      - 8080:8080
+      - 8444:8443
+    include_global_env_vars: false
+  ###
   - service_name: remote-api
     container_name: remote-api
     active: true

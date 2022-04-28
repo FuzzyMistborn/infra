@@ -7,7 +7,7 @@
 - name: Download container templates
   command: pveam download local {{ item }}
   with_items:
-    - ubuntu-20.04-standard_20.04-1_amd64.tar.gz
+    - ubuntu-22.04-standard_22.04-1_amd64.tar.gz
     - ubuntu-18.04-standard_18.04.1-1_amd64.tar.gz
     - debian-11-standard_11.0-1_amd64.tar.gz
 
@@ -34,7 +34,7 @@
     pubkey: "{{ secret_proxmox_ct_ssh }}"
     password: "{{ secret_proxmox_pass }}"
     netif: "{'net0':'name=eth0,gw={{ item.gw }},ip={{ item.ip }}/24,bridge={{ item.bridge | default ('vmbr1') }} '}"
-    ostemplate: "{{ item.template| default ('local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz') }}"
+    ostemplate: "{{ item.template| default ('local:vztmpl/ubuntu-22.04-standard_22.04-1_amd64.tar.gz') }}"
     features:
       - nesting={{ item.nesting | default ('0') }}
       - keyctl={{ item.keyctl | default ('0') }}
@@ -64,8 +64,8 @@
     pubkey: "{{ secret_proxmox_ct_ssh }}"
     password: "{{ secret_proxmox_pass }}"
     netif: "{'net0':'name=eth0,gw={{ item.gw }},ip={{ item.ip }}/24,bridge={{ item.bridge | default ('vmbr0') }} '}"
-    ostemplate: "{{ item.template| default ('local:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz') }}"
-    mounts: "{'mp0':'/dev/disk/by-id/ata-Crucial_CT256MX100SSD1_14420D84F328-part1,mp=/mnt/scratch,backup=0'}"
+    ostemplate: "{{ item.template| default ('local:vztmpl/ubuntu-22.04-standard_22.04-1_amd64.tar.gz') }}"
+    mounts: "{'mp0':'/dev/disk/by-id/ata-ADATA_SU800_2M032LQKQ6P7-part1,mp=/mnt/scratch,backup=0'}"
     features:
       - nesting={{ item.nesting | default ('0') }}
       - keyctl={{ item.keyctl | default ('0') }}

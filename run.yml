@@ -52,8 +52,8 @@
     - role: cronjobs
     - role: geerlingguy.docker
     - role: geerlingguy.ntp
-    - role: ironicbadger.ansible_role_docker_compose_generator
-    - role: ironicbadger.ansible_role_snapraid
+    - role: IronicBadger.ansible_role_docker_compose_generator
+    - role: IronicBadger.ansible_role_snapraid
 
 - hosts: dominion
   become: true
@@ -86,7 +86,7 @@
     - role: endowment
     - role: bash_alias
     - role: cronjobs
-    - role: ironicbadger.ansible_role_docker_compose_generator
+    - role: IronicBadger.ansible_role_docker_compose_generator
 
 - hosts: autonomy
   become: true
@@ -104,7 +104,7 @@
     - role: autonomy
     - role: bash_alias
     - role: cronjobs
-    - role: ironicbadger.ansible_role_docker_compose_generator
+    - role: IronicBadger.ansible_role_docker_compose_generator
 
 - hosts: cultivation
   become: true
@@ -121,7 +121,7 @@
     - role: cultivation
     - role: bash_alias
     - role: cronjobs
-    - role: ironicbadger.ansible_role_docker_compose_generator
+    - role: IronicBadger.ansible_role_docker_compose_generator
 
 - hosts: preservation
   become: true
@@ -135,7 +135,7 @@
     - role: fuzzymistborn.autorestic
     - role: install_telegraf
     - role: install_runitor
-    - role: ironicbadger.ansible_role_docker_compose_generator
+    - role: IronicBadger.ansible_role_docker_compose_generator
     - role: preservation
     - role: bash_alias
     - role: cronjobs
@@ -157,7 +157,7 @@
     - role: bash_alias
     - role: cronjobs
     - role: install_fail2ban
-    - role: ironicbadger.ansible_role_docker_compose_generator
+    - role: IronicBadger.ansible_role_docker_compose_generator
 
 - hosts: valor
   become: true
@@ -170,7 +170,7 @@
     - role: geerlingguy.docker
     - role: valor
     - role: bash_alias
-    - role: ironicbadger.ansible_role_docker_compose_generator
+    - role: IronicBadger.ansible_role_docker_compose_generator
 
 - hosts: mercy
   become: true
@@ -200,7 +200,7 @@
     - role: omada
     - role: bash_alias
     - role: cronjobs
-    - role: ironicbadger.ansible_role_docker_compose_generator
+    - role: IronicBadger.ansible_role_docker_compose_generator
 
 - hosts: hyperion
   become: true
@@ -261,7 +261,7 @@
     - role: install_pip_packages
     - role: geerlingguy.docker
     - role: bash_alias
-    - role: ironicbadger.ansible_role_docker_compose_generator
+    - role: IronicBadger.ansible_role_docker_compose_generator
 
 - hosts: ambition
   become: true
@@ -281,7 +281,7 @@
     - role: bash_alias
     - role: cronjobs
     - role: install_fail2ban
-    - role: ironicbadger.ansible_role_docker_compose_generator
+    - role: IronicBadger.ansible_role_docker_compose_generator
 
 - hosts: kelsier
   become: true
@@ -365,4 +365,4 @@
     - role: odium
     - role: cronjobs
     - role: geerlingguy.docker
-    - role: ironicbadger.ansible_role_docker_compose_generator
+    - role: IronicBadger.ansible_role_docker_compose_generator
