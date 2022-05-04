@@ -76,6 +76,7 @@ package_list:
   - name: system-config-printer
   - name: tailscale
   - name: thunderbird
+  - name: tree
   - name: veracrypt
   - name: virtualbox
   - name: virtualbox-guest-iso
