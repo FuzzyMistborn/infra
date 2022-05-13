@@ -76,7 +76,6 @@ syncthing_device_id: "{{ secret_syncthing_retroarchtv_device }}"
 syncthing_gui_authentication: true
 syncthing_gui_user: "{{ main_username }}"
 syncthing_gui_pass: "{{ secret_syncthing_gui_pass }}"
-syncthing_user: "{{ main_username }}"
 
 syncthing_folders:
   - id: "{{ secret_syncthing_sys_folder_id }}"
