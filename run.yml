@@ -211,33 +211,6 @@
     - role: hyperion
     - role: bash_alias
 
-- hosts: soundmachine
-  become: true
-  vars_files:
-    - 'vars/vault.yaml'
-  tasks:
-    - name: Add asound.conf
-      copy:
-        dest: /etc/asound.conf
-        owner: root
-        group: root
-        mode: 0640
-        content: |
-          defaults.pcm.card 1
-          defaults.ctl.card 1
-    - name: Remove snapd
-      apt:
-        name: snapd
-        state: absent
-        purge: true
-    - name: Get whitenoise mp3
-      shell: curl {{ secret_whitenoise_url }} > /home/{{ main_username }}/Music/whitenoise.mp3
-  roles:
-    - role: grog.package
-    - role: geerlingguy.pip
-    - role: bash_alias
-    - role: install_mopidy
-
 - hosts: retroarch_tv
   become: true
   vars_files:

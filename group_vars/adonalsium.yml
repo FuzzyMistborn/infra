@@ -87,6 +87,7 @@ syncthing_device_id: "{{ secret_syncthing_adonalsium_device }}"
 syncthing_gui_authentication: true
 syncthing_gui_user: "{{ main_username }}"
 syncthing_gui_pass: "{{ secret_syncthing_gui_pass }}"
+syncthing_user: "{{ main_username }}"
 
 syncthing_folders:
   - id: "{{ secret_syncthing_sys_folder_id }}"
@@ -117,7 +118,7 @@ syncthing_devices:
     address: tcp://192.168.10.10:22000
   - id: "{{ secret_syncthing_steamdeck_device }}"
     name: steamdeck
-    address: tcp://192.168.10.X:22000
+    address: tcp://192.168.10.125:22000
 
 ### Infrastructure
 lxc:
