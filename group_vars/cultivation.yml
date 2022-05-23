@@ -172,7 +172,7 @@ containers:
   - service_name: wallabag
     container_name: wallabag
     active: true
-    image: wallabag/wallabag:2.4.3
+    image: wallabag/wallabag:2.5.0
     restart: always
     ports:
       - 300:80
@@ -260,6 +260,7 @@ containers:
     environment:
       - PAPERLESS_REDIS=redis://paperless-redis:6379
       - PAPERLESS_TIME_ZONE=America/New_York
+      - PAPERLESS_URL=https://paperless.{{ secret_personal_internal_url }}
       - PAPERLESS_SECRET_KEY={{ secret_paperless_key }}
       - USERMAP_UID={{ main_uid }}
       - USERMAP_GID={{ main_gid }}

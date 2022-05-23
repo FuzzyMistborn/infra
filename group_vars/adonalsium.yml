@@ -8,6 +8,8 @@ package_list:
   - name: nut
   - name: fail2ban
   - name: ifupdown2
+  - name: libgl1
+  - name: libegl1
   - name: restic
   - name: rsyslog
   - name: wireguard

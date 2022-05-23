@@ -199,7 +199,7 @@ containers:
     container_name: HASS-Beta
     active: true
     image: homeassistant/home-assistant:beta
-    restart: always
+    restart: unless-stopped
     ports:
       - 5316:5316
     network_mode: host
@@ -226,22 +226,19 @@ containers:
       - TZ={{ ntp_timezone }}
     include_global_env_vars: false
   ###
-  - service_name: deconz
-    container_name: deconz
+  - service_name: zigbee2mqtt
+    container_name: zigbee2mqtt
     active: true
-    image: deconzcommunity/deconz:2.15.03
+    image: koenkk/zigbee2mqtt:1.25.1
     restart: always
-    network_mode: host
+    ports:
+      - 8080:8080
     devices:
-      - /dev/conbee:/dev/ttyACM1
+      - /dev/conbee:/dev/conbee
     volumes:
-      - "{{ appdata_path }}/deconz:/opt/deCONZ"
+      - "{{ appdata_path }}/zigbee2mqtt:/app/data"
+      - /run/udev:/run/udev:ro
     environment:
-      - DECONZ_VNC_MODE=1
-      - DECONZ_VNC_PASSWORD={{ secret_deconz_vnc_pass }}
-      - DECONZ_WEB_PORT=100
-      - DECONZ_WS_PORT=460
-      - DECONZ_DEVICE=/dev/ttyACM1
       - TZ={{ ntp_timezone }}
     include_global_env_vars: false
   ###
@@ -350,21 +347,6 @@ containers:
       - DEEPSTACK_PORT=5001
       - DEEPSTACK_API_KEY="{{ secret_deepstack_api }}"
       - DEEPSTACK_TIMEOUT=20
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
-    include_global_env_vars: false
-  ###
-  - service_name: lms
-    container_name: logitech_media_server
-    active: true
-    image: fuzzymistborn/lms:latest
-    restart: always
-    network_mode: host
-    volumes:
-      - "{{ appdata_path }}/lms/data:/var/lib/squeezeboxserver"
-      - "{{ appdata_path }}/lms/logs:/var/log/squeezeboxserver"
-      - "{{ appdata_path }}/lms/playlists:/mnt/playlists"
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
