@@ -266,7 +266,7 @@ telegraf_influx_pve_api: "{{ secret_telegraf_adonalsium_api }}"
 ### Cronjobs
 cronjobs:
   - name: Scrutiny
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_adonalsium_scrutiny }} -- docker exec scrutiny /scrutiny/bin/scrutiny-collector-metrics run > /dev/null 2>&1
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_adonalsium_scrutiny }} -- docker exec scrutiny /opt/scrutiny/bin/scrutiny-collector-metrics run > /dev/null 2>&1
     user: "{{ main_username }}"
     minute: 0
     hour: '*/6'
@@ -533,7 +533,7 @@ containers:
       - /dev/sdf:/dev/sdf
       - /dev/sdg:/dev/sdg
       - /dev/sdh:/dev/sdh
-      - /dev/nvme0n1:/dev/nvme
+      - /dev/nvme0:/dev/nvme0
     cap_add:
       - SYS_RAWIO
       - SYS_ADMIN
