@@ -141,9 +141,6 @@ containers:
       - /mnt/Media/Kids Movies:/kids_movies
       - /mnt/Media/Parents Movies:/parents_movies
       - "/mnt/scratch/complete:/downloads"
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=ghcr.io"
     include_global_env_vars: true
   ###
   - service_name: radarr_uhd
@@ -208,7 +205,7 @@ containers:
   - service_name: sabnzbd
     container_name: sabnzbd
     active: true
-    image: ghcr.io/linuxserver/sabnzbd
+    image: ghcr.io/linuxserver/sabnzbd:3.5.3
     restart: always
     ports:
       - 8060:8080
@@ -217,9 +214,6 @@ containers:
       - "{{ appdata_path }}/sabnzb:/config"
       - "/mnt/scratch/complete:/downloads"
       - "/mnt/scratch/incomplete:/incomplete-downloads"
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=ghcr.io"
     include_global_env_vars: true
   ###
   - service_name: nextcloud
@@ -248,13 +242,10 @@ containers:
   - service_name: jellyfin
     container_name: jellyfin
     active: true
-    image: ghcr.io/linuxserver/jellyfin:latest
+    image: ghcr.io/linuxserver/jellyfin:10.7.7
     restart: always
     ports:
       - 8096:8096
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=ghcr.io"
     volumes:
       - "{{ appdata_path }}/jellyfin/config:/config"
       - "/mnt/scratch/transcode:/transcode"
