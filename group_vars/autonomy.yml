@@ -286,7 +286,7 @@ containers:
   - service_name: rtsp-simple
     container_name: rtsp-simple
     active: true
-    image: aler9/rtsp-simple-server:v0.18.4
+    image: aler9/rtsp-simple-server:v0.18.5
     network_mode: host
     restart: always
     include_global_env_vars: false
