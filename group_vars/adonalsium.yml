@@ -211,7 +211,7 @@ lxc:
     gw: 192.168.50.1
     ip: 192.168.50.21
     bridge: vmbr2
-    disk: 'local-lvm:20'
+    disk: 'local-lvm:25'
     cores: 4
     memory: 3096
     nesting: 1

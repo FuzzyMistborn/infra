@@ -120,7 +120,7 @@ aur_package_list:
   - name: visual-studio-code-bin
   - name: zoom
   # - ckan  # Currently broken, use Mono
-  # - ferdi # Conflict package, install manually
+  - name: ferdium-bin
 
 ### Pip Packages
 pip_packages:

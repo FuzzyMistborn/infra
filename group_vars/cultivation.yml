@@ -290,6 +290,32 @@ containers:
       - 8444:8443
     include_global_env_vars: false
   ###
+  - service_name: ferdium-server
+    container_name: ferdium-server
+    active: true
+    image: ferdium/ferdium-server:1.3.5
+    restart: unless-stopped
+    ports:
+      - 3333:3333
+    volumes:
+      - "{{ appdata_path }}/ferdium/data:/data"
+      - "{{ appdata_path }}/ferdium/app:/app/recipes"
+    environment:
+      - NODE_ENV=development
+      - APP_URL=https://ferdium.{{ secret_personal_url }}
+      - DB_CONNECTION=sqlite
+      - SMTP_HOST={{ secret_snapraid_smtp_host }}
+      - SMTP_PORT=465
+      - MAIL_SSL=true
+      - MAIL_USERNAME={{ secret_snapraid_email_address }}
+      - MAIL_PASSWORD={{ secret_snapraid_email_pass }}
+      - MAIL_SENDER={{ secret_bitwarden_email }}
+      - IS_CREATION_ENABLED=true
+      - IS_DASHBOARD_ENABLED=true
+      - IS_REGISTRATION_ENABLED=false
+      - CONNECT_WITH_FRANZ=false
+    include_global_env_vars: false
+  ###
   - service_name: remote-api
     container_name: remote-api
     active: true
