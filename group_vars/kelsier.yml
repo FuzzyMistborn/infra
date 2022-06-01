@@ -102,7 +102,7 @@ aur_package_list:
   - name: gwe
   - name: heroic-games-launcher-bin
   - name: jellyfin-media-player
-  - name: lib32-nvidia-utils
+  #- name: lib32-nvidia-utils
   - name: logiops
   - name: mqtt-explorer-appimage  # Other package broken
   - name: pegasus-frontend-git
@@ -110,7 +110,7 @@ aur_package_list:
   - name: popsicle
   - name: python-esphome-dashboard
   - name: remmina-git
-  - name: rpi-imager
+  - name: rpi-imager-bin
   - name: skyscraper-git
   - name: squeezelite
   - name: telegraf

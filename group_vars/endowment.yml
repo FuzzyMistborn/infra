@@ -188,18 +188,15 @@ containers:
       - "diun.regopt=ghcr.io"
     include_global_env_vars: true
   ###
-  - service_name: ombi
-    container_name: ombi
+  - service_name: jellyseerr
+    container_name: jellyseerr
     active: true
-    image: ghcr.io/linuxserver/ombi:latest
-    restart: always
+    image: fallenbagel/jellyseerr:1.1.0
+    restart: unless-stopped
     ports:
-      - 3579:3579
+      - 5055:5055
     volumes:
-      - "{{ appdata_path }}/ombi/config:/config"
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=ghcr.io"
+      - "{{ appdata_path }}/jellyseerr/config:/app/config"
     include_global_env_vars: true
   ###
   - service_name: sabnzbd
