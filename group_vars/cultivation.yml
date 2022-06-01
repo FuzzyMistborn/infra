@@ -293,7 +293,7 @@ containers:
   - service_name: ferdium-server
     container_name: ferdium-server
     active: true
-    image: ferdium/ferdium-server:1.3.5
+    image: ferdium/ferdium-server:1.3.6
     restart: unless-stopped
     ports:
       - 3333:3333
