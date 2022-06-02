@@ -159,9 +159,9 @@ zwavejs.{{ secret_personal_internal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
-# Deconz
-deconz.{{ secret_personal_internal_url }} {
-	reverse_proxy http://192.168.30.12:100
+# Z2MQTTT
+z2m.{{ secret_personal_internal_url }} {
+	reverse_proxy http://192.168.30.12:8080
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
@@ -216,6 +216,12 @@ sabnzb.{{ secret_personal_internal_url }} {
 # Prowlarr
 prowlarr.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.22:9696
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	import headers
+}
+# Jellyseerr
+jellyseer.{{ secret_personal_internal_url }} {
+	reverse_proxy http://192.168.50.20:5055
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
