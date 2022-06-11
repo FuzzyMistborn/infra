@@ -97,13 +97,13 @@ aur_package_list:
   - name: crossover
   - name: deezer
   - name: dxvk-bin
-  - name: drawio-desktop-bin 
-#  - name: epson-perfection-v10-v100-scanner-driver-aio
+  - name: drawio-desktop-bin
+  # - name: epson-perfection-v10-v100-scanner-driver-aio
   - name: esphome
   - name: gwe
   - name: heroic-games-launcher-bin
   - name: jellyfin-media-player
-  #- name: lib32-nvidia-utils
+  # - name: lib32-nvidia-utils
   - name: logiops
   - name: mqtt-explorer-appimage  # Other package broken
   - name: pegasus-frontend-git
