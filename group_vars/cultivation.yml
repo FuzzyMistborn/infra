@@ -140,29 +140,23 @@ containers:
   - service_name: freshrss
     container_name: freshrss
     active: true
-    image: ghcr.io/linuxserver/freshrss
+    image: ghcr.io/linuxserver/freshrss:1.19.2
     restart: always
     ports:
       - 8010:80
     volumes:
       - "{{ appdata_path }}/freshrss:/config"
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=ghcr.io"
     include_global_env_vars: true
   ###
   - service_name: code-server
     container_name: code-server
     active: true
-    image: ghcr.io/linuxserver/code-server
+    image: ghcr.io/linuxserver/code-server:4.4.0
     restart: always
     ports:
       - 8443:8443
     volumes:
       - "{{ appdata_path }}/code:/config"
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=ghcr.io"
     environment:
       - PASSWORD={{ secret_code_server_pass }}
       - SUDO_PASSWORD={{ secret_code_server_pass }}

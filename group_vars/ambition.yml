@@ -353,7 +353,7 @@ containers:
   - service_name: gotify
     container_name: gotify
     active: true
-    image: gotify/server:2.1
+    image: gotify/server:2.1.4
     restart: always
     ports:
       - 127.0.0.1:8090:80
@@ -393,14 +393,14 @@ containers:
   - service_name: healthchecks
     container_name: healthchecks
     active: true
-    image: ghcr.io/linuxserver/healthchecks:version-v1.22.0
+    image: ghcr.io/linuxserver/healthchecks:2.1.20220527
     restart: always
     ports:
       - 127.0.0.1:8000:8000
     volumes:
       - "{{ appdata_path }}/healthchecks/config:/config"
     environment:
-      - SITE_ROOT=hc.fuzzymistborn.com
+      - SITE_ROOT=https://hc.fuzzymistborn.com
       - SITE_NAME=Cosmere Health Checks
       - DEFAULT_FROM_EMAIL=do_not_reply@fuzzymistborn.com
       - EMAIL_HOST={{ secret_snapraid_smtp_host }}
@@ -408,14 +408,13 @@ containers:
       - EMAIL_HOST_USER={{ secret_snapraid_email_address }}
       - EMAIL_HOST_PASSWORD={{ secret_snapraid_email_pass }}
       - EMAIL_USE_TLS=True
-      - ALLOWED_HOSTS=*
       - SUPERUSER_EMAIL={{ secret_email }}
       - SUPERUSER_PASSWORD={{ secret_healtchecks_pass }}
-      - REGENERATE_SETTINGS=False
+      - REGENERATE_SETTINGS=True
       - REGISTRATION_OPEN=False
       - SECRET_KEY={{ secret_healthchecks_key }}
-      - TELEGRAM_BOT_NAME="Cosmere HealthChecks"
-      - TELEGRAM_TOKEN="{{ secret_healthchecks_tg_token }}"
+      - TELEGRAM_BOT_NAME=Cosmere HealthChecks
+      - TELEGRAM_TOKEN={{ secret_healthchecks_tg_token }}
       - DOCKER_MODS=linuxserver/mods:healthchecks-apprise
     include_global_env_vars: true
   ###
