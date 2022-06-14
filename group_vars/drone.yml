@@ -30,7 +30,7 @@ containers:
   - service_name: drone-runner-gh
     container_name: drone-runner-gh
     active: true
-    image: drone/drone-runner-docker:1.8.1
+    image: drone/drone-runner-docker:1.8.2
     restart: always
     ports:
       - 4300:3000
@@ -48,7 +48,7 @@ containers:
   - service_name: drone-runner-gitea
     container_name: drone-runner-gitea
     active: true
-    image: drone/drone-runner-docker:1.8.1
+    image: drone/drone-runner-docker:1.8.2
     restart: always
     ports:
       - 4301:3000
