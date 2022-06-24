@@ -219,7 +219,7 @@ containers:
   - service_name: psitransfer
     container_name: psitransfer
     active: true
-    image: psitrax/psitransfer:v2.1.0
+    image: psitrax/psitransfer:v2.1.1
     restart: always
     ports:
       - 3000:3000
