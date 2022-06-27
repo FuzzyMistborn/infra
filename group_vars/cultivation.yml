@@ -256,6 +256,7 @@ containers:
       - PAPERLESS_TIME_ZONE=America/New_York
       - PAPERLESS_URL=https://paperless.{{ secret_personal_internal_url }}
       - PAPERLESS_SECRET_KEY={{ secret_paperless_key }}
+      - PAPERLESS_FILENAME_FORMAT={added_year}/{document_type}/{title}
       - USERMAP_UID={{ main_uid }}
       - USERMAP_GID={{ main_gid }}
     include_global_env_vars: false
