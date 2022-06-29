@@ -542,7 +542,7 @@ containers:
   - service_name: handbrake
     container_name: handbrake
     active: true
-    image: jlesage/handbrake:v1.24.2
+    image: jlesage/handbrake:v1.25.1
     restart: always
     ports:
       - 5800:5800
