@@ -294,7 +294,7 @@ containers:
   - service_name: nodered
     container_name: nodered
     active: true
-    image: nodered/node-red:3.0.0
+    image: nodered/node-red:3.0.1
     restart: always
     ports:
       - 1880:1880
