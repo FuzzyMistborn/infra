@@ -15,7 +15,6 @@ Most of my servers are named after Shards of Adonalsium from my favorite fantasy
 * **Endowment** - Media distribution/collection
 * **Honor** - DMZ/Primary Adguard/Wireguard
 * **Mercy** - Runs some old chat bots for friends
-* **Odium** - Homelab Proxomox Node
 * **Omada** - Runs Omada controller for Wifi
 * **Preservation** - Databases
 * **Valor** - Backup Adguard

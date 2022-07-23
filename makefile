@@ -69,9 +69,6 @@ encrypt:
 proxmox:
 	ansible-playbook -u root -b run.yml --limit adonalsium --ask-pass
 
-odium:
-	ansible-playbook -u root -b run.yml --limit odium --ask-pass
-
 bootstrap_lxc:
 	ansible-playbook -b bootstrap.yml --limit lxc ambition
 
