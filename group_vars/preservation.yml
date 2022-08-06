@@ -104,7 +104,7 @@ containers:
       - MYSQL_DATABASE=homeassistant
       - MYSQL_USER=hass
       - MYSQL_PASSWORD={{ secret_hass_db_pass }}
-    mem_limit: 300M
+    mem_limit: 500M
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
@@ -188,6 +188,26 @@ containers:
     environment:
       - MYSQL_ROOT_PASSWORD={{ secret_db_root_pass }}
       - MYSQL_DATABASE=symfony
+    mem_limit: 300M
+    include_global_env_vars: false
+  ###
+  - service_name: vikunja-db
+    container_name: vikunja-db
+    active: true
+    image: mariadb:10.8.3
+    restart: always
+    ports:
+      - 3310:3306
+    volumes:
+      - "{{ appdata_path }}/vikunja_db:/var/lib/mysql"
+    command:
+      - "'--character-set-server=utf8mb4'"
+      - "'--collation-server=utf8mb4_unicode_ci'"
+    environment:
+      - MYSQL_ROOT_PASSWORD={{ secret_db_root_pass }}
+      - MYSQL_USER=vikunja
+      - MYSQL_PASSWORD={{ secret_vikunja_db_pass }}
+      - MYSQL_DATABASE=vikunja
     mem_limit: 300M
     include_global_env_vars: false
   ###
