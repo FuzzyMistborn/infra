@@ -20,6 +20,11 @@ echo Backing up Hass DB
 today=$(date +"%Y_%m_%d")
 docker exec hass-db sh -c 'exec mysqldump --single-transaction -h localhost -u hass -p{{ secret_hass_db_pass }} homeassistant' > /home/{{ main_username }}/db_backups/hass/hassDB_$today.sql
 
+#### Vikunja DB Backup
+echo Backing up Vikunja DB
+today=$(date +"%Y_%m_%d")
+docker exec vikunja-db sh -c 'exec mysqldump --single-transaction -h localhost -u vikunja -p{{ secret_vikunja_db_pass }} vikunja' > /home/{{ main_username }}/db_backups/vikunja/vikunjaDB_$today.sql
+
 #### Invidious DB Backup
 echo Backing up Invidious DB
 today=$(date +"%Y_%m_%d")

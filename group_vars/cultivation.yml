@@ -308,6 +308,8 @@ containers:
       - VIKUNJA_MAILER_USERNAME={{ secret_snapraid_email_address }}
       - VIKUNJA_MAILER_PASSWORD={{ secret_snapraid_email_pass }}
       - VIKUNJA_MAILER_FROMEMAIL=vikunja@{{secret_personal_url}}
+      - VIKUNJA_SERVICE_ENABLEREGISTRATION=false
+      - VIKUNJA_SERVICE_ENABLEUSERDELETION=false
       - VIKUNJA_SERVICE_TIMEZONE={{ ntp_timezone }}
     include_global_env_vars: false
   ###
