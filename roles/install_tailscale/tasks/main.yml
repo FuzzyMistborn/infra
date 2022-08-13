@@ -1,0 +1,30 @@
+---
+- name: Apt Update
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Apt Dependencies
+  become: true
+  ansible.builtin.apt:
+    name: "{{ apt_dependencies }}"
+    state: present
+
+- name: Add Tailscale Signing Key
+  become: true
+  ansible.builtin.apt_key:
+    url: "{{ apt_signkey }}"
+    state: present
+
+- name: Add Tailscale Deb
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "{{ apt_deb }}"
+    state: present
+
+- name: Install Tailscale
+  become: true
+  ansible.builtin.apt:
+    name: "{{ tailscale_package }}"
+    state: latest
+    update_cache: true
