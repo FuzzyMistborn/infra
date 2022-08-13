@@ -149,7 +149,7 @@
     mode: +x
     content: |
       #!/bin/bash
-      /usr/local/bin/autorestic restore -f -l docker --from synology_docker --to /home/{{ main_username }}/docker
+      /usr/local/bin/autorestic restore -f -l docker --from synology_docker --to /
   when: pull_backup == true
 - name: Run restore script
   command: /bin/bash ./restore.sh

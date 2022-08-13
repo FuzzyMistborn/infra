@@ -101,9 +101,9 @@
     mode: +x
     content: |
       #!/bin/bash
-      /usr/local/bin/autorestic restore -f -l plugins --from synology_plugins --to /home/{{ main_username }}/hangoutsbot/hangupsbot/plugins
-      /usr/local/bin/autorestic restore -f -l local --from synology_local --to /home/{{ main_username }}/.local/share/hangupsbot
-      /usr/local/bin/autorestic restore -f -l telegram --from synology_telegram --to /home/{{ main_username }}/
+      /usr/local/bin/autorestic restore -f -l plugins --from synology_plugins --to /
+      /usr/local/bin/autorestic restore -f -l local --from synology_local --to /
+      /usr/local/bin/autorestic restore -f -l telegram --from synology_telegram --to /
   when: pull_backup == true
 - name: Run restore script
   command: /bin/bash ./restore.sh

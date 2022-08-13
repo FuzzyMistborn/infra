@@ -124,9 +124,9 @@
     mode: +x
     content: |
       #!/bin/bash
-      /usr/local/bin/autorestic restore -f -l docker --from synology_docker --to /home/{{ main_username }}/docker
-      /usr/local/bin/autorestic restore -f -l hass_docker --from synology_hass_docker --to /home/{{ main_username }}/hass_docker
-      /usr/local/bin/autorestic restore -f -l hass_docker_beta --from synology_hass_docker_beta --to /home/{{ main_username }}/hass_docker_beta
+      /usr/local/bin/autorestic restore -f -l docker --from synology_docker --to /
+      /usr/local/bin/autorestic restore -f -l hass_docker --from synology_hass_docker --to /
+      /usr/local/bin/autorestic restore -f -l hass_docker_beta --from synology_hass_docker_beta --to /
   when: pull_backup == true
 - name: Run restore script
   command: /bin/bash ./restore.sh
