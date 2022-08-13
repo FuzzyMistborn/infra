@@ -16,6 +16,7 @@
     - 'group_vars/all.yaml'
   roles:
     - role: install_mergerfs
+      become: true
     - role: install_runitor
     - role: install_telegraf
       become: true
