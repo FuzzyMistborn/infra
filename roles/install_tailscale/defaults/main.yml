@@ -7,4 +7,6 @@ apt_dependencies:
   - python3-apt
 
 apt_deb: deb https://pkgs.tailscale.com/stable/ubuntu {{ ansible_distribution_release | lower }} main
-apt_signkey: https://pkgs.tailscale.com/stable/ubuntu/{{ ansible_distribution_release | lower }}/{{ ansible_distribution_release | lower }}.noarmor.gpg
+apt_signkey: https://pkgs.tailscale.com/stable/ubuntu/{{ ansible_distribution_release | lower }}.noarmor.gpg
+
+tailscale_package: tailscale

@@ -10,6 +10,7 @@ roles:
 - src: geerlingguy.pip
 - src: geerlingguy.samba
 - src: fuzzymistborn.autorestic
+- src: fuzzymistborn.headscale
 
 collections:
 - community.docker

@@ -247,14 +247,16 @@
     - role: geerlingguy.docker
     - role: install_lego
     - role: install_hugo
+    - role: install_tailscale
     - role: fuzzymistborn.autorestic
+    - role: fuzzymistborn.headscale
     - role: install_runitor
-    - role: caddy_ansible.caddy_ansible
+    - role: ironicbadger.docker_compose_generator
     - role: ambition
+    - role: caddy_ansible.caddy_ansible
     - role: bash_alias
     - role: cronjobs
     - role: install_fail2ban
-    - role: ironicbadger.docker_compose_generator
 
 - hosts: kelsier
   become: true

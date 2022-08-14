@@ -118,8 +118,9 @@
     mode: +x
     content: |
       #!/bin/bash
-      /usr/local/bin/autorestic restore -f -l docker --from b2_docker --to /home/{{ main_username }}/docker
-      /usr/local/bin/autorestic restore -f -l db --from b2_db --to /home/{{ main_username }}/db_backups
+      /usr/local/bin/autorestic restore -f -l docker --from b2_docker --to /
+      /usr/local/bin/autorestic restore -f -l db --from b2_db --to /
+      /usr/local/bin/autorestic restore -f -l certs --from b2_certs --to /
   when: pull_backup == true
 
 - name: Run restore script
@@ -149,10 +150,15 @@
     regexp: "^LINODE_TOKEN="
     line: "LINODE_TOKEN={{ secret_linode_token }}"
 
-### Wireguard
+### Wireguard/Tailscale
 - name: Enable IPv4 forwarding
   sysctl:
     name: net.ipv4.ip_forward
+    value: 1
+    reload: yes
+- name: Enable IPv6 forwarding
+  sysctl:
+    name: net.ipv6.conf.all.forwarding
     value: 1
     reload: yes
 
@@ -169,11 +175,13 @@
 ### UFW Rules
 - name: Set UFW Rules
   community.general.ufw:
-    rule: "{{ item.rule }}"
-    port: "{{ item.port }}"
-    proto: "{{ item.proto }}"
-    comment: "{{ item.comment }}"
-    route: "{{ item.route }}"
+    rule: "{{ item.rule | default (omit) }}"
+    port: "{{ item.port | default (omit) }}"
+    proto: "{{ item.proto | default (omit) }}"
+    comment: "{{ item.comment | default (omit) }}"
+    interface: "{{ item.interface | default (omit) }}"
+    direction: "{{ item.direction | default (omit) }}"
+    route: "{{ item.route | default (omit) }}"
   with_items:
     - "{{ ufw }}"
 
