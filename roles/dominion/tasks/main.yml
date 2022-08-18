@@ -12,13 +12,13 @@
     accept_hostkey: true
     key_file: /home/{{ main_username }}/.ssh/github
 
-- name: Add Linode SSH Key
+- name: Add Ambition SSH Key
   copy:
-    dest: /home/{{ main_username }}/.ssh/linode
+    dest: /home/{{ main_username }}/.ssh/ambition
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
     mode: 0600
-    content: "{{ secret_linode_ssh }}"
+    content: "{{ secret_ambition_ssh }}"
 
 - name: Add Gitea SSH Key
   copy:
@@ -50,9 +50,9 @@
         HostName remote.fuzzymistborn.com
         Port 222
         IdentityFile ~/.ssh/gitea
-      Host linode
-        HostName {{ secret_linode_ip }}
-        IdentityFile ~/.ssh/linode
+      Host ambition
+        HostName {{ secret_ambition_ip }}
+        IdentityFile ~/.ssh/ambition
 
 - name: Copy update template script
   template:

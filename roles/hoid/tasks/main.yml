@@ -27,8 +27,8 @@
   with_items:
     - dest: kelsier_lxcs
       key: "{{ secret_kelsier_lxc_ssh }}"
-    - dest: kelsier_vps
-      key: "{{ secret_kelsier_vps_ssh }}"
+    - dest: kelsier_ambition
+      key: "{{ secret_kelsier_ambition_ssh }}"
     - dest: github
       key: "{{ secret_github_ssh }}"
 

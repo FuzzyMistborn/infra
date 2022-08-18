@@ -1,0 +1,21 @@
+#!/bin/bash
+
+### Get the IP address from anywhere that will echo it
+ip=`curl -s http://ipecho.net/plain`
+
+### Set Hetzner Items
+# Obtain a Hetzner API key
+token={{ secret_hetzner_dyndns_api }}
+# Obtain zone_id via https://dns.hetzner.com/api-docs/#operation/GetZones
+zone_id={{ secret_hetzner_dyndns_zone_id }}
+# Obtain record_id via https://dns.hetzner.com/api-docs/#operation/GetRecords
+record_id={{ secret_hetzner_dyndns_record_id }}
+# The record you're trying to update
+dns_name=@
+# Workaround for bash variable expansion inside quotes, do not change
+json_string='{"type":"A","zone_id":"'"$zone_id"'","name":"'"$dns_name"'","value":"'"$ip"'"}'
+
+curl -X PUT "https://dns.hetzner.com/api/v1/records/$record_id" \
+     -H 'Content-Type: application/json' \
+     -H "Auth-API-Token: $token" \
+     -d $json_string

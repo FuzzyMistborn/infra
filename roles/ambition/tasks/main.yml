@@ -38,11 +38,11 @@
   loop:
     - {user: "{{ main_username }}", state: absent, ssh: "{{ secret_main_user_ssh }}"}
     - {user: "{{ main_username }}", state: absent, ssh: "{{ secret_main_user_alt_ssh }}"}
-    - {user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_linode_ssh }}"}
+    - {user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_ambition_ssh }}"}
     - {user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_pixel_ssh }}"}
-    - {user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_linode_drone }}"}
-    - {user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_linode_work_ssh }}"}
-    - {user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_linode_lxc_ssh }}"}
+    - {user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_ambition_drone }}"}
+    - {user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_ambition_work_ssh }}"}
+    - {user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_ambition_lxc_ssh }}"}
     - {user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_code_server_ssh }}"}
 
 - name: Add GitHub SSH Key
@@ -51,7 +51,7 @@
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
     mode: 0600
-    content: "{{ secret_linode_github_ssh }}"
+    content: "{{ secret_ambition_github_ssh }}"
 - name: Add Gitea SSH Key
   copy:
     dest: /home/{{ main_username }}/.ssh/gitea
@@ -147,8 +147,8 @@
   lineinfile:
     dest: "/etc/environment"
     state: present
-    regexp: "^LINODE_TOKEN="
-    line: "LINODE_TOKEN={{ secret_linode_token }}"
+    regexp: "^HETZNER_API_KEY="
+    line: "HETZNER_API_KEY={{ secret_hetzner_token }}"
 
 ### Wireguard/Tailscale
 - name: Enable IPv4 forwarding
