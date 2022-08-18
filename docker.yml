@@ -4,6 +4,7 @@
   become: true
   vars_files:
     - 'vars/vault.yaml'
+  gather_facts: false
   vars_prompt:
     - name: host
       prompt: Which host?
