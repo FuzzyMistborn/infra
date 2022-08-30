@@ -115,7 +115,7 @@ aur_package_list:
   - name: skyscraper-git
   - name: squeezelite
   - name: telegraf
-  - name: timeshift
+  - name: timeshift-bin
   - name: timeshift-autosnap
   - name: ventoy
   - name: visual-studio-code-bin

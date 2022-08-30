@@ -242,9 +242,19 @@ containers:
       - 127.0.0.1:5000:5000
     environment:
       - BASE_URL=https://change.fuzzymistborn.com
+      - PLAYWRIGHT_DRIVER_URL=ws://playwright:3000/?stealth=1&--disable-web-security=true
     volumes:
       - "{{ appdata_path }}/change:/datastore"
     include_global_env_vars: false
+  ###
+  - service_name: playwright
+    container_name: playwright
+    active: true
+    image: browserless/chrome:latest
+    restart: always
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=ghcr.io"
   ###
   - service_name: umami
     container_name: umami
