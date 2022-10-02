@@ -210,6 +210,19 @@ containers:
       - mqtt
     include_global_env_vars: false
   ###
+  - service_name: hass-new
+    container_name: HASS-new
+    active: true
+    image: homeassistant/home-assistant:stable
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - "/home/{{ main_username }}/hass_new:/config"
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - mqtt
+    include_global_env_vars: false
+  ###
   - service_name: zwavejs
     container_name: zwavejs
     active: true
@@ -245,7 +258,7 @@ containers:
   - service_name: esphome
     container_name: esphome
     active: true
-    image: esphome/esphome:2022.9.2
+    image: esphome/esphome:2022.9.1
     restart: always
     network_mode: host
     volumes:
