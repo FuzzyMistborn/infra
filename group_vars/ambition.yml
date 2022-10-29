@@ -252,6 +252,13 @@ containers:
     active: true
     image: browserless/chrome:latest
     restart: always
+    environment:
+      - SCREEN_WIDTH=1920
+      - SCREEN_HEIGHT=1080
+      - CONNECTION_TIMEOUT=300000
+      - MAX_CONCURRENT_SESSIONS=10
+      - CHROME_REFRESH_TIME=600000
+      - DEFAULT_STEALTH=true
     labels:
       - "diun.enable=true"
       - "diun.regopt=ghcr.io"
