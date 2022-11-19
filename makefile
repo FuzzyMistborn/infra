@@ -21,9 +21,6 @@ honor:
 valor:
 	ansible-playbook -b run.yml --limit valor
 
-mercy:
-	ansible-playbook -b run.yml --limit mercy
-
 omada:
 	ansible-playbook -b run.yml --limit omada
 

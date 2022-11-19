@@ -14,7 +14,6 @@ Most of my servers are named after Shards of Adonalsium from my favorite fantasy
 * **Dominion** - Ansible primary host
 * **Endowment** - Media distribution/collection
 * **Honor** - DMZ/Primary Adguard/Wireguard
-* **Mercy** - Runs some old chat bots for friends
 * **Omada** - Runs Omada controller for Wifi
 * **Preservation** - Databases
 * **Valor** - Backup Adguard

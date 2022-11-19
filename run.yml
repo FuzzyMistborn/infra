@@ -172,19 +172,6 @@
     - role: bash_alias
     - role: ironicbadger.docker_compose_generator
 
-- hosts: mercy
-  become: true
-  vars_files:
-    - 'vars/vault.yaml'
-  roles:
-    - role: grog.package
-    - role: geerlingguy.pip
-    - role: install_pip_packages
-    - role: fuzzymistborn.autorestic
-    - role: install_runitor
-    - role: mercy
-    - role: cronjobs
-
 - hosts: omada
   become: true
   vars_files:

@@ -223,38 +223,6 @@ containers:
       - mqtt
     include_global_env_vars: false
   ###
-  - service_name: zwavejs
-    container_name: zwavejs
-    active: true
-    image: zwavejs/zwave-js-ui:8.3.0
-    restart: always
-    ports:
-      - 8091:8091
-      - 3001:3000
-    volumes:
-      - "{{ appdata_path }}/zwavejs:/usr/src/app/store"
-    devices:
-      - /dev/zwave:/dev/zwave
-    environment:
-      - TZ={{ ntp_timezone }}
-    include_global_env_vars: false
-  ###
-  - service_name: zigbee2mqtt
-    container_name: zigbee2mqtt
-    active: true
-    image: koenkk/zigbee2mqtt:1.28.2
-    restart: always
-    ports:
-      - 8080:8080
-    devices:
-      - /dev/conbee:/dev/conbee
-    volumes:
-      - "{{ appdata_path }}/zigbee2mqtt:/app/data"
-      - /run/udev:/run/udev:ro
-    environment:
-      - TZ={{ ntp_timezone }}
-    include_global_env_vars: false
-  ###
   - service_name: esphome
     container_name: esphome
     active: true
@@ -279,29 +247,6 @@ containers:
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
-    include_global_env_vars: false
-  ###
-  - service_name: eufy-security
-    container_name: eufy-security
-    active: true
-    image: bropat/eufy-security-ws:1.0.2
-    restart: always
-    ports:
-      - 3005:3000
-    volumes:
-      - "{{ appdata_path }}/eufy:/data"
-    environment:
-      - USERNAME={{ secret_eufy_user }}
-      - PASSWORD={{ secret_eufy_pass }}
-      - POLLING_INTERVAL_MINUTES=5
-    include_global_env_vars: false
-  ###
-  - service_name: rtsp-simple
-    container_name: rtsp-simple
-    active: true
-    image: aler9/rtsp-simple-server:v0.20.2
-    network_mode: host
-    restart: always
     include_global_env_vars: false
   ###
   - service_name: nodered

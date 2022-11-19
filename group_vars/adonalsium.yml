@@ -155,16 +155,6 @@ lxc:
     memory: 512
     nesting: 1
     keyctl: 1
-  - name: Mercy
-    vmid: 203
-    privileged: true
-    gw: 192.168.50.1
-    ip: 192.168.50.30
-    bridge: vmbr2
-    disk: 'local-lvm:10'
-    cores: 1
-    memory: 512
-    template: local:vztmpl/ubuntu-18.04-standard_18.04.1-1_amd64.tar.gz
   - name: Omada
     vmid: 204
     privileged: true
@@ -176,14 +166,6 @@ lxc:
     memory: 1024
     nesting: 1
     keyctl: 1
-  - name: Elasticsearch
-    vmid: 205
-    privileged: true
-    gw: 192.168.30.1
-    ip: 192.168.30.16
-    disk: 'local-lvm:15'
-    cores: 2
-    memory: 2048
   - name: Drone
     vmid: 206
     privileged: false
@@ -555,22 +537,4 @@ containers:
       - /dev/dri:/dev/dri
     environment:
       - TZ={{ ntp_timezone }}
-    include_global_env_vars: false
-  ###
-  - service_name: rtl433
-    container_name: rtl433
-    active: true
-    image: hertzg/rtl_433:master
-    restart: always
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
-    command:
-      - '-Fmqtt://192.168.30.12:1883,user=homeassistant,pass={{ secret_mqtt_pass }},retain=1,devices=rtl_433[/model][/id]'
-      - '-Csi'
-      - '-R40'
-      - '-R41'
-      - '-X n=digoo,m=OOK_PWM,bits=>24,s=464,l=1404,r=1800,t=200,get=@0:{20}:id,get=@20:{4}:event:[2:LOW_BATTERY 6:CLOSE 12:OPEN],unique'
-    devices:
-      - /dev/rtl433:/dev/bus/usb/001/013
     include_global_env_vars: false
