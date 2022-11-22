@@ -106,6 +106,22 @@
     - role: cronjobs
     - role: ironicbadger.docker_compose_generator
 
+- hosts: unity
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+  roles:
+    - role: grog.package
+    - role: geerlingguy.docker
+    - role: geerlingguy.pip
+    - role: install_pip_packages
+#    - role: fuzzymistborn.autorestic
+    - role: install_runitor
+    - role: unity
+    - role: bash_alias
+#    - role: cronjobs
+    - role: ironicbadger.docker_compose_generator
+
 - hosts: cultivation
   become: true
   vars_files:

@@ -1,0 +1,32 @@
+### udev Rules
+- name: Add udev rules
+  copy:
+    dest: /etc/udev/rules.d/99-usb-serial.rules
+    owner: root
+    group: root
+    mode: 0644
+    content: |
+      SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", SYMLINK+="zwave"
+      SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="55d4", SYMLINK+="zigbee"
+      SUBSYSTEM=="usb", ATTRS{idVendor}=="0bda", ATTRS{idProduct}=="2838", SYMLINK+="rtl433", GROUP="users", MODE="0666"
+
+- name: Update udev
+  shell: "sudo udevadm control --reload-rules && sudo udevadm trigger"
+
+#### DIUN
+- name: create config directories
+  file:
+    path: /home/{{ main_username }}/{{ item }}
+    state: directory
+    owner: "{{ main_username }}"
+    group: "{{ main_groupname }}"
+  loop:
+    - docker
+    - docker/diun
+
+- name: Copy DIUN Config Template
+  template:
+    src: diun_config.yml.j2
+    dest: /home/{{ main_username }}/docker/diun/config.yml
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"

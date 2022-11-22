@@ -68,7 +68,6 @@
     mode: +x
   with_items:
     - {src: 'cast_frontdoor.sh.j2', dest: 'cast_frontdoor.sh'}
-    - {src: 'cast_media.sh.j2', dest: 'cast_media.sh'}
     - {src: 'cast_stop.sh.j2', dest: 'cast_stop.sh'}
     - {src: 'docker.sh.j2', dest: 'docker.sh'}
 

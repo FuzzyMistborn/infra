@@ -21,6 +21,9 @@ honor:
 valor:
 	ansible-playbook -b run.yml --limit valor
 
+unity:
+	ansible-playbook -b run.yml --limit unity
+
 omada:
 	ansible-playbook -b run.yml --limit omada
 
@@ -74,6 +77,9 @@ bootstrap_kelsier:
 
 bootstrap_hoid:
 	ansible-playbook -b bootstrap.yml --limit hoid --ask-pass --ask-become-pass
+
+bootstrap_unity:
+	ansible-playbook -b bootstrap.yml --limit unity --ask-pass --ask-become-pass
 
 bootstrap_retroarchtv:
 	ansible-playbook -b bootstrap.yml --limit retroarch_tv --ask-pass --ask-become-pass

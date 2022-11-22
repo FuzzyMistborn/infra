@@ -139,7 +139,7 @@ autorestic_config_yaml:
           keep-weekly: 8
           keep-monthly: 4
     hass_docker:
-      from: '/home/{{ main_username }}/hass_docker'
+      from: '/home/{{ main_username }}/hass'
       to:
         - synology_hass_docker
         - b2_hass_docker
@@ -178,8 +178,23 @@ containers:
     hostname: "{{ hostname }}"
     include_global_env_vars: true
   ###
-  - service_name: homeassistant
+  - service_name: hass
     container_name: HASS
+    active: true
+    image: homeassistant/home-assistant:stable
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - "/home/{{ main_username }}/hass:/config"
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /mnt/Media:/media:ro
+    depends_on:
+      - mqtt
+    include_global_env_vars: false
+  ###
+  - service_name: hass-old
+    container_name: hass_old
     active: true
     image: homeassistant/home-assistant:stable
     restart: always
@@ -205,19 +220,6 @@ containers:
     network_mode: host
     volumes:
       - "/home/{{ main_username }}/hass_docker_beta:/config"
-      - /etc/localtime:/etc/localtime:ro
-    depends_on:
-      - mqtt
-    include_global_env_vars: false
-  ###
-  - service_name: hass-new
-    container_name: HASS-new
-    active: true
-    image: homeassistant/home-assistant:stable
-    restart: unless-stopped
-    network_mode: host
-    volumes:
-      - "/home/{{ main_username }}/hass_new:/config"
       - /etc/localtime:/etc/localtime:ro
     depends_on:
       - mqtt
@@ -262,7 +264,7 @@ containers:
     environment:
       - TZ={{ ntp_timezone }}
     depends_on:
-      - homeassistant
+      - hass
     include_global_env_vars: false
   ###
   - service_name: tasmota

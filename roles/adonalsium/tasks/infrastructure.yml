@@ -78,9 +78,7 @@
     - {"lxc":"200", "order":"5"}
     - {"lxc":"201", "order":"1"}
     - {"lxc":"202", "order":"4"}
-    - {"lxc":"203", "order":"5"}
     - {"lxc":"204", "order":"4"}
-    - {"lxc":"205", "order":"4"}
     - {"lxc":"206", "order":"5"}
     - {"lxc":"250", "order":"3"}
     - {"lxc":"251", "order":"3"}
@@ -107,9 +105,6 @@
     dest: "/etc/pve/lxc/251.conf"
     insertafter: EOF
     line: |
-      lxc.cgroup2.devices.allow: c 189:* rwm
-      lxc.mount.entry: /dev/conbee dev/conbee none bind,optional,create=file
-      lxc.mount.entry: /dev/zwave dev/zwave none bind,optional,create=file
       lxc.apparmor.profile: unconfined
       lxc.cgroup2.devices.allow: a
       lxc.cap.drop:

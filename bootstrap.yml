@@ -154,3 +154,53 @@
       service:
         name: sshd
         state: restarted
+
+### Ubuntu Bootstrap
+- hosts: unity
+  remote_user: "{{ bootstrap_user }}"
+  gather_facts: true
+  vars_files:
+    - 'vars/vault.yaml'
+  tasks:
+    - name: Apt update
+      apt:
+        upgrade: 'yes'
+        update_cache: yes
+        cache_valid_time: 3600
+    - name: Add ansible user
+      user:
+        name: ansible
+        password: "{{ secret_ansible_pass }}"
+        uid: 666
+        groups:
+          - sudo
+        system: yes
+        shell: /bin/bash
+    - name: Add sudoers file for ansible
+      copy:
+        src: sudoer_ansible
+        dest: /etc/sudoers.d/ansible
+        owner: root
+        group: root
+        mode: 0440
+    - name: SSH Keys
+      authorized_key:
+        user: "{{ item.user }}"
+        state: present
+        key: "{{ item.ssh }}"
+      loop:
+        - {user: "{{ main_username }}", ssh: "{{ secret_main_user_ssh }}"}
+        - {user: "{{ main_username }}", ssh: "{{ secret_main_user_alt_ssh }}"}
+        - {user: "{{ main_username }}", ssh: "{{ secret_main_user_pixel_ssh }}"}
+        - {user: ansible, ssh: "{{ secret_ansible_ssh }}"}
+    - name: Add hardened SSH config
+      copy:
+        src: sshd_config
+        dest: /etc/ssh/sshd_config
+        owner: root
+        group: root
+        mode: 0600
+    - name: Restart ssh
+      service:
+        name: sshd
+        state: restarted

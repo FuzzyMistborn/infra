@@ -13,9 +13,6 @@ case "$SSH_ORIGINAL_COMMAND" in
     "./scripts/cast_frontdoor.sh")
         ./scripts/cast_frontdoor.sh
         ;;
-    "./scripts/cast_media.sh")
-        ./scripts/cast_media.sh
-        ;;
     "./scripts/cast_stop.sh")
         ./scripts/cast_stop.sh
         ;;
