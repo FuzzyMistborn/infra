@@ -36,9 +36,6 @@ drone:
 retroarchtv:
 	ansible-playbook -b run.yml --limit retroarch_tv
 
-hyperion:
-	ansible-playbook -b run.yml --limit hyperion
-
 kelsier:
 	ansible-playbook -b run.yml --limit kelsier
 
@@ -83,9 +80,6 @@ bootstrap_unity:
 
 bootstrap_retroarchtv:
 	ansible-playbook -b bootstrap.yml --limit retroarch_tv --ask-pass --ask-become-pass
-
-bootstrap_hyperion:
-	ansible-playbook -b bootstrap.yml --ask-pass --limit hyperion
 
 git:
 	@./gitupdate.sh

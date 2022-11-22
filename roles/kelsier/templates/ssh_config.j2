@@ -19,6 +19,11 @@ Host autonomy
     User {{ main_username }}
     IdentityFile ~/.ssh/kelsier_lxcs
 
+Host unity
+    HostName 192.168.30.6
+    User {{ main_username }}
+    IdentityFile ~/.ssh/kelsier_lxcs
+
 Host drone
     HostName 192.168.50.15
     User {{ main_username }}
@@ -47,11 +52,6 @@ Host honor
 Host valor
     HostName 192.168.50.11
     User {{ main_username }}
-    IdentityFile ~/.ssh/kelsier_lxcs
-
-Host hyperion
-    HostName 192.168.30.21
-    User pi
     IdentityFile ~/.ssh/kelsier_lxcs
 
 Host retroarch

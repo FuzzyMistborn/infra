@@ -205,15 +205,6 @@
     - role: cronjobs
     - role: ironicbadger.docker_compose_generator
 
-- hosts: hyperion
-  become: true
-  vars_files:
-    - 'vars/vault.yaml'
-    - 'roles/hyperion/defaults/main.yml'
-  roles:
-    - role: hyperion
-    - role: bash_alias
-
 - hosts: retroarch_tv
   become: true
   vars_files:
