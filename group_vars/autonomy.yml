@@ -58,7 +58,7 @@ cronjobs:
     user: "{{ main_username }}"
     minute: '*/20'
   - name: NodeRed Github
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_nr_git }} -- /home/{{ main_username }}/docker/nodered/github_cron.sh
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_nr_git }} -- /home/{{ main_username }}/docker/nodered_old/github_cron.sh
     user: "{{ main_username }}"
     minute: 0
     hour: 23
@@ -249,6 +249,22 @@ containers:
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
+    include_global_env_vars: false
+  ###
+  - service_name: nodered_old
+    container_name: nodered_old
+    active: true
+    image: nodered/node-red:3.0.2
+    restart: always
+    ports:
+      - 1881:1880
+    volumes:
+      - "{{ appdata_path }}/nodered_old:/data"
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ={{ ntp_timezone }}
+    depends_on:
+      - hass
     include_global_env_vars: false
   ###
   - service_name: nodered
