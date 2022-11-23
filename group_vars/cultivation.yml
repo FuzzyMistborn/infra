@@ -140,7 +140,7 @@ containers:
   - service_name: freshrss
     container_name: freshrss
     active: true
-    image: ghcr.io/linuxserver/freshrss:1.20.0
+    image: ghcr.io/linuxserver/freshrss:1.20.1
     restart: always
     ports:
       - 8010:80
@@ -219,7 +219,7 @@ containers:
   - service_name: psitransfer
     container_name: psitransfer
     active: true
-    image: psitrax/psitransfer:v2.1.1
+    image: psitrax/psitransfer:v2.1.2
     restart: always
     ports:
       - 3000:3000
@@ -288,7 +288,7 @@ containers:
   - service_name: vikunja-api
     container_name: vikunja-api
     active: true
-    image: vikunja/api:0.20.0
+    image: vikunja/api:0.20.1
     restart: unless-stopped
     volumes:
       - "{{ appdata_path }}/vikunja/files:/app/vikunja/files"
@@ -316,7 +316,7 @@ containers:
   - service_name: vikunja-frontend
     container_name: vikunja-frontend
     active: true
-    image: vikunja/frontend:0.20.0
+    image: vikunja/frontend:0.20.1
     restart: unless-stopped
     ports:
       - 3400:80
@@ -368,7 +368,7 @@ containers:
   - service_name: portainer_agent
     container_name: portainer_agent
     active: true
-    image: portainer/agent:2.16.0
+    image: portainer/agent:2.16.1
     restart: always
     ports:
       - 9001:9001
