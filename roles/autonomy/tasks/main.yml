@@ -84,7 +84,7 @@
     mode: 0644
     content: |
       [options]
-      device = Kitchen Hub
+      device = Kitchen
 
       [aliases]
 

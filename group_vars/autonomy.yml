@@ -197,7 +197,7 @@ containers:
     container_name: hass_old
     active: true
     image: homeassistant/home-assistant:stable
-    restart: always
+    restart: unless-stopped
     ports:
       - 5315:5315
     network_mode: host
@@ -255,7 +255,7 @@ containers:
     container_name: nodered_old
     active: true
     image: nodered/node-red:3.0.2
-    restart: always
+    restart: unless-stopped
     ports:
       - 1881:1880
     volumes:

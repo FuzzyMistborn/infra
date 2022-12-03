@@ -109,7 +109,7 @@ containers:
     restart: always
     ports:
       - 8091:8091
-      - 3001:3000
+      - 3000:3000
     volumes:
       - "{{ appdata_path }}/zwavejs:/usr/src/app/store"
     devices:
