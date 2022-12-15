@@ -243,7 +243,6 @@
     - role: install_hugo
     - role: install_tailscale
     - role: fuzzymistborn.autorestic
-    - role: fuzzymistborn.headscale
     - role: install_runitor
     - role: ironicbadger.docker_compose_generator
     - role: ambition

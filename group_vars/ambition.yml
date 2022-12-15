@@ -28,13 +28,6 @@ pull_backup: true
 # hugo_ver: 0.88.1
 # lego_ver: 4.4.0
 
-### Headscale
-headscale_namespace: main
-headscale_config: "{{ lookup('template', 'roles/ambition/templates/headscale_config.yaml.j2') }}"
-headscale_exit_nodes:
-  - id: 1
-    comment: VPS
-
 ### Cronjobs
 cronjobs:
   - name: Backup
@@ -113,11 +106,6 @@ ufw:
     rule: 'allow'
     port: '9001'
     proto: 'tcp'
-    route: 'no'
-  - comment: 'headscale network'
-    rule: 'allow'
-    port: '41641'
-    proto: 'udp'
     route: 'no'
   - comment: 'tailscale adapter'
     rule: 'allow'

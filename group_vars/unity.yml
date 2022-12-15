@@ -99,7 +99,7 @@ containers:
       - '-R40'
       - '-R41'
     devices:
-      - /dev/rtl433:/dev/bus/usb/001/013
+      - /dev/rtl433:/dev/bus/usb/001/002
     include_global_env_vars: false
   ###
   - service_name: zwavejs

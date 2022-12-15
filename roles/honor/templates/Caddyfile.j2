@@ -34,17 +34,6 @@ gotify.{{ secret_personal_url }} {
 	import headers
 }
 
-# Headscale
-tailscale.{{ secret_personal_url }} {
-	reverse_proxy https://10.10.10.1:443  {
-			transport http {
-				tls_server_name tailscale.{{ secret_personal_url }}
-			}
-	}
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
-	import headers
-}
-
 # Uptime-Kuma
 uptime.{{ secret_personal_url }} {
 	reverse_proxy https://10.10.10.1:443  {
