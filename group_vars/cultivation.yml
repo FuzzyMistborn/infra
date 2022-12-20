@@ -316,7 +316,7 @@ containers:
   - service_name: vikunja-frontend
     container_name: vikunja-frontend
     active: true
-    image: vikunja/frontend:0.20.1
+    image: vikunja/frontend:0.20.2
     restart: unless-stopped
     ports:
       - 3400:80
