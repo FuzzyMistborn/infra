@@ -224,7 +224,7 @@ containers:
   - service_name: changedetection
     container_name: changedetection
     active: true
-    image: ghcr.io/dgtlmoon/changedetection.io:0.40.0.2
+    image: ghcr.io/dgtlmoon/changedetection.io:0.40.0.3
     restart: always
     ports:
       - 127.0.0.1:5000:5000
