@@ -121,7 +121,7 @@ containers:
   - service_name: zigbee2mqtt
     container_name: zigbee2mqtt
     active: true
-    image: koenkk/zigbee2mqtt:1.28.4
+    image: koenkk/zigbee2mqtt:1.28.2
     restart: always
     ports:
       - 8080:8080
