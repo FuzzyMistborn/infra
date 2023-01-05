@@ -222,7 +222,7 @@
 
 - name: Install plugin for MPV to use KDEConnect
   get_url:
-    url: https://github.com/hoyon/mpv-mpris/releases/download/0.5/mpris.so
+    url: https://github.com/hoyon/mpv-mpris/releases/download/0.9/mpris.so
     dest: /home/{{ main_username }}/.config/mpv/scripts
     force: yes
     owner: "{{ main_username }}"

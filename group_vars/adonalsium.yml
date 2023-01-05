@@ -128,7 +128,7 @@ lxc:
     vmid: 200
     privileged: true
     gw: 192.168.10.1
-    ip: 192.168.10.15
+    ip: 192.168.10.50
     bridge: vmbr3
     disk: 'local-lvm:10'
     cores: 2
@@ -181,7 +181,7 @@ lxc:
     vmid: 251
     privileged: false
     gw: 192.168.30.1
-    ip: 192.168.30.12
+    ip: 192.168.30.5
     disk: 'local-lvm35'
     cores: 6
     memory: 3072
@@ -276,6 +276,10 @@ cronjobs:
     minute: 15
     hour: 1
     weekday: 0,3,5
+  - name: CPU Governor
+    job: "echo 'ondemand' | tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor"
+    user: root
+    special_time: reboot
 
 ### Autorestic Config
 autorestic_config_yaml:

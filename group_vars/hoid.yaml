@@ -24,12 +24,14 @@ package_list:
   - name: firefox
   - name: flameshot
   - name: flatpak
+  - name: gedit
   - name: gimp
   - name: git
   - name: gparted
   - name: hddtemp
   - name: htop
   - name: iperf3
+  - name: img2pdf
   - name: kcharselect
   - name: kdialog
   - name: kdeplasma-addons
@@ -38,6 +40,8 @@ package_list:
   - name: kwalletmanager
   - name: latte-dock
   - name: libreoffice-still
+  - name: libvncserver
+  - name: lm_sensors
   - name: mpv
   - name: nano
   - name: ncdu
@@ -63,7 +67,9 @@ package_list:
   - name: spectacle
   - name: sudo
   - name: system-config-printer
+  - name: tailscale
   - name: thunderbird
+  - name: tree
   - name: veracrypt
   - name: virtualbox
   - name: virtualbox-guest-iso
@@ -78,27 +84,30 @@ package_list:
   - name: xdg-desktop-portal-kde
 
 aur_package_list:
+  - name: antimicrox
   - name: bauh
   - name: brother-hl2270dw
   - name: crossover
+  - name: deezer
   - name: dxvk-bin
-  - name: epson-perfection-v10-v100-scanner-driver-aio
-  - name: esphome
+  - name: drawio-desktop-bin
+  - name: heroic-games-launcher-bin
   - name: jellyfin-media-player
+  # - name: lib32-nvidia-utils
   - name: logiops
   - name: mqtt-explorer-appimage  # Other package broken
+  - name: pegasus-frontend-git
   - name: popsicle
   - name: remmina-git
-  - name: rpi-imager
-  - name: squeezelite
-  - name: steamlink
-  - name: timeshift
+  - name: rpi-imager-bin
+  - name: telegraf
+  - name: timeshift-bin
   - name: timeshift-autosnap
   - name: ventoy
   - name: visual-studio-code-bin
   - name: zoom
   # - ckan  # Currently broken, use Mono
-  # - ferdi # Conflict package, install manually
+  - name: ferdium-bin
 
 ### Pip Packages
 pip_packages:

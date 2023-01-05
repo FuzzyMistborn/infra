@@ -48,7 +48,7 @@ uptime.{{ secret_personal_url }} {
 
 # HomeAssistant
 smarthome.{{ secret_personal_url }} {
-	reverse_proxy http://192.168.30.12:8123
+	reverse_proxy http://192.168.30.5:8123
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import headers
 }
@@ -151,7 +151,7 @@ minio.{{ secret_personal_internal_url }} {
 }
 # Nodered
 nodered.{{ secret_personal_internal_url }} {
-	reverse_proxy http://192.168.30.12:1880
+	reverse_proxy http://192.168.30.5:1880
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }

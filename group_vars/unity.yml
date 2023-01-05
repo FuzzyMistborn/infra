@@ -94,7 +94,7 @@ containers:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
     command:
-      - '-Fmqtt://192.168.30.12:1883,user=homeassistant,pass={{ secret_mqtt_pass }},retain=1,devices=rtl_433[/model][/id]'
+      - '-Fmqtt://192.168.30.5:1883,user=homeassistant,pass={{ secret_mqtt_pass }},retain=1,devices=rtl_433[/model][/id]'
       - '-Csi'
       - '-R40'
       - '-R41'
@@ -129,6 +129,22 @@ containers:
       - /dev/zigbee:/dev/zigbee
     volumes:
       - "{{ appdata_path }}/zigbee2mqtt:/app/data"
+      - /run/udev:/run/udev:ro
+    environment:
+      - TZ={{ ntp_timezone }}
+    include_global_env_vars: false
+  ###
+  - service_name: zigbee2mqtt_conbee
+    container_name: zigbee2mqtt_conbee
+    active: true
+    image: koenkk/zigbee2mqtt:1.29.0
+    restart: always
+    ports:
+      - 8081:8080
+    devices:
+      - /dev/conbee:/dev/conbee
+    volumes:
+      - "{{ appdata_path }}/zigbee2mqtt_conbee:/app/data"
       - /run/udev:/run/udev:ro
     environment:
       - TZ={{ ntp_timezone }}
