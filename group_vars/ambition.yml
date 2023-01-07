@@ -209,13 +209,19 @@ containers:
       - "{{ appdata_path }}/uptime:/app/data"
     include_global_env_vars: false
   ###
-  - service_name: libreddit
-    container_name: libreddit
+  - service_name: troddit
+    container_name: troddit
     active: true
-    image: spikecodes/libreddit:latest
+    image: bsyed/troddit:latest
     restart: always
     ports:
-      - 127.0.0.1:8100:8080
+      - 127.0.0.1:3000:3000
+    environment:
+      - CLIENT_ID={{ secret_troddit_client_id }}
+      - CLIENT_SECRET={{ secret_troddit_client_secret }}
+      - REDDIT_REDIRECT=https://reddit.fuzzymistborn.com/api/auth/callback/reddit
+      - NEXTAUTH_SECRET={{ secret_troddit_nextauth_secret }}
+      - NEXTAUTH_URL=https://reddit.fuzzymistborn.com
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"

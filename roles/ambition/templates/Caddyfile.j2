@@ -66,7 +66,7 @@ hc.fuzzymistborn.com {
 }
 
 reddit.fuzzymistborn.com {
-	reverse_proxy localhost:8100
+	reverse_proxy localhost:3000
 	tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key
 	import fuzzy_headers
 }
