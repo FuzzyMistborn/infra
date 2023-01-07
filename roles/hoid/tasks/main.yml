@@ -169,14 +169,6 @@
     value: "1"
     reload: yes
 
-- name: Create wireguard conf
-  copy:
-    dest: /etc/wireguard/wg0.conf
-    owner: root
-    group: root
-    mode: 0600
-    content: "{{ secret_parents_wireguard_config }}"
-
 - name: Install plugin for MPV to use KDEConnect
   get_url:
     url: https://github.com/hoyon/mpv-mpris/releases/download/0.9/mpris.so
@@ -208,12 +200,6 @@
     state: present
     regexp: "^AutoEnable"
     line: "AutoEnable=true"
-
-- name: add main user to vboxusers group for USB
-  user:
-    name: "{{ main_username }}"
-    append: yes
-    groups: vboxusers
 
 ### Fix Delayed Shutdown
 - name: Fix Delayed Shutdown

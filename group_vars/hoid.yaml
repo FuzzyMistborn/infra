@@ -71,14 +71,11 @@ package_list:
   - name: thunderbird
   - name: tree
   - name: veracrypt
-  - name: virtualbox
-  - name: virtualbox-guest-iso
-  - name: virtualbox-host-dkms
   - name: vivaldi
   - name: vlc
   - name: wget
-  - name: wine
-  - name: winetricks
+#  - name: wine
+#  - name: winetricks
   - name: wireguard-tools
   - name: xdg-desktop-portal
   - name: xdg-desktop-portal-kde
@@ -86,24 +83,23 @@ package_list:
 aur_package_list:
   - name: antimicrox
   - name: bauh
-  - name: brother-hl2270dw
+#  - name: brother-hl2270dw
   - name: crossover
   - name: deezer
   - name: dxvk-bin
   - name: drawio-desktop-bin
   - name: heroic-games-launcher-bin
   - name: jellyfin-media-player
-  # - name: lib32-nvidia-utils
   - name: logiops
   - name: mqtt-explorer-appimage  # Other package broken
-  - name: pegasus-frontend-git
+#  - name: pegasus-frontend-git
   - name: popsicle
   - name: remmina-git
   - name: rpi-imager-bin
   - name: telegraf
   - name: timeshift-bin
   - name: timeshift-autosnap
-  - name: ventoy
+  - name: ventoy-bin
   - name: visual-studio-code-bin
   - name: zoom
   # - ckan  # Currently broken, use Mono
