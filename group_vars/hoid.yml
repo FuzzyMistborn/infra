@@ -1,0 +1,97 @@
+---
+target_os: endeavour_os
+bootstrap_user: "{{ main_username }}"
+
+### Install packages with grog.package
+package_list:
+  - name: bluez
+  - name: bluez-utils
+  - name: calibre
+  - name: cifs-utils
+  - name: cronie
+  - name: curl
+  - name: ethtool
+  - name: filezilla
+  - name: firefox
+  - name: flameshot
+  - name: flatpak
+  - name: freerdp
+  - name: git
+  - name: gparted
+  - name: htop
+  - name: iperf3
+  - name: img2pdf
+  - name: kate
+  - name: kdeconnect
+  - name: kolourpaint
+  - name: krename
+  - name: libreoffice-still
+  - name: mpv
+  - name: nano
+  - name: ncdu
+  - name: net-tools
+  - name: nextcloud-client
+  - name: nfs-utils
+  - name: nomacs
+  - name: noto-fonts-emoji
+  - name: openssh
+  - name: pdfarranger
+  - name: pipewire
+  - name: pipewire-alsa
+  - name: pipewire-jack
+  - name: pipewire-zeroconf
+  - name: pipewire-pulse
+  - name: plank
+  - name: python
+  - name: remmina
+  - name: restic
+  - name: screen
+  - name: scrot
+  - name: skanlite
+  - name: spectacle
+  - name: sudo
+  - name: system-config-printer
+  - name: tailscale
+  - name: thunderbird
+  - name: tree
+  - name: veracrypt
+  - name: vivaldi
+  - name: vlc
+  - name: wget
+  - name: wireguard-tools
+
+aur_package_list:
+  - name: brother-hl2270dw
+  - name: deezer
+  - name: jellyfin-media-player
+  - name: mqtt-explorer-appimage  # Other package broken
+  - name: timeshift-bin
+  - name: timeshift-autosnap
+  - name: visual-studio-code-bin
+  - name: zoom
+  - name: ferdium-bin
+
+### Pip Packages
+pip_packages:
+  - thefuck
+
+### Variables
+pull_backup: false
+
+pip_package: python-pip
+
+### Bash Aliases
+bash_aliases:
+  - alias: c
+    command: clear
+  - alias: e
+    command: exit
+  - alias: ssh-remove
+    command: ssh-keygen -f /home/{{ main_username }}/.ssh/known_hosts -R $c
+  - alias: logi-restart
+    command: sudo systemctl restart logid
+bash_autorestic: true
+bash_systemctl: true
+bash_pacman: true
+bash_yay: true
+bash_git: true

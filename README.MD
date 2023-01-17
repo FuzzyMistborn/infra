@@ -25,9 +25,11 @@ Most of my servers are named after Shards of Adonalsium from my favorite fantasy
 
 `make boostrap` - Sets up the hosts with a main user and an ansible user that can run sudo without a password
 
+`make bootstrap_desktop host={{host_name}}` - Bootstraps the indicated desktop
+
 `make proxmox` - Creates all LXCs, sets up disks on Proxmox host
 
-`make ____` - Sets up the various LXCs
+`make build host={{host_name}}` - Sets up the various machines (host_name is a variable for the hostname)
 
 # Ansible Vault
 

@@ -11,116 +11,28 @@ package_list:
     state: absent
   - name: gwenview
     state: absent
-  - name: ansible
   - name: bluedevil
-  - name: bluez
-  - name: bluez-utils
-  - name: calibre
-  - name: cifs-utils
-  - name: cronie
-  - name: curl
-  - name: ethtool
-  - name: filezilla
-  - name: firefox
-  - name: flameshot
-  - name: flatpak
-  - name: gedit
-  - name: gimp
-  - name: git
-  - name: gparted
-  - name: handbrake
-  - name: hddtemp
-  - name: htop
-  - name: iperf3
-  - name: img2pdf
   - name: kcharselect
   - name: kdialog
   - name: kdeplasma-addons
-  - name: kolourpaint
-  - name: krename
   - name: kwalletmanager
-  - name: latte-dock
-  - name: libreoffice-still
-  - name: libvncserver
-  - name: lm_sensors
   - name: lutris
   - name: mkvtoolnix-gui
-  - name: mpv
-  - name: nano
-  - name: ncdu
-  - name: net-tools
-  - name: nextcloud-client
-  - name: nfs-utils
-  - name: nomacs
-  - name: noto-fonts-emoji
-  - name: nut
-  - name: nvidia-settings
-  - name: openssh
-  - name: pdfarranger
-  - name: pipewire
-  - name: pipewire-alsa
-  - name: pipewire-jack
-  - name: pipewire-zeroconf
-  - name: pipewire-pulse
-  - name: plasma-browser-integration
-  - name: plasma-systemmonitor
-  - name: python
-  - name: restic
   - name: retroarch
-  - name: screen
-  - name: scrot
-  - name: skanlite
-  - name: spectacle
   - name: steam
-  - name: sudo
-  - name: system-config-printer
-  - name: tailscale
-  - name: thunderbird
-  - name: tree
-  - name: veracrypt
-  - name: virtualbox
-  - name: virtualbox-guest-iso
-  - name: virtualbox-host-dkms
-  - name: vivaldi
-  - name: vlc
-  - name: wget
   - name: wine
   - name: winetricks
-  - name: wireguard-tools
   - name: xdg-desktop-portal
   - name: xdg-desktop-portal-kde
 
 aur_package_list:
   - name: antimicrox
-  - name: bauh
-  - name: brother-hl2270dw
-  - name: crossover
-  - name: deezer
   - name: dxvk-bin
-  - name: drawio-desktop-bin
-  # - name: epson-perfection-v10-v100-scanner-driver-aio
-  - name: gwe
   - name: heroic-games-launcher-bin
-  - name: jellyfin-media-player
-  # - name: lib32-nvidia-utils
-  - name: logiops
-  - name: mqtt-explorer-appimage  # Other package broken
   - name: pegasus-frontend-git
   - name: polymc
-  - name: popsicle
-  - name: python-esphome-dashboard
-  - name: remmina-git
-  - name: rpi-imager-bin
   - name: skyscraper-git
-  - name: squeezelite
-  - name: telegraf
-  - name: timeshift-bin
-  - name: timeshift-autosnap
-  - name: ventoy
-  - name: visual-studio-code-bin
-  - name: zoom
   # - ckan  # Currently broken, use Mono
-  - name: ferdium-bin
 
 ### Pip Packages
 pip_packages:
@@ -138,24 +50,7 @@ data_disks:
     opts: defaults
     content: true
 
-nfs_mount:
-  - path: /mnt/Backup
-    source: 192.168.10.20:/volume1/Backup/
-    fs: nfs
-    opts: "_netdev,noauto,nofail,x-systemd.automount"
-  - path: /mnt/NVR
-    source: 192.168.10.20:/volume1/BlueIris/
-    fs: nfs
-    opts: "_netdev,noauto,nofail,x-systemd.automount"
-
-smb_mountpoints:
-  - path: "/mnt/Media"
-    source: "//192.168.1.20/Media"
-    fs: cifs
-    opts: "_netdev,noauto,nofail,x-systemd.automount,uid=1000,gid=1000,credentials=/home/{{ main_username }}/.smbcredentials"
-
 ### Variables
-install_nut: true
 pull_backup: false
 
 pip_package: python-pip

@@ -3,7 +3,7 @@
   authorized_key:
     user: "{{ main_username }}"
     state: present
-    key: "{{ secret_kelsier_hass_ssh }}"
+    key: "{{ secret_desktop_hass_ssh }}"
 
 - name: Fix SFTP for Ansible
   lineinfile:
@@ -25,12 +25,32 @@
     mode: 0600
     content: "{{ item.key }}"
   with_items:
-    - dest: kelsier_lxcs
-      key: "{{ secret_kelsier_lxc_ssh }}"
-    - dest: kelsier_ambition
-      key: "{{ secret_kelsier_ambition_ssh }}"
+    - dest: desktop_lxcs
+      key: "{{ secret_desktop_lxc_ssh }}"
+    - dest: desktop_ambition
+      key: "{{ secret_desktop_ambition_ssh }}"
     - dest: github
       key: "{{ secret_github_ssh }}"
+
+- name: Copy SSH files
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+  loop:
+    - {src: "auth_commands.sh.j2", dest: "/home/{{ main_username }}/.ssh/auth_commands.sh", mode: "755"}
+    - {src: "ssh_config.j2", dest: "/home/{{ main_username }}/.ssh/config", mode: "600"}
+
+# Sudoers file
+- name: Add sudoers file for main user
+  template:
+    src: sudoers_main_user.j2
+    dest: /etc/sudoers.d/{{ main_username }}
+    owner: root
+    group: root
+    mode: 0440
 
 ### AUR
 - name: Install AUR Packages
@@ -60,6 +80,7 @@
   with_items:
     - "{{ nfs_mount }}"
     - "{{ smb_mountpoints }}"
+  when: ansible_hostname != 'hoid'
 
 - name: create /mnt points
   file:
@@ -71,6 +92,7 @@
   with_items:
     - "{{ nfs_mount }}"
     - "{{ smb_mountpoints }}"
+  when: ansible_hostname != 'hoid'
 
 - name: Add smbcredentials
   copy:
@@ -82,6 +104,7 @@
       user=samba
       password={{ secret_samba_pass }}
       domain=cosmere
+  when: ansible_hostname != 'hoid'
 
 - name: mount disks
   mount:
@@ -90,33 +113,13 @@
     fstype: "{{ item.fs }}"
     opts: "{{ item.opts }}"
     # change to 'mounted' to auto mount versus 'present' for just loaded into fstab
-    state: present
+    state: mounted
   with_items:
     - "{{ nfs_mount }}"
     - "{{ smb_mountpoints }}"
+  when: ansible_hostname != 'hoid'
 
-### Logiops
-- name: Copy logid.cfg file
-  copy:
-    src: logid.cfg
-    dest: /etc/logid.cfg
-    owner: root
-    group: root
-    mode: 0644
-
-### Dolphin/ZSH
-- name: create folders
-  file:
-    dest: "{{ item }}"
-    state: directory
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: 0660
-  with_items:
-    - /home/{{ main_username }}/.local/share/kxmlgui5/dolphin
-    - /home/{{ main_username }}/.config/latte
-    - /home/{{ main_username }}/.config/mpv/scripts
-
+### ZSH
 - name: Copy config files
   copy:
     src: "{{ item.src }}"
@@ -125,16 +128,6 @@
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
   with_items:
-    - src: "kde/dolphinrc"
-      dest: "/home/{{ main_username }}/.config/dolphinrc"
-    - src: "kde/khotkeysrc"
-      dest: "/home/{{ main_username }}/.config/khotkeysrc"
-    - src: "kde/dolphinui.rc"
-      dest: "/home/{{ main_username }}/.local/share/kxmlgui5/dolphin/dolphinui.rc"
-    - src: "kde/konsoleprofile"
-      dest: "/home/{{ main_username }}/.local/share/konsole/ZSH.profile"
-    - src: "kde/Default.layout.latte"
-      dest: "/home/{{ main_username }}/.config/latte/Default.layout.latte"
     - src: "zsh/zshrc"
       dest: "/home/{{ main_username }}/.zshrc"
     - src: "zsh/p10k.zsh"
@@ -149,7 +142,7 @@
     mode: +x
     content: |
       #!/bin/bash
-      /usr/local/bin/autorestic restore -f -l home --from synology_docker --to /home/{{ main_username }}/docker
+      /usr/local/bin/autorestic restore -f -l home --from synology_docker --to /
   when: pull_backup == true
 - name: Run restore script
   command: /bin/bash ./restore.sh
@@ -162,12 +155,31 @@
     state: absent
   when: pull_backup == true
 
-#### Misc
+### Wireguard
 - name: Enable IPv4 forwarding for wireguard
   sysctl:
     name: net.ipv4.ip_forward
     value: "1"
     reload: yes
+  when: ansible_hostname != 'hoid'
+
+- name: Create wireguard conf
+  copy:
+    dest: /etc/wireguard/wg0.conf
+    owner: root
+    group: root
+    mode: 0600
+    content: "{{ secret_parents_wireguard_config }}"
+  when: ansible_hostname != 'hoid'
+
+### Final Tweaks
+- name: create mpv config folder
+  file:
+    dest: /home/{{main_username}}/.config/mpv
+    state: directory
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0660
 
 - name: Install plugin for MPV to use KDEConnect
   get_url:
@@ -177,13 +189,7 @@
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
 
-- name: Enable WOL ethtool
-  command: ethtool -s eno1 wol bg
-
-- name: Enable WOL nmcli
-  command: sudo nmcli c modify "Wired connection 1" 802-3-ethernet.wake-on-lan magic
-
-- name: Reload TLP/Cronie/bluetooth/fstrim
+- name: Reload Cronie/bluetooth/fstrim
   systemd:
     enabled: true
     daemon-reload: true
@@ -193,6 +199,7 @@
     - cronie
     - bluetooth
     - fstrim.timer
+  when: ansible_hostname != 'hoid'
 
 - name: enable bluetooth auto-power on
   lineinfile:
@@ -200,8 +207,16 @@
     state: present
     regexp: "^AutoEnable"
     line: "AutoEnable=true"
+  when: ansible_hostname != 'hoid'
 
-### Fix Delayed Shutdown
+- name: Enable WOL ethtool
+  command: ethtool -s eno1 wol bg
+  when: ansible_hostname != 'hoid'
+
+- name: Enable WOL nmcli
+  command: sudo nmcli c modify "Wired" 802-3-ethernet.wake-on-lan magic
+  when: ansible_hostname != 'hoid'
+
 - name: Fix Delayed Shutdown
   lineinfile:
     dest: "/etc/systemd/system.conf"

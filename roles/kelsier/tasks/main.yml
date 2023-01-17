@@ -1,78 +1,4 @@
 ---
-- name: SSH Keys
-  authorized_key:
-    user: "{{ main_username }}"
-    state: present
-    key: "{{ secret_kelsier_hass_ssh }}"
-
-- name: Fix SFTP for Ansible
-  lineinfile:
-    dest: "/etc/ssh/sshd_config"
-    state: present
-    regexp: "Subsystem sftp*"
-    line: "Subsystem sftp internal-sftp"
-
-- name: Restart ssh
-  service:
-    name: sshd
-    state: restarted
-
-- name: Copy SSH files
-  template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    mode: "{{ item.mode }}"
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-  loop:
-    - {src: "auth_commands.sh.j2", dest: "/home/{{ main_username }}/.ssh/auth_commands.sh", mode: "755"}
-    - {src: "ssh_config.j2", dest: "/home/{{ main_username }}/.ssh/config", mode: "600"}
-
-- name: Add SSH Keys
-  copy:
-    dest: /home/{{ main_username }}/.ssh/{{ item.dest }}
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: 0600
-    content: "{{ item.key }}"
-  with_items:
-    - dest: kelsier_lxcs
-      key: "{{ secret_kelsier_lxc_ssh }}"
-    - dest: kelsier_ambition
-      key: "{{ secret_kelsier_ambition_ssh }}"
-    - dest: parentsvpn
-      key: "{{ secret_parentsvpn_ssh }}"
-    - dest: github
-      key: "{{ secret_github_ssh }}"
-
-# Sudoers file
-- name: Add sudoers file for main user
-  template:
-    src: sudoers_main_user.j2
-    dest: /etc/sudoers.d/{{ main_username }}
-    owner: root
-    group: root
-    mode: 0440
-
-### AUR
-- name: Install AUR Packages
-  kewlfft.aur.aur:
-    use: yay
-    name:
-      - "{{ item.name }}"
-    state: present
-  become_user: ansible
-  become: yes
-  with_items:
-    - "{{ aur_package_list }}"
-
-### Flatpak
-- name: Add the flathub flatpak repository remote
-  community.general.flatpak_remote:
-    name: flathub
-    state: present
-    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
-    method: system
 
 # fstab/disk mounts
 - name: make sure disks unmounted
@@ -81,8 +7,6 @@
     state: unmounted
   with_items:
     - "{{ data_disks }}"
-    - "{{ nfs_mount }}"
-    - "{{ smb_mountpoints }}"
 
 - name: create /mnt points
   file:
@@ -93,19 +17,6 @@
     mode: 0777
   with_items:
     - "{{ data_disks }}"
-    - "{{ nfs_mount }}"
-    - "{{ smb_mountpoints }}"
-
-- name: Add smbcredentials
-  copy:
-    dest: /home/{{ main_username }}/.smbcredentials
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: 0600
-    content: |
-      user=samba
-      password={{ secret_samba_pass }}
-      domain=cosmere
 
 - name: mount disks
   mount:
@@ -117,8 +28,6 @@
     state: mounted
   with_items:
     - "{{ data_disks }}"
-    - "{{ nfs_mount }}"
-    - "{{ smb_mountpoints }}"
 
 ### Logiops
 - name: Copy logid.cfg file
@@ -129,7 +38,7 @@
     group: root
     mode: 0644
 
-### Dolphin/ZSH
+### Dolphin
 - name: Copy config files
   copy:
     src: "{{ item.src }}"
@@ -148,120 +57,3 @@
       dest: "/home/{{ main_username }}/.local/share/konsole/ZSH.profile"
     - src: "kde/Default.layout.latte"
       dest: "/home/{{ main_username }}/.config/latte/Default.layout.latte"
-    - src: "zsh/zshrc"
-      dest: "/home/{{ main_username }}/.zshrc"
-    - src: "zsh/p10k.zsh"
-      dest: "/home/{{ main_username }}/.p10k.zsh"
-
-#### NUT
-- name: Copy nut folder
-  copy:
-    src: etc/nut/{{ item }}
-    dest: /etc/nut/{{ item }}
-    owner: root
-    group: nut
-    mode: 0640
-  with_items:
-    - 'nut.conf'
-    - 'ups.conf'
-    - 'upsd.conf'
-    - 'upsd.users'
-    - 'upsmon.conf'
-  when: install_nut == true
-
-- name: Copy NUT script
-  copy:
-    src: nut.sh
-    dest: /home/{{ main_username }}
-    mode: +x
-  when: install_nut == true
-
-- name: Run NUT script
-  command: /bin/bash ./nut.sh
-  args:
-    chdir: /home/{{ main_username }}
-    creates: /home/{{ main_username }}/nut.sh
-  when: install_nut == true
-
-### Backup Restore
-- name: Create restore script
-  copy:
-    dest: /home/{{ main_username }}/restore.sh
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: +x
-    content: |
-      #!/bin/bash
-      /usr/local/bin/autorestic restore -f -l home --from synology_docker --to /
-  when: pull_backup == true
-- name: Run restore script
-  command: /bin/bash ./restore.sh
-  args:
-    chdir: "/home/{{ main_username }}"
-  when: pull_backup == true
-- name: Remove restore script
-  file:
-    path: /home/{{ main_username }}/restore.sh
-    state: absent
-  when: pull_backup == true
-
-#### Misc
-- name: Enable IPv4 forwarding for wireguard
-  sysctl:
-    name: net.ipv4.ip_forward
-    value: "1"
-    reload: yes
-
-- name: Create wireguard conf
-  copy:
-    dest: /etc/wireguard/wg0.conf
-    owner: root
-    group: root
-    mode: 0600
-    content: "{{ secret_parents_wireguard_config }}"
-
-- name: Install plugin for MPV to use KDEConnect
-  get_url:
-    url: https://github.com/hoyon/mpv-mpris/releases/download/0.9/mpris.so
-    dest: /home/{{ main_username }}/.config/mpv/scripts
-    force: yes
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-
-- name: Enable WOL ethtool
-  command: ethtool -s eno1 wol bg
-
-- name: Enable WOL nmcli
-  command: sudo nmcli c modify "Wired" 802-3-ethernet.wake-on-lan magic
-
-- name: Reload TLP/Cronie/bluetooth/fstrim
-  systemd:
-    enabled: true
-    daemon-reload: true
-    state: restarted
-    name: "{{ item }}"
-  with_items:
-    - cronie
-    - bluetooth
-    - fstrim.timer
-
-- name: enable bluetooth auto-power on
-  lineinfile:
-    dest: "/etc/bluetooth/main.conf"
-    state: present
-    regexp: "^AutoEnable"
-    line: "AutoEnable=true"
-
-- name: add main user to vboxusers group for USB
-  user:
-    name: "{{ main_username }}"
-    append: yes
-    groups: vboxusers
-
-### Fix Delayed Shutdown
-- name: Fix Delayed Shutdown
-  lineinfile:
-    dest: "/etc/systemd/system.conf"
-    state: present
-    regexp: "#DefaultTimeoutStopSec"
-    line: "DefaultTimeoutStopSec=15s"

@@ -55,6 +55,7 @@
     - role: ironicbadger.docker_compose_generator
     - role: ironicbadger.snapraid
 
+### LXCs/VMs/VPS
 - hosts: dominion
   become: true
   vars_files:
@@ -205,19 +206,6 @@
     - role: cronjobs
     - role: ironicbadger.docker_compose_generator
 
-- hosts: retroarch_tv
-  become: true
-  vars_files:
-    - 'vars/vault.yaml'
-  roles:
-    - role: grog.package
-    - role: retroarch_tv
-    - role: config_retroarch
-    - role: config_pegasus
-    - role: bash_alias
-    - role: cronjobs
-    - role: install_syncthing
-
 - hosts: drone
   become: true
   vars_files:
@@ -240,7 +228,6 @@
     - role: install_pip_packages
     - role: geerlingguy.docker
     - role: install_lego
-    - role: install_hugo
     - role: install_tailscale
     - role: fuzzymistborn.autorestic
     - role: install_runitor
@@ -251,28 +238,20 @@
     - role: cronjobs
     - role: install_fail2ban
 
+### Desktops
+
 - hosts: kelsier
   become: true
   vars_files:
     - 'vars/vault.yaml'
-  pre_tasks:
-    - name: Remove pulseaudio
-      community.general.pacman:
-        name:
-          - paprefs
-          - pavucontrol
-          - pulseaudio-qt
-          - pulseaudio
-          - pulseaudio-jack
-          - pulseaudio-alsa
-        state: absent
-        force: yes
+    - 'group_vars/desktop.yml'
   roles:
     - role: grog.package
     - role: geerlingguy.pip
     - role: install_pip_packages
     - role: fuzzymistborn.autorestic
     - role: install_runitor
+    - role: desktop
     - role: kelsier
     - role: bash_alias
     - role: config_retroarch
@@ -281,28 +260,64 @@
     - role: install_telegraf
     - role: cronjobs
 
-- hosts: hoid
+- hosts: vasher
   become: true
   vars_files:
     - 'vars/vault.yaml'
-  pre_tasks:
-    - name: Remove pulseaudio
-      community.general.pacman:
-        name:
-          - paprefs
-          - pavucontrol
-          - pulseaudio-qt
-          - pulseaudio
-          - pulseaudio-jack
-          - pulseaudio-alsa
-        state: absent
-        force: yes
+    - 'group_vars/desktop.yml'
   roles:
     - role: grog.package
     - role: geerlingguy.pip
     - role: install_pip_packages
 #    - role: fuzzymistborn.autorestic
     - role: install_runitor
-    - role: hoid
+    - role: desktop
+#    - role: vasher
     - role: bash_alias
 #    - role: cronjobs
+
+- hosts: mraize
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+    - 'group_vars/desktop.yml'
+  roles:
+    - role: grog.package
+    - role: geerlingguy.pip
+    - role: install_pip_packages
+#    - role: fuzzymistborn.autorestic
+    - role: install_runitor
+    - role: desktop
+#    - role: mraize
+    - role: bash_alias
+#    - role: cronjobs
+
+- hosts: hoid
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+  roles:
+    - role: grog.package
+    - role: geerlingguy.pip
+    - role: install_pip_packages
+#    - role: fuzzymistborn.autorestic
+    - role: install_runitor
+    - role: desktop
+#    - role: hoid
+    - role: bash_alias
+#    - role: cronjobs
+
+- hosts: retroarch_tv
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+    - 'group_vars/desktop.yml'
+  roles:
+    - role: grog.package
+    - role: desktop
+    - role: retroarch_tv
+    - role: config_retroarch
+    - role: config_pegasus
+    - role: bash_alias
+    - role: cronjobs
+    - role: install_syncthing

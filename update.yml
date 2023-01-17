@@ -34,7 +34,6 @@
     - 'vars/vault.yaml'
     - 'group_vars/all.yaml'
   roles:
-#    - role: install_hugo
     - role: install_lego
     - role: install_runitor
 
@@ -46,7 +45,7 @@
     - role: install_lego
     - role: install_runitor
 
-- hosts: dominion omada kelsier
+- hosts: dominion omada
   vars_files:
     - 'vars/vault.yaml'
     - 'group_vars/all.yaml'
