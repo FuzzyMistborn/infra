@@ -216,7 +216,7 @@ containers:
   - service_name: nextcloud
     container_name: nextcloud
     active: true
-    image: fuzzymistborn/nextcloud-docker:25.0.2
+    image: fuzzymistborn/nextcloud-docker:25.0.3
     restart: always
     ports:
       - 3491:80
