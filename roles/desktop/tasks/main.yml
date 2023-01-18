@@ -270,9 +270,17 @@
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
 
+- name: Copy login screen image
+  copy:
+    src: WayofKings.jpg
+    dest: /usr/share/backgrounds/WayofKings.jpg
+    mode: 0644
+    owner: root
+    group: root
+
 - name: Copy slick-greeter.conf
   copy:
-    src: slick-greeter.conf.j2
+    src: slick-greeter.conf
     dest: /etc/lightdm/slick-greeter.conf
     mode: 0644
     owner: root
