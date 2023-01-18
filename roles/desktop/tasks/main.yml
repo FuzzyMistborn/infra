@@ -1,4 +1,5 @@
 ---
+### SSH Config
 - name: SSH Keys
   authorized_key:
     user: "{{ main_username }}"
@@ -43,7 +44,7 @@
     - {src: "auth_commands.sh.j2", dest: "/home/{{ main_username }}/.ssh/auth_commands.sh", mode: "755"}
     - {src: "ssh_config.j2", dest: "/home/{{ main_username }}/.ssh/config", mode: "600"}
 
-# Sudoers file
+### Sudoers file
 - name: Add sudoers file for main user
   template:
     src: sudoers_main_user.j2
@@ -72,7 +73,7 @@
     flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
     method: system
 
-# fstab/disk mounts
+### fstab/disk mounts
 - name: make sure disks unmounted
   mount:
     path: "{{ item.path }}"
@@ -133,7 +134,7 @@
     - src: "zsh/p10k.zsh"
       dest: "/home/{{ main_username }}/.p10k.zsh"
 
-### Backup Restore
+### Backup/Restore
 - name: Create restore script
   copy:
     dest: /home/{{ main_username }}/restore.sh
@@ -172,6 +173,49 @@
     content: "{{ secret_parents_wireguard_config }}"
   when: ansible_hostname != 'hoid'
 
+### VS Code Extensions
+- name: Install extensions
+  command: code --install-extension {{ item }}
+  become: yes
+  become_user: "{{ main_username }}"
+  with_items:
+    - ms-vscode-remote.remote-ssh
+    - ms-python.python
+    - ms-azuretools.vscode-docker
+    - matthewpi.caddyfile-support
+    - keesschollaart.vscode-home-assistant
+    - wholroyd.jinja
+
+### CUPS
+- name: Add printer and set as default
+  command: "{{ item }}"
+  become: yes
+  become_user: "{{ main_username }}"
+  with_items:
+    - /usr/sbin/lpadmin -p Brother-HL2270DW -E -v ipp://192.168.10.15/ipp/port1 -o media=na_letter_8.5x11in -m HL2270DW.ppd
+    - /usr/bin/lpoptions -d Brother-HL2270DW
+
+### Configure Cinnamon
+- name: Set Cinnamon themeing with string
+  community.general.dconf:
+    key: "{{ item.key }}"
+    value: "'{{ item.value }}'"
+    state: present
+  become: yes
+  become_user: "{{ main_username }}"
+  with_items:
+    - "{{ cinnamon_theme_settings_string }}"
+
+- name: Set Cinnamon themeing with value
+  community.general.dconf:
+    key: "{{ item.key }}"
+    value: "{{ item.value }}"
+    state: present
+  become: yes
+  become_user: "{{ main_username }}"
+  with_items:
+    - "{{ cinnamon_theme_settings_value }}"
+
 ### Final Tweaks
 - name: create mpv config folder
   file:
@@ -188,6 +232,51 @@
     force: yes
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
+
+- name: create Plank config folder
+  file:
+    dest: /home/{{main_username}}/.config/plank/dock1/launchers/
+    state: directory
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0755
+
+- name: Copy Plank files
+  copy:
+    src: "{{ item.src }}"
+    dest: /home/{{ main_username }}/.config/plank/dock1/launchers/{{ item.dest }}
+    mode: 0644
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+  with_items:
+    - {src: 'plank/code.dockitem', dest: 'code.dockitem'}
+    - {src: 'plank/com.github.iwalton3.jellyfin-media-player.dockitem', dest: 'com.github.iwalton3.jellyfin-media-player.dockitem'}
+    - {src: 'plank/ferdium.dockitem', dest: 'ferdium.dockitem'}
+    - {src: 'plank/filezilla.dockitem', dest: 'filezilla.dockitem'}
+    - {src: 'plank/firefox.dockitem', dest: 'firefox.dockitem'}
+    - {src: 'plank/libreoffice-calc.dockitem', dest: 'libreoffice-calc.dockitem'}
+    - {src: 'plank/libreoffice-writer.dockitem', dest: 'libreoffice-writer.dockitem'}
+    - {src: 'plank/nemo.dockitem', dest: 'nemo.dockitem'}
+    - {src: 'plank/org.gnome.Terminal.dockitem', dest: 'org.gnome.Terminal.dockitem'}
+    - {src: 'plank/org.kde.kate.dockitem', dest: 'org.kde.kate.dockitem'}
+    - {src: 'plank/org.remmina.Remmina.dockitem', dest: 'org.remmina.Remmina.dockitem'}
+    - {src: 'plank/thunderbird.dockitem', dest: 'thunderbird.dockitem'}
+
+- name: Copy Redshift config
+  copy:
+    src: redshift.conf.j2
+    dest: /home/{{ main_username }}/.config/redshift.conf
+    mode: 0644
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+
+- name: Copy slick-greeter.conf
+  copy:
+    src: slick-greeter.conf.j2
+    dest: /etc/lightdm/slick-greeter.conf
+    mode: 0644
+    owner: root
+    group: root
 
 - name: Reload Cronie/bluetooth/fstrim
   systemd:
@@ -214,7 +303,7 @@
   when: ansible_hostname != 'hoid'
 
 - name: Enable WOL nmcli
-  command: sudo nmcli c modify "Wired" 802-3-ethernet.wake-on-lan magic
+  command: sudo nmcli c modify "Wired connection 1" 802-3-ethernet.wake-on-lan magic
   when: ansible_hostname != 'hoid'
 
 - name: Fix Delayed Shutdown

@@ -1,0 +1,19 @@
+---
+- name: Clone Eupnea Audio-Scripts GitHub Repo
+  git:
+    repo: https://github.com/eupnea-linux/audio-scripts
+    dest: /home/{{ main_username }}/audio-scripts
+
+- name: Enable rotate sensor
+  systemd:
+    enabled: true
+    daemon-reload: true
+    state: restarted
+    name: iio-sensor-proxy
+
+- name: Enable bluetooth
+  systemd:
+    enabled: true
+    daemon-reload: true
+    state: restarted
+    name: bluetooth

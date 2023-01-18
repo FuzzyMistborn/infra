@@ -27,6 +27,7 @@ package_list:
   - name: kdeconnect
   - name: kolourpaint
   - name: krename
+  - name: kvantum
   - name: libreoffice-still
   - name: lib32-glibc
   - name: lm_sensors
@@ -38,6 +39,7 @@ package_list:
   - name: nfs-utils
   - name: nomacs
   - name: noto-fonts-emoji
+  - name: obsidian
   - name: openssh
   - name: pdfarranger
   - name: pipewire
@@ -47,11 +49,14 @@ package_list:
   - name: pipewire-pulse
   - name: plank
   - name: python
+  - name: python-psutil
+  - name: redshift
   - name: remmina
   - name: restic
   - name: screen
   - name: scrot
   - name: skanlite
+  - name: solaar
   - name: spectacle
   - name: sudo
   - name: system-config-printer
@@ -75,6 +80,7 @@ aur_package_list:
   - name: mqtt-explorer-appimage  # Other package broken
   - name: popsicle
   - name: rpi-imager-bin
+  - name: steamlink
   - name: telegraf
   - name: timeshift-bin
   - name: timeshift-autosnap
@@ -87,6 +93,208 @@ aur_package_list:
 pip_packages:
   - thefuck
 
+### Cinnamon Themeing
+cinnamon_theme_settings_string:
+  - key: /org/cinnamon/desktop/interface/cursor-theme
+    value: 'Adwaita'
+  - key: /org/cinnamon/desktop/interface/gtk-theme
+    value: 'Arc-Dark'
+  - key: /org/cinnamon/desktop/interface/icon-theme
+    value: 'Qogir-dark'
+  - key: /org/cinnamon/theme/name
+    value: 'Arc-Dark'
+  - key: /org/gnome/desktop/interface/clock-format
+    value: '12h'
+  - key: /org/cinnamon/desktop/wm/preferences/button-layout
+    value: ':minimize,maximize,close'
+  - key: /org/cinnamon/desktop/wm/preferences/action-double-click-titlebar
+    value: 'toggle-maximize'
+  - key: /org/cinnamon/desktop/wm/preferences/action-middle-click-titlebar
+    value: 'lower'
+  - key: /org/cinnamon/desktop/wm/preferences/action-right-click-titlebar
+    value: 'menu'
+  - key: /org/cinnamon/desktop/wm/preferences/action-scroll-titlebar
+    value: 'none'
+  - key: /org/cinnamon/desktop/wm/preferences/focus-mode
+    value: 'click'
+  - key: /org/cinnamon/desktop/wm/preferences/focus-new-windows
+    value: 'smart'
+  - key: /org/cinnamon/muffin/placement-mode
+    value: 'automatic'
+  - key: /org/cinnamon/desktop/wm/preferences/mouse-button-modifier
+    value: '<Alt>'
+  - key: /org/cinnamon/alttab-switcher-style
+    value: 'icons+preview'
+  - key: /org/cinnamon/settings-daemon/plugins/power/button-power
+    value: 'suspend'
+  - key: /org/cinnamon/desktop/peripherals/mouse/accel-profile
+    value: 'default'
+  - key: /org/cinnamon/desktop/background/slideshow/image-source
+    value: 'directory:///home/{{ main_username }}/Nextcloud/Tech/Artwork/Backgrounds'
+  - key: /org/cinnamon/desktop/background/picture-options
+    value: 'zoom'
+## Plank
+  - key: /net/launchpad/plank/docks/dock1/theme
+    value: 'Transparent'
+  - key: /net/launchpad/plank/docks/dock1/position
+    value: "top"
+  - key: /net/launchpad/plank/docks/dock1/monitor
+    value: ''
+  - key: /net/launchpad/plank/docks/dock1/alignment
+    value: 'center'
+  - key: /net/launchpad/plank/docks/dock1/hide-mode
+    value: 'intelligent'
+## Keyboard Shortcuts
+  - key: /org/cinnamon/desktop/keybindings/custom-keybindings/custom0/command
+    value: 'flameshot gui -d 3000'
+  - key: /org/cinnamon/desktop/keybindings/custom-keybindings/custom0/name
+    value: 'Flameshot'
+  - key: /org/cinnamon/desktop/keybindings/custom-keybindings/custom1/command
+    value: 'gnome-terminal'
+  - key: /org/cinnamon/desktop/keybindings/custom-keybindings/custom1/name
+    value: 'Terminal'
+  - key: /org/cinnamon/desktop/keybindings/custom-keybindings/custom2/command
+    value: 'pactl set-default-sink 766'
+  - key: /org/cinnamon/desktop/keybindings/custom-keybindings/custom2/name
+    value: 'Switch to Headphones'
+  - key: /org/cinnamon/desktop/keybindings/custom-keybindings/custom3/command
+    value: 'pactl set-default-sink 160'
+  - key: /org/cinnamon/desktop/keybindings/custom-keybindings/custom3/name
+    value: 'Switch to Speakers'
+
+cinnamon_theme_settings_value:
+  - key: /org/cinnamon/desktop/interface/clock-show-seconds
+    value: "true"
+  - key: /org/nemo/desktop/computer-icon-visible
+    value: "true"
+  - key: /org/nemo/desktop/home-icon-visible
+    value: "true"
+  - key: /org/nemo/desktop/trash-icon-visible
+    value: "true"
+  - key: /org/nemo/desktop/volumes-visible
+    value: "true"
+  - key: /org/nemo/desktop/desktop-layout
+    value: "[('true'), ('false')]"
+  - key: /org/cinnamon/launcher/memory-limit-enabled
+    value: "true"
+  - key: /org/cinnamon/launcher/memory-limit
+    value: "2048"
+  - key: /org/cinnamon/hotcorner-layout
+    value: "['scale:true:300', 'expo:false:300', 'scale:false:0', 'desktop:false:0']"
+  - key: /org/cinnamon/hotcorner-layout
+    value: "['scale:true:300', 'expo:true:300', 'scale:false:0', 'desktop:false:0']"
+  - key: /org/cinnamon/desktop/notifications/bottom-notifications
+    value: "true"
+  - key: /org/cinnamon/desktop/notifications/notification-duration
+    value: "5"
+  - key: /org/cinnamon/panels-height
+    value: "['1:50']"
+  - key: /org/cinnamon/panels-autohide
+    value: "['1:false']"
+  - key: /org/cinnamon/panel-zone-symbolic-icon-sizes
+    value: '[{"panelId": 1, "left": 30, "center": 28, "right": 16}]'
+  - key: /org/cinnamon/desktop/session/idle-delay
+    value: "uint32 600"
+  - key: /org/cinnamon/desktop/session/lock-delay
+    value: "uint32 15"
+  - key: /org/cinnamon/muffin/bring-windows-to-current-workspace
+    value: "false"
+  - key: /org/cinnamon/muffin/attach-modal-dialogs
+    value: "false"
+  - key: /org/cinnamon/alttab-switcher-enforce-primary-monitor
+    value: "false"
+  - key: /org/cinnamon/alttab-minimized-aware
+    value: "false"
+  - key: /org/cinnamon/alttab-switcher-show-all-workspaces
+    value: "false"
+  - key: /org/cinnamon/muffin/edge-tiling
+    value: "true"
+  - key: /org/cinnamon/muffin/tile-maximize
+    value: "true"
+  - key: /org/cinnamon/workspace-osd-visible
+    value: "true"
+  - key: /org/cinnamon/muffin/workspace-cycle
+    value: "true"
+  - key: /org/cinnamon/muffin/workspaces-only-on-primary
+    value: "false"
+  - key: /org/cinnamon/workspace-expo-view-as-grid
+    value: "false"
+  - key: /org/cinnamon/settings-daemon/plugins/power/sleep-display-ac
+    value: "600"
+  - key: /org/cinnamon/settings-daemon/plugins/power/sleep-inactive-ac-timeout
+    value: "3600"
+  - key: /org/cinnamon/cinnamon-session/prefer-hybrid-sleep
+    value: "false"
+  - key: /org/cinnamon/cinnamon-session/suspend-then-hibernate
+    value: "false"
+  - key: /org/cinnamon/desktop/peripherals/mouse/left-handed
+    value: "false"
+  - key: /org/cinnamon/desktop/peripherals/mouse/natural-scroll
+    value: "false"
+  - key: /org/cinnamon/desktop/peripherals/mouse/locate-pointer
+    value: "false"
+  - key: /org/cinnamon/desktop/peripherals/mouse/middle-click-emulation
+    value: "true"
+  - key: /org/cinnamon/desktop/peripherals/mouse/drag-threshold
+    value: "8"
+  - key: /org/cinnamon/desktop/interface/cursor-size
+    value: "25"
+  - key: /org/cinnamon/desktop/peripherals/mouse/speed
+    value: "0.0"
+  - key: /org/cinnamon/desktop/peripherals/mouse/double-click
+    value: "396"
+  - key: /org/cinnamon/desktop/background/slideshow/slideshow-enabled
+    value: "true"
+  - key: /org/cinnamon/desktop/background/slideshow/delay
+    value: "10"
+  - key: /org/cinnamon/desktop/background/slideshow/random-order
+    value: "true"
+## Plank
+  - key: /net/launchpad/plank/docks/dock1/dock-items
+    value: "['firefox.dockitem', 'nemo.dockitem', 'org.kde.kate.dockitem', 'ferdium.dockitem', 'thunderbird.dockitem', 'libreoffice-writer.dockitem', 'libreoffice-calc.dockitem', 'org.gnome.Terminal.dockitem', 'filezilla.dockitem', 'obsidian.dockitem', 'code.dockitem', 'org.remmina.Remmina.dockitem', 'com.github.iwalton3.jellyfin-media-player.dockitem']"
+  - key: /net/launchpad/plank/docks/dock1/pressure-reveal
+    value: "false"
+  - key: /net/launchpad/plank/docks/dock1/offset
+    value: "0"
+  - key: /net/launchpad/plank/docks/dock1/icon-size
+    value: "70"
+  - key: /net/launchpad/plank/docks/dock1/zoom-enabled
+    value: "true"
+  - key: /net/launchpad/plank/docks/dock1/zoom-percent
+    value: "125"
+  - key: /net/launchpad/plank/docks/dock1/hide-delay
+    value: "0"
+  - key: /net/launchpad/plank/docks/dock1/unhide-delay
+    value: "0"
+  - key: /net/launchpad/plank/docks/dock1/pressure-reveal
+    value: "false"
+  - key: /net/launchpad/plank/docks/dock1/pinned-only
+    value: "false"
+  - key: /net/launchpad/plank/docks/dock1/lock-items
+    value: "false"
+  - key: /net/launchpad/plank/docks/dock1/current-workspace-only
+    value: "false"
+## Keyboard Shortcuts
+  - key: /org/cinnamon/desktop/keybindings/custom-list
+    value: "['custom0', '__dummy__', 'custom1', 'custom2', 'custom3']"
+  - key: /org/cinnamon/desktop/keybindings/custom-keybindings/custom0/binding
+    value: "@as []"
+  - key: /org/cinnamon/desktop/keybindings/custom-keybindings/custom1/binding
+    value: "@as []"
+  - key: /org/cinnamon/desktop/keybindings/custom-keybindings/custom2/binding
+    value: "@as []"
+  - key: /org/cinnamon/desktop/keybindings/custom-keybindings/custom3/binding
+    value: "@as []"
+  - key: /org/cinnamon/desktop/keybindings/custom-keybindings/custom0/binding
+    value: "['<Primary><Alt>z']"
+  - key: /org/cinnamon/desktop/keybindings/custom-keybindings/custom1/binding
+    value: "['<Alt>t']"
+  - key: /org/cinnamon/desktop/keybindings/custom-keybindings/custom2/binding
+    value: "['<Primary><Alt>h']"
+  - key: /org/cinnamon/desktop/keybindings/custom-keybindings/custom3/binding
+    value: "['<Primary><Alt>s']"
+
+### Mounts
 nfs_mount:
   - path: /mnt/Backup
     source: 192.168.10.20:/volume1/Backup/
@@ -105,7 +313,6 @@ smb_mountpoints:
 
 ### Variables
 pull_backup: false
-
 pip_package: python-pip
 
 ### Bash Aliases

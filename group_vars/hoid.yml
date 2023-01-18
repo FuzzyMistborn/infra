@@ -6,6 +6,7 @@ bootstrap_user: "{{ main_username }}"
 package_list:
   - name: bluez
   - name: bluez-utils
+  - name: blueman
   - name: calibre
   - name: cifs-utils
   - name: cronie
@@ -26,6 +27,7 @@ package_list:
   - name: kolourpaint
   - name: krename
   - name: libreoffice-still
+  - name: iio-sensor-proxy
   - name: mpv
   - name: nano
   - name: ncdu
@@ -34,6 +36,7 @@ package_list:
   - name: nfs-utils
   - name: nomacs
   - name: noto-fonts-emoji
+  - name: obsidian
   - name: openssh
   - name: pdfarranger
   - name: pipewire
@@ -63,6 +66,7 @@ package_list:
 aur_package_list:
   - name: brother-hl2270dw
   - name: deezer
+  - name: lightdm-settings
   - name: jellyfin-media-player
   - name: mqtt-explorer-appimage  # Other package broken
   - name: timeshift-bin
