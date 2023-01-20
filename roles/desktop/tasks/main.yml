@@ -317,7 +317,7 @@
   ignore_errors: true
 
 - name: Intel iGPU Tearing Fix
-    copy:
+  copy:
     dest: /etc/X11/xorg.conf.d/20-intel.conf
     owner: root
     group: root
