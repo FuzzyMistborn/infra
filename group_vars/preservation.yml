@@ -27,13 +27,13 @@ bash_apt: true
 ### Cronjobs
 cronjobs:
   - name: DB Backup
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_preservation_db_backup }} -- /home/{{ main_username }}/scripts/db_backup.sh
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_backup_preservation }} -- /home/{{ main_username }}/scripts/db_backup.sh
     user: "{{ main_username }}"
     minute: 45
     hour: 0
   - name: Restic Prune
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_preservation_purge }} -- /usr/local/bin/autorestic exec -a -- forget --keep-daily 1 --keep-weekly 6 --keep-monthly 3 --prune
-#    job: /usr/local/bin/runitor -uuid {{ secret_hc_preservation_purge }} -- /usr/local/bin/autorestic forget -a -- prune
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_preservation }} -- /usr/local/bin/autorestic exec -a -- forget --keep-daily 1 --keep-weekly 6 --keep-monthly 3 --prune
+#    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_preservation }} -- /usr/local/bin/autorestic forget -a -- prune
     user: "{{ main_username }}"
     minute: 45
     hour: 22

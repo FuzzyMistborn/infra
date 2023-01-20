@@ -239,12 +239,12 @@
     - role: install_fail2ban
 
 ### Desktops
-
 - hosts: kelsier
   become: true
   vars_files:
     - 'vars/vault.yaml'
     - 'group_vars/desktop.yml'
+    - 'group_vars/kelsier.yml'
   roles:
     - role: grog.package
     - role: geerlingguy.pip
@@ -265,47 +265,50 @@
   vars_files:
     - 'vars/vault.yaml'
     - 'group_vars/desktop.yml'
+    - 'group_vars/vasher.yml'
   roles:
     - role: grog.package
     - role: geerlingguy.pip
     - role: install_pip_packages
-#    - role: fuzzymistborn.autorestic
+    - role: fuzzymistborn.autorestic
     - role: install_runitor
     - role: desktop
-#    - role: vasher
     - role: bash_alias
-#    - role: cronjobs
+    - role: install_telegraf
+    - role: cronjobs
 
 - hosts: mraize
   become: true
   vars_files:
     - 'vars/vault.yaml'
     - 'group_vars/desktop.yml'
+    - 'group_vars/mraize.yml'
   roles:
     - role: grog.package
     - role: geerlingguy.pip
     - role: install_pip_packages
-#    - role: fuzzymistborn.autorestic
+    - role: fuzzymistborn.autorestic
     - role: install_runitor
     - role: desktop
-#    - role: mraize
     - role: bash_alias
-#    - role: cronjobs
+    - role: install_telegraf
+    - role: cronjobs
 
 - hosts: hoid
   become: true
   vars_files:
     - 'vars/vault.yaml'
+    - 'group_vars/hoid.yml'
   roles:
     - role: grog.package
     - role: geerlingguy.pip
     - role: install_pip_packages
-#    - role: fuzzymistborn.autorestic
+    - role: fuzzymistborn.autorestic
     - role: install_runitor
     - role: desktop
-#    - role: hoid
+    - role: hoid
     - role: bash_alias
-#    - role: cronjobs
+    - role: cronjobs
 
 - hosts: retroarch_tv
   become: true

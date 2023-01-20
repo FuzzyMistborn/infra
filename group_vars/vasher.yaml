@@ -1,132 +1,6 @@
----
-target_os: endeavour_os
-hostname: vasher
-bootstrap_user: "{{ main_username }}"
-
-### Install packages with grog.package
-package_list:
-  - name: ansible
-  - name: bluedevil
-  - name: bluez
-  - name: bluez-utils
-  - name: calibre
-  - name: cifs-utils
-  - name: cronie
-  - name: curl
-  - name: ethtool
-  - name: filezilla
-  - name: firefox
-  - name: flameshot
-  - name: flatpak
-  - name: freerdp
-  - name: gimp
-  - name: git
-  - name: gparted
-  - name: hddtemp
-  - name: htop
-  - name: iperf3
-  - name: img2pdf
-  - name: kolourpaint
-  - name: krename
-  - name: libreoffice-still
-  - name: lm_sensors
-  - name: mpv
-  - name: nano
-  - name: ncdu
-  - name: net-tools
-  - name: nextcloud-client
-  - name: nfs-utils
-  - name: nomacs
-  - name: noto-fonts-emoji
-  - name: openssh
-  - name: pdfarranger
-  - name: pipewire
-  - name: pipewire-alsa
-  - name: pipewire-jack
-  - name: pipewire-zeroconf
-  - name: pipewire-pulse
-  - name: plank
-  - name: python
-  - name: remmina
-  - name: restic
-  - name: screen
-  - name: scrot
-  - name: skanlite
-  - name: spectacle
-  - name: sudo
-  - name: system-config-printer
-  - name: tailscale
-  - name: thunderbird
-  - name: tree
-  - name: veracrypt
-  - name: vivaldi
-  - name: vlc
-  - name: wget
-  - name: wireguard-tools
-
-aur_package_list:
-  - name: antimicrox
-  - name: bauh
-  - name: brother-hl2270dw
-  - name: deezer
-  - name: dxvk-bin
-  - name: drawio-desktop-bin
-  - name: heroic-games-launcher-bin
-  - name: jellyfin-media-player
-  - name: logiops
-  - name: mqtt-explorer-appimage  # Other package broken
-#  - name: pegasus-frontend-git
-  - name: popsicle
-  - name: rpi-imager-bin
-  - name: telegraf
-  - name: timeshift-bin
-  - name: timeshift-autosnap
-  - name: ventoy-bin
-  - name: visual-studio-code-bin
-  - name: zoom
-  # - ckan  # Currently broken, use Mono
-  - name: ferdium-bin
-
-### Pip Packages
-pip_packages:
-  - thefuck
-
-nfs_mount:
-  - path: /mnt/Backup
-    source: 192.168.10.20:/volume1/Backup/
-    fs: nfs
-    opts: "_netdev,noauto,nofail,x-systemd.automount"
-  - path: /mnt/NVR
-    source: 192.168.10.20:/volume1/BlueIris/
-    fs: nfs
-    opts: "_netdev,noauto,nofail,x-systemd.automount"
-
-smb_mountpoints:
-  - path: "/mnt/Media"
-    source: "//192.168.1.20/Media"
-    fs: cifs
-    opts: "_netdev,noauto,nofail,x-systemd.automount,uid=1000,gid=1000,credentials=/home/{{ main_username }}/.smbcredentials"
 
 ### Variables
 pull_backup: false
-
-pip_package: python-pip
-
-### Bash Aliases
-bash_aliases:
-  - alias: c
-    command: clear
-  - alias: e
-    command: exit
-  - alias: ssh-remove
-    command: ssh-keygen -f /home/{{ main_username }}/.ssh/known_hosts -R $c
-  - alias: logi-restart
-    command: sudo systemctl restart logid
-bash_autorestic: true
-bash_systemctl: true
-bash_pacman: true
-bash_yay: true
-bash_git: true
 
 ### Autorestic Config
 autorestic_config_yaml:
@@ -160,21 +34,19 @@ autorestic_config_yaml:
 ### Cronjobs
 cronjobs:
   - name: Restic Prune
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_kelsier_purge }} -- /usr/local/bin/autorestic exec -a -- forget --keep-daily 3 --keep-weekly 4 --keep-monthly 2 --prune
-#    job: /usr/local/bin/runitor -uuid {{ secret_hc_kelsier_purge }} -- /usr/local/bin/autorestic forget -a -- prune
+#    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_vasher }} -- /usr/local/bin/autorestic exec -a -- forget --keep-daily 3 --keep-weekly 4 --keep-monthly 2 --prune
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_vasher }} -- /usr/local/bin/autorestic forget -a -- prune
     user: "{{ main_username }}"
-    minute: 0
+    minute: 15
     hour: 20
     weekday: 1
-  - name: Restic Check
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_check_kelsier }} -- /usr/local/bin/autorestic exec -a -- check
-    user: "{{ main_username }}"
-    minute: 0
-    hour: 19
-    day: 1
-  - name: Media Backup
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_kelsier_media }} -- /usr/local/bin/autorestic backup -a -c /home/{{ main_username }}/.autorestic.yml
+  - name: Restic Backup
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_backup_vasher }} -- /usr/local/bin/autorestic backup -a -c /home/{{ main_username }}/.autorestic.yml
     user: root
-    minute: 0
+    minute: 15
     hour: 21
-    weekday: 0,3,5
+
+### Telegraf
+telegraf_influx_token: "{{ secret_telegraf_vasher }}"
+telegraf_influx_bucket: vasher
+telegraf_influx_disk_mounts: '"/"'

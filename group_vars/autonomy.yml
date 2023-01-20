@@ -63,8 +63,8 @@ cronjobs:
     minute: 0
     hour: 23
   - name: Restic Prune
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_purge }} -- /usr/local/bin/autorestic exec -a -- forget --keep-daily 1 --keep-weekly 8 --keep-monthly 4 --prune
-#    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_purge }} -- /usr/local/bin/autorestic forget -a -- prune
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_autonomy }} -- /usr/local/bin/autorestic exec -a -- forget --keep-daily 1 --keep-weekly 8 --keep-monthly 4 --prune
+#    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_autonomy }} -- /usr/local/bin/autorestic forget -a -- prune
     user: "{{ main_username }}"
     minute: 0
     hour: 22
@@ -76,7 +76,7 @@ cronjobs:
     hour: 2
     day: 1
   - name: Media Backup
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_media }} -- /usr/local/bin/autorestic backup -a -c /home/{{ main_username }}/.autorestic.yml
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_backup_autonomy }} -- /usr/local/bin/autorestic backup -a -c /home/{{ main_username }}/.autorestic.yml
     user: root
     minute: 0
     hour: 0

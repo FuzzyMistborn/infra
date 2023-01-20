@@ -1,0 +1,52 @@
+
+### Variables
+pull_backup: false
+
+### Autorestic Config
+autorestic_config_yaml:
+  version: 2
+  backends:
+    synology_docker:
+      type: s3
+      path: 'http://192.168.10.20:9000/mraize'
+      key: "{{ secret_restic_repo_password }}"
+      env:
+        - AWS_ACCESS_KEY_ID: "{{ secret_minio_s3_access_key_id }}"
+        - AWS_SECRET_ACCESS_KEY: "{{ secret_minio_s3_access_key }}"
+  locations:
+    docker:
+      from: /home/{{ main_username }}
+      to:
+        - synology_docker
+      options:
+        backup:
+          exclude:
+            - '.cache*'
+            - 'Nextcloud'
+            - 'Downloads'
+            - 'git'
+            - '*steam*'
+        forget:
+          keep-daily: 3
+          keep-weekly: 4
+          keep-monthly: 2
+
+### Cronjobs
+cronjobs:
+  - name: Restic Prune
+#    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_mraize }} -- /usr/local/bin/autorestic exec -a -- forget --keep-daily 3 --keep-weekly 4 --keep-monthly 2 --prune
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_mraize }} -- /usr/local/bin/autorestic forget -a -- prune
+    user: "{{ main_username }}"
+    minute: 30
+    hour: 20
+    weekday: 1
+  - name: Restic Backup
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_backup_mraize }} -- /usr/local/bin/autorestic backup -a -c /home/{{ main_username }}/.autorestic.yml
+    user: root
+    minute: 30
+    hour: 21
+
+### Telegraf
+telegraf_influx_token: "{{ secret_telegraf_mraize }}"
+telegraf_influx_bucket: mraize
+telegraf_influx_disk_mounts: '"/"'

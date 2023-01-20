@@ -196,6 +196,23 @@
     - /usr/bin/lpoptions -d Brother-HL2270DW
 
 ### Configure Cinnamon
+- name: Create themes folder
+  file:
+    dest: /home/{{main_username}}/.themes
+    state: directory
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0755
+
+- name: Install mint-x-dark
+  unarchive:
+    src: "https://cinnamon-spices.linuxmint.com/files/themes/Mint-X-Dark.zip?time=1674148583"
+    dest: "/home/{{main_username}}/.themes"
+    remote_src: yes
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0755
+
 - name: Set Cinnamon themeing with string
   community.general.dconf:
     key: "{{ item.key }}"
@@ -263,9 +280,17 @@
     - {src: 'plank/thunderbird.dockitem', dest: 'thunderbird.dockitem'}
 
 - name: Copy Redshift config
-  copy:
+  template:
     src: redshift.conf.j2
     dest: /home/{{ main_username }}/.config/redshift.conf
+    mode: 0644
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+
+- name: Copy Personal avatar
+  copy:
+    src: face
+    dest: /home/{{ main_username }}/.face
     mode: 0644
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
@@ -285,6 +310,26 @@
     mode: 0644
     owner: root
     group: root
+
+- name: Check for iGPU
+  shell: "lspci | grep VGA | grep -Po 'Intel Corporation HD Graphics'"
+  register: igpu
+  ignore_errors: true
+
+- name: Intel iGPU Tearing Fix
+    copy:
+    dest: /etc/X11/xorg.conf.d/20-intel.conf
+    owner: root
+    group: root
+    mode: 0644
+    content: |
+      Section "Device"
+        Identifier "Intel Graphics"
+        Driver "intel"
+        Option "TripleBuffer" "true"
+        Option "TearFree" "true"
+      EndSection
+    when: igpu.failed == false
 
 - name: Reload Cronie/bluetooth/fstrim
   systemd:

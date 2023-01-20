@@ -36,14 +36,14 @@ cronjobs:
     minute: 0
     hour: 5
   - name: Restic Prune
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_ambition_restic_prune }} -- /usr/local/bin/autorestic exec -a -- forget --keep-daily 1 --keep-weekly 6 --keep-monthly 3 --prune
-#    job: /usr/local/bin/runitor -uuid {{ secret_hc_ambition_restic_prune }} -- /usr/local/bin/autorestic forget -a -- prune
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_ambition }} -- /usr/local/bin/autorestic exec -a -- forget --keep-daily 1 --keep-weekly 6 --keep-monthly 3 --prune
+#    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_ambition }} -- /usr/local/bin/autorestic forget -a -- prune
     user: "{{ main_username }}"
     minute: 0
     hour: 6
     weekday: 1
   - name: Restic Check
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_ambition_restic_check }} -- /usr/local/bin/autorestic exec -a -- check
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_check_ambition }} -- /usr/local/bin/autorestic exec -a -- check
     user: "{{ main_username }}"
     minute: 45
     hour: 5
@@ -55,7 +55,7 @@ cronjobs:
     hour: 19
     day: 1,15
   - name: Data Backup
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_ambition_restic_backup }} -- /usr/local/bin/autorestic backup -a -c /home/{{ main_username }}/.autorestic.yml
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_backup_ambition }} -- /usr/local/bin/autorestic backup -a -c /home/{{ main_username }}/.autorestic.yml
     user: root
     minute: 15
     hour: 5

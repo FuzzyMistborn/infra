@@ -4,6 +4,8 @@ bootstrap_user: "{{ main_username }}"
 
 ### Install packages with grog.package
 package_list:
+  - name: audacity
+  - name: breeze
   - name: bluez
   - name: bluez-utils
   - name: calibre
@@ -48,6 +50,7 @@ package_list:
   - name: pipewire-zeroconf
   - name: pipewire-pulse
   - name: plank
+  - name: pop-gtk-theme
   - name: python
   - name: python-psutil
   - name: redshift
@@ -96,13 +99,13 @@ pip_packages:
 ### Cinnamon Themeing
 cinnamon_theme_settings_string:
   - key: /org/cinnamon/desktop/interface/cursor-theme
-    value: 'Adwaita'
+    value: 'breeze_cursors'
   - key: /org/cinnamon/desktop/interface/gtk-theme
-    value: 'Arc-Dark'
+    value: 'pop-dark'
   - key: /org/cinnamon/desktop/interface/icon-theme
-    value: 'Qogir-dark'
+    value: 'breeze-dark'
   - key: /org/cinnamon/theme/name
-    value: 'Arc-Dark'
+    value: 'Mint-X-Dark'
   - key: /org/gnome/desktop/interface/clock-format
     value: '12h'
   - key: /org/cinnamon/desktop/wm/preferences/button-layout
@@ -123,6 +126,8 @@ cinnamon_theme_settings_string:
     value: 'automatic'
   - key: /org/cinnamon/desktop/wm/preferences/mouse-button-modifier
     value: '<Alt>'
+  - key: /org/cinnamon/desktop/wm/preferences/num-workspaces
+    value: '2'
   - key: /org/cinnamon/alttab-switcher-style
     value: 'icons+preview'
   - key: /org/cinnamon/settings-daemon/plugins/power/button-power
@@ -137,7 +142,7 @@ cinnamon_theme_settings_string:
   - key: /net/launchpad/plank/docks/dock1/theme
     value: 'Transparent'
   - key: /net/launchpad/plank/docks/dock1/position
-    value: "top"
+    value: 'top'
   - key: /net/launchpad/plank/docks/dock1/monitor
     value: ''
   - key: /net/launchpad/plank/docks/dock1/alignment
@@ -161,8 +166,21 @@ cinnamon_theme_settings_string:
     value: 'pactl set-default-sink 160'
   - key: /org/cinnamon/desktop/keybindings/custom-keybindings/custom3/name
     value: 'Switch to Speakers'
+## Nemo
+  - key: /org/nemo/preferences/default-sort-order
+    value: 'name'
+  - key: /org/nemo/preferences/click-policy
+    value: 'double'
+  - key: /org/nemo/preferences/executable-text-activation
+    value: 'ask'
+  - key: /org/nemo/preferences/show-image-thumbnails
+    value: 'local-only'
+  - key: /org/nemo/window-state/side-pane-view
+    value: 'places'
 
 cinnamon_theme_settings_value:
+  - key: /org/cinnamon/settings-daemon/plugins/xsettings/menus-have-icons
+    value: "true"
   - key: /org/cinnamon/desktop/interface/clock-show-seconds
     value: "true"
   - key: /org/nemo/desktop/computer-icon-visible
@@ -249,6 +267,8 @@ cinnamon_theme_settings_value:
     value: "10"
   - key: /org/cinnamon/desktop/background/slideshow/random-order
     value: "true"
+  - key: /org/cinnamon/desktop/media-handling/autorun-never
+    value: "true"
 ## Plank
   - key: /net/launchpad/plank/docks/dock1/dock-items
     value: "['firefox.dockitem', 'nemo.dockitem', 'org.kde.kate.dockitem', 'ferdium.dockitem', 'thunderbird.dockitem', 'libreoffice-writer.dockitem', 'libreoffice-calc.dockitem', 'org.gnome.Terminal.dockitem', 'filezilla.dockitem', 'obsidian.dockitem', 'code.dockitem', 'org.remmina.Remmina.dockitem', 'com.github.iwalton3.jellyfin-media-player.dockitem']"
@@ -293,6 +313,125 @@ cinnamon_theme_settings_value:
     value: "['<Primary><Alt>h']"
   - key: /org/cinnamon/desktop/keybindings/custom-keybindings/custom3/binding
     value: "['<Primary><Alt>s']"
+## Nemo
+  - key: /org/gtk/settings/file-chooser/sort-directories-first
+    value: "true"
+  - key: /org/nemo/preferences/sort-favorites-first
+    value: "false"
+  - key: /org/nemo/preferences/confirm-trash
+    value: "true"
+  - key: /org/nemo/preferences/enable-delete
+    value: 'true'
+  - key: /org/cinnamon/desktop/media-handling/automount-open
+    value: 'false'
+  - key: /org/cinnamon/desktop/media-handling/automount
+    value: 'true'
+  - key: /org/nemo/preferences/detect-content
+    value: 'false'
+  - key: /org/nemo/preferences/close-device-view-on-device-eject
+    value: 'true'
+  - key: /org/nemo/preferences/thumbnail-limit
+    value: uint64 3145728
+  - key: /org/nemo/preferences/show-previous-icon-toolbar
+    value: 'true'
+  - key: /org/nemo/preferences/show-next-icon-toolbar
+    value: 'true'
+  - key: /org/nemo/preferences/show-up-icon-toolbar
+    value: 'true'
+  - key: /org/nemo/preferences/show-reload-icon-toolbar
+    value: 'true'
+  - key: /org/nemo/preferences/show-computer-icon-toolbar
+    value: 'false'
+  - key: /org/nemo/preferences/show-home-icon-toolbar
+    value: 'false'
+  - key: /org/nemo/preferences/show-edit-icon-toolbar
+    value: 'true'
+  - key: /org/nemo/preferences/show-open-in-terminal-toolbar
+    value: 'true'
+  - key: /org/nemo/preferences/show-new-folder-icon-toolbar
+    value: 'false'
+  - key: /org/nemo/preferences/show-search-icon-toolbar
+    value: 'true'
+  - key: /org/nemo/preferences/show-icon-view-icon-toolbar
+    value: 'false'
+  - key: /org/nemo/preferences/show-list-view-icon-toolbar
+    value: 'false'
+  - key: /org/nemo/preferences/show-compact-view-icon-toolbar
+    value: 'false'
+  - key: /org/nemo/preferences/show-show-thumbnails-toolbar
+    value: 'false'
+  - key: /org/nemo/preferences/menu-config/selection-menu-open
+    value: 'true'
+  - key: /org/nemo/preferences/menu-config/selection-menu-open-in-new-tab
+    value: 'true'
+  - key: /org/nemo/preferences/menu-config/selection-menu-open-in-new-window
+    value: 'true'
+  - key: /org/nemo/preferences/menu-config/selection-menu-scripts
+    value: 'false'
+  - key: /org/nemo/preferences/menu-config/selection-menu-cut
+    value: 'true'
+  - key: /org/nemo/preferences/menu-config/selection-menu-copy
+    value: 'true'
+  - key: /org/nemo/preferences/menu-config/selection-menu-paste
+    value: 'true'
+  - key: /org/nemo/preferences/menu-config/selection-menu-duplicate
+    value: 'false'
+  - key: /org/nemo/preferences/menu-config/selection-menu-pin
+    value: 'true'
+  - key: /org/nemo/preferences/menu-config/selection-menu-favorite
+    value: 'true'
+  - key: /org/nemo/preferences/menu-config/selection-menu-make-link
+    value: 'false'
+  - key: /org/nemo/preferences/menu-config/selection-menu-rename
+    value: 'true'
+  - key: /org/nemo/preferences/menu-config/selection-menu-move-to
+    value: 'false'
+  - key: /org/nemo/preferences/menu-config/selection-menu-open-in-terminal
+    value: 'true'
+  - key: /org/nemo/preferences/menu-config/selection-menu-open-as-root
+    value: 'false'
+  - key: /org/nemo/preferences/menu-config/selection-menu-move-to-trash
+    value: 'true'
+  - key: /org/nemo/preferences/menu-config/selection-menu-properties
+    value: 'true'
+  - key: /org/nemo/preferences/menu-config/background-menu-create-new-folder
+    value: 'true'
+  - key: /org/nemo/preferences/menu-config/background-menu-scripts
+    value: 'false'
+  - key: /org/nemo/preferences/menu-config/background-menu-open-in-terminal
+    value: 'true'
+  - key: /org/nemo/preferences/menu-config/background-menu-open-as-root
+    value: 'false'
+  - key: /org/nemo/preferences/menu-config/background-menu-show-hidden-files
+    value: 'true'
+  - key: /org/nemo/preferences/menu-config/background-menu-paste
+    value: 'true'
+  - key: /org/nemo/preferences/menu-config/background-menu-properties
+    value: 'true'
+  - key: /org/nemo/preferences/menu-config/iconview-menu-arrange-items
+    value: 'true'
+  - key: /org/nemo/preferences/menu-config/iconview-menu-organize-by-name
+    value: 'true'
+  - key: /org/nemo/preferences/menu-config/desktop-menu-customize
+    value: 'true'
+  - key: /org/nemo/window-state/network-expanded
+    value: 'false'
+  - key: /org/nemo/window-state/bookmarks-expanded
+    value: 'true'
+  - key: /org/nemo/window-state/my-computer-expanded
+    value: 'true'
+  - key: /org/nemo/window-state/start-with-sidebar
+    value: 'true'
+  - key: /org/nemo/preferences/show-location-entry
+    value: 'false'
+  - key: /org/nemo/window-state/start-with-toolbar
+    value: 'true'
+  - key: /org/nemo/window-state/start-with-menu-bar
+    value: 'true'
+  - key: /org/nemo/window-state/start-with-status-bar
+    value: 'true'
+  - key: /org/nemo/preferences/show-hidden-files
+    value: 'false'
 
 ### Mounts
 nfs_mount:
@@ -312,7 +451,6 @@ smb_mountpoints:
     opts: "_netdev,noauto,nofail,x-systemd.automount,uid=1000,gid=1000,credentials=/home/{{ main_username }}/.smbcredentials"
 
 ### Variables
-pull_backup: false
 pip_package: python-pip
 
 ### Bash Aliases
