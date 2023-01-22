@@ -109,12 +109,3 @@
       lxc.cgroup2.devices.allow: a
       lxc.cap.drop:
     unsafe_writes: yes
-
-- name: Honor - Allow Tailscale
-  lineinfile:
-    dest: "/etc/pve/lxc/201.conf"
-    insertafter: EOF
-    line: |
-      lxc.cgroup2.devices.allow: c 10:200 rwm
-      lxc.mount.entry: /dev/net/tun dev/net/tun none bind,create=file
-    unsafe_writes: yes

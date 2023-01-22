@@ -187,6 +187,7 @@
     - role: geerlingguy.docker
     - role: valor
     - role: bash_alias
+    - role: install_tailscale
     - role: ironicbadger.docker_compose_generator
 
 - hosts: omada
@@ -277,12 +278,12 @@
     - role: install_telegraf
     - role: cronjobs
 
-- hosts: mraize
+- hosts: szeth
   become: true
   vars_files:
     - 'vars/vault.yaml'
     - 'group_vars/desktop.yml'
-    - 'group_vars/mraize.yml'
+    - 'group_vars/szeth.yml'
   roles:
     - role: grog.package
     - role: geerlingguy.pip
@@ -308,7 +309,6 @@
     - role: desktop
     - role: hoid
     - role: bash_alias
-    - role: cronjobs
 
 - hosts: retroarch_tv
   become: true

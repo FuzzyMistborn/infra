@@ -8,6 +8,7 @@ package_list:
   - name: breeze
   - name: bluez
   - name: bluez-utils
+  - name: blueberry
   - name: calibre
   - name: cifs-utils
   - name: cronie
@@ -101,7 +102,7 @@ cinnamon_theme_settings_string:
   - key: /org/cinnamon/desktop/interface/cursor-theme
     value: 'breeze_cursors'
   - key: /org/cinnamon/desktop/interface/gtk-theme
-    value: 'pop-dark'
+    value: 'Pop-dark'
   - key: /org/cinnamon/desktop/interface/icon-theme
     value: 'breeze-dark'
   - key: /org/cinnamon/theme/name
@@ -126,8 +127,6 @@ cinnamon_theme_settings_string:
     value: 'automatic'
   - key: /org/cinnamon/desktop/wm/preferences/mouse-button-modifier
     value: '<Alt>'
-  - key: /org/cinnamon/desktop/wm/preferences/num-workspaces
-    value: '2'
   - key: /org/cinnamon/alttab-switcher-style
     value: 'icons+preview'
   - key: /org/cinnamon/settings-daemon/plugins/power/button-power
@@ -245,6 +244,8 @@ cinnamon_theme_settings_value:
     value: "false"
   - key: /org/cinnamon/cinnamon-session/suspend-then-hibernate
     value: "false"
+  - key: /org/cinnamon/settings-daemon/plugins/power/lock-on-suspend
+    value: "false"
   - key: /org/cinnamon/desktop/peripherals/mouse/left-handed
     value: "false"
   - key: /org/cinnamon/desktop/peripherals/mouse/natural-scroll
@@ -269,6 +270,8 @@ cinnamon_theme_settings_value:
     value: "true"
   - key: /org/cinnamon/desktop/media-handling/autorun-never
     value: "true"
+  - key: /org/cinnamon/desktop/wm/preferences/num-workspaces
+    value: '2'
 ## Plank
   - key: /net/launchpad/plank/docks/dock1/dock-items
     value: "['firefox.dockitem', 'nemo.dockitem', 'org.kde.kate.dockitem', 'ferdium.dockitem', 'thunderbird.dockitem', 'libreoffice-writer.dockitem', 'libreoffice-calc.dockitem', 'org.gnome.Terminal.dockitem', 'filezilla.dockitem', 'obsidian.dockitem', 'code.dockitem', 'org.remmina.Remmina.dockitem', 'com.github.iwalton3.jellyfin-media-player.dockitem']"
@@ -446,7 +449,7 @@ nfs_mount:
 
 smb_mountpoints:
   - path: "/mnt/Media"
-    source: "//192.168.1.20/Media"
+    source: "//192.168.1.10/Media"
     fs: cifs
     opts: "_netdev,noauto,nofail,x-systemd.automount,uid=1000,gid=1000,credentials=/home/{{ main_username }}/.smbcredentials"
 

@@ -152,7 +152,7 @@ containers:
       - WG_PORT=51280
       - PASSWORD={{ secret_wireguard_pass }}
       - WG_PERSISTENT_KEEPALIVE=25
-      - WG_DEFAULT_DNS=192.168.50.10, 192.168.50.11
+      - WG_DEFAULT_DNS=192.168.50.10, 192.168.1.11
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
@@ -196,13 +196,10 @@ containers:
   - service_name: adguard-sync
     container_name: adguard-sync
     active: true
-    image: ghcr.io/linuxserver/adguardhome-sync
+    image: ghcr.io/linuxserver/adguardhome-sync:0.4.11
     restart: always
     ports:
       - 8080:8080
     volumes:
       - "{{ appdata_path }}/adguardsync/config:/config"
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=ghcr.io"
     include_global_env_vars: true

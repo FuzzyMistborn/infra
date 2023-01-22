@@ -232,11 +232,8 @@ containers:
   - service_name: paperless-redis
     container_name: paperless-redis
     active: true
-    image: redis:7.0
+    image: redis:7.0.8
     restart: always
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     include_global_env_vars: false
   ###
   - service_name: paperless

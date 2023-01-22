@@ -144,19 +144,8 @@ lxc:
     memory: 1024
     nesting: 1
     keyctl: 1
-  - name: Valor
-    vmid: 202
-    privileged: true
-    gw: 192.168.50.1
-    ip: 192.168.50.11
-    bridge: vmbr2
-    disk: 'local-lvm:10'
-    cores: 2
-    memory: 512
-    nesting: 1
-    keyctl: 1
   - name: Omada
-    vmid: 204
+    vmid: 202
     privileged: true
     gw: 192.168.1.1
     ip: 192.168.1.10
@@ -167,7 +156,7 @@ lxc:
     nesting: 1
     keyctl: 1
   - name: Drone
-    vmid: 206
+    vmid: 203
     privileged: false
     gw: 192.168.50.1
     ip: 192.168.50.15
@@ -535,7 +524,7 @@ containers:
     volumes:
       - "{{ appdata_path }}/handbrake/config:/config"
       - "{{ appdata_path }}/handbrake/storage:/storage"
-      - "/mnt/Media//Movies/1-Processing/Handbrake/Watch:/watch"
+      - "/mnt/Media/Movies/1-Processing/Handbrake/Watch:/watch"
       - "/mnt/Media/Movies/1-Processing/Handbrake/Output:/output"
     devices:
       - /dev/dri:/dev/dri

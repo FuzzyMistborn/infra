@@ -181,7 +181,7 @@ transfer.{{ secret_personal_internal_url }} {
 }
 # Portainer
 portainer.{{ secret_personal_internal_url }} {
-	reverse_proxy http://192.168.1.20:9000
+	reverse_proxy http://192.168.1.10:9000
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
@@ -193,7 +193,7 @@ adguard.{{ secret_personal_internal_url }} {
 }
 # Adguard (Valor)
 adguard2.{{ secret_personal_internal_url }} {
-	reverse_proxy http://192.168.50.11:81
+	reverse_proxy http://192.168.1.11:81
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
@@ -235,13 +235,13 @@ bi.{{ secret_personal_internal_url }} {
 }
 # Scrutiny
 scrutiny.{{ secret_personal_internal_url }} {
-	reverse_proxy http://192.168.1.20:8080
+	reverse_proxy http://192.168.1.10:8080
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
 # Handbrake
 handbrake.{{ secret_personal_internal_url }} {
-	reverse_proxy http://192.168.1.20:5800
+	reverse_proxy http://192.168.1.10:5800
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }

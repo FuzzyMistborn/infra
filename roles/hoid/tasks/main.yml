@@ -1,7 +1,7 @@
 ---
 - name: Clone Eupnea Audio-Scripts GitHub Repo
   git:
-    repo: https://github.com/eupnea-linux/audio-scripts
+    repo: git@github.com:eupnea-linux/audio-scripts.git
     dest: /home/{{ main_username }}/audio-scripts
 
 - name: Enable rotate sensor

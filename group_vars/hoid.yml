@@ -7,6 +7,7 @@ package_list:
   - name: bluez
   - name: bluez-utils
   - name: blueman
+  - name: breeze
   - name: calibre
   - name: cifs-utils
   - name: cronie
@@ -36,7 +37,7 @@ package_list:
   - name: nfs-utils
   - name: nomacs
   - name: noto-fonts-emoji
-  - name: obsidian
+  #- name: obsidian
   - name: openssh
   - name: pdfarranger
   - name: pipewire
@@ -45,7 +46,9 @@ package_list:
   - name: pipewire-zeroconf
   - name: pipewire-pulse
   - name: plank
+  - name: pop-gtk-theme
   - name: python
+  - name: redshift
   - name: remmina
   - name: restic
   - name: screen

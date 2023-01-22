@@ -23,7 +23,7 @@ pip_packages:
 
 smb_mountpoints:
   - path: "/mnt/Media"
-    source: "//192.168.1.20/Media"
+    source: "//192.168.1.10/Media"
     fs: cifs
     opts: "defaults,uid=1000,gid=1000,credentials=/home/{{ main_username }}/.smbcredentials"
 
@@ -177,15 +177,12 @@ containers:
   - service_name: prowlarr
     container_name: prowlarr
     active: true
-    image: ghcr.io/linuxserver/prowlarr:develop
+    image: ghcr.io/linuxserver/prowlarr:1.0.1
     restart: always
     ports:
       - 9696:9696
     volumes:
       - "{{ appdata_path }}/prowlarr:/config"
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=ghcr.io"
     include_global_env_vars: true
   ###
   - service_name: jellyseerr
@@ -229,11 +226,8 @@ containers:
   - service_name: nextcloud-redis
     container_name: nextcloud-redis
     active: true
-    image: redis:7.0
+    image: redis:7.0.8
     restart: always
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     include_global_env_vars: false
   ###
   - service_name: jellyfin

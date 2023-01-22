@@ -18,6 +18,17 @@
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
 
+- name: Enable IPv4 forwarding
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    reload: yes
+- name: Enable IPv6 forwarding
+  sysctl:
+    name: net.ipv6.conf.all.forwarding
+    value: 1
+    reload: yes
+
 - name: Stop resolved
   service:
     name: systemd-resolved

@@ -238,7 +238,7 @@ containers:
   - service_name: mqtt
     container_name: MQTT
     active: true
-    image: eclipse-mosquitto:2
+    image: eclipse-mosquitto:2.0.15
     restart: always
     ports:
       - 1883:1883
@@ -246,9 +246,6 @@ containers:
       - "{{ appdata_path }}/mqtt/config:/mosquitto/config/"
       - "{{ appdata_path }}/mqtt/data:/mosquitto/data/"
       - "{{ appdata_path }}/mqtt/log:/mosquitto/log/"
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     include_global_env_vars: false
   ###
   - service_name: nodered_old

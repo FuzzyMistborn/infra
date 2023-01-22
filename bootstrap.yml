@@ -105,8 +105,8 @@
         name: sshd
         state: restarted
 
-### Ubuntu Bootstrap
-- hosts: unity
+### Debian Bootstrap
+- hosts: unity valor
   remote_user: "{{ bootstrap_user }}"
   gather_facts: true
   vars_files:

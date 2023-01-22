@@ -329,7 +329,7 @@
         Option "TripleBuffer" "true"
         Option "TearFree" "true"
       EndSection
-    when: igpu.failed == false
+  when: igpu.failed == false
 
 - name: Reload Cronie/bluetooth/fstrim
   systemd:
@@ -352,7 +352,7 @@
   when: ansible_hostname != 'hoid'
 
 - name: Enable WOL ethtool
-  command: ethtool -s eno1 wol bg
+  command: ethtool -s enp0s31f6 wol bg
   when: ansible_hostname != 'hoid'
 
 - name: Enable WOL nmcli
