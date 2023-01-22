@@ -177,7 +177,7 @@ containers:
   - service_name: prowlarr
     container_name: prowlarr
     active: true
-    image: ghcr.io/linuxserver/prowlarr:1.0.1
+    image: ghcr.io/linuxserver/prowlarr:1.8.1259
     restart: always
     ports:
       - 9696:9696
