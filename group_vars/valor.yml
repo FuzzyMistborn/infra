@@ -7,6 +7,7 @@ package_list:
   - name: curl
   - name: htop
   - name: net-tools
+  - name: nut
   - name: sudo
   - name: wget
 
@@ -14,8 +15,10 @@ package_list:
 pip_packages:
   - thefuck
 
-### Bash Aliases
+### Variables
+install_nut: true
 
+### Bash Aliases
 bash_docker: true
 bash_systemctl: true
 bash_apt: true

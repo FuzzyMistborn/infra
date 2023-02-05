@@ -1,4 +1,24 @@
 ---
+### Packages
+- name: Install Custom Kelsier Packages
+  ansible.builtin.package:
+    name:
+      - "{{ item.name }}"
+    state: present
+  with_items:
+  - "{{ kelsier_package_list }}"
+
+### AUR
+- name: Install AUR Packages
+  kewlfft.aur.aur:
+    use: yay
+    name:
+      - "{{ item.name }}"
+    state: present
+  become_user: ansible
+  become: yes
+  with_items:
+    - "{{ kelsier_aur_package_list }}"
 
 # fstab/disk mounts
 - name: make sure disks unmounted
@@ -29,31 +49,8 @@
   with_items:
     - "{{ data_disks }}"
 
-### Logiops
-- name: Copy logid.cfg file
-  copy:
-    src: logid.cfg
-    dest: /etc/logid.cfg
-    owner: root
-    group: root
-    mode: 0644
+#- name: Enable WOL ethtool
+#  command: ethtool -s enp0s31f6 wol bg
 
-### Dolphin
-- name: Copy config files
-  copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    mode: 0644
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-  with_items:
-    - src: "kde/dolphinrc"
-      dest: "/home/{{ main_username }}/.config/dolphinrc"
-    - src: "kde/khotkeysrc"
-      dest: "/home/{{ main_username }}/.config/khotkeysrc"
-    - src: "kde/dolphinui.rc"
-      dest: "/home/{{ main_username }}/.local/share/kxmlgui5/dolphin/dolphinui.rc"
-    - src: "kde/konsoleprofile"
-      dest: "/home/{{ main_username }}/.local/share/konsole/ZSH.profile"
-    - src: "kde/Default.layout.latte"
-      dest: "/home/{{ main_username }}/.config/latte/Default.layout.latte"
+- name: Enable WOL nmcli
+  command: sudo nmcli c modify "Wired connection 1" 802-3-ethernet.wake-on-lan magic

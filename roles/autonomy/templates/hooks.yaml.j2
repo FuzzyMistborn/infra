@@ -1,0 +1,15 @@
+- id: cast_traffic
+  execute-command: "cast_traffic.sh"
+  command-working-directory: "/home/{{ main_username }}/scripts"
+
+- id: cast_weather
+  execute-command: "cast_weather.sh"
+  command-working-directory: "/home/{{ main_username }}/scripts"
+
+- id: cast_frontdoor
+  execute-command: "cast_frontdoor.sh"
+  command-working-directory: "/home/{{ main_username }}/scripts"
+
+- id: cast_stop   
+  execute-command: "cast_stop.sh"
+  command-working-directory: "/home/{{ main_username }}/scripts"

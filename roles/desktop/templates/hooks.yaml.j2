@@ -1,0 +1,12 @@
+- id: reboot
+  execute-command: "reboot"
+  command-working-directory: "/usr/bin"
+
+- id: suspend
+  execute-command: "systemctl"
+  command-working-directory: "/usr/bin"
+  pass-arguments-to-command:
+    [{
+      "source": "string",
+      "name": "suspend"
+    }]

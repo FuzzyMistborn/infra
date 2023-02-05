@@ -1,11 +1,5 @@
 ---
 ### SSH Config
-- name: SSH Keys
-  authorized_key:
-    user: "{{ main_username }}"
-    state: present
-    key: "{{ secret_desktop_hass_ssh }}"
-
 - name: Fix SFTP for Ansible
   lineinfile:
     dest: "/etc/ssh/sshd_config"
@@ -33,7 +27,7 @@
     - dest: github
       key: "{{ secret_github_ssh }}"
 
-- name: Copy SSH files
+- name: Copy template files
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -41,7 +35,7 @@
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
   loop:
-    - {src: "auth_commands.sh.j2", dest: "/home/{{ main_username }}/.ssh/auth_commands.sh", mode: "755"}
+    - {src: "hooks.yaml.j2", dest: "/home/{{ main_username }}/.hooks.yaml", mode: "644"}
     - {src: "ssh_config.j2", dest: "/home/{{ main_username }}/.ssh/config", mode: "600"}
 
 ### Sudoers file
@@ -64,6 +58,15 @@
   become: yes
   with_items:
     - "{{ aur_package_list }}"
+
+- name: Install Steamlink Packages
+  kewlfft.aur.aur:
+    use: yay
+    name: steamlink
+    state: present
+  become_user: ansible
+  become: yes
+  when: ansible_hostname != 'kelsier'
 
 ### Flatpak
 - name: Add the flathub flatpak repository remote
@@ -353,11 +356,11 @@
 
 - name: Enable WOL ethtool
   command: ethtool -s enp0s31f6 wol bg
-  when: ansible_hostname != 'hoid'
+  when: ansible_hostname != 'hoid' and ansible_hostname != 'kelsier'
 
 - name: Enable WOL nmcli
   command: sudo nmcli c modify "Wired connection 1" 802-3-ethernet.wake-on-lan magic
-  when: ansible_hostname != 'hoid'
+  when: ansible_hostname != 'hoid' and ansible_hostname != 'kelsier'
 
 - name: Fix Delayed Shutdown
   lineinfile:
@@ -365,3 +368,23 @@
     state: present
     regexp: "#DefaultTimeoutStopSec"
     line: "DefaultTimeoutStopSec=15s"
+
+### Logiops
+- name: Copy Szeth logid.cfg file
+  copy:
+    src: szeth_logid.cfg
+    dest: /etc/logid.cfg
+    owner: root
+    group: root
+    mode: 0644
+  when: ansible_hostname == 'szeth'
+
+- name: Reload/Enable Systemd processes
+  systemd:
+    enabled: true
+    daemon-reload: true
+    state: restarted
+    name: "{{ item }}"
+  with_items:
+    - logid
+  when: ansible_hostname == 'szeth'

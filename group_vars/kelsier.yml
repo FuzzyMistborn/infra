@@ -2,34 +2,26 @@
 target_os: endeavour_os
 hostname: kelsier
 bootstrap_user: "{{ main_username }}"
+webhook_user: "{{ main_username }}"
 
-### Install packages with grog.package
-package_list:
-  - name: dragon
-    state: absent
-  - name: plank
-    state: absent
-  - name: gwenview
-    state: absent
-  - name: bluedevil
-  - name: kcharselect
-  - name: kdialog
-  - name: kdeplasma-addons
-  - name: kwalletmanager
+### Install custom packages
+kelsier_package_list:
+  - name: lib32-vulkan-radeon
   - name: lutris
+  - name: mesa
   - name: mkvtoolnix-gui
   - name: retroarch
   - name: steam
   - name: wine
   - name: winetricks
-  - name: xdg-desktop-portal
-  - name: xdg-desktop-portal-kde
+  - name: vulkan-radeon
 
-aur_package_list:
+kelsier_aur_package_list:
   - name: antimicrox
   - name: dxvk-bin
   - name: heroic-games-launcher-bin
   - name: pegasus-frontend-git
+  - name: proton-ge-custom-bin
   - name: polymc
   - name: skyscraper-git
   # - ckan  # Currently broken, use Mono
@@ -52,7 +44,7 @@ data_disks:
 
 ### Variables
 pull_backup: false
-
+autorestic_run_check: false
 pip_package: python-pip
 
 ### Bash Aliases

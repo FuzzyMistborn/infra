@@ -18,7 +18,6 @@
     state: present
     key: "{{ item.ssh }}"
   loop:
-    - {user: "{{ main_username }}", ssh: "{{ secret_hass_ssh }}"}
     - {user: "{{ main_username }}", ssh: "{{ secret_main_user_code_server_ssh }}"}
 
 #### Scripts
@@ -49,17 +48,7 @@
     mode: +x
     content: "{{ secret_catt_traffic }}"
 
-- name: Copy scripts
-  copy:
-    src: scripts/{{ item.path }}
-    dest: /home/{{ main_username }}/scripts/{{ item.path }}
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: "{{ item.mode }}"
-  with_items:
-    - {path: "auth_commands.sh", mode: "+x"}
-
-- name: Copy backup script templates
+- name: Copy script templates
   template:
     src: "{{ item.src }}"
     dest: /home/{{ main_username }}/scripts/{{ item.dest }}
@@ -70,6 +59,14 @@
     - {src: 'cast_frontdoor.sh.j2', dest: 'cast_frontdoor.sh'}
     - {src: 'cast_stop.sh.j2', dest: 'cast_stop.sh'}
     - {src: 'docker.sh.j2', dest: 'docker.sh'}
+
+- name: Copy webhook template config
+  template:
+    src: "hooks.yaml.j2"
+    dest: /home/{{ main_username }}/.hooks.yaml
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 644
 
 ### CATT
 

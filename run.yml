@@ -105,6 +105,7 @@
     - role: autonomy
     - role: bash_alias
     - role: cronjobs
+    - role: install_webhook
     - role: ironicbadger.docker_compose_generator
 
 - hosts: unity
@@ -255,8 +256,8 @@
     - role: desktop
     - role: kelsier
     - role: bash_alias
-    - role: config_retroarch
-    - role: config_pegasus
+#    - role: config_retroarch
+    - role: install_webhook
     - role: install_syncthing
     - role: install_telegraf
     - role: cronjobs
@@ -275,6 +276,7 @@
     - role: install_runitor
     - role: desktop
     - role: bash_alias
+    - role: install_webhook
     - role: install_telegraf
     - role: cronjobs
 
@@ -292,6 +294,7 @@
     - role: install_runitor
     - role: desktop
     - role: bash_alias
+    - role: install_webhook
     - role: install_telegraf
     - role: cronjobs
 
@@ -309,18 +312,3 @@
     - role: desktop
     - role: hoid
     - role: bash_alias
-
-- hosts: retroarch_tv
-  become: true
-  vars_files:
-    - 'vars/vault.yaml'
-    - 'group_vars/desktop.yml'
-  roles:
-    - role: grog.package
-    - role: desktop
-    - role: retroarch_tv
-    - role: config_retroarch
-    - role: config_pegasus
-    - role: bash_alias
-    - role: cronjobs
-    - role: install_syncthing

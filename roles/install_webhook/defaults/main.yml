@@ -1,0 +1,15 @@
+---
+
+webhook_download_latest_ver: true  # Change to 'false' to pin to a specific version
+webhook_pinned_ver: 2.8.0  # Overriden by 'lego_download_latest_ver' variable
+webhook_distro: linux-amd64
+
+webhook_gh_url: https://github.com/adnanh/webhook/releases/download
+webhook_download_directory: "/tmp/webhook"
+
+webhook_install_directory: /usr/local/bin
+webhook_install_path: "{{ webhook_install_directory }}/webhook"
+
+webhook_user: root
+webhook_conf_path: /home/{{ webhook_user }}/.hooks.yaml
+webhook_port: 8000
