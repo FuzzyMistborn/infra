@@ -37,7 +37,7 @@ package_list:
   - name: nfs-utils
   - name: nomacs
   - name: noto-fonts-emoji
-  #- name: obsidian
+  - name: obsidian
   - name: openssh
   - name: pdfarranger
   - name: pipewire

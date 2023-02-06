@@ -379,6 +379,13 @@
     mode: 0644
   when: ansible_hostname == 'szeth'
 
+- name: Allow webhooks through firewalld
+  ansible.posix.firewalld:
+    port: 8000/tcp
+    permanent: true
+    state: enabled
+    immediate: true
+
 - name: Reload/Enable Systemd processes
   systemd:
     enabled: true

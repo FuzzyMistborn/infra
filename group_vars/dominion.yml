@@ -16,6 +16,7 @@ package_list:
 ### Pip Packages
 pip_packages:
   - ansible
+  - ansible-lint
   - yamllint
   - thefuck
 
