@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd /home/{{ main_username }}
+docker-compose pull hass
+docker-compose up -d hass
+docker image prune -a -f

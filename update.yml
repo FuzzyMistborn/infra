@@ -15,10 +15,10 @@
     - 'vars/vault.yaml'
     - 'group_vars/all.yaml'
   roles:
-    - role: install_mergerfs
+    - role: install/mergerfs
       become: true
-    - role: install_runitor
-    - role: install_telegraf
+    - role: install/runitor
+    - role: install/telegraf
       become: true
   tasks:
     - name: update all packages
@@ -34,29 +34,29 @@
     - 'vars/vault.yaml'
     - 'group_vars/all.yaml'
   roles:
-    - role: install_lego
-    - role: install_runitor
+    - role: install/lego
+    - role: install/runitor
 
 - hosts: honor
   vars_files:
     - 'vars/vault.yaml'
     - 'group_vars/all.yaml'
   roles:
-    - role: install_lego
-    - role: install_runitor
+    - role: install/lego
+    - role: install/runitor
 
 - hosts: dominion omada
   vars_files:
     - 'vars/vault.yaml'
     - 'group_vars/all.yaml'
   roles:
-    - role: install_runitor
+    - role: install/runitor
 
 - hosts: endowment autonomy cultivation preservation
   vars_files:
     - 'vars/vault.yaml'
     - 'group_vars/all.yaml'
   roles:
-    - role: install_runitor
-    - role: install_telegraf
+    - role: install/runitor
+    - role: install/telegraf
       become: true

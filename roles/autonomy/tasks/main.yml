@@ -59,6 +59,7 @@
     - {src: 'cast_frontdoor.sh.j2', dest: 'cast_frontdoor.sh'}
     - {src: 'cast_stop.sh.j2', dest: 'cast_stop.sh'}
     - {src: 'docker.sh.j2', dest: 'docker.sh'}
+    - {src: 'hass_update.sh.j2', dest: 'hass_update.sh'}
 
 - name: Copy webhook template config
   template:

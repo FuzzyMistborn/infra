@@ -10,6 +10,10 @@
   execute-command: "cast_frontdoor.sh"
   command-working-directory: "/home/{{ main_username }}/scripts"
 
-- id: cast_stop   
+- id: cast_stop
   execute-command: "cast_stop.sh"
+  command-working-directory: "/home/{{ main_username }}/scripts"
+
+- id: update_hass
+  execute-command: "update_hass.sh"
   command-working-directory: "/home/{{ main_username }}/scripts"
