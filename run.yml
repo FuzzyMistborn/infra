@@ -36,19 +36,19 @@
         update_cache: yes
         cache_valid_time: 3600
   roles:
-    - role: install_nag_removal
+    - role: install/nag_removal
     - role: grog.package
     - role: geerlingguy.pip
-    - role: install_pip_packages
+    - role: install/pip_packages
     - role: geerlingguy.samba
     - role: geerlingguy.nfs
-    - role: install_mergerfs
+    - role: install/mergerfs
     - role: fuzzymistborn.autorestic
-    - role: install_runitor
-    - role: install_telegraf
+    - role: install/runitor
+    - role: install/telegraf
     - role: adonalsium
     - role: bash_alias
-    - role: install_syncthing
+    - role: install/syncthing
     - role: cronjobs
     - role: geerlingguy.docker
     - role: geerlingguy.ntp
@@ -63,10 +63,10 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
-    - role: install_pip_packages
+    - role: install/pip_packages
     - role: github
-    - role: install_bitwarden_cli
-    - role: install_runitor
+    - role: install/bitwarden_cli
+    - role: install/runitor
     - role: dominion
     - role: bash_alias
     - role: cronjobs
@@ -80,10 +80,10 @@
     - role: geerlingguy.samba
     - role: geerlingguy.docker
     - role: geerlingguy.pip
-    - role: install_pip_packages
+    - role: install/pip_packages
     - role: fuzzymistborn.autorestic
-    - role: install_telegraf
-    - role: install_runitor
+    - role: install/telegraf
+    - role: install/runitor
     - role: endowment
     - role: bash_alias
     - role: cronjobs
@@ -98,14 +98,14 @@
     - role: github
     - role: geerlingguy.docker
     - role: geerlingguy.pip
-    - role: install_pip_packages
+    - role: install/pip_packages
     - role: fuzzymistborn.autorestic
-    - role: install_telegraf
-    - role: install_runitor
+    - role: install/telegraf
+    - role: install/runitor
     - role: autonomy
     - role: bash_alias
     - role: cronjobs
-    - role: install_webhook
+    - role: install/webhook
     - role: ironicbadger.docker_compose_generator
 
 - hosts: unity
@@ -116,9 +116,9 @@
     - role: grog.package
     - role: geerlingguy.docker
     - role: geerlingguy.pip
-    - role: install_pip_packages
+    - role: install/pip_packages
 #    - role: fuzzymistborn.autorestic
-    - role: install_runitor
+    - role: install/runitor
     - role: unity
     - role: bash_alias
 #    - role: cronjobs
@@ -132,10 +132,10 @@
     - role: grog.package
     - role: geerlingguy.docker
     - role: geerlingguy.pip
-    - role: install_pip_packages
+    - role: install/pip_packages
     - role: fuzzymistborn.autorestic
-    - role: install_telegraf
-    - role: install_runitor
+    - role: install/telegraf
+    - role: install/runitor
     - role: cultivation
     - role: bash_alias
     - role: cronjobs
@@ -149,10 +149,10 @@
     - role: grog.package
     - role: geerlingguy.docker
     - role: geerlingguy.pip
-    - role: install_pip_packages
+    - role: install/pip_packages
     - role: fuzzymistborn.autorestic
-    - role: install_telegraf
-    - role: install_runitor
+    - role: install/telegraf
+    - role: install/runitor
     - role: ironicbadger.docker_compose_generator
     - role: preservation
     - role: bash_alias
@@ -165,16 +165,16 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
-    - role: install_pip_packages
+    - role: install/pip_packages
     - role: geerlingguy.docker
-    - role: install_lego
+    - role: install/lego
     - role: fuzzymistborn.autorestic
-    - role: install_runitor
+    - role: install/runitor
     - role: caddy_ansible.caddy_ansible
     - role: honor
     - role: bash_alias
     - role: cronjobs
-    - role: install_fail2ban
+    - role: install/fail2ban
     - role: ironicbadger.docker_compose_generator
 
 - hosts: valor
@@ -184,11 +184,11 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
-    - role: install_pip_packages
+    - role: install/pip_packages
     - role: geerlingguy.docker
     - role: valor
     - role: bash_alias
-    - role: install_tailscale
+    - role: install/tailscale
     - role: ironicbadger.docker_compose_generator
 
 - hosts: omada
@@ -198,11 +198,11 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
-    - role: install_pip_packages
-    - role: install_pip_packages
+    - role: install/pip_packages
+    - role: install/pip_packages
     - role: geerlingguy.docker
     - role: fuzzymistborn.autorestic
-    - role: install_runitor
+    - role: install/runitor
     - role: omada
     - role: bash_alias
     - role: cronjobs
@@ -215,7 +215,7 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
-    - role: install_pip_packages
+    - role: install/pip_packages
     - role: geerlingguy.docker
     - role: bash_alias
     - role: ironicbadger.docker_compose_generator
@@ -227,18 +227,18 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
-    - role: install_pip_packages
+    - role: install/pip_packages
     - role: geerlingguy.docker
-    - role: install_lego
-    - role: install_tailscale
+    - role: install/lego
+    - role: install/tailscale
     - role: fuzzymistborn.autorestic
-    - role: install_runitor
+    - role: install/runitor
     - role: ironicbadger.docker_compose_generator
     - role: ambition
     - role: caddy_ansible.caddy_ansible
     - role: bash_alias
     - role: cronjobs
-    - role: install_fail2ban
+    - role: install/fail2ban
 
 ### Desktops
 - hosts: kelsier
@@ -250,16 +250,16 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
-    - role: install_pip_packages
+    - role: install/pip_packages
     - role: fuzzymistborn.autorestic
-    - role: install_runitor
+    - role: install/runitor
     - role: desktop
     - role: kelsier
     - role: bash_alias
 #    - role: config_retroarch
-    - role: install_webhook
-    - role: install_syncthing
-    - role: install_telegraf
+    - role: install/webhook
+    - role: install/syncthing
+    - role: install/telegraf
     - role: cronjobs
 
 - hosts: vasher
@@ -271,13 +271,13 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
-    - role: install_pip_packages
+    - role: install/pip_packages
     - role: fuzzymistborn.autorestic
-    - role: install_runitor
+    - role: install/runitor
     - role: desktop
     - role: bash_alias
-    - role: install_webhook
-    - role: install_telegraf
+    - role: install/webhook
+    - role: install/telegraf
     - role: cronjobs
 
 - hosts: szeth
@@ -289,13 +289,13 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
-    - role: install_pip_packages
+    - role: install/pip_packages
     - role: fuzzymistborn.autorestic
-    - role: install_runitor
+    - role: install/runitor
     - role: desktop
     - role: bash_alias
-    - role: install_webhook
-    - role: install_telegraf
+    - role: install/webhook
+    - role: install/telegraf
     - role: cronjobs
 
 - hosts: hoid
@@ -306,9 +306,9 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
-    - role: install_pip_packages
+    - role: install/pip_packages
     - role: fuzzymistborn.autorestic
-    - role: install_runitor
+    - role: install/runitor
     - role: desktop
     - role: hoid
     - role: bash_alias
