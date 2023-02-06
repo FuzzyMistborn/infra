@@ -12,7 +12,8 @@ steps:
     commands:
       - ansible-galaxy role install -r requirements.yaml
       - ansible-galaxy collection install -r requirements.yaml
-#      - "ansible-lint ."
+      - pip3 install pytest
+      - "ansible-lint ."
       - "yamllint ."
       - sed -i '8d' ansible.cfg  #  Delete vault_password_file from ansible.cfg
       - echo $VAULT_PW > .vault-password
