@@ -229,7 +229,7 @@ containers:
   - service_name: esphome
     container_name: esphome
     active: true
-    image: esphome/esphome:2022.12.6
+    image: esphome/esphome:2022.12.8
     restart: always
     network_mode: host
     volumes:
