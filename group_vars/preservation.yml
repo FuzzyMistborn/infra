@@ -214,7 +214,7 @@ containers:
   - service_name: invidious-db
     container_name: invidious-db
     active: true
-    image: postgres:14.5
+    image: postgres:14.7
     restart: always
     ports:
       - 5432:5432
