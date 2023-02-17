@@ -1,6 +1,6 @@
 # Personal Zsh configuration file. It is strongly recommended to keep all
 # shell customization and configuration (including exported environment
-# variables such as PATH) in this file or in files source by it.
+# variables such as PATH) in this file or in files sourced from it.
 #
 # Documentation: https://github.com/romkatv/zsh4humans/blob/v5/README.md.
 
@@ -10,22 +10,26 @@ zstyle ':z4h:' auto-update      'no'
 # Ask whether to auto-update this often; has no effect if auto-update is 'no'.
 zstyle ':z4h:' auto-update-days '28'
 
-# Automaticaly wrap TTY with a transparent tmux ('integrated'), or start a
-# full-fledged tmux ('system'), or do nothing ('no').
-zstyle ':z4h:' start-tmux       'no'
-# Move prompt to the bottom when zsh starts and on Ctrl+L. Has no effect if
-# not running under tmux.
-zstyle ':z4h:' prompt-at-bottom 'no'
-
 # Keyboard type: 'mac' or 'pc'.
 zstyle ':z4h:bindkey' keyboard  'pc'
+
+# Don't start tmux.
+zstyle ':z4h:' start-tmux       no
+
+# Mark up shell's output with semantic information.
+zstyle ':z4h:' term-shell-integration 'yes'
 
 # Right-arrow key accepts one character ('partial-accept') from
 # command autosuggestions or the whole thing ('accept')?
 zstyle ':z4h:autosuggestions' forward-char 'accept'
 
 # Recursively traverse directories when TAB-completing files.
-zstyle ':z4h:fzf-complete' recurse-dirs 'yes'
+zstyle ':z4h:fzf-complete' recurse-dirs 'no'
+
+# Enable direnv to automatically source .envrc files.
+zstyle ':z4h:direnv'         enable 'no'
+# Show "loading" and "unloading" notifications from direnv.
+zstyle ':z4h:direnv:success' notify 'yes'
 
 # Set xterm the way I like
 zstyle ':z4h:term-title:ssh'   preexec '%n@%m : ${1//\%/%%}'
@@ -35,13 +39,24 @@ zstyle ':z4h:term-title:local' precmd  '%m : %~'
 
 # Enable ('yes') or disable ('no') automatic teleportation of z4h over
 # ssh when connecting to these hosts.
-zstyle ':z4h:ssh:retro*' enable 'no'
 zstyle ':z4h:ssh:100.*' enable 'no'
-zstyle ':z4h:ssh:192.168.*' enable 'no'
+zstyle ':z4h:ssh:autonomy' enable 'yes'
+zstyle ':z4h:ssh:preservation' enable 'yes'
+zstyle ':z4h:ssh:cultivation' enable 'yes'
+zstyle ':z4h:ssh:omada' enable 'yes'
+zstyle ':z4h:ssh:adonalsium' enable 'yes'
+zstyle ':z4h:ssh:endowment' enable 'yes'
+zstyle ':z4h:ssh:unity' enable 'yes'
+zstyle ':z4h:ssh:drone' enable 'yes'
+zstyle ':z4h:ssh:ambition' enable 'yes'
+zstyle ':z4h:ssh:dominion' enable 'yes'
+zstyle ':z4h:ssh:honor' enable 'yes'
+zstyle ':z4h:ssh:valor' enable 'yes'
+#zstyle ':z4h:ssh:192.168.50.21' enable 'yes'
 # The default value if none of the overrides above match the hostname.
-zstyle ':z4h:ssh:*'                   enable 'yes'
+zstyle ':z4h:ssh:*'                   enable 'no'
 
-# Send these files over to the remote host when connecting over ssh to the
+# Send these files over to the remote host when connecting over SSH to the
 # enabled hosts.
 zstyle ':z4h:ssh:*' send-extra-files '~/.nanorc' '~/.env.zsh'
 
@@ -69,17 +84,19 @@ z4h source ~/.env.zsh
 source ~/.bash_aliases
 
 # Use additional Git repositories pulled in with `z4h install`.
+#
+# This is just an example that you should delete. It does nothing useful.
 z4h load   -c $Z4H/ohmyzsh/ohmyzsh/plugins/thefuck
 z4h load   -c $Z4H/ohmyzsh/ohmyzsh/plugins/web-search
 z4h load   -c $Z4H/ohmyzsh/ohmyzsh/plugins/extract
 z4h load   -c $Z4H/ohmyzsh/ohmyzsh/plugins/alias-finder
 
 # Define key bindings.
-z4h bindkey z4h-backward-kill-word  Ctrl+Backspace Ctrl+H
+z4h bindkey z4h-backward-kill-word  Ctrl+Backspace     Ctrl+H
 z4h bindkey z4h-backward-kill-zword Ctrl+Alt+Backspace
 
-z4h bindkey undo Ctrl+/  # undo the last command line change
-z4h bindkey redo Alt+/   # redo the last undone command line change
+z4h bindkey undo Ctrl+/ Shift+Tab  # undo the last command line change
+z4h bindkey redo Alt+/             # redo the last undone command line change
 
 z4h bindkey z4h-cd-back    Alt+Left   # cd into the previous directory
 z4h bindkey z4h-cd-forward Alt+Right  # cd into the next directory
