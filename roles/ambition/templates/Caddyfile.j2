@@ -121,24 +121,8 @@ gotify.{{ secret_personal_url }} {
 	import personal_headers
 }
 
-tailscale.{{ secret_personal_url }} {
-	reverse_proxy localhost:8010
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
-	import personal_headers
-}
-
 uptime.{{ secret_personal_url }} {
 	reverse_proxy localhost:3001
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
-	import personal_headers
-}
-
-smarthome.{{ secret_personal_url }} {
-	reverse_proxy https://10.10.10.10:443 {
-		transport http {
-			tls_server_name smarthome.{{ secret_personal_url }}
-		}
-	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
 }

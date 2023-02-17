@@ -3,7 +3,7 @@ Description=Small server for creating HTTP endpoints (hooks)
 Documentation=https://github.com/adnanh/webhook/
 
 [Service]
-User=root
+User={{ webhook_user }}
 ExecStart={{ webhook_install_path }} -nopanic -port {{ webhook_port }} -hooks {{ webhook_conf_path }} -verbose
 Restart=on-failure
 RestartSec=1
