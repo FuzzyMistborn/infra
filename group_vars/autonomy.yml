@@ -224,6 +224,18 @@ containers:
       - mqtt
     include_global_env_vars: false
   ###
+  - service_name: splash
+    container_name: splash
+    active: true
+    image: scrapinghub/splash:3.5
+    ports:
+      - 8050:8050
+    command:
+        - --disable-private-mode
+        - --browser-engines=chromium
+    restart: unless-stopped
+    include_global_env_vars: false
+  ###
   - service_name: esphome
     container_name: esphome
     active: true
