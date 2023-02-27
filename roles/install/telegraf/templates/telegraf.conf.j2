@@ -96,9 +96,6 @@
   ## Set to true to collect Swarm metrics(desired_replicas, running_replicas)
   gather_services = false
 
-  ## Only collect metrics for these containers, collect all if empty
-  container_names = []
-
   ## Containers to include and exclude. Globs accepted.
   ## Note that an empty array for both will include all containers
   container_name_include = []
@@ -112,9 +109,17 @@
   ## Timeout for docker list, info, and stats commands
   timeout = "15s"
 
-  ## Whether to report for each container per-device blkio (8:0, 8:1...) and
-  ## network (eth0, eth1, ...) stats or not
-  perdevice = true
+  ## Whether to report for each container per-device blkio (8:0, 8:1...),
+  ## network (eth0, eth1, ...) and cpu (cpu0, cpu1, ...) stats or not.
+  ## Usage of this setting is discouraged since it will be deprecated in favor of 'perdevice_include'.
+  ## Default value is 'true' for backwards compatibility, please set it to 'false' so that 'perdevice_include' setting
+  ## is honored.
+  # perdevice = true
+
+  ## Specifies for which classes a per-device metric should be issued
+  ## Possible values are 'cpu' (cpu0, cpu1, ...), 'blkio' (8:0, 8:1, ...) and 'network' (eth0, eth1, ...)
+  ## Please note that this setting has no effect if 'perdevice' is set to 'true'
+  perdevice_include = ["cpu"]
 
   ## Whether to report for each container total blkio and network stats or not
   total = false

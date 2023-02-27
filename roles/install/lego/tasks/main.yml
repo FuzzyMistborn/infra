@@ -63,3 +63,11 @@
         remote_src: yes
         mode: +x
   when: lego_is_installed == False or ( lego_is_installed == True and lego_download_latest_ver == True and installed_version_registered.stdout != lego_ver ) or ( lego_is_installed == True and lego_download_latest_ver == False and installed_version_registered.stdout != lego_pinned_ver )
+
+- name: populate /etc/environment
+  lineinfile:
+    dest: "/etc/environment"
+    state: present
+    regexp: "^LEGO_DISABLE_CNAME_SUPPORT="
+    line: "LEGO_DISABLE_CNAME_SUPPORT=true"
+  when: lego_is_installed == False

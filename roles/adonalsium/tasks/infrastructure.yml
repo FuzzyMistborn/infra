@@ -8,7 +8,7 @@
   command: pveam download local {{ item }}
   with_items:
     - ubuntu-22.04-standard_22.04-1_amd64.tar.gz
-    - debian-11-standard_11.0-1_amd64.tar.gz
+    - debian-11-standard_11.6-1_amd64.tar.gz
 
 - name: Create Shard LXCs
   proxmox:
