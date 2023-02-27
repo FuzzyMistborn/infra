@@ -5,7 +5,6 @@ hostname: autonomy
 ### Install packages with grog.package
 package_list:
   - name: curl
-  - name: cutycapt
   - name: git
   - name: htop
   - name: lm-sensors
@@ -18,7 +17,6 @@ package_list:
   - name: skopeo
   - name: sudo
   - name: wget
-  - name: xvfb
 
 ### Pip Packages
 pip_packages:
@@ -43,13 +41,13 @@ telegraf_influx_docker: true
 ### Cronjobs
 cronjobs:
   - name: Traffic AM
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_traffic }} -- /home/{{ main_username }}/scripts/traffic.sh > /dev/null
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_traffic }} -- /usr/bin/curl 'http://localhost:8050/render.png?url=https://traffic.{{ secret_personal_internal_url }}&engine=chromium&wait=5&width=1200&height=900' --output /home/{{ main_username }}/hass/tmp/commute.png
     user: "{{ main_username }}"
     minute: '*/10'
     hour: 7-8,16-18
     weekday: 1-5
   - name: Traffic PM
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_traffic }} -- /home/{{ main_username }}/scripts/traffic.sh > /dev/null
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_traffic }} -- /usr/bin/curl 'http://localhost:8050/render.png?url=https://traffic.{{ secret_personal_internal_url }}&engine=chromium&wait=5&width=1200&height=900' --output /home/{{ main_username }}/hass/tmp/commute.png
     user: "{{ main_username }}"
     minute: '*/30'
     hour: 9-15

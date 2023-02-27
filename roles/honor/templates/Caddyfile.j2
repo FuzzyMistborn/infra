@@ -257,9 +257,16 @@ wghonor.{{ secret_personal_internal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
-# Wireguard (Valor)
+# Wireguard (Ambition)
 wgvps.{{ secret_personal_internal_url }} {
 	reverse_proxy http://remote.fuzzymistborn.com:51821
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	import headers
+}
+# Traffic
+traffic.{{ secret_personal_internal_url }} {
+	file_server
+	root * /home/{{ main_username }}/web
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }

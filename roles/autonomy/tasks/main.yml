@@ -22,16 +22,6 @@
 
 #### Scripts
 
-- name: Generate commute image bash script
-  copy:
-    dest: /home/{{ main_username }}/scripts/traffic.sh
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: +x
-    content: |
-      #!/bin/bash
-      {{ secret_traffic_code }}
-
 - name: Generate weather cast bash file
   copy:
     dest: /home/{{ main_username }}/scripts/cast_weather.sh
