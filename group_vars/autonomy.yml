@@ -231,8 +231,8 @@ containers:
     ports:
       - 8050:8050
     command:
-        - --disable-private-mode
-        - --browser-engines=chromium
+      - --disable-private-mode
+      - --browser-engines=chromium
     restart: unless-stopped
     include_global_env_vars: false
   ###
