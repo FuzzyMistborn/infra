@@ -56,7 +56,6 @@
     group: "{{ main_groupname }}"
   loop:
     - docker
-    - docker/diun
     - docker/scrutiny
 
 - name: Copy backup scripts
@@ -67,13 +66,16 @@
   loop:
     - {src: "backup.sh", dest: "/home/{{ secret_main_user }}/backup.sh"}
 
-### DIUN
-- name: Copy DIUN Config Template
+### Webhooks
+- name: Copy webhook template
   template:
-    src: diun_config.yml.j2
-    dest: /home/{{ main_username }}/docker/diun/config.yml
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
+  loop:
+    - {src: "hooks.yaml.j2", dest: "/home/{{ main_username }}/.hooks.yaml", mode: "644"}
 
 ### Infrastructure
 - name: Set up disks/mounts
@@ -95,7 +97,6 @@
     state: restarted
 
 #### NUT
-
 - name: Copy nut folder
   copy:
     src: etc/nut/{{ item }}
@@ -147,7 +148,7 @@
     state: absent
   when: pull_backup == true
 
-### Wireguard
+### Wireguard/Misc
 - name: Enable IPv4 forwarding
   sysctl:
     name: net.ipv4.ip_forward
@@ -161,3 +162,9 @@
     user: "root"
     special_time: reboot
     state: present
+
+- name: Fix e1000 driver hang
+  command: ethtool -K eno1 tso off gso off
+  become: yes
+  become_user: root
+# See https://blog.f2h.cloud/how-to-fix-proxmox-detected-hardware-unit-hang/ and https://forum.proxmox.com/threads/e1000-driver-hang.58284/page-8

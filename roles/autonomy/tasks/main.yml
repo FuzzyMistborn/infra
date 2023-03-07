@@ -8,7 +8,6 @@
   loop:
     - .config/catt
     - docker
-    - docker/diun
     - scripts
 
 ### SSH
@@ -75,14 +74,6 @@
       device = Kitchen
 
       [aliases]
-
-#### DIUN
-- name: Copy DIUN Config Template
-  template:
-    src: diun_config.yml.j2
-    dest: /home/{{ main_username }}/docker/diun/config.yml
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
 
 #### HASS Git
 

@@ -1,5 +1,6 @@
 ---
 hostname: adonalsium
+webhook_port: 7000
 
 ### Install packages with grog.package
 package_list:
@@ -440,21 +441,6 @@ snapraid_config_excludes:
 ### Docker-Compose with ironicbadger.docker_compose_generator
 appdata_path: "/home/{{ main_username }}/docker"
 containers:
-  ###
-  - service_name: diun
-    container_name: diun
-    active: true
-    image: crazymax/diun:4.24.0
-    restart: always
-    volumes:
-      - "{{ appdata_path }}/diun/data:/data"
-      - "{{ appdata_path }}/diun/config.yml:/diun.yml:ro"
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - LOG_LEVEL=info
-      - LOG_JSON=false
-    hostname: "{{ hostname }}"
-    include_global_env_vars: true
   ###
   - service_name: remote-api
     container_name: remote-api

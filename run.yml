@@ -52,6 +52,7 @@
     - role: cronjobs
     - role: geerlingguy.docker
     - role: geerlingguy.ntp
+    - role: install/webhook
     - role: ironicbadger.docker_compose_generator
     - role: ironicbadger.snapraid
 
