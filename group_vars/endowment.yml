@@ -226,7 +226,7 @@ containers:
   - service_name: nextcloud-redis
     container_name: nextcloud-redis
     active: true
-    image: redis:7.0.8
+    image: redis:7.0.9
     restart: always
     include_global_env_vars: false
   ###
