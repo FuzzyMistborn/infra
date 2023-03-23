@@ -232,7 +232,7 @@ containers:
   - service_name: paperless-redis
     container_name: paperless-redis
     active: true
-    image: redis:7.0.9
+    image: redis:7.0.10
     restart: always
     include_global_env_vars: false
   ###
