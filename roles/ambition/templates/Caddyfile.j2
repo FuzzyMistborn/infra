@@ -127,6 +127,16 @@ uptime.{{ secret_personal_url }} {
 	import personal_headers
 }
 
+smarthome.{{ secret_personal_url }} {
+	reverse_proxy https://10.10.10.10:443 {
+		transport http {
+			tls_server_name smarthome.{{ secret_personal_url }}
+		}
+	}
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	import personal_headers
+}
+
 cloud.{{ secret_personal_url }} {
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
@@ -261,6 +271,16 @@ ferdium.{{ secret_personal_url }} {
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name ferdium.{{ secret_personal_url }}
+		}
+	}
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	import personal_headers
+}
+
+matrix.{{ secret_personal_url }} {
+	reverse_proxy https://10.10.10.10:443 {
+		transport http {
+			tls_server_name matrix.{{ secret_personal_url }}
 		}
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
