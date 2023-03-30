@@ -82,7 +82,7 @@
 
 - name: Install Flatpaks
   community.general.flatpak:
-    name: 
+    name:
       - "{{ item.name }}"
     state: present
     method: user
