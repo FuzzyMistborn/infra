@@ -2,4 +2,4 @@
 - name: Install Pip Packages
   pip:
     name: "{{ item }}"
-  with_items: "{{ pip_packages }}"
+  loop: "{{ pip_packages }}"

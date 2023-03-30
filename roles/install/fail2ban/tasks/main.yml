@@ -12,7 +12,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - {src: 'jail.conf.j2', dest: 'jail.conf'}
     - {src: 'jail.local.j2', dest: 'jail.local'}
     - {src: 'action.d/telegram.conf.j2', dest: 'action.d/telegram.conf'}
@@ -40,7 +40,7 @@
     path: /etc/fail2ban/jail.d/{{ item }}.local
     regexp: "^enabled*"
     line: "enabled = true"
-  with_items:
+  loop:
     - jellyfin
     - ha
     - nextcloud

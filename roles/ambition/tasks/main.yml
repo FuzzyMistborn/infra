@@ -104,7 +104,7 @@
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
     mode: +x
-  with_items:
+  loop:
     - {src: 'db_backup.sh.j2', dest: 'db_backup.sh'}
     - {src: 'db_restore.sh.j2', dest: 'db_restore.sh'}
     - {src: 'certs.sh.j2', dest: 'certs.sh'}
@@ -182,8 +182,7 @@
     interface: "{{ item.interface | default (omit) }}"
     direction: "{{ item.direction | default (omit) }}"
     route: "{{ item.route | default (omit) }}"
-  with_items:
-    - "{{ ufw }}"
+  loop: "{{ ufw }}"
 
 - name: Reload UFW
   community.general.ufw:
@@ -197,7 +196,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - {src: 'rsyslog.conf.j2', dest: 'rsyslog.conf'}
 
 - name: restart rsyslog service

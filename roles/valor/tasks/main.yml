@@ -19,7 +19,7 @@
     owner: root
     group: nut
     mode: 0640
-  with_items:
+  loop:
     - 'nut.conf'
     - 'ups.conf'
     - 'upsd.conf'

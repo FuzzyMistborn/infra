@@ -44,7 +44,7 @@
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
     mode: +x
-  with_items:
+  loop:
     - {src: 'cast_frontdoor.sh.j2', dest: 'cast_frontdoor.sh'}
     - {src: 'cast_stop.sh.j2', dest: 'cast_stop.sh'}
     - {src: 'docker.sh.j2', dest: 'docker.sh'}
@@ -125,7 +125,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - {src: 'rsyslog.conf.j2', dest: 'rsyslog.conf'}
     - {src: 'ha.conf.j2', dest: 'rsyslog.d/ha.conf'}
 

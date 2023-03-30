@@ -18,7 +18,7 @@
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
     mode: "{{ item.mode }}"
-  with_items:
+  loop:
     - {path: "nextcloud_cron.sh", mode: "+x"}
 
 - name: Copy photos script templates
@@ -28,7 +28,7 @@
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
     mode: +x
-  with_items:
+  loop:
     - {src: 'photos.sh.j2', dest: 'photos.sh'}
 
 - name: Fix Jellyfin render group for iGPU passthrough
@@ -76,7 +76,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - {src: 'rsyslog.conf.j2', dest: 'rsyslog.conf'}
     - {src: 'endowment.conf.j2', dest: 'rsyslog.d/endowment.conf'}
 

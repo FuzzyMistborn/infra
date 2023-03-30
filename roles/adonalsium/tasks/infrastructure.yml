@@ -6,7 +6,7 @@
 
 - name: Download container templates
   command: pveam download local {{ item }}
-  with_items:
+  loop:
     - ubuntu-22.04-standard_22.04-1_amd64.tar.gz
     - debian-11-standard_11.6-1_amd64.tar.gz
 
@@ -37,8 +37,7 @@
     features:
       - nesting={{ item.nesting | default ('0') }}
       - keyctl={{ item.keyctl | default ('0') }}
-  with_items:
-    - "{{ lxc }}"
+  loop: "{{ lxc }}"
 
 - name: Create LXC CT w/ Mounts
   proxmox:
@@ -69,12 +68,11 @@
       - nesting={{ item.nesting | default ('0') }}
       - keyctl={{ item.keyctl | default ('0') }}
       - mount={{ item.fsmount }}
-  with_items:
-    - "{{ lxc_mounts }}"
+  loop: "{{ lxc_mounts }}"
 
 - name: Set boot order
   shell: pct set {{ item.lxc }} --startup order={{ item.order }}
-  with_items:
+  loop:
     - {"lxc":"200", "order":"5"}
     - {"lxc":"201", "order":"1"}
     - {"lxc":"202", "order":"4"}

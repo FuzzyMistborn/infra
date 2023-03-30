@@ -10,8 +10,7 @@
     month: "{{ item.month | default ('*') }}"
     weekday: "{{ item.weekday | default ('*') }}"
     state: present
-  with_items:
-    - "{{ cronjobs }}"
+  loop: "{{ cronjobs }}"
   when: item.special_time is not defined
 
 - name: Install Special Time Cronjobs
@@ -21,6 +20,5 @@
     user: "{{ item.user | default ('root') }}"
     special_time: "{{ item.special_time }}"
     state: present
-  with_items:
-    - "{{ cronjobs }}"
+  loop: "{{ cronjobs }}"
   when: item.special_time is defined

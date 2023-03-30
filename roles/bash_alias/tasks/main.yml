@@ -8,7 +8,7 @@
     mode: 0644
     line: "alias {{ item.alias }}='{{ item.command }}'"
     regexp: "^alias {{ item.alias }}="
-  with_items: "{{ bash_aliases }}"
+  loop: "{{ bash_aliases }}"
   when: bash_aliases is defined
 
 - name: Bash Alias | Add docker aliases
@@ -20,7 +20,7 @@
     mode: 0644
     line: "alias {{ item.alias }}='{{ item.command }}'"
     regexp: "^alias {{ item.alias }}="
-  with_items: "{{ bash_docker_aliases }}"
+  loop: "{{ bash_docker_aliases }}"
   when: bash_docker != false
 
 - name: Bash Alias | Add systemctl aliases
@@ -32,7 +32,7 @@
     mode: 0644
     line: "alias {{ item.alias }}='{{ item.command }}'"
     regexp: "^alias {{ item.alias }}="
-  with_items: "{{ bash_systemctl_aliases }}"
+  loop: "{{ bash_systemctl_aliases }}"
   when: bash_systemctl != false
 
 - name: Bash Alias | Add apt aliases
@@ -44,7 +44,7 @@
     mode: 0644
     line: "alias {{ item.alias }}='{{ item.command }}'"
     regexp: "^alias {{ item.alias }}="
-  with_items: "{{ bash_apt_aliases }}"
+  loop: "{{ bash_apt_aliases }}"
   when: bash_apt != false
 
 - name: Bash Alias | Add git aliases
@@ -56,7 +56,7 @@
     mode: 0644
     line: "alias {{ item.alias }}='{{ item.command }}'"
     regexp: "^alias {{ item.alias }}="
-  with_items: "{{ bash_git_aliases }}"
+  loop: "{{ bash_git_aliases }}"
   when: bash_git != false
 
 - name: Bash Alias | Add autorestic aliases
@@ -68,7 +68,7 @@
     mode: 0644
     line: "alias {{ item.alias }}='{{ item.command }}'"
     regexp: "^alias {{ item.alias }}="
-  with_items: "{{ bash_autorestic_aliases }}"
+  loop: "{{ bash_autorestic_aliases }}"
   when: bash_autorestic != false
 
 - name: Bash Alias | Add pacman aliases
@@ -80,7 +80,7 @@
     mode: 0644
     line: "alias {{ item.alias }}='{{ item.command }}'"
     regexp: "^alias {{ item.alias }}="
-  with_items: "{{ bash_pacman_aliases }}"
+  loop: "{{ bash_pacman_aliases }}"
   when: bash_pacman != false
 
 - name: Bash Alias | Add yay aliases
@@ -92,5 +92,5 @@
     mode: 0644
     line: "alias {{ item.alias }}='{{ item.command }}'"
     regexp: "^alias {{ item.alias }}="
-  with_items: "{{ bash_yay_aliases }}"
+  loop: "{{ bash_yay_aliases }}"
   when: bash_yay != false

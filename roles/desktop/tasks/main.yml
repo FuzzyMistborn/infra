@@ -19,7 +19,7 @@
     group: "{{ main_username }}"
     mode: 0600
     content: "{{ item.key }}"
-  with_items:
+  loop:
     - dest: desktop_lxcs
       key: "{{ secret_desktop_lxc_ssh }}"
     - dest: desktop_ambition
@@ -63,8 +63,7 @@
     state: present
   become_user: ansible
   become: yes
-  with_items:
-    - "{{ aur_package_list }}"
+  loop: "{{ aur_package_list }}"
 
 - name: Install intel-media-driver Package
   package:
@@ -86,8 +85,7 @@
       - "{{ item.name }}"
     state: present
     method: user
-  with_items:
-    - "{{ flatpak_list }}"
+  loop: "{{ flatpak_list }}"
 
 - name: Install SteamLink Flatpak
   community.general.flatpak:
@@ -101,9 +99,7 @@
   mount:
     path: "{{ item.path }}"
     state: unmounted
-  with_items:
-    - "{{ nfs_mount }}"
-    - "{{ smb_mountpoints }}"
+  loop: "{{ mountpoints }}"
   when: ansible_hostname != 'hoid'
 
 - name: create /mnt points
@@ -113,9 +109,7 @@
     owner: "{{ main_username }}"
     group: nobody
     mode: 0777
-  with_items:
-    - "{{ nfs_mount }}"
-    - "{{ smb_mountpoints }}"
+  loop: "{{ mountpoints }}"
   when: ansible_hostname != 'hoid'
 
 - name: Add smbcredentials
@@ -138,9 +132,7 @@
     opts: "{{ item.opts }}"
     # change to 'mounted' to auto mount versus 'present' for just loaded into fstab
     state: mounted
-  with_items:
-    - "{{ nfs_mount }}"
-    - "{{ smb_mountpoints }}"
+  loop: "{{ mountpoints }}"
   when: ansible_hostname != 'hoid'
 
 ### ZSH
@@ -151,7 +143,7 @@
     mode: 0644
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-  with_items:
+  loop:
     - src: "zsh/zshrc"
       dest: "/home/{{ main_username }}/.zshrc"
     - src: "zsh/p10k.zsh"
@@ -201,7 +193,7 @@
   command: code --install-extension {{ item }}
   become: yes
   become_user: "{{ main_username }}"
-  with_items:
+  loop:
     - ms-vscode-remote.remote-ssh
     - ms-python.python
     - ms-azuretools.vscode-docker
@@ -214,7 +206,7 @@
   command: "{{ item }}"
   become: yes
   become_user: "{{ main_username }}"
-  with_items:
+  loop:
     - /usr/sbin/lpadmin -p Brother-HL2270DW -E -v ipp://192.168.10.15/ipp/port1 -o media=na_letter_8.5x11in -m HL2270DW.ppd
     - /usr/bin/lpoptions -d Brother-HL2270DW
 
@@ -243,8 +235,7 @@
     state: present
   become: yes
   become_user: "{{ main_username }}"
-  with_items:
-    - "{{ cinnamon_theme_settings_string }}"
+  loop: "{{ cinnamon_theme_settings_string }}"
 
 - name: Set Cinnamon themeing with value
   community.general.dconf:
@@ -253,8 +244,7 @@
     state: present
   become: yes
   become_user: "{{ main_username }}"
-  with_items:
-    - "{{ cinnamon_theme_settings_value }}"
+  loop: "{{ cinnamon_theme_settings_value }}"
 
 ### Final Tweaks
 - name: create mpv config folder
@@ -288,7 +278,7 @@
     mode: 0644
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-  with_items:
+  loop:
     - {src: 'plank/code.dockitem', dest: 'code.dockitem'}
     - {src: 'plank/com.github.iwalton3.jellyfin-media-player.dockitem', dest: 'com.github.iwalton3.jellyfin-media-player.dockitem'}
     - {src: 'plank/ferdium.dockitem', dest: 'ferdium.dockitem'}
@@ -360,7 +350,7 @@
     daemon-reload: true
     state: restarted
     name: "{{ item }}"
-  with_items:
+  loop:
     - cronie
     - bluetooth
     - fstrim.timer
@@ -412,6 +402,6 @@
     daemon-reload: true
     state: restarted
     name: "{{ item }}"
-  with_items:
+  loop:
     - logid
   when: ansible_hostname == 'szeth'

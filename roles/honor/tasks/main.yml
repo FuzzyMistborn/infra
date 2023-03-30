@@ -25,7 +25,7 @@
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
     mode: +x
-  with_items:
+  loop:
     - {src: 'certs.sh.j2', dest: 'certs.sh'}
     - {src: 'ddns_vps.sh.j2', dest: 'ddns_vps.sh'}
 

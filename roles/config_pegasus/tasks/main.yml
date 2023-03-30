@@ -20,7 +20,7 @@
     owner: "{{ pegasus_user }}"
     group: "{{ pegasus_user }}"
     mode: 0644
-  with_items:
+  loop:
     - name: settings.txt
       path: "{{ pegasus_config_dir }}/settings.txt"
     - name: artwork.xml
@@ -35,7 +35,7 @@
     owner: "{{ pegasus_user }}"
     group: "{{ pegasus_user }}"
     mode: "{{ item.mode | default(0644) }}"
-  with_items:
+  loop:
     - src: config.ini.j2
       dest: "{{ skyscraper_config_path }}"
     - src: game_dirs.txt.j2

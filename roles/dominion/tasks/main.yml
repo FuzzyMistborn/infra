@@ -61,7 +61,7 @@
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
     mode: +x
-  with_items:
+  loop:
     - {src: 'update.sh.j2', dest: 'update.sh'}
 
 - name: Create update script

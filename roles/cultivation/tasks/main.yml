@@ -49,7 +49,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - {src: 'rsyslog.conf.j2', dest: 'rsyslog.conf'}
     - {src: 'bitwarden.conf.j2', dest: 'rsyslog.d/bitwarden.conf'}
 

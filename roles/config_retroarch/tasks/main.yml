@@ -11,7 +11,7 @@
     section: null
     option: "{{ item.option }}"
     value: "{{ item.value }}"
-  with_items:
+  loop:
     - option: 'core_updater_buildbot_cores_url'
       value: 'http://buildbot.libretro.com/nightly/linux/x86_64/latest/'
     - option: 'menu_show_core_updater'
@@ -58,7 +58,7 @@
     section: null
     option: "{{ item.option }}"
     value: "{{ item.value }}"
-  with_items:
+  loop:
     - option: 'input_driver'
       value: 'sdl2'
     - option: 'input_joypad_driver'
@@ -71,7 +71,7 @@
     section: null
     option: "{{ item.option }}"
     value: "{{ item.value }}"
-  with_items:
+  loop:
     - option: 'video_fullscreen'
       value: 'true'
     - option: 'quit_on_close_content'
@@ -91,7 +91,7 @@
     remote_src: yes
     owner: "{{ retroarch_user }}"
     group: "{{ retroarch_user }}"
-  with_items:
+  loop:
     - duckstation_libretro.so.zip
     - bsnes_libretro.so.zip
     - mgba_libretro.so.zip
@@ -111,7 +111,7 @@
     remote_src: yes
     owner: "{{ retroarch_user }}"
     group: "{{ retroarch_user }}"
-  with_items:
+  loop:
     - pcsx_rearmed_libretro.so.zip
     - mgba_libretro.so.zip
     - stella2014_libretro.so.zip
