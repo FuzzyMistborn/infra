@@ -1,51 +1,19 @@
 ---
 
-- name: make sure hard drive disks unmounted
+- name: make sure disks unmounted
   mount:
     path: "{{ item.path }}"
     state: unmounted
-  loop: "{{ disks }}"
+  loop: "{{ data_disks + parity_disks + nfs_mount }}"
 
-- name: make sure nfs unmounted
-  mount:
-    path: "{{ item.path }}"
-    state: unmounted
-  loop: "{{ nfs_mount }}"
-
-- name: create mergerfs mountpoint
+- name: create /mnt points
   file:
     dest: "{{ item.path }}"
     state: directory
     owner: nobody
     group: nogroup
     mode: 0777
-  loop: "{{ mergerfs_mount }}"
-
-- name: create disks mountpoints
-  file:
-    dest: "{{ item.path }}"
-    state: directory
-    owner: nobody
-    group: nogroup
-    mode: 0777
-  loop: "{{ disks }}"
-
-- name: create nfs mountpoints
-  file:
-    dest: "{{ item.path }}"
-    state: directory
-    owner: nobody
-    group: nogroup
-    mode: 0777
-  loop: "{{ nfs_mount }}"
-
-- name: create external hdd mount point
-  file:
-    dest: /media/external_hdd
-    state: directory
-    owner: nobody
-    group: nogroup
-    mode: 0777
+  loop: "{{ mergerfs_mount + data_disks + parity_disks + nfs_mount + external_mount }}"
 
 - name: mount disks
   mount:
@@ -55,7 +23,7 @@
     opts: "{{ item.opts }}"
     # change to 'mounted' to auto mount versus 'present' for just loaded into fstab
     state: mounted
-  loop: "{{ disks }}"
+  loop: "{{ data_disks + parity_disks }}"
 
 - name: NFS mounts to fstab
   mount:
