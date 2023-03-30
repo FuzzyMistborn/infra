@@ -177,23 +177,6 @@ containers:
       - mqtt
     include_global_env_vars: false
   ###
-  - service_name: hass-old
-    container_name: hass_old
-    active: true
-    image: homeassistant/home-assistant:stable
-    restart: unless-stopped
-    ports:
-      - 5315:5315
-    network_mode: host
-    volumes:
-      - "/home/{{ main_username }}/hass_docker:/config"
-      - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /mnt/Media:/media:ro
-    depends_on:
-      - mqtt
-    include_global_env_vars: false
-  ###
   - service_name: hass-beta
     container_name: HASS-Beta
     active: true
