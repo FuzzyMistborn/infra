@@ -2,24 +2,29 @@
 target_os: endeavour_os
 hostname: kelsier
 bootstrap_user: "{{ main_username }}"
-webhook_user: "{{ main_username }}"
+webhook_user: root
 
 ### Install custom packages
 kelsier_package_list:
   - name: lib32-vulkan-radeon
+  - name: lib32-libva-mesa-driver
+  - name: libva-mesa-driver
   - name: lutris
   - name: mesa
+  - name: mesa-vdpau
   - name: mkvtoolnix-gui
   - name: retroarch
   - name: steam
   - name: wine
   - name: winetricks
   - name: vulkan-radeon
+  - name: xf86-video-amdgpu
 
 kelsier_aur_package_list:
   - name: antimicrox
   - name: dxvk-bin
   - name: heroic-games-launcher-bin
+  - name: gpu-viewer
   - name: pegasus-frontend-git
   - name: proton-ge-custom-bin
   - name: polymc
@@ -31,13 +36,13 @@ pip_packages:
   - thefuck
 
 data_disks:
-  - path: /mnt/Games
+  - path: /mnt/Games_Team
     source: /dev/disk/by-id/ata-TEAM_T253X2001T_TPBF2006200010200009-part1
     fs: ext4
     opts: defaults
     content: true
-  - path: /mnt/Games_HDD
-    source: /dev/disk/by-id/ata-WDC_WD15EZRX-00DC0B0_WD-WMC300346947-part1
+  - path: /mnt/Games_Crucial
+    source: /dev/disk/by-id/ata-CT1000MX500SSD1_2252E6976407-part1
     fs: ext4
     opts: defaults
     content: true
@@ -112,7 +117,7 @@ syncthing_devices:
 ### Telegraf
 telegraf_influx_token: "{{ secret_telegraf_kelsier }}"
 telegraf_influx_bucket: Kelsier
-telegraf_influx_disk_mounts: '"/","/mnt/Games","/mnt/Games_HDD"'
+telegraf_influx_disk_mounts: '"/","/mnt/Games_Crucial","/mnt/Games_Team"'
 
 ### Autorestic Config
 autorestic_config_yaml:

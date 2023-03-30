@@ -38,6 +38,13 @@
     - {src: "hooks.yaml.j2", dest: "/home/{{ main_username }}/.hooks.yaml", mode: "644"}
     - {src: "ssh_config.j2", dest: "/home/{{ main_username }}/.ssh/config", mode: "600"}
 
+- name: Add to groups
+  user:
+    name: "{{ main_username }}"
+    append: true
+    groups:
+      - uucp
+
 ### Sudoers file
 - name: Add sudoers file for main user
   template:
@@ -47,7 +54,7 @@
     group: root
     mode: 0440
 
-### AUR
+### AUR/Packages
 - name: Install AUR Packages
   kewlfft.aur.aur:
     use: yay
@@ -59,13 +66,10 @@
   with_items:
     - "{{ aur_package_list }}"
 
-- name: Install Steamlink Packages
-  kewlfft.aur.aur:
-    use: yay
-    name: steamlink
+- name: Install intel-media-driver Package
+  package:
+    name: intel-media-driver
     state: present
-  become_user: ansible
-  become: yes
   when: ansible_hostname != 'kelsier'
 
 ### Flatpak
@@ -75,6 +79,22 @@
     state: present
     flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
     method: system
+
+- name: Install Flatpaks
+  community.general.flatpak:
+    name: 
+      - "{{ item.name }}"
+    state: present
+    method: user
+  with_items:
+    - "{{ flatpak_list }}"
+
+- name: Install SteamLink Flatpak
+  community.general.flatpak:
+    name: com.valvesoftware.SteamLink
+    state: present
+    method: user
+  when: ansible_hostname != 'kelsier'
 
 ### fstab/disk mounts
 - name: make sure disks unmounted
