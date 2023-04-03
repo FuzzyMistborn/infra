@@ -112,7 +112,7 @@ containers:
   - service_name: bitwarden
     container_name: bitwarden
     active: true
-    image: vaultwarden/server:1.27.0
+    image: vaultwarden/server:1.28.1
     restart: always
     ports:
       - 6482:80
