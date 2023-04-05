@@ -168,3 +168,4 @@
   become: yes
   become_user: root
 # See https://blog.f2h.cloud/how-to-fix-proxmox-detected-hardware-unit-hang/ and https://forum.proxmox.com/threads/e1000-driver-hang.58284/page-8
+# Need to figure out how to added to /etc/network/interfaces to preserve after reboots

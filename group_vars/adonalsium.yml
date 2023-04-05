@@ -41,27 +41,17 @@ data_disks:
     opts: defaults
     content: true
   - path: /mnt/disk2
-    source: /dev/disk/by-id/ata-ST8000NM0055-1RM112_ZA11KW0F-part1
-    fs: ext4
-    opts: defaults
-    content: true
-  - path: /mnt/disk3
-    source: /dev/disk/by-id/ata-ST8000NM0055-1RM112_ZA11KW4B-part1
-    fs: ext4
-    opts: defaults
-    content: true
-  - path: /mnt/disk4
-    source: /dev/disk/by-id/ata-ST4000NM0024-1HT178_Z4F06WRN-part1
-    fs: ext4
-    opts: defaults
-    content: true
-  - path: /mnt/disk5
     source: /dev/disk/by-id/ata-ST8000NM0055-1RM112_ZA11KJXC-part1
     fs: ext4
     opts: defaults
     content: true
-  - path: /mnt/disk6
+  - path: /mnt/disk3
     source: /dev/disk/by-id/ata-WDC_WD140EDGZ-11B1PA0_9MGWV2JJ-part1
+    fs: ext4
+    opts: defaults
+    content: true
+  - path: /mnt/disk4
+    source: /dev/disk/by-id/ata-WDC_WD140EDGZ-11B1PA0_9LK5AR2G-part1
     fs: ext4
     opts: defaults
     content: true
@@ -495,8 +485,6 @@ containers:
       - /dev/sdd:/dev/sdd
       - /dev/sde:/dev/sde
       - /dev/sdf:/dev/sdf
-      - /dev/sdg:/dev/sdg
-      - /dev/sdh:/dev/sdh
       - /dev/nvme0:/dev/nvme0
     cap_add:
       - SYS_RAWIO
