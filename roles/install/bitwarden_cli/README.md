@@ -1,3 +1,5 @@
+# WARNING: Installs old version of BW CLI that does not support Argon2.  Bitwarden moved the clients to a [single repo](https://github.com/bitwarden/clients/) and I have not had time to fix the installer to try to parse the GitHub API
+
 # Bitwarden CLI Installer
 
 An ansible role to install and configure [Bitwarden CLI](https://bitwarden.com/help/article/cli/).
