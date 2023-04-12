@@ -16,6 +16,9 @@ package_list:
   - name: sudo
   - name: wget
 
+# geerlingguy.docker
+docker_packages_state: latest
+
 # telegraf_ver: 1.18.1
 telegraf_influx_url: 'http://192.168.50.22:8086'
 telegraf_influx_org: Cosmere
