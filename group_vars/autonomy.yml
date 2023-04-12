@@ -227,22 +227,6 @@ containers:
       - "{{ appdata_path }}/mqtt/log:/mosquitto/log/"
     include_global_env_vars: false
   ###
-  - service_name: nodered_old
-    container_name: nodered_old
-    active: true
-    image: nodered/node-red:3.0.2
-    restart: unless-stopped
-    ports:
-      - 1881:1880
-    volumes:
-      - "{{ appdata_path }}/nodered_old:/data"
-      - /etc/localtime:/etc/localtime:ro
-    environment:
-      - TZ={{ ntp_timezone }}
-    depends_on:
-      - hass
-    include_global_env_vars: false
-  ###
   - service_name: nodered
     container_name: nodered
     active: true
