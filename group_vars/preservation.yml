@@ -104,7 +104,7 @@ containers:
       - MYSQL_DATABASE=homeassistant
       - MYSQL_USER=hass
       - MYSQL_PASSWORD={{ secret_hass_db_pass }}
-    mem_limit: 800M
+#    mem_limit: 800M
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
