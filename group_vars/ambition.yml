@@ -377,6 +377,32 @@ containers:
       - GOTIFY_DEFAULTUSER_PASS='{{ secret_gotify_pass }}'
     include_global_env_vars: false
   ###
+  - service_name: opengist
+    container_name: opengist
+    active: true
+    image: ghcr.io/thomiceli/opengist:1.01
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:6157:6157
+    volumes:
+      - "{{ appdata_path }}/opengist:/root/.opengist"
+    include_global_env_vars: false
+  ###
+  - service_name: pairdrop
+    container_name: pairdrop
+    active: true
+    image: lscr.io/linuxserver/pairdrop:1.6.1
+    restart: unless-stopped
+    ports:
+      - 127.0.0.1:3200:3000
+    volumes:
+      - "{{ appdata_path }}/pairdrop:/opt/pairdrop"
+    environment:
+      - RATE_LIMIT=false
+      - WS_FALLBACK=true
+      - RTC_CONFIG=/opt/pairdrop/rtc.json
+    include_global_env_vars: true
+  ###
   - service_name: wireguard
     container_name: wireguard
     active: true
