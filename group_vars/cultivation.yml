@@ -205,19 +205,6 @@ containers:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
   ###
-  - service_name: psitransfer
-    container_name: psitransfer
-    active: true
-    image: psitrax/psitransfer:v2.1.2
-    restart: always
-    ports:
-      - 3000:3000
-    volumes:
-      - "{{ appdata_path }}/psitransfer:/data"
-    environment:
-      - PSITRANSFER_ADMIN_PASS={{ secret_psitransfer_pass }}
-    include_global_env_vars: false
-  ###
   - service_name: paperless-redis
     container_name: paperless-redis
     active: true
