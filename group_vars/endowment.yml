@@ -250,7 +250,8 @@ containers:
     devices:
       - /dev/dri:/dev/dri
     group_add:
-      - 108
+      - video
+      - render
     include_global_env_vars: true
   ###
   - service_name: deemix

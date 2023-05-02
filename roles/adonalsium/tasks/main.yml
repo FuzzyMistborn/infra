@@ -64,7 +64,7 @@
     dest: "{{ item.dest }}"
     mode: +x
   loop:
-    - {src: "backup.sh", dest: "/home/{{ secret_main_user }}/backup.sh"}
+    - {src: "backup.sh", dest: "/home/{{ main_username }}/backup.sh"}
 
 ### Webhooks
 - name: Copy webhook template

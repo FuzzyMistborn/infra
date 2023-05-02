@@ -27,7 +27,7 @@ kelsier_aur_package_list:
   - name: gpu-viewer
   - name: pegasus-frontend-git
   - name: proton-ge-custom-bin
-  - name: polymc
+  - name: polymc-bin
   - name: skyscraper-git
   # - ckan  # Currently broken, use Mono
 

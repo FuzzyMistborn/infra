@@ -84,14 +84,14 @@
     name:
       - "{{ item.name }}"
     state: present
-    method: user
+#    method: user
   loop: "{{ flatpak_list }}"
 
 - name: Install SteamLink Flatpak
   community.general.flatpak:
     name: com.valvesoftware.SteamLink
     state: present
-    method: user
+#    method: user
   when: ansible_hostname != 'kelsier'
 
 ### fstab/disk mounts
@@ -131,7 +131,7 @@
     fstype: "{{ item.fs }}"
     opts: "{{ item.opts }}"
     # change to 'mounted' to auto mount versus 'present' for just loaded into fstab
-    state: mounted
+    state: present
   loop: "{{ mountpoints }}"
   when: ansible_hostname != 'hoid'
 

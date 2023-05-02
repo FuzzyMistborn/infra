@@ -97,6 +97,7 @@ flatpak_list:
   - name: us.zoom.Zoom
   - name: com.github.IsmaelMartinez.teams_for_linux
   - name: com.github.iwalton3.jellyfin-media-player
+  - name: com.mojang.Minecraft
 
 ### Pip Packages
 pip_packages:
@@ -472,11 +473,11 @@ mountpoints:
   - path: /mnt/Backup
     source: 192.168.10.20:/volume1/Backup/
     fs: nfs
-    opts: "_netdev,noauto,nofail,x-systemd.automount"
+    opts: "defaults"
   - path: /mnt/NVR
     source: 192.168.10.20:/volume1/BlueIris/
     fs: nfs
-    opts: "_netdev,noauto,nofail,x-systemd.automount"
+    opts: "defaults"
   - path: "/mnt/Media"
     source: "//192.168.1.10/Media"
     fs: cifs
