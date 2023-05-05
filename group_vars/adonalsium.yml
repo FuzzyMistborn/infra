@@ -155,7 +155,7 @@ lxc:
     gw: 192.168.50.1
     ip: 192.168.50.15
     bridge: vmbr2
-    disk: 'local-lvm25'
+    disk: 'local-lvm:25'
     cores: 12
     memory: 2048
     nesting: 1
@@ -165,7 +165,7 @@ lxc:
     privileged: false
     gw: 192.168.30.1
     ip: 192.168.30.5
-    disk: 'local-lvm35'
+    disk: 'local-lvm:35'
     cores: 6
     memory: 3072
     nesting: 1
