@@ -160,6 +160,18 @@ lxc:
     memory: 2048
     nesting: 1
     keyctl: 1
+  - name: Invention
+    vmid: 210
+    privileged: true
+    gw: 192.168.30.1
+    ip: 192.168.30.7
+    bridge: vmbr1
+    disk: 'local-lvm:15'
+    cores: 4
+    memory: 4096
+    nesting: 1
+    keyctl: 1
+    onboot: false
   - name: Autonomy
     vmid: 251
     privileged: false

@@ -27,3 +27,29 @@
         "source": "string",
         "name": "300"
       }]
+
+- id: start_invention
+  execute-command: "pct"
+  command-working-directory: "/usr/sbin"
+  pass-arguments-to-command:
+      [{
+        "source": "string",
+        "name": "start"
+      },
+      {
+        "source": "string",
+        "name": "210"
+      }]
+
+- id: stop_invention
+  execute-command: "pct"
+  command-working-directory: "/usr/sbin"
+  pass-arguments-to-command:
+      [{
+        "source": "string",
+        "name": "stop"
+      },
+      {
+        "source": "string",
+        "name": "210"
+      }]
