@@ -35,8 +35,8 @@
     netif: "{'net0':'name=eth0,gw={{ item.gw }},ip={{ item.ip }}/24,bridge={{ item.bridge | default ('vmbr1') }}'}"
     ostemplate: "{{ item.template| default ('local:vztmpl/ubuntu-22.04-standard_22.04-1_amd64.tar.zst') }}"
     features:
-      - nesting={{ item.nesting | default ('0') }}
-      - keyctl={{ item.keyctl | default ('0') }}
+      - nesting={{ item.nesting | default ('1') }}
+      #- keyctl={{ item.keyctl | default ('0') }}
   loop: "{{ lxc }}"
 
 - name: Create LXC CT w/ Mounts
@@ -76,12 +76,13 @@
     - {"lxc":"200", "order":"5"}
     - {"lxc":"201", "order":"1"}
     - {"lxc":"202", "order":"4"}
-    - {"lxc":"204", "order":"4"}
-    - {"lxc":"206", "order":"5"}
+    - {"lxc":"203", "order":"5"}
+    - {"lxc":"211", "order":"3"}
     - {"lxc":"250", "order":"3"}
     - {"lxc":"251", "order":"3"}
     - {"lxc":"252", "order":"3"}
     - {"lxc":"253", "order":"2"}
+    - {"lxc":"211", "order":"3"}
 
 - name: Endowment - Add iGPU passthrough/disable apparmor
   lineinfile:

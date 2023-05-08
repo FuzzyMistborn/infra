@@ -214,14 +214,14 @@ containers:
   - service_name: invidious-db
     container_name: invidious-db
     active: true
-    image: postgres:14.7
+    image: postgres:15.2-alpine
     restart: always
     ports:
       - 5432:5432
     volumes:
-      - "{{ appdata_path }}/postgres/data:/var/lib/postgresql/data"
-      - "{{ appdata_path }}/postgres/config/sql:/config/sql"
-      - "{{ appdata_path }}/postgres/init-invidious-db.sh:/docker-entrypoint-initdb.d/init-invidious-db.sh"
+      - "{{ appdata_path }}/invidious/data:/var/lib/postgresql/data"
+      - "{{ appdata_path }}/invidious/config/sql:/config/sql"
+      - "{{ appdata_path }}/invidious/init-invidious-db.sh:/docker-entrypoint-initdb.d/init-invidious-db.sh"
     labels:
       - "diun.enable=true"
       - "diun.regopt=docker.io"
@@ -229,6 +229,26 @@ containers:
       - POSTGRES_DB=invidious
       - POSTGRES_USER=kemal
       - POSTGRES_PASSWORD={{ secret_invidious_db_pass }}
+    mem_limit: 200M
+    include_global_env_vars: false
+  ###
+  - service_name: matrix-db
+    container_name: matrix-db
+    active: true
+    image: postgres:15.2-alpine
+    restart: always
+    ports:
+      - 5433:5432
+    volumes:
+      - "{{ appdata_path }}/matrix:/var/lib/postgresql/data"
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    environment:
+      - POSTGRES_DB=synapse
+      - POSTGRES_USER=synapse
+      - POSTGRES_PASSWORD={{ secret_matrix_db_pass }}
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
     mem_limit: 200M
     include_global_env_vars: false
   ###

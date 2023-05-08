@@ -172,6 +172,17 @@ lxc:
     nesting: 1
     keyctl: 1
     onboot: false
+  - name: Connection
+    vmid: 211
+    privileged: true
+    gw: 192.168.50.1
+    ip: 192.168.50.5
+    bridge: vmbr2
+    disk: 'local-lvm:15'
+    cores: 4
+    memory: 2048
+    nesting: 1
+    keyctl: 1
   - name: Autonomy
     vmid: 251
     privileged: false
