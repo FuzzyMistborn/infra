@@ -10,7 +10,7 @@
     - ubuntu-22.04-standard_22.04-1_amd64.tar.zst
     - debian-11-standard_11.6-1_amd64.tar.zst
 
-- name: Create Shard LXCs
+- name: Create LXCs w/ VLAN Tags
   proxmox:
     proxmox_default_behavior: no_defaults
     vmid: "{{ item.vmid }}"
@@ -32,12 +32,41 @@
     api_token_secret: "{{ secret_proxmox_api_token }}"
     pubkey: "{{ secret_proxmox_ct_ssh }}"
     password: "{{ secret_proxmox_pass }}"
-    netif: "{'net0':'name=eth0,gw={{ item.gw }},ip={{ item.ip }}/24,bridge={{ item.bridge | default ('vmbr1') }}'}"
+    netif: "{'net0':'name=eth0,gw={{ item.gw }},ip={{ item.ip }}/24,tag={{ item.tag | default ('50') }},bridge=vmbr1'}"
     ostemplate: "{{ item.template| default ('local:vztmpl/ubuntu-22.04-standard_22.04-1_amd64.tar.zst') }}"
     features:
       - nesting={{ item.nesting | default ('1') }}
       #- keyctl={{ item.keyctl | default ('0') }}
-  loop: "{{ lxc }}"
+  loop: "{{ lxc_vlans }}"
+
+- name: Create LXCs on main VLAN
+  proxmox:
+    proxmox_default_behavior: no_defaults
+    vmid: "{{ item.vmid }}"
+    hostname: "{{ item.name }}"
+    unprivileged: "{{ item.privileged }}"
+    onboot: "{{ item.onboot | default ('true') }}"
+    state: present
+    node: adonalsium
+    storage: local-lvm
+    disk: "{{ item.disk }}"
+    cpus: '1'
+    cpuunits: '1000'
+    cores: "{{ item.cores }}"
+    memory: "{{ item.memory }}"
+    swap: "{{ item.swap | default ('512') }}"
+    api_user: root@pam
+    api_host: localhost
+    api_token_id: Ansible
+    api_token_secret: "{{ secret_proxmox_api_token }}"
+    pubkey: "{{ secret_proxmox_ct_ssh }}"
+    password: "{{ secret_proxmox_pass }}"
+    netif: "{'net0':'name=eth0,gw={{ item.gw }},ip={{ item.ip }}/24,bridge=vmbr0'}"
+    ostemplate: "{{ item.template| default ('local:vztmpl/ubuntu-22.04-standard_22.04-1_amd64.tar.zst') }}"
+    features:
+      - nesting={{ item.nesting | default ('1') }}
+      #- keyctl={{ item.keyctl | default ('0') }}
+  loop: "{{ lxc_main }}"
 
 - name: Create LXC CT w/ Mounts
   proxmox:

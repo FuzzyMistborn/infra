@@ -66,6 +66,16 @@
   loop:
     - {src: "backup.sh", dest: "/home/{{ main_username }}/backup.sh"}
 
+
+# Source: https://www.reddit.com/r/Proxmox/comments/118i6ct/tutorialguide_how_to_make_the_prelogin_banner/
+- name: Copy issue file to adjust displayer IP address
+  copy:
+    src: etc/issue
+    dest: /etc/issue
+    owner: root
+    group: root
+    mode: 0644
+
 ### Webhooks
 - name: Copy webhook template
   template:

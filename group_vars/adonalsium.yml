@@ -117,13 +117,13 @@ syncthing_devices:
     address: tcp://192.168.10.125:22000
 
 ### Infrastructure
-lxc:
+lxc_vlans:
   - name: Dominion
     vmid: 200
     privileged: true
     gw: 192.168.10.1
     ip: 192.168.10.50
-    bridge: vmbr3
+    tag: 10
     disk: 'local-lvm:10'
     cores: 2
     memory: 512
@@ -132,19 +132,8 @@ lxc:
     privileged: true
     gw: 192.168.50.1
     ip: 192.168.50.10
-    bridge: vmbr2
+    tag: 50
     disk: 'local-lvm:15'
-    cores: 2
-    memory: 1024
-    nesting: 1
-    keyctl: 1
-  - name: Omada
-    vmid: 202
-    privileged: true
-    gw: 192.168.1.1
-    ip: 192.168.1.10
-    bridge: vmbr0
-    disk: 'local-lvm:10'
     cores: 2
     memory: 1024
     nesting: 1
@@ -154,7 +143,7 @@ lxc:
     privileged: false
     gw: 192.168.50.1
     ip: 192.168.50.15
-    bridge: vmbr2
+    tag: 50
     disk: 'local-lvm:25'
     cores: 12
     memory: 2048
@@ -165,7 +154,7 @@ lxc:
     privileged: true
     gw: 192.168.30.1
     ip: 192.168.30.7
-    bridge: vmbr1
+    tag: 30
     disk: 'local-lvm:15'
     cores: 4
     memory: 4096
@@ -177,7 +166,7 @@ lxc:
     privileged: true
     gw: 192.168.50.1
     ip: 192.168.50.5
-    bridge: vmbr2
+    tag: 50
     disk: 'local-lvm:15'
     cores: 4
     memory: 2048
@@ -188,6 +177,7 @@ lxc:
     privileged: false
     gw: 192.168.30.1
     ip: 192.168.30.5
+    tag: 30
     disk: 'local-lvm:35'
     cores: 6
     memory: 3072
@@ -198,7 +188,7 @@ lxc:
     privileged: true
     gw: 192.168.50.1
     ip: 192.168.50.21
-    bridge: vmbr2
+    tag: 50
     disk: 'local-lvm:25'
     cores: 4
     memory: 3096
@@ -209,10 +199,22 @@ lxc:
     privileged: true
     gw: 192.168.50.1
     ip: 192.168.50.22
-    bridge: vmbr2
+    tag: 50
     disk: 'local-lvm:40'
     cores: 4
     memory: 3072
+    nesting: 1
+    keyctl: 1
+
+lxc_main:
+  - name: Omada
+    vmid: 500
+    privileged: true
+    gw: 192.168.1.1
+    ip: 192.168.1.10
+    disk: 'local-lvm:10'
+    cores: 2
+    memory: 1024
     nesting: 1
     keyctl: 1
 
