@@ -95,3 +95,14 @@ containers:
     environment:
       - SYNAPSE_CONFIG_PATH=/data/homeserver.yaml
     include_global_env_vars: false
+  ###
+  - service_name: cinny
+    container_name: cinny
+    active: true
+    image: ajbura/cinny:v2.2.6
+    restart: unless-stopped
+    ports:
+      - 3000:80
+    volumes:
+      - "{{ appdata_path }}/cinny/config.json:/app/config.json"
+    include_global_env_vars: false
