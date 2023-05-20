@@ -516,6 +516,20 @@ containers:
       - SYS_ADMIN
     include_global_env_vars: false
   ###
+  - service_name: flexo
+    container_name: flexo
+    active: true
+    image: nroi/flexo:1.6.8
+    restart: unless-stopped
+    ports:
+      - 7878:7878
+    volumes:
+      - "{{ appdata_path }}/mnt/Files/arch:/var/cache/flexo/pkg"
+    environment:
+      - FLEXO_MIRRORS_AUTO_ALLOWED_COUNTRIES=US
+      - FLEXO_MIRROR_SELECTION_METHOD=auto
+    include_global_env_vars: false
+  ###
   - service_name: handbrake
     container_name: handbrake
     active: true
