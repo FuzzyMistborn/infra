@@ -215,7 +215,7 @@ containers:
   - service_name: paperless
     container_name: paperless
     active: true
-    image: ghcr.io/paperless-ngx/paperless-ngx:1.14.4
+    image: ghcr.io/paperless-ngx/paperless-ngx:1.14.5
     restart: always
     ports:
       - 8000:8000
