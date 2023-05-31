@@ -519,7 +519,7 @@ containers:
   - service_name: flexo
     container_name: flexo
     active: true
-    image: nroi/flexo:1.6.8
+    image: nroi/flexo:1.6.9
     restart: unless-stopped
     ports:
       - 7878:7878
