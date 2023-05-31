@@ -51,7 +51,6 @@ zstyle ':z4h:ssh:drone' enable 'yes'
 zstyle ':z4h:ssh:ambition' enable 'yes'
 zstyle ':z4h:ssh:dominion' enable 'yes'
 zstyle ':z4h:ssh:honor' enable 'yes'
-zstyle ':z4h:ssh:valor' enable 'yes'
 #zstyle ':z4h:ssh:192.168.50.21' enable 'yes'
 # The default value if none of the overrides above match the hostname.
 zstyle ':z4h:ssh:*'                   enable 'no'

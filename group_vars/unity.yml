@@ -4,12 +4,15 @@ hostname: unity
 
 ### Install packages with grog.package
 package_list:
+  - name: cron
   - name: curl
   - name: nano
   - name: git
   - name: htop
+  - name: iputils-ping
   - name: lm-sensors
   - name: net-tools
+  - name: nut
   - name: python3
   - name: restic
   - name: rsyslog
@@ -21,7 +24,8 @@ pip_packages:
   - yamllint
   - thefuck
 
-clone_git: false
+### Variables
+install_nut: true
 pull_backup: false
 
 ### Bash Aliases
@@ -33,8 +37,7 @@ bash_apt: true
 ### Cronjobs
 cronjobs:
   - name: Restic Prune
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_unity_purge }} -- /usr/local/bin/autorestic exec -a -- forget --keep-daily 1 --keep-weekly 8 --keep-monthly 4 --prune
-#    job: /usr/local/bin/runitor -uuid {{ secret_hc_unity_purge }} -- /usr/local/bin/autorestic forget -a -- prune
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_unity }} -- /usr/local/bin/autorestic forget -a -- prune
     user: "{{ main_username }}"
     minute: 0
     hour: 22
@@ -46,7 +49,7 @@ cronjobs:
     hour: 2
     day: 1
   - name: Media Backup
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_unity_media }} -- /usr/local/bin/autorestic backup -a -c /home/{{ main_username }}/.autorestic.yml
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_backup_unity }} -- /usr/local/bin/autorestic backup -a -c /home/{{ main_username }}/.autorestic.yml
     user: root
     minute: 0
     hour: 0
@@ -109,7 +112,7 @@ containers:
     restart: always
     ports:
       - 8091:8091
-      - 3000:3000
+      - 3500:3000
     volumes:
       - "{{ appdata_path }}/zwavejs:/usr/src/app/store"
     devices:
@@ -162,6 +165,25 @@ containers:
     environment:
       - CREATE_CERTS_WITH_PW={{ secret_docker_api_tls }}
       - CERT_HOSTNAME=docker-remote.local
+    include_global_env_vars: false
+  ###
+  - service_name: adguard
+    container_name: adguard
+    active: true
+    image: adguard/adguardhome:v0.107.29
+    restart: always
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "853:853/tcp"
+      - "81:80/tcp"
+      - "444:443/tcp"
+      - "3000:3000/tcp"
+    volumes:
+      - "{{ appdata_path }}/adguard/conf:/opt/adguardhome/conf"
+      - "{{ appdata_path }}/adguard/work:/opt/adguardhome/work"
+    cap_add:
+      - NET_ADMIN
     include_global_env_vars: false
   ###
   - service_name: portainer_agent

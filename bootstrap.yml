@@ -1,6 +1,6 @@
 ---
 
-- hosts: lxc ambition
+- hosts: lxc ambition unity
   remote_user: root
   gather_facts: true
   vars_files:
@@ -106,7 +106,7 @@
         state: restarted
 
 ### Debian Bootstrap
-- hosts: unity valor
+- hosts: debian # Placeholder
   remote_user: "{{ bootstrap_user }}"
   gather_facts: true
   vars_files:

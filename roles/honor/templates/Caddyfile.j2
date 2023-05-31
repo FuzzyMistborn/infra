@@ -167,13 +167,13 @@ nodered.{{ secret_personal_internal_url }} {
 }
 # Zwavejs
 zwavejs.{{ secret_personal_internal_url }} {
-	reverse_proxy http://192.168.30.6:8091
+	reverse_proxy http://192.168.1.11:8091
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
 # Z2MQTTT
 z2m.{{ secret_personal_internal_url }} {
-	reverse_proxy http://192.168.30.6:8080
+	reverse_proxy http://192.168.1.11:8080
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
@@ -201,7 +201,7 @@ adguard.{{ secret_personal_internal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
-# Adguard (Valor)
+# Adguard (Unity)
 adguard2.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.1.11:81
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key

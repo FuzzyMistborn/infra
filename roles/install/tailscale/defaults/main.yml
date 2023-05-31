@@ -6,7 +6,7 @@ apt_dependencies:
   - apt-transport-https
   - python3-apt
 
-apt_deb: deb https://pkgs.tailscale.com/stable/{{ ansible_os_family | lower }} {{ ansible_distribution_release | lower }} main
-apt_signkey: https://pkgs.tailscale.com/stable/{{ ansible_os_family | lower }}/{{ ansible_distribution_release | lower }}.noarmor.gpg
+apt_deb: deb https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }} main
+apt_signkey: https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }}/{{ ansible_distribution_release | lower }}.noarmor.gpg
 
 tailscale_package: tailscale

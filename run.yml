@@ -18,6 +18,12 @@
         - 88-esm-announce
         - 91-contract-ua-esm-status
       when: ansible_distribution == 'Ubuntu'
+    - name: Remove Ubuntu Snap
+      apt:
+        name: snapd
+        state: absent
+        purge: true
+      when: ansible_distribution == 'Ubuntu'
 
 - hosts: adonalsium
   become: true
@@ -120,11 +126,12 @@
     - role: geerlingguy.docker
     - role: geerlingguy.pip
     - role: install/pip_packages
-#    - role: fuzzymistborn.autorestic
+    - role: fuzzymistborn.autorestic
     - role: install/runitor
     - role: unity
     - role: bash_alias
-#    - role: cronjobs
+    - role: install/tailscale
+    - role: cronjobs
     - role: ironicbadger.docker_compose_generator
 
 - hosts: cultivation
@@ -178,20 +185,6 @@
     - role: bash_alias
     - role: cronjobs
     - role: install/fail2ban
-    - role: ironicbadger.docker_compose_generator
-
-- hosts: valor
-  become: true
-  vars_files:
-    - 'vars/vault.yaml'
-  roles:
-    - role: grog.package
-    - role: geerlingguy.pip
-    - role: install/pip_packages
-    - role: geerlingguy.docker
-    - role: valor
-    - role: bash_alias
-    - role: install/tailscale
     - role: ironicbadger.docker_compose_generator
 
 - hosts: omada
