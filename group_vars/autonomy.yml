@@ -246,7 +246,7 @@ containers:
   - service_name: tasmota
     container_name: tasmota
     active: true
-    image: ghcr.io/tasmoadmin/tasmoadmin:v3.0.3
+    image: ghcr.io/tasmoadmin/tasmoadmin:v3.0.5
     restart: always
     ports:
       - 5555:80
