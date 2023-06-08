@@ -1,0 +1,9 @@
+[Unit]
+Description=Run Restic Prune
+After=network-online.target
+[Timer]
+OnCalendar=Mon *-*-* 20:30:00
+Persistent=true
+EnvironmentFile=/etc/environment
+[Install]
+WantedBy=timers.target

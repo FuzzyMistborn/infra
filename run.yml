@@ -218,7 +218,6 @@
     - role: fuzzymistborn.autorestic
     - role: install/runitor
     - role: bash_alias
-    - role: cronjobs
     - role: ironicbadger.docker_compose_generator
 
 - hosts: connection
@@ -308,7 +307,6 @@
     - role: bash_alias
     - role: install/webhook
     - role: install/telegraf
-    - role: cronjobs
 
 - hosts: szeth
   become: true
@@ -326,7 +324,6 @@
     - role: bash_alias
     - role: install/webhook
     - role: install/telegraf
-    - role: cronjobs
 
 - hosts: hoid
   become: true

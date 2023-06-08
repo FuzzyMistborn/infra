@@ -379,6 +379,35 @@
     regexp: "#DefaultTimeoutStopSec"
     line: "DefaultTimeoutStopSec=15s"
 
+### Restic
+- name: Copy systemd service file
+  template:
+    src: ../templates//systemd/{{ item }}.j2
+    dest: /etc/systemd/system/{{ item }}
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - restic_backup.service
+    - restic_backup.timer
+    - restic_prune.service
+    - restic_prune.timer
+  when: ansible_hostname != 'hoid'
+
+- name: Reload systemd services/timers
+  systemd:
+    enabled: true
+    daemon-reload: true
+    state: started
+    name: "{{ item }}"
+    no_block: true
+  loop:
+    - restic_backup.service
+    - restic_backup.timer
+    - restic_prune.service
+    - restic_prune.timer
+  when: ansible_hostname != 'hoid'
+
 ### Logiops
 - name: Copy Szeth logid.cfg file
   copy:

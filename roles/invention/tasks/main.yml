@@ -40,3 +40,30 @@
     path: /home/{{ main_username }}/restore.sh
     state: absent
   when: pull_backup == true
+
+### Restic
+- name: Copy systemd service file
+  template:
+    src: ../templates//systemd/{{ item }}.j2
+    dest: /etc/systemd/system/{{ item }}
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - restic_backup.service
+    - restic_backup.timer
+    - restic_prune.service
+    - restic_prune.timer
+
+- name: Reload systemd services/timers
+  systemd:
+    enabled: true
+    daemon-reload: true
+    state: started
+    name: "{{ item }}"
+    no_block: true
+  loop:
+    - restic_backup.service
+    - restic_backup.timer
+    - restic_prune.service
+    - restic_prune.timer

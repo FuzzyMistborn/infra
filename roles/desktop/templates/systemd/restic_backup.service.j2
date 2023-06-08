@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Restic Backup
+Wants= restic_backup.timer
+[Service]
+Type=oneshot
+WorkingDirectory=/home/{{ main_username }}
+ExecStartPre=/bin/sleep 20
+ExecStart= /usr/local/bin/runitor -uuid {{ desktop_hc_backup_id }} -- /usr/local/bin/autorestic backup -a
+EnvironmentFile=/etc/environment
+[Install]
+WantedBy=multi-user.target
