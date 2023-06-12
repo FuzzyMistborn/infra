@@ -13,7 +13,6 @@ kelsier_package_list:
   - name: mesa
   - name: mesa-vdpau
   - name: mkvtoolnix-gui
-  - name: retroarch
   - name: steam
   - name: wine
   - name: winetricks
@@ -25,7 +24,6 @@ kelsier_aur_package_list:
   - name: dxvk-bin
   - name: heroic-games-launcher-bin
   - name: gpu-viewer
-  - name: pegasus-frontend-git
   - name: proton-ge-custom-bin
   - name: polymc-bin
   - name: skyscraper-git
@@ -71,48 +69,6 @@ bash_systemctl: true
 bash_pacman: true
 bash_yay: true
 bash_git: true
-
-### Syncthing/Retroarch
-retroarch_roms_dir: /mnt/Games/ROMs
-retroarch_config_dir: /home/{{ main_username }}/.config/retroarch
-
-pegasus_roms_dir: "{{ retroarch_roms_dir }}"
-
-syncthing_api_key: "{{ secret_syncthing_api_kelsier }}"
-syncthing_device_id: "{{ secret_syncthing_kelsier_device }}"
-syncthing_gui_authentication: true
-syncthing_gui_user: "{{ main_username }}"
-syncthing_gui_pass: "{{ secret_syncthing_gui_pass }}"
-syncthing_user: "{{ main_username }}"
-
-syncthing_folders:
-  - id: "{{ secret_syncthing_sys_folder_id }}"
-    label: "RetroArch - System"
-    path: "{{ retroarch_config_dir }}"
-    type: "sendreceive"  # options are 'sendreceive' 'sendonly' and 'receiveonly'
-    rescanInterval: 600  # time in seconds
-    devices:
-      - "{{ secret_syncthing_retroarchtv_device }}"
-      - "{{ secret_syncthing_adonalsium_device }}"
-      - "{{ secret_syncthing_steamdeck_device }}"
-  - id: "{{ secret_syncthing_rom_folder_id }}"
-    label: "RetroArch - ROMs"
-    path: "{{ retroarch_roms_dir }}"
-    type: "receiveonly"  # options are 'sendreceive' 'sendonly' and 'receiveonly'
-    rescanInterval: 600  # time in seconds
-    devices:
-      - "{{ secret_syncthing_adonalsium_device }}"
-
-syncthing_devices:
-  - id: "{{ secret_syncthing_adonalsium_device }}"
-    name: adonalsium
-    address: tcp://192.168.1.10:22000
-  - id: "{{ secret_syncthing_retroarchtv_device }}"
-    name: retroarch-tv
-    address: tcp://192.168.10.40:22000
-  - id: "{{ secret_syncthing_steamdeck_device }}"
-    name: steamdeck
-    address: tcp://192.168.10.125:22000
 
 ### Telegraf
 telegraf_influx_token: "{{ secret_telegraf_kelsier }}"

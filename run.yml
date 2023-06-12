@@ -56,7 +56,6 @@
     - role: install/telegraf
     - role: adonalsium
     - role: bash_alias
-    - role: install/syncthing
     - role: cronjobs
     - role: geerlingguy.docker
     - role: geerlingguy.ntp
@@ -285,9 +284,7 @@
     - role: desktop
     - role: kelsier
     - role: bash_alias
-#    - role: config_retroarch
     - role: install/webhook
-    - role: install/syncthing
     - role: install/telegraf
     - role: cronjobs
 
