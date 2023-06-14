@@ -245,8 +245,10 @@
     - role: geerlingguy.pip
     - role: install/pip_packages
     - role: geerlingguy.docker
+    - role: install/runitor
     - role: bash_alias
     - role: ironicbadger.docker_compose_generator
+    - role: cronjobs
 
 - hosts: ambition
   become: true

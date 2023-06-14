@@ -23,6 +23,15 @@ bash_autorestic: true
 bash_systemctl: true
 bash_apt: true
 
+### Cronjobs
+cronjobs:
+  - name: Docker Image Prune
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_drone_docker_prune }} -- /usr/bin/docker image prune -f
+    user: "{{ main_username }}"
+    minute: 35
+    hour: 5
+    day: 1
+
 ### Docker-Compose with ironicbadger.docker_compose_generator
 appdata_path: "/home/{{ main_username }}/docker"
 containers:
