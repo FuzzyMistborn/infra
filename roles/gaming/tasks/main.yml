@@ -134,6 +134,21 @@
 - name: Enable WOL ethtool
   command: ethtool -s eno1 wol bg
 
+- name: Copy systemd service file for WOL
+  copy:
+    src: wol.service
+    dest: /etc/systemd/system/wol.service
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0600
+
+- name: Enable systemd service
+  systemd:
+    enabled: true
+    daemon-reload: true
+    state: started
+    name: wol.service
+
 - name: Set Gnome themeing with string
   community.general.dconf:
     key: "{{ item.key }}"
