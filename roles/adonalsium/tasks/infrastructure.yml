@@ -36,7 +36,7 @@
     ostemplate: "{{ item.template| default ('local:vztmpl/ubuntu-22.04-standard_22.04-1_amd64.tar.zst') }}"
     features:
       - nesting={{ item.nesting | default ('1') }}
-      #- keyctl={{ item.keyctl | default ('0') }}
+      # - keyctl={{ item.keyctl | default ('0') }}
   loop: "{{ lxc_vlans }}"
 
 - name: Create LXCs on main VLAN
@@ -65,7 +65,7 @@
     ostemplate: "{{ item.template| default ('local:vztmpl/ubuntu-22.04-standard_22.04-1_amd64.tar.zst') }}"
     features:
       - nesting={{ item.nesting | default ('1') }}
-      #- keyctl={{ item.keyctl | default ('0') }}
+      # - keyctl={{ item.keyctl | default ('0') }}
   loop: "{{ lxc_main }}"
 
 - name: Create LXC CT w/ Mounts

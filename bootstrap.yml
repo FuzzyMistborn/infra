@@ -1,6 +1,6 @@
 ---
-
-- hosts: lxc ambition unity
+# Ubuntu
+- hosts: ubuntu
   remote_user: root
   gather_facts: true
   vars_files:
@@ -11,7 +11,6 @@
         upgrade: 'yes'
         update_cache: yes
         cache_valid_time: 3600
-
     - name: Ensure user groups exists
       group:
         name: "{{ item }}"
@@ -19,7 +18,6 @@
       loop:
         - "{{ main_username }}"
         - ansible
-
     - name: Add users
       user:
         name: "{{ item.user }}"
@@ -31,7 +29,6 @@
       loop:
         - {user: "{{ main_username }}", pass: "{{ secret_main_user_pass }}"}
         - {user: ansible, pass: "{{ secret_ansible_pass }}"}
-
     - name: Add sudoers file for ansible
       copy:
         src: sudoer_ansible
@@ -39,7 +36,6 @@
         owner: root
         group: root
         mode: 0440
-
     - name: SSH Keys
       authorized_key:
         user: "{{ item.user }}"
@@ -50,7 +46,6 @@
         - {user: "{{ main_username }}", ssh: "{{ secret_main_user_alt_ssh }}"}
         - {user: "{{ main_username }}", ssh: "{{ secret_main_user_pixel_ssh }}"}
         - {user: ansible, ssh: "{{ secret_ansible_ssh }}"}
-
     - name: Add hardened SSH config
       copy:
         src: sshd_config
@@ -58,15 +53,13 @@
         owner: root
         group: root
         mode: 0600
-
     - name: Restart ssh
       service:
         name: sshd
         state: restarted
 
-
-### Arch Bootstrap
-- hosts: desktop
+### Arch/Fedora
+- hosts: arch fedora
   remote_user: "{{ bootstrap_user }}"
   gather_facts: true
   vars_files:
@@ -106,7 +99,7 @@
         state: restarted
 
 ### Debian Bootstrap
-- hosts: debian # Placeholder
+- hosts: debian
   remote_user: "{{ bootstrap_user }}"
   gather_facts: true
   vars_files:

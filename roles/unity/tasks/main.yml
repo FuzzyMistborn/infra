@@ -76,8 +76,8 @@
     value: 1
     reload: yes
 
-#- name: Stop resolved
-#  service:
-#    name: systemd-resolved
-#    enabled: no
-#    state: stopped
+# - name: Stop resolved
+#   service:
+#     name: systemd-resolved
+#     enabled: no
+#     state: stopped

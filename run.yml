@@ -271,25 +271,6 @@
     - role: install/fail2ban
 
 ### Desktops
-- hosts: kelsier
-  become: true
-  vars_files:
-    - 'vars/vault.yaml'
-    - 'group_vars/desktop.yml'
-    - 'group_vars/kelsier.yml'
-  roles:
-    - role: grog.package
-    - role: geerlingguy.pip
-    - role: install/pip_packages
-    - role: fuzzymistborn.autorestic
-    - role: install/runitor
-    - role: desktop
-    - role: kelsier
-    - role: bash_alias
-    - role: install/webhook
-    - role: install/telegraf
-    - role: cronjobs
-
 - hosts: vasher
   become: true
   vars_files:
@@ -323,6 +304,19 @@
     - role: bash_alias
     - role: install/webhook
     - role: install/telegraf
+
+- hosts: whimsy kelsier
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+    - 'group_vars/gaming.yml'
+  roles:
+    - role: grog.package
+    - role: geerlingguy.pip
+    - role: install/pip_packages
+    - role: gaming
+    - role: bash_alias
+    - role: install/webhook
 
 - hosts: hoid
   become: true

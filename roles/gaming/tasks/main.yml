@@ -1,0 +1,142 @@
+---
+### SSH Config
+- name: Fix SFTP for Ansible
+  lineinfile:
+    dest: "/etc/ssh/sshd_config"
+    state: present
+    regexp: "Subsystem sftp*"
+    line: "Subsystem sftp internal-sftp"
+
+- name: Restart ssh
+  service:
+    name: sshd
+    state: restarted
+
+- name: Copy template files
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+  loop:
+    - {src: "hooks.yaml.j2", dest: "/home/{{ main_username }}/.hooks.yaml", mode: "644"}
+
+### Sudoers file
+- name: Add sudoers file for main user
+  template:
+    src: sudoers_main_user.j2
+    dest: /etc/sudoers.d/{{ main_username }}
+    owner: root
+    group: root
+    mode: 0440
+
+- name: Install Flatpaks
+  community.general.flatpak:
+    name:
+      - "{{ item.name }}"
+    state: present
+#    method: user
+  loop: "{{ whimsy_flatpak_list }}"
+
+### Samba mounts
+- name: make sure disks unmounted
+  mount:
+    path: "{{ item.path }}"
+    state: unmounted
+  loop: "{{ mountpoints }}"
+
+- name: create /mnt points
+  file:
+    dest: "{{ item.path }}"
+    state: directory
+    owner: "{{ main_username }}"
+    group: nobody
+    mode: 0777
+  loop: "{{ mountpoints }}"
+
+- name: Add smbcredentials
+  copy:
+    dest: /home/{{ main_username }}/.smbcredentials
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0600
+    content: |
+      user=samba
+      password={{ secret_samba_pass }}
+      domain=cosmere
+
+- name: mount disks
+  mount:
+    path: "{{ item.path }}"
+    src: "{{ item.source }}"
+    fstype: "{{ item.fs }}"
+    opts: "{{ item.opts }}"
+    # change to 'mounted' to auto mount versus 'present' for just loaded into fstab
+    state: present
+  loop: "{{ mountpoints }}"
+
+# Kelsier Disk Mounts
+- name: make sure disks unmounted
+  mount:
+    path: "{{ item.path }}"
+    state: unmounted
+  loop: "{{ data_disks }}"
+  when: ansible_hostname == 'kelsier'
+
+- name: create /mnt points
+  file:
+    dest: "{{ item.path }}"
+    state: directory
+    owner: "{{ main_username }}"
+    group: nobody
+    mode: 0777
+  loop: "{{ data_disks }}"
+  when: ansible_hostname == 'kelsier'
+
+- name: mount disks
+  mount:
+    path: "{{ item.path }}"
+    src: "{{ item.source }}"
+    fstype: "{{ item.fs }}"
+    opts: "{{ item.opts }}"
+    # change to 'mounted' to auto mount versus 'present' for just loaded into fstab
+    state: mounted
+  loop: "{{ data_disks }}"
+  when: ansible_hostname == 'kelsier'
+
+### ZSH
+- name: Copy config files
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: 0644
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+  loop:
+    - src: "zsh/zshrc"
+      dest: "/home/{{ main_username }}/.zshrc"
+    - src: "zsh/p10k.zsh"
+      dest: "/home/{{ main_username }}/.p10k.zsh"
+
+### Final Tweaks
+- name: Enable WOL ethtool
+  command: ethtool -s eno1 wol bg
+
+- name: Set Gnome themeing with string
+  community.general.dconf:
+    key: "{{ item.key }}"
+    value: "'{{ item.value }}'"
+    state: present
+  become: yes
+  become_user: "{{ main_username }}"
+  loop: "{{ gnome_theme_settings_string }}"
+
+- name: Set Gnome themeing with value
+  community.general.dconf:
+    key: "{{ item.key }}"
+    value: "{{ item.value }}"
+    state: present
+  become: yes
+  become_user: "{{ main_username }}"
+  loop: "{{ gnome_theme_settings_value }}"
