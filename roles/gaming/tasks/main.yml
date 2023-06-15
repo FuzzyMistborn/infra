@@ -7,6 +7,17 @@
     regexp: "Subsystem sftp*"
     line: "Subsystem sftp internal-sftp"
 
+- name: Add SSH Keys
+  copy:
+    dest: /home/{{ main_username }}/.ssh/{{ item.dest }}
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0600
+    content: "{{ item.key }}"
+  loop:
+    - dest: desktop_lxcs
+      key: "{{ secret_desktop_lxc_ssh }}"
+
 - name: Restart ssh
   service:
     name: sshd
