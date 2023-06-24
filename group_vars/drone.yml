@@ -26,7 +26,7 @@ bash_apt: true
 ### Cronjobs
 cronjobs:
   - name: Docker Image Prune
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_drone_docker_prune }} -- /usr/bin/docker image prune -f
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_drone_docker_prune }} -- /usr/bin/docker system prune -a -f
     user: "{{ main_username }}"
     minute: 35
     hour: 5
