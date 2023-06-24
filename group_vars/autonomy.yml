@@ -22,6 +22,8 @@ package_list:
 pip_packages:
   - yamllint
   - thefuck
+  - selenium
+  - splinter
 
 clone_git: false
 pull_backup: false
@@ -41,13 +43,13 @@ telegraf_influx_docker: true
 ### Cronjobs
 cronjobs:
   - name: Traffic AM
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_traffic }} -- /usr/bin/curl 'http://localhost:8050/render.png?url=https://traffic.{{ secret_personal_internal_url }}&engine=chromium&wait=5&width=1200&height=900' --output /home/{{ main_username }}/hass/tmp/commute.png
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_traffic }} -- /usr/bin/python3 /home/{{ main_username }}/scripts/traffic.py
     user: "{{ main_username }}"
     minute: '*/10'
     hour: 7-8,16-18
     weekday: 1-5
   - name: Traffic PM
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_traffic }} -- /usr/bin/curl 'http://localhost:8050/render.png?url=https://traffic.{{ secret_personal_internal_url }}&engine=chromium&wait=5&width=1200&height=900' --output /home/{{ main_username }}/hass/tmp/commute.png
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_traffic }} -- /usr/bin/python3 /home/{{ main_username }}/scripts/traffic.py
     user: "{{ main_username }}"
     minute: '*/30'
     hour: 9-15
@@ -192,16 +194,16 @@ containers:
       - mqtt
     include_global_env_vars: false
   ###
-  - service_name: splash
-    container_name: splash
+  - service_name: selenium
+    container_name: selenium
     active: true
-    image: scrapinghub/splash:3.5
-    ports:
-      - 8050:8050
-    command:
-      - --disable-private-mode
-      - --browser-engines=chromium
+    image: selenium/standalone-firefox:114.0
     restart: unless-stopped
+    ports:
+      - 4444:4444
+    shm_size: 2g
+    environment:
+      - SE_NODE_MAX_SESSIONS=2
     include_global_env_vars: false
   ###
   - service_name: esphome
