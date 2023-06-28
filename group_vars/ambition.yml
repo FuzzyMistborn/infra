@@ -385,7 +385,7 @@ containers:
     ports:
       - 127.0.0.1:6157:6157
     volumes:
-      - "{{ appdata_path }}/opengist:/root/.opengist"
+      - "{{ appdata_path }}/opengist:/opengist"
     include_global_env_vars: false
   ###
   - service_name: pairdrop

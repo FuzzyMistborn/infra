@@ -180,6 +180,7 @@ containers:
       - SYMFONY__ENV__FOSUSER_REGISTRATION=false
       - SYMFONY__ENV__FOSUSER_CONFIRMATION=false
       - SYMFONY__ENV__DOMAIN_NAME={{ secret_wallabag_url }}
+      - SYMFONY__ENV__TWOFACTOR_AUTH=true
     volumes:
       - "{{ appdata_path }}/wallabag/images:/var/www/wallabag/web/assets/images"
     include_global_env_vars: true

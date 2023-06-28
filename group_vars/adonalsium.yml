@@ -138,7 +138,8 @@ lxc_vlans:
     tag: 30
     disk: 'local-lvm:35'
     cores: 6
-    memory: 3072
+    memory: 5120
+    swap: 1024
     nesting: 1
     keyctl: 1
   - name: Cultivation
