@@ -64,12 +64,12 @@ fstab_mergerfs:
 
 nfs_mount:
   - path: /mnt/synology_backup
-    source: 192.168.30.25:/volume1/Backup/
+    source: 192.168.10.20:/volume1/Backup/
     fs: nfs
     opts: defaults
     content: false
-  - path: /mnt/synology_minio
-    source: 192.168.30.25:/volume1/Minio/
+  - path: /mnt/synology_restic
+    source: 192.168.10.20:/volume1/Restic/
     fs: nfs
     opts: defaults
     content: false
@@ -253,40 +253,40 @@ autorestic_config_yaml:
   version: 2
   backends:
     synology_docker:
-      type: s3
-      path: 'http://192.168.30.25:9000/adonalsium'
+      type: rest
+      path: 'http://192.168.30.25:8500/adonalsium'
       key: "{{ secret_restic_repo_password }}"
-      env:
-        - AWS_ACCESS_KEY_ID: "{{ secret_minio_s3_access_key_id }}"
-        - AWS_SECRET_ACCESS_KEY: "{{ secret_minio_s3_access_key }}"
+      rest:
+        user: "{{ secret_restic_rest_user }}"
+        password: "{{ secret_restic_rest_password }}"
     synology_photos:
-      type: s3
-      path: 'http://192.168.30.25:9000/media/photos'
+      type: rest
+      path: 'http://192.168.30.25:8500/media/photos'
       key: "{{ secret_restic_repo_password }}"
-      env:
-        - AWS_ACCESS_KEY_ID: "{{ secret_minio_s3_access_key_id }}"
-        - AWS_SECRET_ACCESS_KEY: "{{ secret_minio_s3_access_key }}"
+      rest:
+        user: "{{ secret_restic_rest_user }}"
+        password: "{{ secret_restic_rest_password }}"
     synology_music:
-      type: s3
-      path: 'http://192.168.30.25:9000/media/music'
+      type: rest
+      path: 'http://192.168.30.25:8500/media/music'
       key: "{{ secret_restic_repo_password }}"
-      env:
-        - AWS_ACCESS_KEY_ID: "{{ secret_minio_s3_access_key_id }}"
-        - AWS_SECRET_ACCESS_KEY: "{{ secret_minio_s3_access_key }}"
+      rest:
+        user: "{{ secret_restic_rest_user }}"
+        password: "{{ secret_restic_rest_password }}"
     synology_audiobooks:
-      type: s3
-      path: 'http://192.168.30.25:9000/media/audiobooks'
+      type: rest
+      path: 'http://192.168.30.25:8500/media/audiobooks'
       key: "{{ secret_restic_repo_password }}"
-      env:
-        - AWS_ACCESS_KEY_ID: "{{ secret_minio_s3_access_key_id }}"
-        - AWS_SECRET_ACCESS_KEY: "{{ secret_minio_s3_access_key }}"
+      rest:
+        user: "{{ secret_restic_rest_user }}"
+        password: "{{ secret_restic_rest_password }}"
     synology_files:
-      type: s3
-      path: 'http://192.168.30.25:9000/media/files'
+      type: rest
+      path: 'http://192.168.30.25:8500/media/files'
       key: "{{ secret_restic_repo_password }}"
-      env:
-        - AWS_ACCESS_KEY_ID: "{{ secret_minio_s3_access_key_id }}"
-        - AWS_SECRET_ACCESS_KEY: "{{ secret_minio_s3_access_key }}"
+      rest:
+        user: "{{ secret_restic_rest_user }}"
+        password: "{{ secret_restic_rest_password }}"
     b2_docker:
       type: b2
       path: "{{ secret_restic_b2_bucket }}:/adonalsium"

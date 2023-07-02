@@ -19,7 +19,7 @@ pip_packages:
 ### Bash Aliases
 
 bash_docker: true
-bash_autorestic: true
+bash_autorestic: false
 bash_systemctl: true
 bash_apt: true
 
