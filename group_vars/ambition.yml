@@ -201,7 +201,7 @@ containers:
   - service_name: uptime
     container_name: uptime
     active: true
-    image: louislam/uptime-kuma:1.22.0
+    image: louislam/uptime-kuma:1.22.1
     restart: always
     ports:
       - 127.0.0.1:3001:3001
@@ -276,7 +276,7 @@ containers:
   - service_name: gitea
     container_name: gitea
     active: true
-    image: gitea/gitea:1.19.3
+    image: gitea/gitea:1.19.4
     restart: always
     ports:
       - "127.0.0.1:3030:3000"
@@ -315,7 +315,7 @@ containers:
   - service_name: drone-gh
     container_name: drone-gh
     active: true
-    image: drone/drone:2.17.0
+    image: drone/drone:2.18.0
     restart: always
     ports:
       - 127.0.0.1:4000:80
@@ -340,7 +340,7 @@ containers:
   - service_name: drone-gitea
     container_name: drone-gitea
     active: true
-    image: drone/drone:2.17.0
+    image: drone/drone:2.18.0
     restart: always
     ports:
       - 127.0.0.1:4001:80
@@ -432,7 +432,7 @@ containers:
   - service_name: healthchecks
     container_name: healthchecks
     active: true
-    image: ghcr.io/linuxserver/healthchecks:2.9.20230605
+    image: ghcr.io/linuxserver/healthchecks:2.10.20230702
     restart: always
     ports:
       - 127.0.0.1:8000:8000

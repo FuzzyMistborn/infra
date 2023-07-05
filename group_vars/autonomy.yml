@@ -214,7 +214,7 @@ containers:
   - service_name: esphome
     container_name: esphome
     active: true
-    image: esphome/esphome:2023.6.2
+    image: esphome/esphome:2023.6.4
     restart: always
     network_mode: host
     volumes:
@@ -253,7 +253,7 @@ containers:
   - service_name: tasmota
     container_name: tasmota
     active: true
-    image: ghcr.io/tasmoadmin/tasmoadmin:v3.0.6
+    image: ghcr.io/tasmoadmin/tasmoadmin:v3.0.7
     restart: always
     ports:
       - 5555:80

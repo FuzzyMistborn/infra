@@ -188,7 +188,7 @@ containers:
   - service_name: collabora
     container_name: collabora
     active: true
-    image: collabora/code:23.05.0.5.1
+    image: collabora/code:23.05.1.2.1
     restart: always
     privileged: true
     ports:
@@ -216,7 +216,7 @@ containers:
   - service_name: paperless
     container_name: paperless
     active: true
-    image: ghcr.io/paperless-ngx/paperless-ngx:1.16.4
+    image: ghcr.io/paperless-ngx/paperless-ngx:1.16.5
     restart: always
     ports:
       - 8000:8000
@@ -252,7 +252,7 @@ containers:
   - service_name: diagrams
     container_name: diagrams
     active: true
-    image: jgraph/drawio:21.5.0
+    image: jgraph/drawio:21.5.2
     restart: always
     ports:
       - 8080:8080
