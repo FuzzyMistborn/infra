@@ -28,25 +28,21 @@ Then my desktops are named after some of my favorite characters from the Cosmere
 
 # First Deploy instructions:
 
-`just install` - Installs a github hook to prevent uploading an unencrypted Ansible vault file, adds the Ansible Galaxy roles, and sets up the Ansible vault password
-
-`just boostrap` - Sets up the hosts with a main user and an ansible user that can run sudo without a password
-
-`just build_proxmox` - Creates all LXCs, sets up disks on Proxmox host
-
-`just bootstrap HOSTNAME` - Bootstraps the indicated server/desktop/whatever
-
-`just build HOSTNAME` - Sets up the various machines
+* `just install` - Installs a github hook to prevent uploading an unencrypted Ansible vault file, adds the Ansible Galaxy roles, and sets up the Ansible vault password
+* `just boostrap` - Sets up the hosts with a main user and an ansible user that can run sudo without a password
+* `just build_proxmox` - Creates all LXCs, sets up disks on Proxmox host
+* `just bootstrap HOSTNAME` - Bootstraps the indicated server/desktop/whatever
+* `just build HOSTNAME` - Sets up the various machines
 
 # Ansible Vault
 
-`just encrypt` - Encrypts the Ansible vault
-`just decrypt` - Decrypts the Ansible vault
+* `just encrypt` - Encrypts the Ansible vault
+* `just decrypt` - Decrypts the Ansible vault
 
 # Updates
 
-`just update` - Runs apt update and apt upgrade on the servers, and pushes an updated docker-compose.yml file
-`just docker` - Runs docker-compose pull {{ containers }} and docker-compose up -d {{ container }} on host and containers specified
+* `just update` - Runs apt update and apt upgrade on the servers, and pushes an updated docker-compose.yml file
+* `just docker` - Runs docker-compose pull {{ containers }} and docker-compose up -d {{ container }} on host and containers specified
 
 ### If you appreciate my work, please consider buying me a beer (or coffee, or whatever)
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/E1E5796VZ)
