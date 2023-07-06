@@ -34,10 +34,8 @@ yamllint:
 
 ansible-lint: yamllint
     #!/usr/bin/env bash
-    cd ansible/
-
-    ansible-lint -p
-    ansible-playbook main.yml --syntax-check
+    ansible-lint .
+    ansible-playbook run.yml update.yml bootstrap.yml docker.yml --syntax-check
 
 ### Bootstrap/Setup
 bootstrap_lxc:
