@@ -441,7 +441,7 @@ containers:
   - service_name: portainer
     container_name: portainer
     active: true
-    image: portainer/portainer-ce:2.18.3
+    image: portainer/portainer-ce:2.18.4
     restart: always
     mem_limit: 200M
     ports:
