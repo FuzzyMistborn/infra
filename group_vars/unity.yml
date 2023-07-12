@@ -170,7 +170,7 @@ containers:
   - service_name: adguard
     container_name: adguard
     active: true
-    image: adguard/adguardhome:v0.107.33
+    image: adguard/adguardhome:v0.107.34
     restart: always
     ports:
       - "53:53/tcp"
