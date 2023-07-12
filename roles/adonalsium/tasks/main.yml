@@ -58,14 +58,14 @@
     - docker
     - docker/scrutiny
 
-- name: Copy backup scripts
+- name: Copy scripts
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     mode: +x
   loop:
     - {src: "backup.sh", dest: "/home/{{ main_username }}/backup.sh"}
-
+    - {src: "trim.sh", dest: "/home/{{ main_username }}/trim.sh"}
 
 # Source: https://www.reddit.com/r/Proxmox/comments/118i6ct/tutorialguide_how_to_make_the_prelogin_banner/
 - name: Copy issue file to adjust displayer IP address

@@ -153,15 +153,15 @@ chat.{{ secret_personal_url }} {
 
 ######
 
-# Minio
-minio.{{ secret_personal_internal_url }} {
-	reverse_proxy http://192.168.30.25:9000
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
-	import headers
-}
 # Nodered
 nodered.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.30.5:1880
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	import headers
+}
+# Frigate
+frigate.{{ secret_personal_internal_url }} {
+	reverse_proxy http://192.168.10:5000
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
@@ -180,12 +180,6 @@ z2m.{{ secret_personal_internal_url }} {
 # Paperless
 paperless.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.21:8000
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
-	import headers
-}
-# PsiTransfer
-transfer.{{ secret_personal_internal_url }} {
-	reverse_proxy http://192.168.50.21:3000
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }

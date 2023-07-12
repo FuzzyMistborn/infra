@@ -243,6 +243,12 @@ cronjobs:
     minute: 15
     hour: 1
     weekday: 0,3,5
+  - name: Run Trim
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_adonalsium_trim }} -- /bin/bash /home/{{ main_username }}/trim.sh
+    user: root
+    minute: 0
+    hour: 10
+    weekday: 1
   - name: CPU Governor
     job: "echo 'ondemand' | tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor"
     user: root
@@ -487,7 +493,7 @@ containers:
     ports:
       - 7878:7878
     volumes:
-      - "{{ appdata_path }}/mnt/Files/arch:/var/cache/flexo/pkg"
+      - "/mnt/Media/Files/arch:/var/cache/flexo/pkg"
     environment:
       - FLEXO_MIRRORS_AUTO_ALLOWED_COUNTRIES=US
       - FLEXO_MIRROR_SELECTION_METHOD=auto
@@ -509,4 +515,38 @@ containers:
       - /dev/dri:/dev/dri
     environment:
       - TZ={{ ntp_timezone }}
+    include_global_env_vars: false
+  ###
+  - service_name: frigate
+    container_name: frigate
+    active: true
+    image: ghcr.io/blakeblackshear/frigate:0.12.1
+    privileged: true
+    shm_size: "200mb"
+    tmpfs:
+      - /tmp/cache
+    volumes:
+      - "{{ appdata_path }}/frigate/config:/config"
+      - "{{ appdata_path }}/frigate/db:/db"
+      - "/mnt/Media/Frigate:/media/frigate"
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - "FRIGATE_RTSP_PASSWORD='password'"
+    ports:
+      - '5000:5000'
+      - '8554:8554'
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+      - /dev/dri:/dev/dri
+    restart: unless-stopped
+  ###
+  - service_name: restic-server
+    container_name: restic-server
+    active: false
+    image: restic/rest-server:0.12.0
+    restart: unless-stopped
+    ports:
+      - 8500:8000
+    volumes:
+      - /mnt/synology_restic:data
     include_global_env_vars: false

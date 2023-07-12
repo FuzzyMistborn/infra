@@ -8,7 +8,7 @@ autorestic_config_yaml:
   backends:
     synology_docker:
       type: rest
-      path: 'http://192.168.30.25:8500/vasher'
+      path: 'http://192.168.10.20:8500/vasher'
       key: "{{ secret_restic_repo_password }}"
       rest:
         user: "{{ secret_restic_rest_user }}"
