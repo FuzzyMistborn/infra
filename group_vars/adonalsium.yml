@@ -410,6 +410,7 @@ snapraid_runner_cron_jobs:
 snapraid_config_excludes:
   - "*.unrecoverable"
   - "/tmp/"
+  - "/Frigate/"
   - "/lost+found/"
   - "downloads/"
   - "appdata/"
