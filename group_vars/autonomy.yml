@@ -224,7 +224,7 @@ containers:
   - service_name: mqtt
     container_name: MQTT
     active: true
-    image: eclipse-mosquitto:2.0.15
+    image: eclipse-mosquitto:2.0.17
     restart: always
     ports:
       - 1883:1883
