@@ -161,7 +161,7 @@ nodered.{{ secret_personal_internal_url }} {
 }
 # Frigate
 frigate.{{ secret_personal_internal_url }} {
-	reverse_proxy http://192.168.10:5000
+	reverse_proxy http://192.168.1.10:5000
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }

@@ -364,12 +364,21 @@
     line: "AutoEnable=true"
   when: ansible_hostname != 'hoid'
 
-- name: Enable WOL ethtool
-  command: ethtool -s enp0s31f6 wol bg
+- name: Copy systemd service file for WOL
+  copy:
+    src: wol.service
+    dest: /etc/systemd/system/wol.service
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0600
   when: ansible_hostname != 'hoid' and ansible_hostname != 'kelsier'
 
-- name: Enable WOL nmcli
-  command: sudo nmcli c modify "Wired connection 1" 802-3-ethernet.wake-on-lan magic
+- name: Enable systemd service
+  systemd:
+    enabled: true
+    daemon-reload: true
+    state: started
+    name: wol.service
   when: ansible_hostname != 'hoid' and ansible_hostname != 'kelsier'
 
 - name: Fix Delayed Shutdown

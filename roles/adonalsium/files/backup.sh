@@ -8,7 +8,7 @@ mount /mnt/synology_restic
 sleep 10s
 
 # rsync script
-rsync -Aavx --progress --delete --exclude '.*' --exclude 'TV Shows' --exclude 'Parents *' --exclude 'UHD' /mnt/Media/ /media/external_hdd/Media
+rsync -Aavx --progress --delete --exclude '.*' --exclude 'TV Shows' --exclude 'Parents *' --exclude 'UHD' --exclude 'Frigate' --exclude 'Files/arch' /mnt/Media/ /media/external_hdd/Media
 rsync -Aavx --progress --delete --exclude '.*' --exclude '#recycle' /mnt/synology_backup/ /media/external_hdd/Backup
 rsync -Aavx --progress --delete --exclude '.*' --exclude 'media' /mnt/synology_restic/ /media/external_hdd/Minio
 

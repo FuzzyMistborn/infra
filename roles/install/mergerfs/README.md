@@ -14,7 +14,7 @@ Below are the configurable variables.
 ```yaml
 mergerfs_download_latest_ver: true  # Change to 'false' to pin to a specific version
 mergerfs_pinned_ver: 2.32.6  # Overriden by 'mergerfs_download_latest_ver' variable
-mergerfs_distro: debian-bullseye_amd64
+mergerfs_distro: debian-bookworm_amd64
 ```
 
 By default the role fetches and installs the latest available version.  You can disable this by pinning to a specific version.  Here's an example if you wanted to set the version.

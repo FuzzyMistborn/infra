@@ -3,8 +3,8 @@
 #/usr/local/bin/lego --email="{{ secret_new_email }}" --domains="*.{{ secret_personal_internal_url }}" --dns="hetzner" --accept-tos --path /home/{{ main_username }}/lego run
 #/usr/local/bin/lego --email="{{ secret_new_email }}" --domains="*.{{ secret_personal_url }}" --dns="hetzner" --accept-tos --path /home/{{ main_username }}/lego run
 
-/usr/local/bin/lego --email="{{ secret_new_email }}" --domains="*.{{ secret_personal_internal_url }}" --dns="hetzner" --path /home/{{ main_username }}/lego renew --days 45
-/usr/local/bin/lego --email="{{ secret_new_email }}" --domains="*.{{ secret_personal_url }}" --dns="hetzner" --path /home/{{ main_username }}/lego renew --days 45
+/usr/local/bin/lego --email="{{ secret_new_email }}" --domains="*.{{ secret_personal_internal_url }}" --dns="hetzner" --dns.resolvers="9.9.9.9:53" --path /home/{{ main_username }}/lego renew --days 45
+/usr/local/bin/lego --email="{{ secret_new_email }}" --domains="*.{{ secret_personal_url }}" --dns="hetzner" --dns.resolvers="9.9.9.9:53" --path /home/{{ main_username }}/lego renew --days 45
 
 /bin/systemctl daemon-reload
 
