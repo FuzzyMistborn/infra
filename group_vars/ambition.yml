@@ -261,7 +261,7 @@ containers:
   - service_name: umami-db
     container_name: umami-db
     active: true
-    image: mariadb:10.11
+    image: mariadb:11.1
     restart: always
     volumes:
       - "{{ appdata_path }}/umami/mariadb:/var/lib/mysql"
@@ -300,7 +300,7 @@ containers:
   - service_name: gitea-db
     container_name: gitea-db
     active: true
-    image: mariadb:10.11
+    image: mariadb:11.1
     restart: always
     volumes:
       - "{{ appdata_path }}/gitea/mariadb:/var/lib/mysql"
