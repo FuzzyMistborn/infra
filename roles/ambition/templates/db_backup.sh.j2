@@ -3,11 +3,11 @@
 #### Gitea DB Backup
 echo Backing up Gitea DB
 today=$(date -d "$date" +"%Y_%m_%d")
-docker exec gitea-db sh -c 'exec mysqldump --single-transaction -h localhost -u gitea -p{{ secret_gitea_db_pass }} gitea' > /home/{{ main_username }}/db_backups/gitea/giteaDB_$today.sql
+docker exec gitea-db sh -c 'exec mariadb-dump --single-transaction -h localhost -u gitea -p{{ secret_gitea_db_pass }} gitea' > /home/{{ main_username }}/db_backups/gitea/giteaDB_$today.sql
 
 #### Umami DB Backup
 echo Backing up Umami DB
 today=$(date +"%Y_%m_%d")
-docker exec umami-db sh -c 'exec mysqldump --single-transaction -h localhost -u umami -p{{ secret_umami_db_pass }} umami' > /home/{{ main_username }}/db_backups/umami/umamiDB_$today.sql
+docker exec umami-db sh -c 'exec mariadb-dump --single-transaction -h localhost -u umami -p{{ secret_umami_db_pass }} umami' > /home/{{ main_username }}/db_backups/umami/umamiDB_$today.sql
 
 find /home/{{ main_username }}/db_backups/* -mtime +6 -type f -delete

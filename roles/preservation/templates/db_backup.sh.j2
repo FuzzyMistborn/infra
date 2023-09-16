@@ -3,27 +3,27 @@
 # Nextcloud DB Backup
 echo Backing up Nextcloud DB
 today=$(date +"%Y_%m_%d")
-docker exec nextcloud-db sh -c 'exec mysqldump --single-transaction -h localhost -u {{ main_username }} -p{{ secret_nextcloud_db_pass }} nextcloud' > /home/{{ main_username }}/db_backups/nextcloud/nextcloudDB_$today.sql
+docker exec nextcloud-db sh -c 'exec mariadb-dump --single-transaction -h localhost -u {{ main_username }} -p{{ secret_nextcloud_db_pass }} nextcloud' > /home/{{ main_username }}/db_backups/nextcloud/nextcloudDB_$today.sql
 
 #### Bitwarden DB Backup
 echo Backing up Bitwarden DB
 today=$(date +"%Y_%m_%d")
-docker exec bitwarden-db sh -c 'exec mysqldump --single-transaction -h localhost -u bitwarden -p{{ secret_bitwarden_db_pass }} bitwarden_rs' > /home/{{ main_username }}/db_backups/bitwarden/bitwardenDB_$today.sql
+docker exec bitwarden-db sh -c 'exec mariadb-dump --single-transaction -h localhost -u bitwarden -p{{ secret_bitwarden_db_pass }} bitwarden_rs' > /home/{{ main_username }}/db_backups/bitwarden/bitwardenDB_$today.sql
 
 #### Wallabag DB Backup
 echo Backing up Wallabag DB
 today=$(date +"%Y_%m_%d")
-docker exec wallabag-db sh -c 'exec mysqldump --single-transaction -h localhost -u root -p{{ secret_wallabag_db_pass }} symfony' > /home/{{ main_username }}/db_backups/wallabag/wallabagDB_$today.sql
+docker exec wallabag-db sh -c 'exec mariadb-dump --single-transaction -h localhost -u root -p{{ secret_wallabag_db_pass }} symfony' > /home/{{ main_username }}/db_backups/wallabag/wallabagDB_$today.sql
 
 #### Hass DB Backup
 echo Backing up Hass DB
 today=$(date +"%Y_%m_%d")
-docker exec hass-db sh -c 'exec mysqldump --single-transaction -h localhost -u hass -p{{ secret_hass_db_pass }} homeassistant' > /home/{{ main_username }}/db_backups/hass/hassDB_$today.sql
+docker exec hass-db sh -c 'exec mariadb-dump --single-transaction -h localhost -u hass -p{{ secret_hass_db_pass }} homeassistant' > /home/{{ main_username }}/db_backups/hass/hassDB_$today.sql
 
 #### Vikunja DB Backup
 echo Backing up Vikunja DB
 today=$(date +"%Y_%m_%d")
-docker exec vikunja-db sh -c 'exec mysqldump --single-transaction -h localhost -u vikunja -p{{ secret_vikunja_db_pass }} vikunja' > /home/{{ main_username }}/db_backups/vikunja/vikunjaDB_$today.sql
+docker exec vikunja-db sh -c 'exec mariadb-dump --single-transaction -h localhost -u vikunja -p{{ secret_vikunja_db_pass }} vikunja' > /home/{{ main_username }}/db_backups/vikunja/vikunjaDB_$today.sql
 
 #### Invidious DB Backup
 echo Backing up Invidious DB
