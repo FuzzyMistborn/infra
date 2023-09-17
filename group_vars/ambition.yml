@@ -366,7 +366,7 @@ containers:
   - service_name: gotify
     container_name: gotify
     active: true
-    image: gotify/server:2.3.0
+    image: gotify/server:2.4.0
     restart: always
     ports:
       - 127.0.0.1:8090:80
