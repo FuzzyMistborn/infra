@@ -185,7 +185,7 @@ containers:
   - service_name: jellyseerr
     container_name: jellyseerr
     active: true
-    image: fallenbagel/jellyseerr:1.6.0
+    image: fallenbagel/jellyseerr:1.7.0
     restart: unless-stopped
     ports:
       - 5055:5055
