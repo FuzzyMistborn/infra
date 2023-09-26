@@ -380,7 +380,7 @@ containers:
   - service_name: opengist
     container_name: opengist
     active: true
-    image: ghcr.io/thomiceli/opengist:1.4
+    image: ghcr.io/thomiceli/opengist:1.5
     restart: unless-stopped
     ports:
       - 127.0.0.1:6157:6157
