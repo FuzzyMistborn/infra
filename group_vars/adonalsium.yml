@@ -464,7 +464,7 @@ containers:
   - service_name: scrutiny
     container_name: scrutiny
     active: true
-    image: ghcr.io/analogj/scrutiny:v0.7.1-omnibus
+    image: ghcr.io/analogj/scrutiny:v0.7.2-omnibus
     restart: always
     privileged: true
     ports:
