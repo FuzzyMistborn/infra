@@ -8,6 +8,7 @@ roles:
 - src: geerlingguy.ntp
 - src: geerlingguy.nfs
 - src: geerlingguy.pip
+  version: 2.2.0
 - src: geerlingguy.samba
 - src: fuzzymistborn.autorestic
 
