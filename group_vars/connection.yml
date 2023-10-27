@@ -99,7 +99,7 @@ containers:
   - service_name: cinny
     container_name: cinny
     active: true
-    image: ajbura/cinny:v2.2.6
+    image: ajbura/cinny:v3.0.0
     restart: unless-stopped
     ports:
       - 3000:80
