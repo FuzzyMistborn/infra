@@ -86,7 +86,7 @@ aur_package_list:
   - name: mqtt-explorer
   - name: popsicle
   - name: rpi-imager-bin
-  - name: telegraf
+  - name: telegraf-bin
   - name: timeshift-bin
   - name: timeshift-autosnap
   - name: ventoy-bin
