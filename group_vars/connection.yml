@@ -86,7 +86,7 @@ containers:
   - service_name: synapse
     container_name: synapse
     active: true
-    image: matrixdotorg/synapse:v1.95.0
+    image: matrixdotorg/synapse:v1.95.1
     restart: unless-stopped
     ports:
       - 8008:8008
