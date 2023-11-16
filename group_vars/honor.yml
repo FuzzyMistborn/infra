@@ -196,7 +196,7 @@ containers:
   - service_name: adguard-sync
     container_name: adguard-sync
     active: true
-    image: ghcr.io/linuxserver/adguardhome-sync:0.4.15
+    image: ghcr.io/linuxserver/adguardhome-sync:0.5.1
     restart: always
     ports:
       - 8080:8080
