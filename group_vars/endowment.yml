@@ -273,6 +273,19 @@ containers:
       - "diun.regopt=ghcr.io"
     include_global_env_vars: false
   ###
+  - service_name: southwest
+    container_name: southwest
+    active: true
+    image: jdholtz/auto-southwest-check-in:v7.0
+    restart: on-failure
+    volumes:
+      - "{{ appdata_path }}/southwest/config.json:/app/config.json"
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=ghcr.io"
+    privileged: true
+    include_global_env_vars: false
+  ###
   - service_name: remote-api
     container_name: remote-api
     active: true

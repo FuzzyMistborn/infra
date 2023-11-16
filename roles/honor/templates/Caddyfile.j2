@@ -150,12 +150,24 @@ chat.{{ secret_personal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import headers
 }
+# ChangeDetection
+change.{{ secret_personal_url }} {
+	reverse_proxy http://192.168.50.21:5000
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	import headers
+}
 
 ######
 
 # Nodered
 nodered.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.30.5:1880
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	import headers
+}
+# Uptime
+uptime.{{ secret_personal_internal_url }} {
+	reverse_proxy http://192.168.1.10:3001
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }

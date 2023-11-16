@@ -324,6 +324,41 @@ containers:
       - CONNECT_WITH_FRANZ=false
     include_global_env_vars: false
   ###
+  - service_name: changedetection
+    container_name: changedetection
+    active: true
+    image: ghcr.io/dgtlmoon/changedetection.io:0.40.1.1
+    restart: unless-stopped
+    ports:
+      - 5000:5000
+    environment:
+      - BASE_URL=https://change.{{ secret_personal_url }}
+      - PLAYWRIGHT_DRIVER_URL=ws://playwright:3000/?stealth=1&--disable-web-security=true
+    volumes:
+      - "{{ appdata_path }}/change:/datastore"
+    include_global_env_vars: false
+  ###
+  - service_name: playwright
+    container_name: playwright
+    active: true
+    image: browserless/chrome:1.60.2-chrome-stable
+    restart: unless-stopped
+    environment:
+      - SCREEN_WIDTH=1920
+      - SCREEN_HEIGHT=1024
+      - SCREEN_DEPTH=16
+      - ENABLE_DEBUGGER=false
+      - PREBOOT_CHROME=true
+      - CONNECTION_TIMEOUT=300000
+      - MAX_CONCURRENT_SESSIONS=10
+      - CHROME_REFRESH_TIME=600000
+      - DEFAULT_BLOCK_ADS=true
+      - DEFAULT_STEALTH=true
+      - DEFAULT_IGNORE_HTTPS_ERRORS=true
+    volumes:
+      - "{{ appdata_path }}/change:/datastore"
+    include_global_env_vars: false
+  ###
   - service_name: remote-api
     container_name: remote-api
     active: true

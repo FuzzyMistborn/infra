@@ -65,12 +65,6 @@ hc.fuzzymistborn.com {
 	import fuzzy_headers
 }
 
-reddit.fuzzymistborn.com {
-	reverse_proxy localhost:3000
-	tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key
-	import fuzzy_headers
-}
-
 stats.fuzzymistborn.com {
 	reverse_proxy localhost:3500
 	tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key
@@ -276,6 +270,16 @@ chat.{{ secret_personal_url }} {
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name chat.{{ secret_personal_url }}
+		}
+	}
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	import personal_headers
+}
+
+change.{{ secret_personal_url }} {
+	reverse_proxy https://10.10.10.10:443 {
+		transport http {
+			tls_server_name change.{{ secret_personal_url }}
 		}
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
