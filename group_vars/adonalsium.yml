@@ -36,7 +36,7 @@ parity_disks:
 
 data_disks:
   - path: /mnt/disk1
-    source: /dev/disk/by-id/ata-ST8000NM0055-1RM112_ZA11KKDB-part1
+    source: /dev/disk/by-id/ata-WDC_WD180EDGZ-11B2DA0_4TG32E7Y-part1
     fs: ext4
     opts: defaults
     content: true
@@ -46,7 +46,7 @@ data_disks:
     opts: defaults
     content: true
   - path: /mnt/disk3
-    source: /dev/disk/by-id/ata-WDC_WD140EDGZ-11B1PA0_9MGWV2JJ-part1
+    source: /dev/disk/by-id/ata-WDC_WD100EMAZ-00WJTA0_JEGRB9VN-part1
     fs: ext4
     opts: defaults
     content: true
@@ -255,6 +255,9 @@ cronjobs:
     special_time: reboot
 
 ### Autorestic Config
+autorestic_config_user: "{{ main_username}}"
+autorestic_user_directory: /home/"{{ main_username}}"
+autorestic_run_check: false
 autorestic_config_yaml:
   version: 2
   backends:
@@ -282,6 +285,13 @@ autorestic_config_yaml:
     synology_audiobooks:
       type: rest
       path: 'http://192.168.30.25:8500/media/audiobooks'
+      key: "{{ secret_restic_repo_password }}"
+      rest:
+        user: "{{ secret_restic_rest_user }}"
+        password: "{{ secret_restic_rest_password }}"
+    synology_ebooks:
+      type: rest
+      path: 'http://192.168.30.25:8500/media/ebooks'
       key: "{{ secret_restic_repo_password }}"
       rest:
         user: "{{ secret_restic_rest_user }}"
@@ -317,6 +327,13 @@ autorestic_config_yaml:
     b2_audiobooks:
       type: b2
       path: "{{ secret_media_b2_bucket }}:/audiobooks"
+      key: "{{ secret_restic_repo_password }}"
+      env:
+        - B2_ACCOUNT_ID: "{{ secret_media_b2_account_id }}"
+        - B2_ACCOUNT_KEY: "{{ secret_media_b2_account_key }}"
+    b2_ebooks:
+      type: b2
+      path: "{{ secret_media_b2_bucket }}:/ebooks"
       key: "{{ secret_restic_repo_password }}"
       env:
         - B2_ACCOUNT_ID: "{{ secret_media_b2_account_id }}"
@@ -371,6 +388,16 @@ autorestic_config_yaml:
       to:
         - synology_audiobooks
         - b2_audiobooks
+      options:
+        forget:
+          keep-daily: 1
+          keep-weekly: 8
+          keep-monthly: 4
+    ebooks:
+      from: '/mnt/Media/Ebooks'
+      to:
+        - synology_ebooks
+        - b2_ebooks
       options:
         forget:
           keep-daily: 1
@@ -474,12 +501,13 @@ containers:
       - /run/udev:/run/udev:ro
     devices:
       ### THIS IS LIKELY UNNCESSARY WITH THE PRIVILEGED FLAG
-      # - /dev/sda:/dev/sda # SSD for later
+      - /dev/sda:/dev/sda
       - /dev/sdb:/dev/sdb
       - /dev/sdc:/dev/sdc
       - /dev/sdd:/dev/sdd
       - /dev/sde:/dev/sde
       - /dev/sdf:/dev/sdf
+      - /dev/sdg:/dev/sdg
       - /dev/nvme0:/dev/nvme0
     cap_add:
       - SYS_RAWIO
@@ -495,20 +523,6 @@ containers:
       - 3001:3001
     volumes:
       - "{{ appdata_path }}/uptime:/app/data"
-    include_global_env_vars: false
-  ###
-  - service_name: flexo
-    container_name: flexo
-    active: true
-    image: nroi/flexo:1.6.9
-    restart: unless-stopped
-    ports:
-      - 7878:7878
-    volumes:
-      - "/mnt/Media/Files/arch:/var/cache/flexo/pkg"
-    environment:
-      - FLEXO_MIRRORS_AUTO_ALLOWED_COUNTRIES=US
-      - FLEXO_MIRROR_SELECTION_METHOD=auto
     include_global_env_vars: false
   ###
   - service_name: handbrake
@@ -528,6 +542,20 @@ containers:
     environment:
       - TZ={{ ntp_timezone }}
     include_global_env_vars: false
+  ###
+  - service_name: calibre
+    container_name: calibre
+    active: true
+    image: lscr.io/linuxserver/calibre:7.1.0
+    restart: unless-stopped
+    ports:
+      - 8085:8080
+      - 8181:8181
+      - 8081:8081
+    volumes:
+      - "{{ appdata_path }}/calibre:/config"
+      - /mnt/Media/Ebooks:/books
+    include_global_env_vars: true
   ###
   - service_name: frigate
     container_name: frigate
