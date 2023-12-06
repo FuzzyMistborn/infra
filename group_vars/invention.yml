@@ -27,6 +27,9 @@ desktop_hc_prune_id: "{{ secret_hc_restic_prune_invention }}"
 desktop_hc_backup_id: "{{ secret_hc_restic_backup_invention }}"
 
 ### Autorestic Config
+autorestic_config_user: "{{ main_username}}"
+autorestic_user_directory: /home/"{{ main_username}}"
+autorestic_run_check: false
 autorestic_config_yaml:
   version: 2
   backends:

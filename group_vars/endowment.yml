@@ -77,6 +77,9 @@ cronjobs:
     hour: 0
 
 ### Autorestic Config
+autorestic_config_user: "{{ main_username}}"
+autorestic_user_directory: /home/"{{ main_username}}"
+autorestic_run_check: false
 autorestic_config_yaml:
   version: 2
   backends:
@@ -131,7 +134,7 @@ containers:
   - service_name: radarr
     container_name: radarr
     active: true
-    image: ghcr.io/linuxserver/radarr:5.0.3
+    image: ghcr.io/linuxserver/radarr:5.1.3
     restart: always
     ports:
       - 7878:7878
@@ -146,7 +149,7 @@ containers:
   - service_name: radarr_uhd
     container_name: radarr_uhd
     active: true
-    image: ghcr.io/linuxserver/radarr:5.0.3
+    image: ghcr.io/linuxserver/radarr:5.1.3
     restart: always
     ports:
       - 7879:7878
@@ -174,7 +177,7 @@ containers:
   - service_name: prowlarr
     container_name: prowlarr
     active: true
-    image: ghcr.io/linuxserver/prowlarr:1.9.4
+    image: ghcr.io/linuxserver/prowlarr:1.10.5
     restart: always
     ports:
       - 9696:9696
@@ -230,7 +233,7 @@ containers:
   - service_name: jellyfin
     container_name: jellyfin
     active: true
-    image: ghcr.io/linuxserver/jellyfin:10.8.10
+    image: ghcr.io/linuxserver/jellyfin:10.8.13
     restart: always
     ports:
       - 8096:8096
@@ -249,9 +252,6 @@ containers:
       - '/mnt/Media/Family Videos:/mnt/home_videos:ro'
     devices:
       - /dev/dri:/dev/dri
-    group_add:
-      - video
-      - render
     include_global_env_vars: true
   ###
   - service_name: deemix
@@ -273,6 +273,20 @@ containers:
       - "diun.regopt=ghcr.io"
     include_global_env_vars: false
   ###
+  - service_name: calibre-web
+    container_name: calibre-web
+    active: true
+    image: lscr.io/linuxserver/calibre-web:0.6.21
+    restart: always
+    ports:
+      - 8083:8083
+    volumes:
+      - "{{ appdata_path }}/calibre-web:/config"
+      - /mnt/Media/Ebooks/Calibre:/books
+    environment:
+      - DOCKER_MODS=linuxserver/mods:universal-calibre
+    include_global_env_vars: true
+  ###
   - service_name: southwest
     container_name: southwest
     active: true
@@ -280,9 +294,6 @@ containers:
     restart: on-failure
     volumes:
       - "{{ appdata_path }}/southwest/config.json:/app/config.json"
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=ghcr.io"
     privileged: true
     include_global_env_vars: false
   ###

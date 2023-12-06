@@ -44,6 +44,9 @@ cronjobs:
     hour: 0
 
 ### Autorestic Config
+autorestic_config_user: "{{ main_username}}"
+autorestic_user_directory: /home/"{{ main_username}}"
+autorestic_run_check: false
 autorestic_config_yaml:
   version: 2
   backends:
