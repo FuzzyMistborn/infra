@@ -113,7 +113,7 @@ containers:
   - service_name: omada-controller
     container_name: omada-controller
     active: true
-    image: mbentley/omada-controller:5.12
+    image: mbentley/omada-controller:5.13
     restart: always
     network_mode: host
     labels:
