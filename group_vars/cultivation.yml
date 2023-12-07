@@ -154,7 +154,7 @@ containers:
   - service_name: code-server
     container_name: code-server
     active: true
-    image: ghcr.io/linuxserver/code-server:4.19.0
+    image: ghcr.io/linuxserver/code-server:4.19.1
     restart: always
     ports:
       - 8443:8443
