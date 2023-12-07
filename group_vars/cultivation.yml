@@ -330,7 +330,7 @@ containers:
   - service_name: changedetection
     container_name: changedetection
     active: true
-    image: ghcr.io/dgtlmoon/changedetection.io:0.45.7.3
+    image: ghcr.io/dgtlmoon/changedetection.io:0.45.8.1
     restart: unless-stopped
     ports:
       - 5000:5000
