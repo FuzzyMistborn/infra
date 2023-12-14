@@ -203,7 +203,7 @@ containers:
   - service_name: uptime
     container_name: uptime
     active: true
-    image: louislam/uptime-kuma:1.23.8
+    image: louislam/uptime-kuma:1.23.10
     restart: always
     ports:
       - 127.0.0.1:3001:3001
