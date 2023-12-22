@@ -251,7 +251,7 @@ containers:
       - '/mnt/Media/Parents TV:/mnt/parents_tv:ro'
       - '/mnt/Media/Family Videos:/mnt/home_videos:ro'
     devices:
-      - /dev/dri:/dev/dri
+      - /dev/dri/renderD128:/dev/dri/renderD128
     include_global_env_vars: true
   ###
   - service_name: deemix

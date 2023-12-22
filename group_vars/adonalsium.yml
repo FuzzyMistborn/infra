@@ -538,7 +538,7 @@ containers:
       - "/mnt/Media/Movies/1-Processing/Handbrake/Watch:/watch"
       - "/mnt/Media/Movies/1-Processing/Handbrake/Output:/output"
     devices:
-      - /dev/dri:/dev/dri
+      - /dev/dri/renderD128:/dev/dri/renderD128
     environment:
       - TZ={{ ntp_timezone }}
     include_global_env_vars: false
@@ -561,8 +561,9 @@ containers:
     container_name: frigate
     active: true
     image: ghcr.io/blakeblackshear/frigate:0.12.1
-    privileged: true
     shm_size: "200mb"
+    cap_add:
+      - CAP_PERFMON
     tmpfs:
       - /tmp/cache
     volumes:
@@ -577,7 +578,7 @@ containers:
       - '8554:8554'
     devices:
       - /dev/bus/usb:/dev/bus/usb
-      - /dev/dri:/dev/dri
+      - /dev/dri/renderD128:/dev/dri/renderD128
     restart: unless-stopped
   ###
   - service_name: restic-server
