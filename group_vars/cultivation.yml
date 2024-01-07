@@ -143,7 +143,7 @@ containers:
   - service_name: freshrss
     container_name: freshrss
     active: true
-    image: ghcr.io/linuxserver/freshrss:1.22.1
+    image: ghcr.io/linuxserver/freshrss:1.23.1
     restart: always
     ports:
       - 8010:80
