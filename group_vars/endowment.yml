@@ -242,7 +242,6 @@ containers:
       - "/mnt/scratch/transcode:/transcode"
       - /mnt/Media/Movies:/mnt/movies:ro
       - /mnt/Media/UHD:/mnt/UHD:ro
-      - /mnt/Media/Music:/mnt/music:ro
       - '/mnt/Media/TV Shows:/mnt/tv:ro'
       - '/mnt/Media/Kids Movies:/mnt/kids:ro'
       - '/mnt/Media/Kids TV:/mnt/kids_tv:ro'
@@ -271,6 +270,22 @@ containers:
     labels:
       - "diun.enable=true"
       - "diun.regopt=ghcr.io"
+    include_global_env_vars: false
+  ###
+  - service_name: navidrome
+    container_name: navidrome
+    active: true
+    image: deluan/navidrome:0.50.2
+    restart: unless-stopped
+    user: 1000:1000
+    ports:
+      - 4533:4533
+    volumes:
+      - '{{ appdata_path }}/navidrome/data:/data'
+      - /mnt/Media/Music:/music:ro
+    environment:
+      - ND_ENABLECOVERANIMATION=false
+      - ND_BASEURL=https://music.{{ secret_personal_internal_url }}
     include_global_env_vars: false
   ###
   - service_name: calibre-web

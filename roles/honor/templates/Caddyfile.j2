@@ -159,6 +159,12 @@ change.{{ secret_personal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import headers
 }
+# Navidrome
+music.{{ secret_personal_url }} {
+	reverse_proxy http://192.168.50.20:4533
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	import headers
+}
 
 ######
 
@@ -304,6 +310,12 @@ esphome.{{ secret_personal_internal_url }} {
 # Calibre
 calibre.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.1.10:8085
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	import headers
+}
+# Calibre-Web
+read.{{ secret_personal_internal_url }} {
+	reverse_proxy http://192.168.50.20:8083
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }

@@ -507,7 +507,6 @@ containers:
       - /dev/sdd:/dev/sdd
       - /dev/sde:/dev/sde
       - /dev/sdf:/dev/sdf
-      - /dev/sdg:/dev/sdg
       - /dev/nvme0:/dev/nvme0
     cap_add:
       - SYS_RAWIO

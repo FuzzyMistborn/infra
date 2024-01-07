@@ -237,6 +237,24 @@ containers:
       - "{{ appdata_path }}/mqtt/log:/mosquitto/log/"
     include_global_env_vars: false
   ###
+  - service_name: govee2mqtt
+    container_name: govee2mqtt
+    active: true
+    image: ghcr.io/wez/govee2mqtt:latest
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      - TZ={{ ntp_timezone }}
+      - RUST_LOG_STYLE=always
+      - GOVEE_EMAIL={{ secret_govee_user }}
+      - GOVEE_PASSWORD={{ secret_govee_pass }}
+      - GOVEE_API_KEY={{ secret_govee_api }}
+      - GOVEE_MQTT_HOST=192.168.30.5
+      - GOVEE_MQTT_PORT=1883
+      - GOVEE_MQTT_USER=homeassistant
+      - GOVEE_MQTT_PASSWORD={{ secret_mqtt_pass }}
+    include_global_env_vars: false
+  ###
   - service_name: nodered
     container_name: nodered
     active: true
