@@ -116,7 +116,7 @@ containers:
   - service_name: influx-db
     container_name: influx-db
     active: true
-    image: influxdb:2.7.4
+    image: influxdb:2.7.5
   #  image: quay.io/influxdb/influxdb:2.1-nightly
   # NOTE: quay.io image does not include influx client.  To install, run following:
   # apt install wget -y
