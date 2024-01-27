@@ -344,7 +344,7 @@ containers:
   - service_name: playwright
     container_name: playwright
     active: true
-    image: browserless/chrome:1.60.2-chrome-stable
+    image: browserless/chrome:1.61.1-chrome-stable
     restart: unless-stopped
     environment:
       - SCREEN_WIDTH=1920
