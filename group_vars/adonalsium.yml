@@ -524,6 +524,19 @@ containers:
       - "{{ appdata_path }}/uptime:/app/data"
     include_global_env_vars: false
   ###
+  - service_name: bambustudio
+    container_name: bambustudio
+    active: true
+    image: lscr.io/linuxserver/bambustudio:01.08.02
+    restart: unless-stopped
+    ports:
+      - 3100:3000
+      - 3101:3001
+    volumes:
+      - "{{ appdata_path }}/bambu:/config"
+      - /mnt/Media/Files/3DPrints/:/prints
+    include_global_env_vars: true
+  ###
   - service_name: handbrake
     container_name: handbrake
     active: true

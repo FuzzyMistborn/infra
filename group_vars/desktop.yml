@@ -78,6 +78,7 @@ aur_package_list:
   - name: bauh
   - name: brother-hl2270dw
   - name: brscan5
+  - name: bambustudio-bin
   - name: deezer
   - name: drawio-desktop-bin
   - name: ferdium-bin
