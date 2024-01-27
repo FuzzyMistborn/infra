@@ -362,7 +362,7 @@ containers:
   - service_name: pairdrop
     container_name: pairdrop
     active: true
-    image: lscr.io/linuxserver/pairdrop:1.10.5
+    image: lscr.io/linuxserver/pairdrop:1.10.6
     restart: unless-stopped
     ports:
       - 127.0.0.1:3200:3000
