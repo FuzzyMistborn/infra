@@ -301,6 +301,17 @@ containers:
       - VIKUNJA_API_URL=https://tasks.{{secret_personal_url}}/api/v1
     include_global_env_vars: false
   ###
+  - service_name: spoolman
+    container_name: spoolman
+    active: true
+    image: ghcr.io/donkie/spoolman:0.15.0
+    restart: unless-stopped
+    volumes:
+      - "{{ appdata_path }}/spoolman:/home/app/.local/share/spoolman"
+    ports:
+      - 7912:8000
+    include_global_env_vars: true
+  ###
   - service_name: ferdium-server
     container_name: ferdium-server
     active: true
