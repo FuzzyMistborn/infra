@@ -304,7 +304,7 @@ containers:
   - service_name: spoolman
     container_name: spoolman
     active: true
-    image: ghcr.io/donkie/spoolman:0.15.0
+    image: ghcr.io/donkie/spoolman:0.16.1
     restart: unless-stopped
     volumes:
       - "{{ appdata_path }}/spoolman:/home/app/.local/share/spoolman"
