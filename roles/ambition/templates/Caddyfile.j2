@@ -152,16 +152,6 @@ calendar.{{ secret_personal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 }
 
-tasks.{{ secret_personal_url }} {
-	reverse_proxy https://10.10.10.10:443 {
-		transport http {
-			tls_server_name tasks.{{ secret_personal_url }}
-		}
-	}
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
-	import personal_headers
-}
-
 bitwarden.{{ secret_personal_url }} {
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
