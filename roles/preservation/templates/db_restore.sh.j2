@@ -24,11 +24,6 @@ cd /home/{{ main_username }}/db_backups/hass
 LAST_HASS=$(ls -t | head -n 1)
 docker exec -i hass-db mariadb -u hass -p{{ secret_hass_db_pass }} homeassistant < /home/{{ main_username }}/db_backups/hass/$LAST_HASS
 
-echo Restoring Vikunja DB
-cd /home/{{ main_username }}/db_backups/vikunja
-LAST_VIKUNJA=$(ls -t | head -n 1)
-docker exec -i vikunja-db mariadb -u vikunja -p{{ secret_vikunja_db_pass }} vikunja < /home/{{ main_username }}/db_backups/vikunja/$LAST_VIKUNJA
-
 echo Restoring Invidious DB
 cd /home/{{ main_username }}/db_backups/invidious
 LAST_INVIDIOUS=$(ls -t | head -n 1)

@@ -194,26 +194,6 @@ containers:
     mem_limit: 300M
     include_global_env_vars: false
   ###
-  - service_name: vikunja-db
-    container_name: vikunja-db
-    active: true
-    image: mariadb:11.2.2
-    restart: always
-    ports:
-      - 3310:3306
-    volumes:
-      - "{{ appdata_path }}/vikunja_db:/var/lib/mysql"
-    command:
-      - "'--character-set-server=utf8mb4'"
-      - "'--collation-server=utf8mb4_unicode_ci'"
-    environment:
-      - MYSQL_ROOT_PASSWORD={{ secret_db_root_pass }}
-      - MYSQL_USER=vikunja
-      - MYSQL_PASSWORD={{ secret_vikunja_db_pass }}
-      - MYSQL_DATABASE=vikunja
-    mem_limit: 300M
-    include_global_env_vars: false
-  ###
   - service_name: invidious-db
     container_name: invidious-db
     active: true

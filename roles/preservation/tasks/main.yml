@@ -12,7 +12,6 @@
     - docker/diun
     - docker/nextcloud_db
     - docker/wallabag_db
-    - docker/vikunja_db
     - docker/hass_db
     - docker/influx_db
     - docker/matrix
