@@ -580,7 +580,6 @@ containers:
       - /tmp/cache
     volumes:
       - "{{ appdata_path }}/frigate/config:/config"
-      - "{{ appdata_path }}/frigate/db:/db"
       - "/mnt/Media/Frigate:/media/frigate"
       - /etc/localtime:/etc/localtime:ro
     environment:
