@@ -96,7 +96,7 @@ containers:
   - service_name: hass-db
     container_name: hass-db
     active: true
-    image: mariadb:11.2.2
+    image: mariadb:11.3.2
     restart: always
     ports:
       - 3307:3306
@@ -145,7 +145,7 @@ containers:
   - service_name: bitwarden-db
     container_name: bitwarden-db
     active: true
-    image: mariadb:11.2.2
+    image: mariadb:11.3.2
     restart: always
     ports:
       - 3308:3306
@@ -165,7 +165,7 @@ containers:
   - service_name: nextcloud-db
     container_name: nextcloud-db
     active: true
-    image: mariadb:11.2.2
+    image: mariadb:11.3.2
     restart: always
     ports:
       - 3306:3306
@@ -182,7 +182,7 @@ containers:
   - service_name: wallabag-db
     container_name: wallabag-db
     active: true
-    image: mariadb:11.2.2
+    image: mariadb:11.3.2
     restart: always
     ports:
       - 3309:3306
