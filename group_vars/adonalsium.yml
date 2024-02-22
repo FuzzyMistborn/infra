@@ -572,7 +572,7 @@ containers:
   - service_name: frigate
     container_name: frigate
     active: true
-    image: ghcr.io/blakeblackshear/frigate:0.13.1
+    image: ghcr.io/blakeblackshear/frigate:0.13.2
     shm_size: "200mb"
     privileged: true
     tmpfs:
