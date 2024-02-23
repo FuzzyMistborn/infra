@@ -249,12 +249,6 @@ jellyseer.{{ secret_personal_internal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
-# BlueIris
-bi.{{ secret_personal_internal_url }} {
-	reverse_proxy http://192.168.40.5:81
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
-	import headers
-}
 # Influx
 influx.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.22:8086
