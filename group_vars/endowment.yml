@@ -305,7 +305,7 @@ containers:
   - service_name: southwest
     container_name: southwest
     active: true
-    image: jdholtz/auto-southwest-check-in:v7.2
+    image: jdholtz/auto-southwest-check-in:v7.3
     restart: on-failure
     volumes:
       - "{{ appdata_path }}/southwest/config.json:/app/config.json"
