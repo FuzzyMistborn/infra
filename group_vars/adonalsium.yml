@@ -586,6 +586,7 @@ containers:
     ports:
       - '5000:5000'
       - '8554:8554'
+      - '1984:1984'
     devices:
       - /dev/bus/usb:/dev/bus/usb
       - /dev/dri/renderD128:/dev/dri/renderD128
