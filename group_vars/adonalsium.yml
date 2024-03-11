@@ -238,7 +238,7 @@ cronjobs:
     minute: 45
     hour: 23
   - name: Media Backup (Everything Else)
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_backup_adonalsium_all }} -- /usr/local/bin/autorestic backup -l photos -l files -l music -l audiobooks -c /home/{{ main_username }}/.autorestic.yml
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_backup_adonalsium_all }} -- /usr/local/bin/autorestic backup -l photos -l files -l music -l audiobooks -l ebooks -c /home/{{ main_username }}/.autorestic.yml
     user: root
     minute: 15
     hour: 1
