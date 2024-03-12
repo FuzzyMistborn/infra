@@ -282,6 +282,48 @@ containers:
       - "{{ appdata_path }}/tasmota:/data"
     include_global_env_vars: false
   ###
+  - service_name: anylist
+    container_name: anylist
+    active: true
+    image: kevdliu/anylist:latest
+    restart: always
+    ports:
+      - 9500:9000
+    volumes:
+      - "{{ appdata_path }}/anylist:/data"
+    environment:
+      - PORT=9000
+      - EMAIL="{{ secret_email }}"
+      - PASSWORD="{{ secret_anylist_pw }}"
+    include_global_env_vars: false
+  ###
+  - service_name: owntracks-recorder
+    container_name: owntracks-recorder
+    active: true
+    image: owntracks/recorder:0.9.7
+    restart: unless-stopped
+    ports:
+      - 8083:8083
+    volumes:
+      - "{{ appdata_path }}/owntracks/frontend/config.js:/usr/share/nginx/html/config/config.js"
+    include_global_env_vars: false
+  ###
+  - service_name: owntracks-frontend
+    container_name: owntracks-frontend
+    active: true
+    image: owntracks/frontend:2.12.0
+    restart: unless-stopped
+    ports:
+      - 8084:80
+    volumes:
+      - "{{ appdata_path }}/owntracks/store:/store"
+      - "{{ appdata_path }}/owntracks/config:/config"
+    environment:
+      - OTR_USER=homeassistant
+      - OTR_PASS="{{ secret_mqtt_pass }}"
+      - OTR_HOST=192.168.30.5
+    include_global_env_vars: false
+  ###
   - service_name: portainer_agent
     container_name: portainer_agent
     active: true
