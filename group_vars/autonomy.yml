@@ -306,6 +306,10 @@ containers:
       - 8083:8083
     volumes:
       - "{{ appdata_path }}/owntracks/frontend/config.js:/usr/share/nginx/html/config/config.js"
+    environment:
+      - OTR_USER=homeassistant
+      - OTR_PASS={{ secret_mqtt_pass }}
+      - OTR_HOST=192.168.30.5
     include_global_env_vars: false
   ###
   - service_name: owntracks-frontend
@@ -317,11 +321,9 @@ containers:
       - 8084:80
     volumes:
       - "{{ appdata_path }}/owntracks/store:/store"
-      - "{{ appdata_path }}/owntracks/config:/config"
     environment:
-      - OTR_USER=homeassistant
-      - OTR_PASS="{{ secret_mqtt_pass }}"
-      - OTR_HOST=192.168.30.5
+      - SERVER_HOST=192.168.30.5
+      - SERVER_PORT=8083
     include_global_env_vars: false
   ###
   - service_name: portainer_agent
