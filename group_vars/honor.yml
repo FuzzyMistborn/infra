@@ -105,22 +105,6 @@ caddy_config: "{{ lookup('template', 'roles/honor/templates/Caddyfile.j2') }}"
 appdata_path: "/home/{{ main_username }}/docker"
 compose_schema_version: '2.1'
 containers:
-  ###
-  - service_name: diun
-    container_name: diun
-    active: true
-    image: crazymax/diun:4.26.0
-    restart: always
-    volumes:
-      - "{{ appdata_path }}/diun/data:/data"
-      - "{{ appdata_path }}/diun/config.yml:/diun.yml:ro"
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - LOG_LEVEL=info
-      - LOG_JSON=false
-    hostname: "{{ hostname }}"
-    include_global_env_vars: true
-  ###
   - service_name: adguard
     container_name: adguard
     active: true
@@ -156,9 +140,6 @@ containers:
       - PASSWORD={{ secret_wireguard_pass }}
       - WG_PERSISTENT_KEEPALIVE=25
       - WG_DEFAULT_DNS=192.168.50.10, 192.168.1.11
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
     cap_add:
       - NET_ADMIN
       - SYS_MODULE

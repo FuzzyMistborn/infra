@@ -14,8 +14,6 @@
     group: "{{ main_groupname }}"
   loop:
     - docker
-    - docker/diun
-    - docker/nginx
     - caddy
 
 - name: Copy certs script
@@ -28,14 +26,6 @@
   loop:
     - {src: 'certs.sh.j2', dest: 'certs.sh'}
     - {src: 'ddns_vps.sh.j2', dest: 'ddns_vps.sh'}
-
-#### DIUN
-- name: Copy DIUN Config Template
-  template:
-    src: diun_config.yml.j2
-    dest: /home/{{ main_username }}/docker/diun/config.yml
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
 
 ### Backup Restore
 - name: Create restore script
