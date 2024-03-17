@@ -293,8 +293,8 @@ containers:
       - "{{ appdata_path }}/anylist:/data"
     environment:
       - PORT=9000
-      - EMAIL="{{ secret_email }}"
-      - PASSWORD="{{ secret_anylist_pw }}"
+      - EMAIL={{ secret_email }}
+      - PASSWORD={{ secret_anylist_pw }}
     include_global_env_vars: false
   ###
   - service_name: owntracks-recorder
