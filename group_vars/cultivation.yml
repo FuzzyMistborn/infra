@@ -191,7 +191,7 @@ containers:
   - service_name: collabora
     container_name: collabora
     active: true
-    image: collabora/code:23.05.9.4.1
+    image: collabora/code:23.05.10.1.1
     restart: always
     privileged: true
     ports:
