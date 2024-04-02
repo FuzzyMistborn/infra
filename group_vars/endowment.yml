@@ -285,6 +285,7 @@ containers:
       - /mnt/Media/Music:/music:ro
     environment:
       - ND_ENABLECOVERANIMATION=false
+      - ND_SCANSCHEDULE=12h
       - ND_BASEURL=https://music.{{ secret_personal_internal_url }}
     include_global_env_vars: false
   ###
