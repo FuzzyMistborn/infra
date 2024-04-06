@@ -253,7 +253,7 @@ containers:
   - service_name: diun
     container_name: diun
     active: true
-    image: crazymax/diun:4.27.0
+    image: crazymax/diun:4.28.0
     restart: always
     volumes:
       - "{{ appdata_path }}/diun/data:/data"
