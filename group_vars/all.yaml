@@ -158,6 +158,7 @@ docker_users:
 
 # ironicbadger.docker_compose_generator
 appdata_path: /home/{{ main_username }}/docker
+compose_schema_version: 2.1
 global_env_vars:
   - "UID={{ main_uid }}"
   - "GID={{ main_gid }}"
