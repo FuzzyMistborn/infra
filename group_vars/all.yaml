@@ -114,30 +114,6 @@ bash_docker_aliases:
   - alias: dc-rm
     command: docker-compose rm $c
 
-bash_pacman_aliases:
-  - alias: pacup
-    command: sudo pacman -Syu
-  - alias: pacin
-    command: sudo pacman -S
-  - alias: pacloc
-    command: sudo pacman -Qi
-  - alias: pacmir
-    command: sudo pacman -Syy
-  - alias: pacrem
-    command: sudo pacman -Rns
-
-bash_yay_aliases:
-  - alias: yaup
-    command: yay -Syu
-  - alias: yain
-    command: yay -S
-  - alias: yaloc
-    command: yay -Qi
-  - alias: yamir
-    command: yay -Syy
-  - alias: yarem
-    command: yay -Rns
-
 # autorestic_ver: 1.1.2
 autorestic_config_user: "{{ main_username }}"
 # restic_ver: 0.12.1

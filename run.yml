@@ -278,15 +278,12 @@
     - 'group_vars/desktop.yml'
     - 'group_vars/vasher.yml'
   roles:
-    - role: grog.package
-    - role: geerlingguy.pip
-    - role: install/pip_packages
-    - role: fuzzymistborn.autorestic
-    - role: install/runitor
+#    - role: grog.package
+#    - role: geerlingguy.pip
+#    - role: fuzzymistborn.autorestic
+#    - role: install/runitor
     - role: desktop
     - role: bash_alias
-    - role: install/webhook
-    - role: install/telegraf
 
 - hosts: szeth
   become: true
@@ -297,15 +294,12 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
-    - role: install/pip_packages
     - role: fuzzymistborn.autorestic
     - role: install/runitor
     - role: desktop
     - role: bash_alias
-    - role: install/webhook
-    - role: install/telegraf
 
-- hosts: whimsy kelsier
+- hosts: whimsy
   become: true
   vars_files:
     - 'vars/vault.yaml'
@@ -313,7 +307,6 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
-    - role: install/pip_packages
     - role: gaming
     - role: bash_alias
     - role: install/webhook
