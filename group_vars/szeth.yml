@@ -1,5 +1,6 @@
 ---
 ### Variables
+hostname: szeth
 pull_backup: false
 
 ### Autorestic Config

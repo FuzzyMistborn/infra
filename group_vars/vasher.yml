@@ -1,5 +1,6 @@
 ---
 ### Variables
+hostname: vasher
 pull_backup: false
 
 ### Autorestic Config

@@ -4,6 +4,11 @@ bootstrap_user: "{{ main_username }}"
 
 ### Install packages with grog.package
 package_list:
+  - name: "@core"
+  - name: "@multimedia"
+  - name: "@sound-and-video"
+  - name: intel-media-driver
+  - name: ffmpeg
   - name: audacity
   - name: calibre
   - name: cifs-utils
@@ -14,25 +19,27 @@ package_list:
   - name: flameshot
   - name: flatpak
   - name: freerdp
+  - name: gcc
   - name: gimp
   - name: git
-  - name: gparted
   - name: hddtemp
   - name: htop
   - name: iperf3
   - name: kolourpaint
+  - name: krename
   - name: libreoffice
   - name: lm_sensors
+  - name: mkvtoolnix
   - name: mpv
   - name: nano
   - name: ncdu
   - name: net-tools
   - name: nextcloud-client
   - name: nfs-utils
-#  - name: nomacs
   - name: pdfarranger
   - name: python
   - name: python-psutil
+  - name: python3-devel
   - name: remmina
   - name: restic
   - name: screen
@@ -40,21 +47,14 @@ package_list:
   - name: solaar
   - name: spectacle
   - name: sudo
-#  - name: tailscale
   - name: thunderbird
   - name: tree
-#  - name: veracrypt
   - name: vlc
   - name: wget
   - name: wireguard-tools
   - name: logiops
   - name: printer-driver-brlaser
-
-aur_package_list:
-  - name: brscan5
-  - name: mqtt-explorer
-  - name: telegraf-bin
-  - name: ventoy-bin
+  - name: pipx
 
 flatpak_list:
   - name: us.zoom.Zoom
@@ -69,6 +69,8 @@ flatpak_list:
   - name: com.jgraph.drawio.desktop
   - name: org.raspberrypi.rpi-imager
   - name: com.moonlight_stream.Moonlight
+  - name: io.github.janbar.noson
+  - name: io.github.dweymouth.supersonic
 
 ### Mounts
 mountpoints:
