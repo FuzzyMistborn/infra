@@ -85,7 +85,6 @@ source ~/.bash_aliases
 # Use additional Git repositories pulled in with `z4h install`.
 #
 # This is just an example that you should delete. It does nothing useful.
-z4h load   -c $Z4H/ohmyzsh/ohmyzsh/plugins/thefuck
 z4h load   -c $Z4H/ohmyzsh/ohmyzsh/plugins/web-search
 z4h load   -c $Z4H/ohmyzsh/ohmyzsh/plugins/extract
 z4h load   -c $Z4H/ohmyzsh/ohmyzsh/plugins/alias-finder
