@@ -1,0 +1,14 @@
+[Unit]
+Description=LNXlink
+After=network-online.target multi-user.target graphical.target
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=5
+
+ExecStart=/usr/local/bin/lnxlink -c /home/{{ main_username }}/.lnxlink_config.yaml
+
+[Install]
+WantedBy=default.target

@@ -278,10 +278,10 @@
     - 'group_vars/desktop.yml'
     - 'group_vars/vasher.yml'
   roles:
-#    - role: grog.package
-#    - role: geerlingguy.pip
-#    - role: fuzzymistborn.autorestic
-#    - role: install/runitor
+    - role: grog.package
+    - role: geerlingguy.pip
+    - role: fuzzymistborn.autorestic
+    - role: install/runitor
     - role: desktop
     - role: bash_alias
 
