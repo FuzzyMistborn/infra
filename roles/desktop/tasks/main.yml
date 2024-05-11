@@ -1,56 +1,4 @@
 ---
-### RPM/DNF Changes
-- name: Improve DNF Performances
-  blockinfile:
-    path: /etc/dnf/dnf.conf
-    create: yes
-    block: |
-      [main]
-      gpgcheck=1
-      installonly_limit=3
-      clean_requirements_on_remove=True
-      best=False
-      skip_if_unavailable=True
-      fastestmirror=1
-      max_parallel_downloads=10
-      deltarpm=true
-  become: yes
-
-- name: Install the rpmfusion and fonts repo packages
-  dnf:
-    state: present
-    disable_gpg_check: yes
-    name:
-      - https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_facts.distribution_version }}.noarch.rpm
-      - https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_facts.distribution_version }}.noarch.rpm
-  become: yes
-
-- name: Remove unwanted packages
-  ansible.builtin.dnf:
-    name:
-      - akregator
-      - akonadi-import-wizard
-      - dragon
-      - elisa-player
-      - grantlee-editor
-      - kamoso
-      - kaddressbook
-      - khelpcenter
-      - kmahjongg
-      - kmail
-      - kmail-account-wizard
-      - kmines
-      - kmouth
-      - kontact
-      - kontactinterface
-      - korganizer
-      - kpat
-      - pim-data-exporter
-      - pim-sieve-editor
-      - plasma-welcome
-      - neochat
-    state: absent
-
 ### SSH Config
 - name: Fix SFTP for Ansible
   lineinfile:
@@ -70,7 +18,7 @@
     state: directory
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-    mode: 0660
+    mode: 0700
 
 - name: Add SSH Keys
   copy:
@@ -107,6 +55,32 @@
     mode: 0440
 
 ### Packages
+- name: Remove unwanted packages
+  ansible.builtin.dnf:
+    name:
+      - akregator
+      - akonadi-import-wizard
+      - dragon
+      - elisa-player
+      - grantlee-editor
+      - kamoso
+      - kaddressbook
+      - khelpcenter
+      - kmahjongg
+      - kmail
+      - kmail-account-wizard
+      - kmines
+      - kmouth
+      - kontact
+      - kontactinterface
+      - korganizer
+      - kpat
+      - pim-data-exporter
+      - pim-sieve-editor
+      - plasma-welcome
+      - neochat
+    state: absent
+
 - name: Add VS Code repo
   become: true
   ansible.builtin.yum_repository:
@@ -137,12 +111,13 @@
 ### AppImage
 - name: Create directories
   ansible.builtin.file:
-    dest: /home/{{ main_username }}/bin
+    dest: /home/{{ main_username }}/{{item}}
     state: directory
     owner: "{{ main_username }}"
     group: "{{ main_groupname }}"
   loop:
     - .local/share/applications/
+    - .local/bin/
 
 - name: Download MQTT Explorer AppImage
   ansible.builtin.get_url:
@@ -189,11 +164,14 @@
 ### LNXLink
 - name: Install LnxLink
   command: pipx install lnxlink
+  become: yes
+  become_user: "{{ main_username }}"
 
 - name: copy to /usr/local/bin
   copy:
     src: "/home/{{ main_username }}/.local/bin/lnxlink"
     dest: "/usr/local/bin"
+    mode: +x
     remote_src: yes
 
 - name: Copy template files
@@ -242,20 +220,6 @@
     # change to 'mounted' to auto mount versus 'present' for just loaded into fstab
     state: present
   loop: "{{ mountpoints }}"
-
-### ZSH
-- name: Copy config files
-  copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    mode: 0644
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-  loop:
-    - src: "zsh/zshrc"
-      dest: "/home/{{ main_username }}/.zshrc"
-    - src: "zsh/p10k.zsh"
-      dest: "/home/{{ main_username }}/.p10k.zsh"
 
 ### Backup/Restore
 - name: Create restore script
@@ -330,6 +294,17 @@
     force: yes
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
+
+### Konsave
+- name: Import Default Konsave Profile
+  command: /usr/local/bin/konsave -i /mnt/Backup/Config/Default.knsv
+  become: yes
+  become_user: "{{ main_username }}"
+
+- name: Apply Default Konsave Profile
+  command: /usr/local/bin/konsave -a Default
+  become: yes
+  become_user: "{{ main_username }}"
 
 ### Final Tweaks
 - name: Enable WOL
