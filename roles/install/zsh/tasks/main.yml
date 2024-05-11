@@ -1,3 +1,4 @@
+---
 - name: Install ZSH and related packages
   become: true
   ansible.builtin.dnf:
@@ -42,12 +43,12 @@
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
   loop:
-   - src: ".zshrc"
-     dest: "/home/{{ main_username }}/.zshrc"
-   - src: "p10k.zsh"
-     dest: "/home/{{ main_username }}/.p10k.zsh"
+    - src: ".zshrc"
+      dest: "/home/{{ main_username }}/.zshrc"
+    - src: "p10k.zsh"
+      dest: "/home/{{ main_username }}/.p10k.zsh"
 
-- name: change user shell to zsh 
+- name: change user shell to zsh
   become: yes
   user:
     name: "{{ main_username }}"
