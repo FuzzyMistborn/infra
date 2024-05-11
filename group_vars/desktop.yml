@@ -8,7 +8,6 @@ package_list:
   - name: "@multimedia"
   - name: "@sound-and-video"
   - name: intel-media-driver
-  - name: ffmpeg
   - name: audacity
   - name: calibre
   - name: cifs-utils
@@ -25,6 +24,7 @@ package_list:
   - name: hddtemp
   - name: htop
   - name: iperf3
+  - name: kate
   - name: kolourpaint
   - name: krename
   - name: libreoffice
@@ -89,6 +89,8 @@ mountpoints:
 
 ### Variables
 pip_package: python-pip
+pip_packages:
+  - konsave
 
 ### Bash Aliases
 bash_aliases:
@@ -103,3 +105,4 @@ bash_aliases:
 bash_autorestic: true
 bash_systemctl: true
 bash_git: true
+bash_dnf: true
