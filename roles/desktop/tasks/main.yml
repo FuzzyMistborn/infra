@@ -295,17 +295,6 @@
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
 
-### Konsave
-- name: Import Default Konsave Profile
-  command: /usr/local/bin/konsave -i /mnt/Backup/Config/Default.knsv
-  become: yes
-  become_user: "{{ main_username }}"
-
-- name: Apply Default Konsave Profile
-  command: /usr/local/bin/konsave -a Default
-  become: yes
-  become_user: "{{ main_username }}"
-
 ### Final Tweaks
 - name: Enable WOL
   command: nmcli c modify "Wired connection 1" 802-3-ethernet.wake-on-lan magic
