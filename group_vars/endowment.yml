@@ -134,7 +134,7 @@ containers:
   - service_name: radarr
     container_name: radarr
     active: true
-    image: ghcr.io/linuxserver/radarr:5.4.6
+    image: ghcr.io/linuxserver/radarr:5.6.0
     restart: always
     ports:
       - 7878:7878
@@ -149,7 +149,7 @@ containers:
   - service_name: radarr_uhd
     container_name: radarr_uhd
     active: true
-    image: ghcr.io/linuxserver/radarr:5.4.6
+    image: ghcr.io/linuxserver/radarr:5.6.0
     restart: always
     ports:
       - 7879:7878
