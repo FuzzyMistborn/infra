@@ -323,19 +323,31 @@ containers:
       - "{{ appdata_path }}/change:/datastore"
     include_global_env_vars: false
   ###
-  - service_name: remote-api
-    container_name: remote-api
+  - service_name: docker-proxy
+    container_name: docker-proxy
     active: true
-    image: kekru/docker-remote-api-tls:v0.4.0
+    image: tecnativa/docker-socket-proxy:0.1.2
     restart: always
     ports:
-      - 2376:443
+      - 2375:2375
     volumes:
-      - "{{ appdata_path }}/docker-api:/data/certs"
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
-      - CREATE_CERTS_WITH_PW={{ secret_docker_api_tls }}
-      - CERT_HOSTNAME=docker-remote.local
+      - LOG_LEVEL=err
+      - BUILD=1
+      - COMMIT=1
+      - CONFIGS=1
+      - CONTAINERS=1
+      - DISTRIBUTION=1
+      - EXEC=1
+      - IMAGES=1
+      - INFO=1
+      - NETWORKS=1
+      - NODES=1
+      - PLUGINS=1
+      - SERVICES=1
+      - SESSSION=1
+      - POST=1
     include_global_env_vars: false
   ###
   - service_name: portainer_agent
