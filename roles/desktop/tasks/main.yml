@@ -12,6 +12,14 @@
     name: sshd
     state: restarted
 
+- name: create .ssh folder
+  file:
+    dest: /home/{{main_username}}/.ssh
+    state: directory
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0700
+
 - name: Add SSH Keys
   copy:
     dest: /home/{{ main_username }}/.ssh/{{ item.dest }}
@@ -35,15 +43,7 @@
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
   loop:
-    - {src: "hooks.yaml.j2", dest: "/home/{{ main_username }}/.hooks.yaml", mode: "644"}
     - {src: "ssh_config.j2", dest: "/home/{{ main_username }}/.ssh/config", mode: "600"}
-
-- name: Add to groups
-  user:
-    name: "{{ main_username }}"
-    append: true
-    groups:
-      - uucp
 
 ### Sudoers file
 - name: Add sudoers file for main user
@@ -54,22 +54,96 @@
     group: root
     mode: 0440
 
-### AUR/Packages
-- name: Install AUR Packages
-  kewlfft.aur.aur:
-    use: yay
+### Packages
+- name: Remove unwanted packages
+  ansible.builtin.dnf:
     name:
-      - "{{ item.name }}"
-    state: present
-  become_user: ansible
-  become: yes
-  loop: "{{ aur_package_list }}"
+      - akregator
+      - akonadi-import-wizard
+      - dragon
+      - elisa-player
+      - grantlee-editor
+      - kamoso
+      - kaddressbook
+      - khelpcenter
+      - kmahjongg
+      - kmail
+      - kmail-account-wizard
+      - kmines
+      - kmouth
+      - kontact
+      - kontactinterface
+      - korganizer
+      - kpat
+      - pim-data-exporter
+      - pim-sieve-editor
+      - plasma-welcome
+      - neochat
+    state: absent
 
-- name: Install intel-media-driver Package
-  package:
-    name: intel-media-driver
+- name: Add VS Code repo
+  become: true
+  ansible.builtin.yum_repository:
+    name: code
+    description: Visual Studio Code repo
+    file: vscode
+    baseurl: https://packages.microsoft.com/yumrepos/vscode
+    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+    gpgcheck: true
+
+- name: Add Tailscale Repo
+  become: true
+  ansible.builtin.command: dnf config-manager --add-repo https://pkgs.tailscale.com/stable/fedora/tailscale.repo
+  args:
+    creates: /etc/yum.repos.d/tailscale.repo
+
+- name: Install packages
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - code
+      - tailscale
+      - https://launchpad.net/veracrypt/trunk/1.26.7/+download/veracrypt-1.26.7-CentOS-8-x86_64.rpm
+    update_cache: true
+    disable_gpg_check: true
     state: present
-  when: ansible_hostname != 'kelsier'
+
+### AppImage
+- name: Create directories
+  ansible.builtin.file:
+    dest: /home/{{ main_username }}/{{item}}
+    state: directory
+    owner: "{{ main_username }}"
+    group: "{{ main_groupname }}"
+  loop:
+    - .local/share/applications/
+    - .local/bin/
+
+- name: Download MQTT Explorer AppImage
+  ansible.builtin.get_url:
+    url: https://github.com/thomasnordquist/MQTT-Explorer/releases/download/0.0.0-0.4.0-beta1/MQTT-Explorer-0.4.0-beta1.AppImage
+    dest: /home/{{ main_username }}/.local/bin/MQTT_Explorer.AppImage
+    owner: "{{ main_username }}"
+    group: "{{ main_groupname }}"
+    mode: 0744
+    force: true
+
+- name: Download MQTT Explorer icon to bin
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/thomasnordquist/MQTT-Explorer/master/icon.png
+    dest: /home/{{ main_username }}/.local/bin/MQTT_Explorer.png
+    owner: "{{ main_username }}"
+    group: "{{ main_groupname }}"
+    mode: 0644
+
+- name: Create a .desktop file for MQTT Explorer
+  ansible.builtin.template:
+    src: templates/MQTT_Explorer.desktop.j2
+    dest: /home/{{ main_username }}/.local/share/applications/MQTT_Explorer.desktop
+    owner: "{{ main_username }}"
+    group: "{{ main_groupname }}"
+    mode: 0644
+    force: true
 
 ### Flatpak
 - name: Add the flathub flatpak repository remote
@@ -87,12 +161,28 @@
 #    method: user
   loop: "{{ flatpak_list }}"
 
-- name: Install SteamLink Flatpak
-  community.general.flatpak:
-    name: com.valvesoftware.SteamLink
-    state: present
-#    method: user
-  when: ansible_hostname != 'kelsier'
+### LNXLink
+- name: Install LnxLink
+  command: pipx install lnxlink
+  become: yes
+  become_user: "{{ main_username }}"
+
+- name: copy to /usr/local/bin
+  copy:
+    src: "/home/{{ main_username }}/.local/bin/lnxlink"
+    dest: "/usr/local/bin"
+    mode: +x
+    remote_src: yes
+
+- name: Copy template files
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+  loop:
+    - {src: "lnxlink_config.yaml.j2", dest: "/home/{{ main_username }}/.lnxlink_config.yaml", mode: "0644"}
 
 ### fstab/disk mounts
 - name: make sure disks unmounted
@@ -100,7 +190,6 @@
     path: "{{ item.path }}"
     state: unmounted
   loop: "{{ mountpoints }}"
-  when: ansible_hostname != 'hoid'
 
 - name: create /mnt points
   file:
@@ -110,7 +199,6 @@
     group: nobody
     mode: 0777
   loop: "{{ mountpoints }}"
-  when: ansible_hostname != 'hoid'
 
 - name: Add smbcredentials
   copy:
@@ -122,7 +210,6 @@
       user=samba
       password={{ secret_samba_pass }}
       domain=cosmere
-  when: ansible_hostname != 'hoid'
 
 - name: mount disks
   mount:
@@ -133,21 +220,6 @@
     # change to 'mounted' to auto mount versus 'present' for just loaded into fstab
     state: present
   loop: "{{ mountpoints }}"
-  when: ansible_hostname != 'hoid'
-
-### ZSH
-- name: Copy config files
-  copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    mode: 0644
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-  loop:
-    - src: "zsh/zshrc"
-      dest: "/home/{{ main_username }}/.zshrc"
-    - src: "zsh/p10k.zsh"
-      dest: "/home/{{ main_username }}/.p10k.zsh"
 
 ### Backup/Restore
 - name: Create restore script
@@ -171,23 +243,6 @@
     state: absent
   when: pull_backup == true
 
-### Wireguard
-- name: Enable IPv4 forwarding for wireguard
-  sysctl:
-    name: net.ipv4.ip_forward
-    value: "1"
-    reload: yes
-  when: ansible_hostname != 'hoid'
-
-- name: Create wireguard conf
-  copy:
-    dest: /etc/wireguard/wg0.conf
-    owner: root
-    group: root
-    mode: 0600
-    content: "{{ secret_parents_wireguard_config }}"
-  when: ansible_hostname != 'hoid'
-
 ### VS Code Extensions
 - name: Install extensions
   command: code --install-extension {{ item }}
@@ -207,47 +262,24 @@
   become: yes
   become_user: "{{ main_username }}"
   loop:
-    - /usr/sbin/lpadmin -p Brother-HL2270DW -E -v ipp://192.168.10.15/ipp/port1 -o media=na_letter_8.5x11in -m HL2270DW.ppd
+    - /usr/sbin/lpadmin -p Brother-HL2270DW -E -v ipp://192.168.10.15/ipp/port1 -o media=na_letter_8.5x11in
     - /usr/bin/lpoptions -d Brother-HL2270DW
 
-### Configure Cinnamon
-- name: Create themes folder
-  file:
-    dest: /home/{{main_username}}/.themes
-    state: directory
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: 0755
+### MPV/KDEConnect
+- name: get latest mpv-mpris release
+  uri:
+    url: https://api.github.com/repos/hoyon/mpv-mpris/releases/latest
+    url_username: "{{ github_api_user | default (omit) }}"
+    url_password: "{{ github_api_pass | default (omit) }}"
+    return_content: true
+    force_basic_auth: "{{ github_api_auth | default (omit) }}"
+  register: release_version_registered
 
-- name: Install mint-x-dark
-  unarchive:
-    src: "https://cinnamon-spices.linuxmint.com/files/themes/Mint-X-Dark.zip?time=1674148583"
-    dest: "/home/{{main_username}}/.themes"
-    remote_src: yes
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: 0755
+- name: set latest mpv-mpris version variable
+  set_fact:
+    mpris_ver: "{{ release_version_registered.json.tag_name }}"
 
-- name: Set Cinnamon themeing with string
-  community.general.dconf:
-    key: "{{ item.key }}"
-    value: "'{{ item.value }}'"
-    state: present
-  become: yes
-  become_user: "{{ main_username }}"
-  loop: "{{ cinnamon_theme_settings_string }}"
-
-- name: Set Cinnamon themeing with value
-  community.general.dconf:
-    key: "{{ item.key }}"
-    value: "{{ item.value }}"
-    state: present
-  become: yes
-  become_user: "{{ main_username }}"
-  loop: "{{ cinnamon_theme_settings_value }}"
-
-### Final Tweaks
-- name: create mpv config folder
+- name: create mpv-mpris config folder
   file:
     dest: /home/{{main_username}}/.config/mpv
     state: directory
@@ -255,50 +287,20 @@
     group: "{{ main_username }}"
     mode: 0660
 
-- name: Install plugin for MPV to use KDEConnect
+- name: install mpv-mpris plugin
   get_url:
-    url: https://github.com/hoyon/mpv-mpris/releases/download/0.9/mpris.so
+    url: https://github.com/hoyon/mpv-mpris/releases/download/{{ mpris_ver }}/mpris.so
     dest: /home/{{ main_username }}/.config/mpv/scripts
     force: yes
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
 
-- name: create Plank config folder
-  file:
-    dest: /home/{{main_username}}/.config/plank/dock1/launchers/
-    state: directory
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: 0755
+### Final Tweaks
+- name: Enable WOL
+  command: nmcli c modify "Wired connection 1" 802-3-ethernet.wake-on-lan magic
 
-- name: Copy Plank files
-  copy:
-    src: "{{ item.src }}"
-    dest: /home/{{ main_username }}/.config/plank/dock1/launchers/{{ item.dest }}
-    mode: 0644
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-  loop:
-    - {src: 'plank/code.dockitem', dest: 'code.dockitem'}
-    - {src: 'plank/com.github.iwalton3.jellyfin-media-player.dockitem', dest: 'com.github.iwalton3.jellyfin-media-player.dockitem'}
-    - {src: 'plank/ferdium.dockitem', dest: 'ferdium.dockitem'}
-    - {src: 'plank/filezilla.dockitem', dest: 'filezilla.dockitem'}
-    - {src: 'plank/firefox.dockitem', dest: 'firefox.dockitem'}
-    - {src: 'plank/libreoffice-calc.dockitem', dest: 'libreoffice-calc.dockitem'}
-    - {src: 'plank/libreoffice-writer.dockitem', dest: 'libreoffice-writer.dockitem'}
-    - {src: 'plank/nemo.dockitem', dest: 'nemo.dockitem'}
-    - {src: 'plank/org.gnome.Terminal.dockitem', dest: 'org.gnome.Terminal.dockitem'}
-    - {src: 'plank/org.kde.kate.dockitem', dest: 'org.kde.kate.dockitem'}
-    - {src: 'plank/org.remmina.Remmina.dockitem', dest: 'org.remmina.Remmina.dockitem'}
-    - {src: 'plank/thunderbird.dockitem', dest: 'thunderbird.dockitem'}
-
-- name: Copy Redshift config
-  template:
-    src: redshift.conf.j2
-    dest: /home/{{ main_username }}/.config/redshift.conf
-    mode: 0644
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
+- name: Set Hostname
+  command: hostnamectl set-hostname {{ hostname }}
 
 - name: Copy Personal avatar
   copy:
@@ -316,79 +318,14 @@
     owner: root
     group: root
 
-- name: Copy slick-greeter.conf
-  copy:
-    src: slick-greeter.conf
-    dest: /etc/lightdm/slick-greeter.conf
-    mode: 0644
-    owner: root
-    group: root
-
-- name: Check for iGPU
-  shell: "lspci | grep VGA | grep -Po 'Intel Corporation HD Graphics'"
-  register: igpu
-  ignore_errors: true
-
-- name: Intel iGPU Tearing Fix
-  copy:
-    dest: /etc/X11/xorg.conf.d/20-intel.conf
-    owner: root
-    group: root
-    mode: 0644
-    content: |
-      Section "Device"
-        Identifier "Intel Graphics"
-        Driver "intel"
-        Option "TripleBuffer" "true"
-        Option "TearFree" "true"
-      EndSection
-  when: igpu.failed == false
-
-- name: Reload Cronie/bluetooth/fstrim
-  systemd:
-    enabled: true
-    daemon-reload: true
-    state: restarted
-    name: "{{ item }}"
-  loop:
-    - cronie
-    - bluetooth
-    - fstrim.timer
-  when: ansible_hostname != 'hoid'
-
 - name: enable bluetooth auto-power on
   lineinfile:
     dest: "/etc/bluetooth/main.conf"
     state: present
     regexp: "^AutoEnable"
     line: "AutoEnable=true"
-  when: ansible_hostname != 'hoid'
 
-- name: Copy systemd service file for WOL
-  copy:
-    src: wol.service
-    dest: /etc/systemd/system/wol.service
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: 0600
-  when: ansible_hostname != 'hoid' and ansible_hostname != 'kelsier'
-
-- name: Enable systemd service
-  systemd:
-    enabled: true
-    daemon-reload: true
-    state: started
-    name: wol.service
-  when: ansible_hostname != 'hoid' and ansible_hostname != 'kelsier'
-
-- name: Fix Delayed Shutdown
-  lineinfile:
-    dest: "/etc/systemd/system.conf"
-    state: present
-    regexp: "#DefaultTimeoutStopSec"
-    line: "DefaultTimeoutStopSec=15s"
-
-### Restic
+### Restic/LnxLink Finish
 - name: Copy systemd service file
   template:
     src: ../templates//systemd/{{ item }}.j2
@@ -401,7 +338,7 @@
     - restic_backup.timer
     - restic_prune.service
     - restic_prune.timer
-  when: ansible_hostname != 'hoid'
+    - lnxlink.service
 
 - name: Reload systemd services/timers
   systemd:
@@ -415,7 +352,8 @@
     - restic_backup.timer
     - restic_prune.service
     - restic_prune.timer
-  when: ansible_hostname != 'hoid'
+    - lnxlink.service
+    - tailscaled.service
 
 ### Logiops
 - name: Copy Szeth logid.cfg file
@@ -426,13 +364,6 @@
     group: root
     mode: 0644
   when: ansible_hostname == 'szeth'
-
-- name: Allow webhooks through firewalld
-  ansible.posix.firewalld:
-    port: 8000/tcp
-    permanent: true
-    state: enabled
-    immediate: true
 
 - name: Reload/Enable Systemd processes
   systemd:

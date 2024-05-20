@@ -1,0 +1,64 @@
+mqtt:
+  prefix: lnxlink
+  clientId: {{ hostname }}
+  server: 192.168.30.5
+  port: 1883
+  auth:
+    user: homeassistant
+    pass: {{ secret_mqtt_pass }}
+    tls: false
+    keyfile: ''
+    certfile: ''
+    ca_certs: ''
+  discovery:
+    enabled: true
+  lwt:
+    enabled: true
+    qos: 1
+    retain: false
+update_interval: 5
+hass_url: null
+hass_api: null
+modules: null
+custom_modules: null
+exclude:
+- active_window
+- audio_select
+- bash
+- battery
+- boot_select
+- brightness
+- camera_used
+- display_env
+- fullscreen
+- gpio
+- idle
+- inference_time
+- keep_alive
+- keyboard_hotkeys
+- media
+- mouse
+- notify
+- power_profile
+- screenshot
+- screen_onoff
+- send_keys
+- speech_recognition
+- statistics
+- systemd
+- sys_updates
+- webcam
+- xdg_open
+- wifi
+settings:
+  hotkeys: null
+  disk_usage:
+    include_disks: []
+    exclude_disks: []
+  bash:
+    expose: null
+  systemd: null
+  gpio:
+    inputs: null
+    outputs: null
+  statistics: https://analyzer.bkbilly.workers.dev

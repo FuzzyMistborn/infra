@@ -1,0 +1,55 @@
+---
+- name: Install ZSH and related packages
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - zsh
+      - exa
+    state: present
+
+- name: Download Oh My Zsh installation script
+  get_url:
+    url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+    dest: /tmp/install_ohmyzsh.sh
+
+- name: Run Oh My Zsh installation script
+  command: sh /tmp/install_ohmyzsh.sh --unattended
+  register: ohmyzsh_result
+  failed_when: "'FAILED' in ohmyzsh_result.stderr"
+
+- name: Install PowerLevel10k Theme
+  ansible.builtin.git:
+    repo: https://github.com/romkatv/powerlevel10k.git
+    dest: /home/{{ main_username }}/.oh-my-zsh-custom/themes/powerlevel10k
+    depth: 1
+
+- name: Install Autosuggestions Plugin
+  ansible.builtin.git:
+    repo: https://github.com/zsh-users/zsh-autosuggestions
+    dest: /home/{{ main_username }}/.oh-my-zsh-custom/plugins/zsh-autosuggestions
+    depth: 1
+
+- name: Install Syntax Highlighting Plugin
+  ansible.builtin.git:
+    repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+    dest: /home/{{ main_username }}/.oh-my-zsh-custom/plugins/zsh-syntax-highlighting
+    depth: 1
+
+- name: Copy config files
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: 0644
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+  loop:
+    - src: ".zshrc"
+      dest: "/home/{{ main_username }}/.zshrc"
+    - src: "p10k.zsh"
+      dest: "/home/{{ main_username }}/.p10k.zsh"
+
+- name: change user shell to zsh
+  become: yes
+  user:
+    name: "{{ main_username }}"
+    shell: /usr/bin/zsh

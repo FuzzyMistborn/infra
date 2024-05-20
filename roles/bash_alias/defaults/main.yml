@@ -8,3 +8,4 @@ bash_apt: false
 bash_git: false
 bash_pacman: false
 bash_yay: false
+bash_dnf: false
