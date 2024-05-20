@@ -353,6 +353,7 @@
     - restic_prune.service
     - restic_prune.timer
     - lnxlink.service
+    - tailscaled.service
 
 ### Logiops
 - name: Copy Szeth logid.cfg file
