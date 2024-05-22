@@ -1,7 +1,7 @@
 ---
 - name: Install ZSH and related packages
   become: true
-  ansible.builtin.dnf:
+  ansible.builtin.package:
     name:
       - zsh
       - exa
