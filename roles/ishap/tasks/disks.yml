@@ -1,0 +1,48 @@
+---
+
+- name: make sure disks unmounted
+  mount:
+    path: "{{ item.path }}"
+    state: unmounted
+  loop: "{{ data_disks + parity_disks }}"
+
+- name: create /mnt points
+  file:
+    dest: "{{ item.path }}"
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: 0777
+  loop: "{{ mergerfs_mount + data_disks + parity_disks + external_mount }}"
+
+- name: mount disks
+  mount:
+    path: "{{ item.path }}"
+    src: "{{ item.source }}"
+    fstype: "{{ item.fs }}"
+    opts: "{{ item.opts }}"
+    # change to 'mounted' to auto mount versus 'present' for just loaded into fstab
+    state: mounted
+  loop: "{{ data_disks + parity_disks }}"
+
+- name: mount mergerfs array
+  mount:
+    path: "{{ item.mountpoint }}"
+    src: "{{ item.source }}"
+    opts: "{{ item.opts }}"
+    fstype: "{{ item.fs }}"
+    # change to 'mounted' to auto mount versus 'present' for just loaded into fstab
+    state: mounted
+  loop: "{{ fstab_mergerfs }}"
+
+- name: create mergerfs directories
+  file:
+    path: "{{ mergerfs_mount }}/{{ item }}"
+    state: directory
+    owner: "{{ main_username }}"
+    group: "{{ main_groupname }}"
+  loop:
+    - proxmox
+    - config
+    - NVR
+    - restic

@@ -5,8 +5,11 @@ export PATH := justfile_directory() + "/env/bin:" + env_var("PATH")
   just --list
 
 ### Run/Builds
-build_proxmox:
+build_adonalsium:
 	ansible-playbook -u root -b run.yml --limit adonalsium --ask-pass
+
+build_ishap:
+	ansible-playbook -u root -b run.yml --limit ishap --ask-pass
 
 build +HOST:
 	ansible-playbook -b run.yml --limit {{ HOST }}

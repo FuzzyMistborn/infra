@@ -8,6 +8,7 @@
   command: pveam download NFS {{ item }}
   loop:
     - ubuntu-22.04-standard_22.04-1_amd64.tar.zst
+    - debian-11-standard_11.6-1_amd64.tar.zst
     - debian-12-standard_12.2-1_amd64.tar.zst.tmp
 
 - name: Create LXCs w/ VLAN Tags
@@ -18,7 +19,7 @@
     unprivileged: "{{ item.privileged }}"
     onboot: "{{ item.onboot | default ('true') }}"
     state: present
-    node: adonalsium
+    node: ishap
     storage: local-lvm
     disk: "{{ item.disk }}"
     cpus: '1'
@@ -39,7 +40,7 @@
       # - keyctl={{ item.keyctl | default ('0') }}
   loop: "{{ lxc_vlans }}"
 
-- name: Create LXC CT w/ Mounts
+- name: Create LXCs on main VLAN
   proxmox:
     proxmox_default_behavior: no_defaults
     vmid: "{{ item.vmid }}"
@@ -47,7 +48,7 @@
     unprivileged: "{{ item.privileged }}"
     onboot: "{{ item.onboot | default ('true') }}"
     state: present
-    node: adonalsium
+    node: ishap
     storage: local-lvm
     disk: "{{ item.disk }}"
     cpus: '1'
@@ -61,50 +62,28 @@
     api_token_secret: "{{ secret_proxmox_api_token }}"
     pubkey: "{{ secret_proxmox_ct_ssh }}"
     password: "{{ secret_proxmox_pass }}"
-    netif: "{'net0':'name=eth0,gw={{ item.gw }},ip={{ item.ip }}/24,tag={{ item.tag | default ('50') }},bridge=vmbr1'}"
-    ostemplate: "{{ item.template| default ('local:vztmpl/ubuntu-22.04-standard_22.04-1_amd64.tar.gz') }}"
-    mounts: "{'mp0':'/dev/disk/by-id/ata-ADATA_SU800_2M032LQKQ6P7-part1,mp=/mnt/scratch,backup=0'}"
+    netif: "{'net0':'name=eth0,gw={{ item.gw }},ip={{ item.ip }}/24,bridge=vmbr0'}"
+    ostemplate: "{{ item.template| default ('local:vztmpl/ubuntu-22.04-standard_22.04-1_amd64.tar.zst') }}"
     features:
-      - nesting={{ item.nesting | default ('0') }}
-      - keyctl={{ item.keyctl | default ('0') }}
-      - mount={{ item.fsmount }}
-  loop: "{{ lxc_mounts }}"
+      - nesting={{ item.nesting | default ('1') }}
+      # - keyctl={{ item.keyctl | default ('0') }}
+  loop: "{{ lxc_main }}"
 
-- name: Set boot order
-  shell: pct set {{ item.lxc }} --startup order={{ item.order }}
-  loop:
-    - {"lxc":"200", "order":"5"}
-    - {"lxc":"201", "order":"1"}
-    - {"lxc":"202", "order":"4"}
-    - {"lxc":"203", "order":"5"}
-    - {"lxc":"211", "order":"3"}
-    - {"lxc":"250", "order":"3"}
-    - {"lxc":"251", "order":"3"}
-    - {"lxc":"252", "order":"3"}
-    - {"lxc":"253", "order":"2"}
-    - {"lxc":"211", "order":"3"}
-
-- name: Endowment - Add iGPU passthrough/disable apparmor
-  lineinfile:
-    dest: "/etc/pve/lxc/250.conf"
-    insertafter: EOF
-    line: |
-      lxc.cgroup2.devices.allow: c 226:0 rwm
-      lxc.cgroup2.devices.allow: c 226:128 rwm
-      lxc.cgroup2.devices.allow: c 29:0 rwm
-      lxc.mount.entry: /dev/dri dev/dri none bind,optional,create=dir
-      lxc.mount.entry: /dev/fb0 dev/fb0 none bind,optional,create=file
-      lxc.apparmor.profile: unconfined
-      lxc.cgroup2.devices.allow: a
-      lxc.cap.drop:
-    unsafe_writes: yes
-
-- name: Autonomy - Add USB devices
-  lineinfile:
-    dest: "/etc/pve/lxc/251.conf"
-    insertafter: EOF
-    line: |
-      lxc.apparmor.profile: unconfined
-      lxc.cgroup2.devices.allow: a
-      lxc.cap.drop:
-    unsafe_writes: yes
+- name: Create VMs
+  community.general.proxmox_kvm:
+    api_user: root@pam
+    api_host: localhost
+    api_token_id: Ansible
+    api_token_secret: "{{ secret_proxmox_api_token }}"
+    pubkey: "{{ secret_proxmox_ct_ssh }}"
+    password: "{{ secret_proxmox_pass }}"
+    name: Virtuosity
+    node: ishap
+    net:
+      net0: 'virtio,bridge=vmbr1'
+    cores: 6
+    balloon: 2048
+    cpu: host
+    cpuunits: '1000'
+    format: qcow2
+  loop: "{{ vm }}"

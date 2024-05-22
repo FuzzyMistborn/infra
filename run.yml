@@ -63,6 +63,42 @@
     - role: ironicbadger.docker_compose_generator
     - role: ironicbadger.snapraid
 
+- hosts: ishap
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+  pre_tasks:
+    - name: Remove enterprise repo
+      file:
+        state: absent
+        path: /etc/apt/sources.list.d/pve-enterprise.list
+    - name: Switch to community repo
+      apt_repository:
+        repo: 'deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription'
+        state: present
+    - name: Apt update
+      apt:
+        upgrade: 'yes'
+        update_cache: yes
+        cache_valid_time: 3600
+  roles:
+#    - role: install/nag_removal
+#    - role: grog.package
+#    - role: geerlingguy.pip
+#    - role: install/pip_packages
+#    - role: geerlingguy.nfs
+#    - role: install/mergerfs
+    - role: fuzzymistborn.autorestic
+    - role: install/runitor
+#    - role: install/zsh
+    - role: ishap
+ #   - role: bash_alias
+    - role: cronjobs
+#    - role: geerlingguy.docker
+#    - role: geerlingguy.ntp
+    - role: ironicbadger.docker_compose_generator
+    - role: ironicbadger.snapraid
+
 ### LXCs/VMs/VPS
 - hosts: dominion
   become: true
@@ -88,7 +124,6 @@
     - role: geerlingguy.samba
     - role: geerlingguy.docker
     - role: geerlingguy.pip
-    - role: install/pip_packages
     - role: fuzzymistborn.autorestic
     - role: install/telegraf
     - role: install/runitor
@@ -141,7 +176,6 @@
     - role: grog.package
     - role: geerlingguy.docker
     - role: geerlingguy.pip
-    - role: install/pip_packages
     - role: fuzzymistborn.autorestic
     - role: install/telegraf
     - role: install/runitor
@@ -158,7 +192,6 @@
     - role: grog.package
     - role: geerlingguy.docker
     - role: geerlingguy.pip
-    - role: install/pip_packages
     - role: fuzzymistborn.autorestic
     - role: install/telegraf
     - role: install/runitor
@@ -174,7 +207,6 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
-    - role: install/pip_packages
     - role: geerlingguy.docker
     - role: install/lego
     - role: fuzzymistborn.autorestic
@@ -193,8 +225,6 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
-    - role: install/pip_packages
-    - role: install/pip_packages
     - role: geerlingguy.docker
     - role: fuzzymistborn.autorestic
     - role: install/runitor
@@ -210,8 +240,6 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
-    - role: install/pip_packages
-    - role: install/pip_packages
     - role: geerlingguy.docker
     - role: invention
     - role: fuzzymistborn.autorestic
@@ -226,8 +254,6 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
-    - role: install/pip_packages
-    - role: install/pip_packages
     - role: geerlingguy.docker
     - role: connection
     - role: fuzzymistborn.autorestic
@@ -243,7 +269,6 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
-    - role: install/pip_packages
     - role: geerlingguy.docker
     - role: install/runitor
     - role: bash_alias
@@ -257,7 +282,6 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
-    - role: install/pip_packages
     - role: geerlingguy.docker
     - role: install/lego
     - role: install/tailscale
@@ -363,11 +387,11 @@
   become: true
   vars_files:
     - 'vars/vault.yaml'
-    - 'group_vars/gaming.yml'
+#    - 'group_vars/gaming.yml'
   roles:
     - role: grog.package
     - role: geerlingguy.pip
-    - role: gaming
+#    - role: gaming
     - role: bash_alias
     - role: install/webhook
 
@@ -379,7 +403,6 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
-    - role: install/pip_packages
     - role: fuzzymistborn.autorestic
     - role: install/runitor
     - role: desktop

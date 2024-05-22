@@ -9,6 +9,11 @@ Host adonalsium
     User {{ main_username }}
     IdentityFile ~/.ssh/desktop_lxcs
 
+Host ishap
+    HostName 192.168.1.5
+    User {{ main_username }}
+    IdentityFile ~/.ssh/desktop_lxcs
+
 Host endowment
     HostName 192.168.50.20
     User {{ main_username }}
@@ -56,11 +61,6 @@ Host connection
     
 Host whimsy
     HostName 192.168.10.13
-    User {{ main_username }}
-    IdentityFile ~/.ssh/desktop_lxcs
-
-Host kelsier
-    HostName 192.168.10.10
     User {{ main_username }}
     IdentityFile ~/.ssh/desktop_lxcs
 

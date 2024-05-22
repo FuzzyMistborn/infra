@@ -219,12 +219,6 @@ adguard2.{{ secret_personal_internal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
-# Tinmind
-tinmind.{{ secret_personal_internal_url }} {
-	reverse_proxy http://192.168.30.25.5000
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
-	import headers
-}
 # Radarr UHD
 radarr_uhd.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.20:7879

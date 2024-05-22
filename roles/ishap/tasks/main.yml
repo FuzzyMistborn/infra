@@ -1,0 +1,113 @@
+---
+
+### Basic Setup
+- name: Ensure user groups exists
+  group:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - "{{ main_username }}"
+    - ansible
+
+- name: Add users
+  user:
+    name: "{{ item.user }}"
+    password: "{{ item.pass }}"
+    groups:
+      - "{{ item.user }}"
+      - sudo
+    shell: /bin/bash
+  loop:
+    - {user: "{{ main_username }}", pass: "{{ secret_main_user_pass }}"}
+    - {user: ansible, pass: "{{ secret_ansible_pass }}"}
+
+- name: Add sudoers file for ansible
+  copy:
+    src: sudoer_ansible
+    dest: /etc/sudoers.d/ansible
+    owner: root
+    group: root
+    mode: 0440
+
+- name: SSH Keys
+  authorized_key:
+    user: "{{ item.user }}"
+    state: present
+    key: "{{ item.ssh }}"
+  loop:
+    - {user: "{{ main_username }}", ssh: "{{ secret_main_user_ssh }}"}
+    - {user: "{{ main_username }}", ssh: "{{ secret_main_user_alt_ssh }}"}
+    - {user: ansible, ssh: "{{ secret_ansible_ssh }}"}
+
+- name: create main user directories
+  file:
+    path: /home/{{ main_username }}/{{ item }}
+    state: directory
+    owner: "{{ main_username }}"
+    group: "{{ main_groupname }}"
+  loop:
+    - docker
+    - docker/scrutiny
+
+- name: Copy scripts
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: +x
+  loop:
+    - {src: "trim.sh", dest: "/home/{{ main_username }}/trim.sh"}
+
+# Source: https://www.reddit.com/r/Proxmox/comments/118i6ct/tutorialguide_how_to_make_the_prelogin_banner/
+- name: Copy issue file to adjust displayer IP address
+  copy:
+    src: etc/issue
+    dest: /etc/issue
+    owner: root
+    group: root
+    mode: 0644
+
+### Infrastructure
+#- name: Set up disks/mounts
+#  include_tasks: disks.yml
+
+- name: Set up containers
+  include_tasks: infrastructure.yml
+  when: infrastructure == true
+
+### Backup Restore
+- name: Create restore script
+  copy:
+    dest: /home/{{ main_username }}/restore.sh
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: +x
+    content: |
+      #!/bin/bash
+      /usr/local/bin/autorestic restore -f -l docker --from local_docker --to /
+  when: pull_backup == true
+- name: Run restore script
+  command: /bin/bash ./restore.sh
+  args:
+    chdir: "/home/{{ main_username }}"
+  when: pull_backup == true
+- name: Remove restore script
+  file:
+    path: /home/{{ main_username }}/restore.sh
+    state: absent
+  when: pull_backup == true
+
+### Wireguard/Misc
+- name: Enable IPv4 forwarding
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    reload: yes
+
+- name: Reboot Cronjob
+  cron:
+    name: "Set /dev/dri to 777"
+    job: "chmod -R 777 /dev/dri"
+    user: "root"
+    special_time: reboot
+    state: present
+
