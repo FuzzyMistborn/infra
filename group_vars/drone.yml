@@ -12,10 +12,6 @@ package_list:
   - name: sudo
   - name: wget
 
-### Pip Packages
-pip_packages:
-  - thefuck
-
 ### Bash Aliases
 
 bash_docker: true

@@ -13,10 +13,6 @@ package_list:
   - name: wget
   - name: wireguard
 
-### Pip Packages
-pip_packages:
-  - thefuck
-
 pull_backup: false
 # lego_ver: 4.4.0
 
@@ -30,8 +26,7 @@ bash_apt: true
 ### Cronjobs
 cronjobs:
   - name: Restic Prune
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_honor }} -- /usr/local/bin/autorestic exec -a -- forget --keep-daily 1 --keep-weekly 8 --keep-monthly 4 --prune
-#    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_honor }} -- /usr/local/bin/autorestic forget -a -- prune
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_honor }} -- /usr/local/bin/autorestic forget -a -- prune
     user: "{{ main_username }}"
     minute: 15
     hour: 22
@@ -69,9 +64,9 @@ autorestic_run_check: false
 autorestic_config_yaml:
   version: 2
   backends:
-    synology_docker:
+    local_docker:
       type: rest
-      path: 'http://192.168.30.25:8500/honor'
+      path: 'http://192.168.1.5:8500/honor'
       key: "{{ secret_restic_repo_password }}"
       rest:
         user: "{{ secret_restic_rest_user }}"
@@ -87,7 +82,7 @@ autorestic_config_yaml:
     docker:
       from: '/home/{{ main_username }}/docker'
       to:
-        - synology_docker
+        - local_docker
         - b2_docker
       options:
         forget:

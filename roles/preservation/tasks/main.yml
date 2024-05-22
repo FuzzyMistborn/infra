@@ -48,7 +48,7 @@
     mode: +x
     content: |
       #!/bin/bash
-      /usr/local/bin/autorestic restore -f -l db_backups --from synology_db --to /
+      /usr/local/bin/autorestic restore -f -l db_backups --from local_db --to /
   when: pull_backup == true
 - name: Run restore script
   command: /bin/bash ./restore.sh

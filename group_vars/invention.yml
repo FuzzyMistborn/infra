@@ -10,10 +10,6 @@ package_list:
   - name: restic
   - name: wget
 
-### Pip Packages
-pip_packages:
-  - thefuck
-
 pull_backup: false
 
 ### Bash Aliases
@@ -33,9 +29,9 @@ autorestic_run_check: false
 autorestic_config_yaml:
   version: 2
   backends:
-    synology_docker:
+    local_docker:
       type: rest
-      path: 'http://192.168.30.25:8500/invention'
+      path: 'http://192.168.1.5:8500/invention'
       key: "{{ secret_restic_repo_password }}"
       rest:
         user: "{{ secret_restic_rest_user }}"
@@ -44,7 +40,7 @@ autorestic_config_yaml:
     docker:
       from: '/home/{{ main_username }}/docker'
       to:
-        - synology_docker
+        - local_docker
       options:
         forget:
           keep-daily: 1

@@ -1,6 +1,5 @@
 ---
 hostname: adonalsium
-webhook_port: 7000
 
 ### Install packages with grog.package
 package_list:
@@ -18,7 +17,6 @@ package_list:
 ### Pip Packages
 pip_packages:
   - proxmoxer
-  - thefuck
 
 ### Disks
 mergerfs_mount:
@@ -63,30 +61,16 @@ fstab_mergerfs:
     opts: "defaults,nonempty,allow_other,use_ino,cache.files=off,moveonenospc=true,category.create=mfs,dropcacheonclose=true,minfreespace=100G,fsname=mergerfs"
 
 nfs_mount:
-  - path: /mnt/synology_backup
-    source: 192.168.10.20:/volume1/Backup/
-    fs: nfs
-    opts: defaults
-    content: false
-  - path: /mnt/synology_restic
-    source: 192.168.10.20:/volume1/Restic/
+  - path: /mnt/local_backup
+    source: 192.168.1.5:/mnt/Backup/
     fs: nfs
     opts: defaults
     content: false
 
 ### Infrastructure
 lxc_vlans:
-  - name: Dominion
-    vmid: 200
-    privileged: true
-    gw: 192.168.10.1
-    ip: 192.168.10.50
-    tag: 10
-    disk: 'local-lvm:10'
-    cores: 2
-    memory: 512
   - name: Honor
-    vmid: 201
+    vmid: 200
     privileged: true
     gw: 192.168.50.1
     ip: 192.168.50.10
@@ -94,17 +78,6 @@ lxc_vlans:
     disk: 'local-lvm:15'
     cores: 2
     memory: 1024
-    nesting: 1
-    keyctl: 1
-  - name: Drone
-    vmid: 203
-    privileged: false
-    gw: 192.168.50.1
-    ip: 192.168.50.15
-    tag: 50
-    disk: 'local-lvm:25'
-    cores: 12
-    memory: 2048
     nesting: 1
     keyctl: 1
   - name: Invention
@@ -120,7 +93,7 @@ lxc_vlans:
     keyctl: 1
     onboot: false
   - name: Connection
-    vmid: 211
+    vmid: 201
     privileged: true
     gw: 192.168.50.1
     ip: 192.168.50.5
@@ -162,18 +135,6 @@ lxc_vlans:
     disk: 'local-lvm:40'
     cores: 4
     memory: 3072
-    nesting: 1
-    keyctl: 1
-
-lxc_main:
-  - name: Omada
-    vmid: 500
-    privileged: true
-    gw: 192.168.1.1
-    ip: 192.168.1.10
-    disk: 'local-lvm:10'
-    cores: 2
-    memory: 1024
     nesting: 1
     keyctl: 1
 
@@ -220,8 +181,7 @@ cronjobs:
     minute: 0
     hour: '*/6'
   - name: Restic Prune
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_adonalsium }} -- /usr/local/bin/autorestic exec -a -- forget --keep-daily 1 --keep-weekly 8 --keep-monthly 4 --prune
-#    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_adonalsium }} -- /usr/local/bin/autorestic forget -a -- prune
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_adonalsium }} -- /usr/local/bin/autorestic forget -a -- prune
     user: "{{ main_username }}"
     minute: 0
     hour: 1
@@ -261,44 +221,44 @@ autorestic_run_check: false
 autorestic_config_yaml:
   version: 2
   backends:
-    synology_docker:
+    local_docker:
       type: rest
-      path: 'http://192.168.30.25:8500/adonalsium'
+      path: 'http://192.168.1.5:8500/adonalsium'
       key: "{{ secret_restic_repo_password }}"
       rest:
         user: "{{ secret_restic_rest_user }}"
         password: "{{ secret_restic_rest_password }}"
-    synology_photos:
+    local_photos:
       type: rest
-      path: 'http://192.168.30.25:8500/media/photos'
+      path: 'http://192.168.1.5:8500/media/photos'
       key: "{{ secret_restic_repo_password }}"
       rest:
         user: "{{ secret_restic_rest_user }}"
         password: "{{ secret_restic_rest_password }}"
-    synology_music:
+    local_music:
       type: rest
-      path: 'http://192.168.30.25:8500/media/music'
+      path: 'http://192.168.1.5:8500/media/music'
       key: "{{ secret_restic_repo_password }}"
       rest:
         user: "{{ secret_restic_rest_user }}"
         password: "{{ secret_restic_rest_password }}"
-    synology_audiobooks:
+    local_audiobooks:
       type: rest
-      path: 'http://192.168.30.25:8500/media/audiobooks'
+      path: 'http://192.168.1.5:8500/media/audiobooks'
       key: "{{ secret_restic_repo_password }}"
       rest:
         user: "{{ secret_restic_rest_user }}"
         password: "{{ secret_restic_rest_password }}"
-    synology_ebooks:
+    local_ebooks:
       type: rest
-      path: 'http://192.168.30.25:8500/media/ebooks'
+      path: 'http://192.168.1.5:8500/media/ebooks'
       key: "{{ secret_restic_repo_password }}"
       rest:
         user: "{{ secret_restic_rest_user }}"
         password: "{{ secret_restic_rest_password }}"
-    synology_files:
+    local_files:
       type: rest
-      path: 'http://192.168.30.25:8500/media/files'
+      path: 'http://192.168.1.5:8500/media/files'
       key: "{{ secret_restic_repo_password }}"
       rest:
         user: "{{ secret_restic_rest_user }}"
@@ -356,7 +316,7 @@ autorestic_config_yaml:
     docker:
       from: '/home/{{ main_username }}/docker'
       to:
-        - synology_docker
+        - local_docker
         - b2_docker
       options:
         forget:
@@ -366,7 +326,7 @@ autorestic_config_yaml:
     photos:
       from: '/mnt/Media/Photos'
       to:
-        - synology_photos
+        - local_photos
         - b2_photos
       options:
         forget:
@@ -376,7 +336,7 @@ autorestic_config_yaml:
     music:
       from: '/mnt/Media/Music'
       to:
-        - synology_music
+        - local_music
         - b2_music
       options:
         forget:
@@ -386,7 +346,7 @@ autorestic_config_yaml:
     audiobooks:
       from: '/mnt/Media/Audiobooks'
       to:
-        - synology_audiobooks
+        - local_audiobooks
         - b2_audiobooks
       options:
         forget:
@@ -396,7 +356,7 @@ autorestic_config_yaml:
     ebooks:
       from: '/mnt/Media/Ebooks'
       to:
-        - synology_ebooks
+        - local_ebooks
         - b2_ebooks
       options:
         forget:
@@ -406,7 +366,7 @@ autorestic_config_yaml:
     files:
       from: '/mnt/Media/Files'
       to:
-        - synology_files
+        - local_files
         - b2_files
       options:
         backup:
@@ -420,20 +380,33 @@ autorestic_config_yaml:
 
 ### Snapraid Config
 snapraid_force_install: false
-snapraid_install: false
-snapraid_runner: false
+snapraid_install: true
+snapraid_runner: true
+snapraid_data_disks:
+  - path: /mnt/disk1
+    content: true
+  - path: /mnt/disk2
+    content: true
+  - path: /mnt/disk3
+    content: true
+  - path: /mnt/disk4
+    content: true
+snapraid_parity_disks:
+  - path: /mnt/parity1
+    content: true
 snapraid_bin_path: /usr/bin/snapraid
 snapraid_runner_email_address_from: "{{ secret_snapraid_email_from }}"
 snapraid_runner_email_address_to: "{{ secret_snapraid_email_to }}"
 snapraid_runner_email_address: "{{ secret_snapraid_email_address }}"
 snapraid_runner_email_pass: "{{ secret_snapraid_email_pass }}"
+snapraid_runner_email_subject: "[SnapRAID] Adonalsium Status Report"
 snapraid_runner_smtp_host: "{{ secret_snapraid_smtp_host }}"
 snapraid_runner_smtp_port: 465
 snapraid_runner_use_ssl: true
 snapraid_runner_touch: false
-snapraid_runner_command: "python3 {{ snapraid_run_bin }} -c {{ snapraid_run_conf }}"
+snapraid_runner_command: "python3 {{ snapraid_runner_bin }} -c {{ snapraid_runner_conf }}"
 snapraid_runner_cron_jobs:
-  - {job: '/usr/local/bin/runitor -uuid {{ secret_hc_adonalsium_snapraid }} -- {{ snapraid_run_command }}', name: 'snapraid_runner', weekday: '*', hour: '04'}
+  - {job: '/usr/local/bin/runitor -uuid {{ secret_hc_adonalsium_snapraid }} -- {{ snapraid_runner_command }}', name: 'snapraid_runner', weekday: '*', hour: '04'}
 snapraid_config_excludes:
   - "*.unrecoverable"
   - "/tmp/"
@@ -603,14 +576,3 @@ containers:
       - /dev/bus/usb:/dev/bus/usb
       - /dev/dri/renderD128:/dev/dri/renderD128
     restart: unless-stopped
-  ###
-  - service_name: restic-server
-    container_name: restic-server
-    active: false
-    image: restic/rest-server:0.12.1
-    restart: unless-stopped
-    ports:
-      - 8500:8000
-    volumes:
-      - /mnt/synology_restic:data
-    include_global_env_vars: false

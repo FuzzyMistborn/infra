@@ -18,7 +18,6 @@ pip_packages:
   - ansible
   - ansible-lint
   - yamllint
-  - thefuck
 
 pull_backup: false
 

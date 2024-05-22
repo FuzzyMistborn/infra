@@ -22,7 +22,6 @@ package_list:
 ### Pip Packages
 pip_packages:
   - yamllint
-  - thefuck
 
 ### Variables
 install_nut: true
@@ -61,9 +60,9 @@ autorestic_run_check: false
 autorestic_config_yaml:
   version: 2
   backends:
-    synology_docker:
+    local_docker:
       type: rest
-      path: 'http://192.168.30.25:8500/unity'
+      path: 'http://192.168.1.5:8500/unity'
       key: "{{ secret_restic_repo_password }}"
       rest:
         user: "{{ secret_restic_rest_user }}"
@@ -79,7 +78,7 @@ autorestic_config_yaml:
     docker:
       from: '/home/{{ main_username }}/docker'
       to:
-        - synology_docker
+        - local_docker
         - b2_docker
       options:
         forget:
