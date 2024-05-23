@@ -12,13 +12,13 @@ autorestic_config_yaml:
   backends:
     local_files:
       type: rest
-      path: 'http://192.168.10.20:8500/szeth'
+      path: 'http://192.168.1.5:8500/szeth'
       key: "{{ secret_restic_repo_password }}"
       rest:
         user: "{{ secret_restic_rest_user }}"
         password: "{{ secret_restic_rest_password }}"
   locations:
-    docker:
+    files:
       from: /home/{{ main_username }}
       to:
         - local_files

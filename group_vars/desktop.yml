@@ -75,11 +75,11 @@ flatpak_list:
 ### Mounts
 mountpoints:
   - path: /mnt/Backup
-    source: 192.168.10.20:/volume1/Backup/
+    source: 192.168.1.5:/config
     fs: nfs
     opts: "defaults"
   - path: /mnt/NVR
-    source: 192.168.10.20:/volume1/BlueIris/
+    source: 192.168.1.5:/NVR
     fs: nfs
     opts: "defaults"
   - path: "/mnt/Media"

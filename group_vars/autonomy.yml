@@ -57,11 +57,6 @@ cronjobs:
     job: /usr/local/bin/runitor -uuid {{ secret_hc_docker_version_check }} -- bash -c /home/{{ main_username }}/scripts/docker.sh > /dev/null
     user: "{{ main_username }}"
     minute: '*/20'
-  - name: NodeRed Github
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_nr_git }} -- /home/{{ main_username }}/docker/nodered_old/github_cron.sh
-    user: "{{ main_username }}"
-    minute: 0
-    hour: 23
   - name: Restic Prune
     job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_autonomy }} -- /usr/local/bin/autorestic forget -a -- prune
     user: "{{ main_username }}"

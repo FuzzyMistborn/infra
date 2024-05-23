@@ -12,6 +12,8 @@ package_list:
   - name: libegl1
   - name: restic
   - name: rsyslog
+  - name: sudo
+  - name: screen
   - name: wireguard
 
 ### Pip Packages

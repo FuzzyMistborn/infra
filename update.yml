@@ -10,7 +10,7 @@
         upgrade: 'yes'
         autoremove: yes
 
-- hosts: adonalsium
+- hosts: adonalsium ishap
   vars_files:
     - 'vars/vault.yaml'
     - 'group_vars/all.yaml'
@@ -18,8 +18,6 @@
     - role: install/mergerfs
       become: true
     - role: install/runitor
-    - role: install/telegraf
-      become: true
   tasks:
     - name: update all packages
       become: true
