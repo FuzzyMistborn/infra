@@ -67,8 +67,8 @@
     mode: 0644
 
 ### Infrastructure
-#- name: Set up disks/mounts
-#  include_tasks: disks.yml
+- name: Set up disks/mounts
+  include_tasks: disks.yml
 
 - name: Set up containers
   include_tasks: infrastructure.yml

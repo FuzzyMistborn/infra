@@ -12,7 +12,6 @@ package_list:
   - name: iputils-ping
   - name: lm-sensors
   - name: net-tools
-  - name: nut
   - name: python3
   - name: restic
   - name: rsyslog
@@ -24,7 +23,6 @@ pip_packages:
   - yamllint
 
 ### Variables
-install_nut: true
 pull_backup: false
 
 ### Bash Aliases
@@ -90,23 +88,6 @@ autorestic_config_yaml:
 appdata_path: "/home/{{ main_username }}/docker"
 containers:
   ###
-  - service_name: rtl433
-    container_name: rtl433
-    active: true
-    image: hertzg/rtl_433:master
-    restart: always
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=docker.io"
-    command:
-      - '-Fmqtt://192.168.30.5:1883,user=homeassistant,pass={{ secret_mqtt_pass }},retain=1,devices=rtl_433[/model][/id]'
-      - '-Csi'
-      - '-R40'
-      - '-R41'
-    devices:
-      - /dev/rtl433:/dev/bus/usb/001/002
-    include_global_env_vars: false
-  ###
   - service_name: zwavejs
     container_name: zwavejs
     active: true
@@ -138,21 +119,6 @@ containers:
     environment:
       - TZ={{ ntp_timezone }}
     include_global_env_vars: false
-  ###
-  - service_name: diun
-    container_name: diun
-    active: true
-    image: crazymax/diun:4.28.0
-    restart: always
-    volumes:
-      - "{{ appdata_path }}/diun/data:/data"
-      - "{{ appdata_path }}/diun/config.yml:/diun.yml:ro"
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - LOG_LEVEL=info
-      - LOG_JSON=false
-    hostname: "{{ hostname }}"
-    include_global_env_vars: true
   ###
   - service_name: docker-proxy
     container_name: docker-proxy
@@ -212,4 +178,18 @@ containers:
       - /var/lib/docker/volumes:/var/lib/docker/volumes
     environment:
       - AGENT_SECRET={{ secret_portainer_key }}
+    include_global_env_vars: false
+  ###
+  - service_name: nut-ups
+    container_name: nut-ups
+    active: true
+    image: fuzzymistborn/nut-upsd:2.8.2
+    restart: always
+    ports:
+      - 3493:3493
+    devices:
+      - /dev/bus/usb/001/004:/dev/bus/usb/001/004
+    environment:
+      - API_USER=homeassistant
+      - API_PASSWORD=Throng.Cane.Spinner4
     include_global_env_vars: false

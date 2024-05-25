@@ -5,7 +5,6 @@ hostname: adonalsium
 package_list:
   - name: pve-headers
   - name: git
-  - name: nut
   - name: fail2ban
   - name: ifupdown2
   - name: libgl1
@@ -161,7 +160,6 @@ bash_systemctl: true
 bash_apt: true
 
 ### Variables
-install_nut: false
 pull_backup: false
 infrastructure: false
 # mergerfs_ver: 2.32.4
@@ -578,3 +576,17 @@ containers:
       - /dev/bus/usb:/dev/bus/usb
       - /dev/dri/renderD128:/dev/dri/renderD128
     restart: unless-stopped
+  ###
+  - service_name: nut-ups
+    container_name: nut-ups
+    active: true
+    image: fuzzymistborn/nut-upsd:2.8.2
+    restart: always
+    ports:
+      - 3493:3493
+    devices:
+      - /dev/bus/usb/001/002:/dev/bus/usb/001/002
+    environment:
+      - API_USER=homeassistant
+      - API_PASSWORD=Throng.Cane.Spinner4
+    include_global_env_vars: false
