@@ -82,20 +82,20 @@
         update_cache: yes
         cache_valid_time: 3600
   roles:
-#    - role: install/nag_removal
-#    - role: grog.package
-#    - role: geerlingguy.pip
-#    - role: install/pip_packages
-#    - role: geerlingguy.nfs
-#    - role: install/mergerfs
+    - role: install/nag_removal
+    - role: grog.package
+    - role: geerlingguy.pip
+    - role: install/pip_packages
+    - role: geerlingguy.nfs
+    - role: install/mergerfs
     - role: fuzzymistborn.autorestic
     - role: install/runitor
-#    - role: install/zsh
+    - role: install/zsh
     - role: ishap
- #   - role: bash_alias
+    - role: bash_alias
     - role: cronjobs
-#    - role: geerlingguy.docker
-#    - role: geerlingguy.ntp
+    - role: geerlingguy.docker
+    - role: geerlingguy.ntp
     - role: ironicbadger.docker_compose_generator
     - role: ironicbadger.snapraid
 

@@ -42,7 +42,7 @@ Then my desktops are named after some of my favorite characters from the Cosmere
 # Updates
 
 * `just update` - Runs apt update and apt upgrade on the servers, and pushes an updated docker-compose.yml file
-* `just docker` - Runs docker-compose pull {{ containers }} and docker-compose up -d {{ container }} on host and containers specified
+* `just docker` - Runs docker compose pull {{ containers }} and docker compose up -d {{ container }} on host and containers specified
 
 ### If you appreciate my work, please consider buying me a beer (or coffee, or whatever)
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/E1E5796VZ)

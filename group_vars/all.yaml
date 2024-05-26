@@ -96,23 +96,23 @@ bash_systemctl_aliases:
 
 bash_docker_aliases:
   - alias: dc-up
-    command: docker-compose up -d $c
+    command: docker compose up -d $c
   - alias: dc-down
-    command: docker-compose down $c
+    command: docker compose down $c
   - alias: dc-pull
-    command: docker-compose pull $c
+    command: docker compose pull $c
   - alias: dc-exec
-    command: docker-compose exec $c
+    command: docker compose exec $c
   - alias: dc-ps
-    command: docker-compose ps
+    command: docker compose ps
   - alias: dc-start
-    command: docker-compose start $c
+    command: docker compose start $c
   - alias: dc-stop
-    command: docker-compose stop $c
+    command: docker compose stop $c
   - alias: dc-restart
-    command: docker-compose restart $c
+    command: docker compose restart $c
   - alias: dc-rm
-    command: docker-compose rm $c
+    command: docker compose rm $c
 
 bash_pacman_aliases:
   - alias: pacup
@@ -170,7 +170,6 @@ docker_users:
 
 # ironicbadger.docker_compose_generator
 appdata_path: /home/{{ main_username }}/docker
-compose_schema_version: 2.1
 global_env_vars:
   - "UID={{ main_uid }}"
   - "GID={{ main_gid }}"

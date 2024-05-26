@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd /home/{{ main_username }}
-docker-compose up -d gitea-db umami-db
+docker compose up -d gitea-db umami-db
 
 sleep 30s
 echo Restoring Gitea DB

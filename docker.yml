@@ -14,12 +14,12 @@
       private: no
   tasks:
     - name: Docker Pull
-      command: "docker-compose pull {{ containers_to_update }}"
+      command: "docker compose pull {{ containers_to_update }}"
       args:
         chdir: /home/{{ main_username }}/
 
     - name: Docker Update
-      command: "docker-compose up -d {{ containers_to_update }}"
+      command: "docker compose up -d {{ containers_to_update }}"
       args:
         chdir: /home/{{ main_username }}/
 
