@@ -1,0 +1,236 @@
+---
+target_os: ubuntu
+hostname: virtuosity
+
+### Install packages with grog.package
+package_list:
+  - name: curl
+  - name: cron
+  - name: cifs-utils
+  - name: htop
+  - name: net-tools
+  - name: sudo
+  - name: nano
+  - name: restic
+  - name: wget
+
+pull_backup: false
+
+### Bash Aliases
+
+bash_docker: true
+bash_autorestic: true
+bash_systemctl: true
+bash_apt: true
+
+### Cronjobs
+cronjobs:
+  - name: Restic Prune
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_omada }} -- /usr/local/bin/autorestic forget -a -- prune
+    user: "{{ main_username }}"
+    minute: 20
+    hour: 22
+    weekday: 1
+  - name: Restic Check
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_check_omada }} -- /usr/local/bin/autorestic exec -a -- check
+    user: "{{ main_username }}"
+    minute: 20
+    hour: 2
+    day: 1
+  - name: Media Backup
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_backup_omada }} -- /usr/local/bin/autorestic backup -a -c /home/{{ main_username }}/.autorestic.yml
+    user: root
+    minute: 20
+    hour: 0
+
+### Mountpoints
+mountpoints:
+  - path: "/mnt/immich-uploads"
+    source: "//192.168.1.10/Media/Immich"
+    fs: cifs
+    opts: "defaults,uid=1000,gid=1000,credentials=/home/{{ main_username }}/.smbcredentials"
+  - path: "/mnt/photos"
+    source: "//192.168.1.10/Media/Photos"
+    fs: cifs
+    opts: "defaults,uid=1000,gid=1000,credentials=/home/{{ main_username }}/.smbcredentials"
+
+### Autorestic Config
+autorestic_config_user: "{{ main_username}}"
+autorestic_user_directory: /home/"{{ main_username}}"
+autorestic_run_check: false
+autorestic_config_yaml:
+  version: 2
+  backends:
+    local_docker:
+      type: rest
+      path: 'http://192.168.1.5:8500/virtuosity'
+      key: "{{ secret_restic_repo_password }}"
+      rest:
+        user: "{{ secret_restic_rest_user }}"
+        password: "{{ secret_restic_rest_password }}"
+    b2_ddocker:
+      type: b2
+      path: "{{ secret_restic_b2_bucket }}:/virtuosity"
+      key: "{{ secret_restic_repo_password }}"
+      env:
+        - B2_ACCOUNT_ID: "{{ secret_restic_b2_account_id }}"
+        - B2_ACCOUNT_KEY: "{{ secret_restic_b2_account_key }}"
+  locations:
+    docker:
+      from: '/home/{{ main_username }}/docker'
+      to:
+        - local_docker
+        - b2_docker
+      options:
+        forget:
+          keep-daily: 1
+          keep-weekly: 4
+          keep-monthly: 2
+
+### Docker-Compose with ironicbadger.docker_compose_generator
+appdata_path: "/home/{{ main_username }}/docker"
+containers:
+  ###
+  - service_name: portainer_agent
+    container_name: portainer_agent
+    active: true
+    image: portainer/agent:2.20.2
+    restart: always
+    ports:
+      - 9001:9001
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    environment:
+      - AGENT_SECRET={{ secret_portainer_key }}
+    include_global_env_vars: false
+  ###
+  - service_name: ollama-server
+    container_name: ollama-server
+    active: true
+    image: ollama/ollama:0.1.39
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - "{{ appdata_path }}/ollama:/root/.ollama"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    include_global_env_vars: false
+  ###
+  - service_name: open-webui
+    container_name: open-webui
+    active: true
+    image: ghcr.io/open-webui/open-webui:0.1.125
+    restart: unless-stopped
+    ports:
+      - "3010:8080"
+    volumes:
+      - "{{ appdata_path }}/ollama/webui:/app/backend/data"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    include_global_env_vars: false
+  ###
+  - service_name: immich-server
+    container_name: immich-server
+    active: true
+    image: ghcr.io/immich-app/immich-server:v1.105.1
+    restart: unless-stopped
+    ports:
+      - "2283:3001"
+    command: 
+     - 'start.sh'
+     - 'immich'
+    volumes:
+      - /mnt/immich-uploads:/usr/src/app/upload
+      - /mnt/photos:/mnt/photos:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - DB_PASSWORD={{ secret_immich_db_pass }}
+      - DB_USERNAME=postgres
+      - DB_DATABASE_NAME=immich
+      - REDIS_HOSTNAME=immich-redis
+      - DB_HOSTNAME=immich-database
+    include_global_env_vars: false
+    depends_on:
+      - immich-redis
+      - immich-database
+  ###
+  - service_name: immich-microservices
+    container_name: immich_microservices
+    active: true
+    image: ghcr.io/immich-app/immich-server:v1.105.1
+    restart: unless-stopped
+    command:
+      - 'start.sh'
+      - 'microservices'
+    volumes:
+      - /mnt/immich-uploads:/usr/src/app/upload
+      - /mnt/photos:/mnt/photos:ro
+      - /etc/localtime:/etc/localtime:ro
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities:
+                - gpu
+                - compute
+                - video
+    environment:
+      - DB_PASSWORD={{ secret_immich_db_pass }}
+      - DB_USERNAME=postgres
+      - DB_DATABASE_NAME=immich
+      - REDIS_HOSTNAME=immich-redis
+      - DB_HOSTNAME=immich-database
+    include_global_env_vars: false
+    depends_on:
+      - immich-redis
+      - immich-database
+  ###
+  - service_name: immich-machine-learning
+    container_name: immich_machine_learning
+    active: true
+    image: ghcr.io/immich-app/immich-machine-learning:v1.105.1-cuda
+    restart: unless-stopped
+    command: 
+      - 'start.sh'
+      - 'microservices'
+    volumes:
+      - "{{ appdata_path }}/immich/model-cache:/cache"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    include_global_env_vars: false
+    depends_on:
+      - immich-redis
+      - immich-database
+  - service_name: immich-redis
+    container_name: immich_redis
+    active: true
+    image: registry.hub.docker.com/library/redis:6.2-alpine@sha256:84882e87b54734154586e5f8abd4dce69fe7311315e2fc6d67c29614c8de2672
+    restart: always
+  - service_name: immich-database
+    container_name: immich_database
+    active: true
+    image: registry.hub.docker.com/tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
+    environment:
+      - POSTGRES_PASSWORD={{ secret_immich_db_pass }}
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=immich
+      - POSTGRES_INITDB_ARGS='--data-checksums'
+    volumes:
+      - "{{ appdata_path }}/immich/database:/var/lib/postgresql/data"
+    restart: always
+    command: ["postgres", "-c" ,"shared_preload_libraries=vectors.so", "-c", 'search_path="$$user", public, vectors', "-c", "logging_collector=on", "-c", "max_wal_size=2GB", "-c", "shared_buffers=512MB", "-c", "wal_compression=on"]
+

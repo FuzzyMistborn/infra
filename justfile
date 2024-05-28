@@ -11,6 +11,9 @@ build_adonalsium:
 build_ishap:
 	ansible-playbook -u root -b run.yml --limit ishap --ask-pass
 
+build_virtuosity:
+	ansible-playbook -u geoff -b run.yml --limit virtuosity --ask-pass  --ask-become-pass
+
 build +HOST:
 	ansible-playbook -b run.yml --limit {{ HOST }}
 

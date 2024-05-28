@@ -198,7 +198,7 @@ cronjobs:
     minute: 45
     hour: 23
   - name: Media Backup (Everything Else)
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_backup_adonalsium_all }} -- /usr/local/bin/autorestic backup -l photos -l files -l music -l audiobooks -l ebooks -c /home/{{ main_username }}/.autorestic.yml
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_backup_adonalsium_all }} -- /usr/local/bin/autorestic backup -l photos -l immich -l files -l music -l audiobooks -l ebooks -c /home/{{ main_username }}/.autorestic.yml
     user: root
     minute: 15
     hour: 1
@@ -231,6 +231,13 @@ autorestic_config_yaml:
     local_photos:
       type: rest
       path: 'http://192.168.1.5:8500/media/photos'
+      key: "{{ secret_restic_repo_password }}"
+      rest:
+        user: "{{ secret_restic_rest_user }}"
+        password: "{{ secret_restic_rest_password }}"
+    local_immich:
+      type: rest
+      path: 'http://192.168.1.5:8500/media/immich'
       key: "{{ secret_restic_repo_password }}"
       rest:
         user: "{{ secret_restic_rest_user }}"
@@ -273,6 +280,13 @@ autorestic_config_yaml:
     b2_photos:
       type: b2
       path: "{{ secret_media_b2_bucket }}:/photos"
+      key: "{{ secret_restic_repo_password }}"
+      env:
+        - B2_ACCOUNT_ID: "{{ secret_media_b2_account_id }}"
+        - B2_ACCOUNT_KEY: "{{ secret_media_b2_account_key }}"
+    b2_immich:
+      type: b2
+      path: "{{ secret_media_b2_bucket }}:/immich"
       key: "{{ secret_restic_repo_password }}"
       env:
         - B2_ACCOUNT_ID: "{{ secret_media_b2_account_id }}"
@@ -328,6 +342,16 @@ autorestic_config_yaml:
       to:
         - local_photos
         - b2_photos
+      options:
+        forget:
+          keep-daily: 1
+          keep-weekly: 8
+          keep-monthly: 4
+    immich:
+      from: '/mnt/Media/Immich'
+      to:
+        - local_immich
+        - b2_immich
       options:
         forget:
           keep-daily: 1

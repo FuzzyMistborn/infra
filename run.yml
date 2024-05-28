@@ -168,6 +168,22 @@
     - role: cronjobs
     - role: ironicbadger.docker_compose_generator
 
+- hosts: virtuosity
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+  roles:
+    - role: grog.package
+    - role: geerlingguy.docker
+    - role: geerlingguy.pip
+    - role: fuzzymistborn.autorestic
+    - role: install/runitor
+    - role: virtuosity
+    - role: bash_alias
+    - role: install/zsh
+    - role: cronjobs
+    - role: ironicbadger.docker_compose_generator
+
 - hosts: cultivation
   become: true
   vars_files:
