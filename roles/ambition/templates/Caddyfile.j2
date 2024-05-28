@@ -296,7 +296,7 @@ music.{{ secret_personal_url }} {
 	import personal_headers
 }
 
-notes.{{ secret_personal_url }} {
+search.{{ secret_personal_url }} {
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name notes.{{ secret_personal_url }}

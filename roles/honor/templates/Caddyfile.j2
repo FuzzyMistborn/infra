@@ -156,9 +156,9 @@ music.{{ secret_personal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import headers
 }
-# Notes
-notes.{{ secret_personal_url }} {
-	reverse_proxy http://192.168.50.22:5984
+# Whoogle
+search.{{ secret_personal_url }} {
+	reverse_proxy http://192.168.50.21:5100
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import headers
 }

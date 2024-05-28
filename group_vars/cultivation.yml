@@ -257,6 +257,39 @@ containers:
       - 8444:8443
     include_global_env_vars: false
   ###
+  - service_name: whoogle
+    container_name: whoogle
+    active: true
+    image: ghcr.io/benbusby/whoogle-search:0.8.4
+    restart: always
+    mem_limit: 300M
+    ports:
+      - 5100:5000
+    security_opt:
+      - no-new-privileges
+    cap_drop:
+      - ALL
+    tmpfs:
+      - /config/:size=10M,uid=927,gid=927,mode=1700
+    environment:
+      - WHOOGLE_ALT_YT=video.{{ secret_personal_url }}
+      - WHOOGLE_CONFIG_BLOCK=pinterest.com
+      - WHOOGLE_CONFIG_ALTS=1
+    include_global_env_vars: false
+  ###
+  - service_name: spoolman
+    container_name: spoolman
+    active: true
+    image: ghcr.io/donkie/spoolman:0.18.1
+    restart: unless-stopped
+    volumes:
+      - "{{ appdata_path }}/spoolman:/home/app/.local/share/spoolman"
+    ports:
+      - 7912:8000
+    environment:
+      - "TZ={{ ntp_timezone }}"
+    include_global_env_vars: false
+  ###
   - service_name: ferdium-server
     container_name: ferdium-server
     active: true
