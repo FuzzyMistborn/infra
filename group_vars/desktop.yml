@@ -71,6 +71,7 @@ flatpak_list:
   - name: com.moonlight_stream.Moonlight
   - name: io.github.janbar.noson
   - name: io.github.dweymouth.supersonic
+  - name: org.bunkus.mkvtoolnix-gui
 
 ### Mounts
 mountpoints:

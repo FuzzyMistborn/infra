@@ -4,17 +4,21 @@
   ansible.builtin.package:
     name:
       - zsh
-      - exa
+# Not present on Ubuntu, at least not easily.  Need to fix
+#      - eza
     state: present
 
 - name: Download Oh My Zsh installation script
   get_url:
     url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
     dest: /tmp/install_ohmyzsh.sh
+    mode: +x
 
 - name: Run Oh My Zsh installation script
   command: sh /tmp/install_ohmyzsh.sh --unattended
   register: ohmyzsh_result
+  become: true
+  become_user: "{{ main_username }}"
   failed_when: "'FAILED' in ohmyzsh_result.stderr"
 
 - name: Install PowerLevel10k Theme
