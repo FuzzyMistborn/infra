@@ -143,9 +143,9 @@ containers:
     restart: unless-stopped
     ports:
       - "2283:3001"
-    command: 
-     - 'start.sh'
-     - 'immich'
+    command:
+      - 'start.sh'
+      - 'immich'
     volumes:
       - /mnt/immich-uploads:/usr/src/app/upload
       - /mnt/photos:/mnt/photos:ro
@@ -199,7 +199,7 @@ containers:
     active: true
     image: ghcr.io/immich-app/immich-machine-learning:v1.105.1-cuda
     restart: unless-stopped
-    command: 
+    command:
       - 'start.sh'
       - 'microservices'
     volumes:
@@ -232,5 +232,4 @@ containers:
     volumes:
       - "{{ appdata_path }}/immich/database:/var/lib/postgresql/data"
     restart: always
-    command: ["postgres", "-c" ,"shared_preload_libraries=vectors.so", "-c", 'search_path="$$user", public, vectors', "-c", "logging_collector=on", "-c", "max_wal_size=2GB", "-c", "shared_buffers=512MB", "-c", "wal_compression=on"]
-
+    command: ["postgres", "-c", "shared_preload_libraries=vectors.so", "-c", 'search_path="$$user", public, vectors', "-c", "logging_collector=on", "-c", "max_wal_size=2GB", "-c", "shared_buffers=512MB", "-c", "wal_compression=on"]

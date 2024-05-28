@@ -110,4 +110,3 @@
     user: "root"
     special_time: reboot
     state: present
-
