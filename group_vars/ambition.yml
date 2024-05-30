@@ -372,7 +372,7 @@ containers:
   - service_name: wireguard
     container_name: wireguard
     active: true
-    image: ghcr.io/wg-easy/wg-easy:12
+    image: ghcr.io/wg-easy/wg-easy:13
     restart: always
     ports:
       - "51820:51820/udp"
