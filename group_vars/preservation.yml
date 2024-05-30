@@ -192,7 +192,7 @@ containers:
   - service_name: invidious-db
     container_name: invidious-db
     active: true
-    image: postgres:15.6-alpine
+    image: postgres:15.7-alpine
     restart: always
     ports:
       - 5432:5432
@@ -213,7 +213,7 @@ containers:
   - service_name: matrix-db
     container_name: matrix-db
     active: true
-    image: postgres:15.6-alpine
+    image: postgres:15.7-alpine
     restart: always
     ports:
       - 5433:5432
