@@ -19,37 +19,30 @@ mqtt:
 update_interval: 5
 hass_url: null
 hass_api: null
-modules: null
-custom_modules: null
-exclude:
-- active_window
+modules:
+# All
+- network
+- cpu
+- update
+- memory
+- disk_usage
+- restart
+{% if lnxlink_desktop %}
 - audio_select
-- bash
-- battery
-- boot_select
-- brightness
-- camera_used
-- display_env
-- fullscreen
-- gpio
-- idle
-- inference_time
-- keep_alive
-- keyboard_hotkeys
-- media
-- mouse
-- notify
-- power_profile
-- screenshot
+- microphone_used
 - screen_onoff
-- send_keys
-- speech_recognition
-- statistics
-- systemd
-- sys_updates
-- webcam
-- xdg_open
-- wifi
+- shutdown
+- speaker_used
+- suspend
+{% endif %}
+{% if lnxlink_temperature %}
+- temperature
+{% endif %}
+{% if lnxlink_bash %}
+- bash
+{% endif %}
+custom_modules: null
+exclude: null
 settings:
   hotkeys: null
   disk_usage:

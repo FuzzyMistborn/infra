@@ -26,7 +26,7 @@ pip_packages:
 
 clone_git: false
 pull_backup: false
-webhook_user: "{{ main_username }}"
+lnxlink_bash: true
 
 ### Bash Aliases
 bash_docker: true

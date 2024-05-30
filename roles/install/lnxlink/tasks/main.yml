@@ -1,0 +1,49 @@
+- name: Install pipx
+  ansible.builtin.package:
+    name: pipx
+    state: present
+
+- name: Install LnxLink
+  command: pipx install lnxlink
+  become: yes
+  become_user: "{{ main_username }}"
+
+- name: copy to /usr/local/bin
+  copy:
+    src: "/home/{{ main_username }}/.local/bin/lnxlink"
+    dest: "/usr/local/bin"
+    mode: +x
+    remote_src: yes
+
+- name: create config directory
+  file:
+    path: /home/{{ main_username }}/lnxlink
+    state: directory
+    owner: "{{ main_username }}"
+    group: "{{ main_groupname }}"
+
+- name: Copy template files
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+  loop:
+    - {src: "config.yaml.j2", dest: "/home/{{ main_username }}/lnxlink/config.yaml", mode: "0644"}
+
+- name: Copy systemd service file
+  template:
+    src: ../templates/lnxlink.service.j2
+    dest: /etc/systemd/system/lnxlink.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Reload systemd services/timers
+  systemd:
+    enabled: true
+    daemon-reload: true
+    state: started
+    name: lnxlink.service
+    no_block: true

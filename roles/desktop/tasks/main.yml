@@ -161,29 +161,6 @@
 #    method: user
   loop: "{{ flatpak_list }}"
 
-### LNXLink
-- name: Install LnxLink
-  command: pipx install lnxlink
-  become: yes
-  become_user: "{{ main_username }}"
-
-- name: copy to /usr/local/bin
-  copy:
-    src: "/home/{{ main_username }}/.local/bin/lnxlink"
-    dest: "/usr/local/bin"
-    mode: +x
-    remote_src: yes
-
-- name: Copy template files
-  template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    mode: "{{ item.mode }}"
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-  loop:
-    - {src: "lnxlink_config.yaml.j2", dest: "/home/{{ main_username }}/.lnxlink_config.yaml", mode: "0644"}
-
 ### fstab/disk mounts
 - name: make sure disks unmounted
   mount:
@@ -265,36 +242,6 @@
     - /usr/sbin/lpadmin -p Brother-HL2270DW -E -v ipp://192.168.10.15/ipp/port1 -o media=na_letter_8.5x11in
     - /usr/bin/lpoptions -d Brother-HL2270DW
 
-### MPV/KDEConnect
-- name: get latest mpv-mpris release
-  uri:
-    url: https://api.github.com/repos/hoyon/mpv-mpris/releases/latest
-    url_username: "{{ github_api_user | default (omit) }}"
-    url_password: "{{ github_api_pass | default (omit) }}"
-    return_content: true
-    force_basic_auth: "{{ github_api_auth | default (omit) }}"
-  register: release_version_registered
-
-- name: set latest mpv-mpris version variable
-  set_fact:
-    mpris_ver: "{{ release_version_registered.json.tag_name }}"
-
-- name: create mpv-mpris config folder
-  file:
-    dest: /home/{{main_username}}/.config/mpv
-    state: directory
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: 0660
-
-- name: install mpv-mpris plugin
-  get_url:
-    url: https://github.com/hoyon/mpv-mpris/releases/download/{{ mpris_ver }}/mpris.so
-    dest: /home/{{ main_username }}/.config/mpv/scripts
-    force: yes
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-
 ### Final Tweaks
 - name: Enable WOL
   command: nmcli c modify "Wired connection 1" 802-3-ethernet.wake-on-lan magic
@@ -325,7 +272,7 @@
     regexp: "^AutoEnable"
     line: "AutoEnable=true"
 
-### Restic/LnxLink Finish
+### Restic Finish
 - name: Copy systemd service file
   template:
     src: ../templates//systemd/{{ item }}.j2
@@ -338,7 +285,6 @@
     - restic_backup.timer
     - restic_prune.service
     - restic_prune.timer
-    - lnxlink.service
 
 - name: Reload systemd services/timers
   systemd:
@@ -352,7 +298,6 @@
     - restic_backup.timer
     - restic_prune.service
     - restic_prune.timer
-    - lnxlink.service
     - tailscaled.service
 
 ### Logiops
