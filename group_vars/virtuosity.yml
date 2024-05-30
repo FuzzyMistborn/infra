@@ -199,9 +199,6 @@ containers:
     active: true
     image: ghcr.io/immich-app/immich-machine-learning:v1.105.1-cuda
     restart: unless-stopped
-    command:
-      - 'start.sh'
-      - 'microservices'
     volumes:
       - "{{ appdata_path }}/immich/model-cache:/cache"
     deploy:

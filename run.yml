@@ -54,6 +54,7 @@
     - role: fuzzymistborn.autorestic
     - role: install/runitor
     - role: install/telegraf
+    - role: install/zsh
     - role: adonalsium
     - role: bash_alias
     - role: cronjobs
@@ -111,6 +112,7 @@
     - role: github
     - role: install/bitwarden_cli
     - role: install/runitor
+    - role: install/zsh
     - role: dominion
     - role: bash_alias
     - role: cronjobs
@@ -127,6 +129,7 @@
     - role: fuzzymistborn.autorestic
     - role: install/telegraf
     - role: install/runitor
+    - role: install/zsh
     - role: endowment
     - role: bash_alias
     - role: cronjobs
@@ -145,6 +148,7 @@
     - role: fuzzymistborn.autorestic
     - role: install/telegraf
     - role: install/runitor
+    - role: install/zsh
     - role: autonomy
     - role: bash_alias
     - role: cronjobs
@@ -162,6 +166,7 @@
     - role: install/pip_packages
     - role: fuzzymistborn.autorestic
     - role: install/runitor
+    - role: install/zsh
     - role: unity
     - role: bash_alias
     - role: install/tailscale
@@ -178,9 +183,9 @@
     - role: geerlingguy.pip
     - role: fuzzymistborn.autorestic
     - role: install/runitor
+    - role: install/zsh
     - role: virtuosity
     - role: bash_alias
-    - role: install/zsh
     - role: cronjobs
     - role: ironicbadger.docker_compose_generator
 
@@ -195,6 +200,7 @@
     - role: fuzzymistborn.autorestic
     - role: install/telegraf
     - role: install/runitor
+    - role: install/zsh
     - role: cultivation
     - role: bash_alias
     - role: cronjobs
@@ -211,6 +217,7 @@
     - role: fuzzymistborn.autorestic
     - role: install/telegraf
     - role: install/runitor
+    - role: install/zsh
     - role: ironicbadger.docker_compose_generator
     - role: preservation
     - role: bash_alias
@@ -228,6 +235,7 @@
     - role: fuzzymistborn.autorestic
     - role: install/runitor
     - role: caddy_ansible.caddy_ansible
+    - role: install/zsh
     - role: honor
     - role: bash_alias
     - role: cronjobs
@@ -244,6 +252,7 @@
     - role: geerlingguy.docker
     - role: fuzzymistborn.autorestic
     - role: install/runitor
+    - role: install/zsh
     - role: omada
     - role: bash_alias
     - role: cronjobs
@@ -257,6 +266,7 @@
     - role: grog.package
     - role: geerlingguy.pip
     - role: geerlingguy.docker
+    - role: install/zsh
     - role: invention
     - role: fuzzymistborn.autorestic
     - role: install/runitor
@@ -271,6 +281,7 @@
     - role: grog.package
     - role: geerlingguy.pip
     - role: geerlingguy.docker
+    - role: install/zsh
     - role: connection
     - role: fuzzymistborn.autorestic
     - role: install/runitor
@@ -287,6 +298,7 @@
     - role: geerlingguy.pip
     - role: geerlingguy.docker
     - role: install/runitor
+    - role: install/zsh
     - role: bash_alias
     - role: ironicbadger.docker_compose_generator
     - role: cronjobs
@@ -301,6 +313,7 @@
     - role: geerlingguy.docker
     - role: install/lego
     - role: install/tailscale
+    - role: install/zsh
     - role: fuzzymistborn.autorestic
     - role: install/runitor
     - role: ironicbadger.docker_compose_generator
@@ -399,17 +412,29 @@
     - role: install/zsh
     - role: bash_alias
 
-- hosts: whimsy
+- hosts: sigzil
   become: true
   vars_files:
     - 'vars/vault.yaml'
-#    - 'group_vars/gaming.yml'
+    - 'group_vars/sigzil.yml'
   roles:
     - role: grog.package
     - role: geerlingguy.pip
-#    - role: gaming
+    - role: desktop
     - role: bash_alias
-    - role: install/webhook
+    - role: install/zsh
+
+- hosts: design
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+    - 'group_vars/design.yml'
+  roles:
+    - role: grog.package
+    - role: geerlingguy.pip
+    - role: desktop
+    - role: bash_alias
+    - role: install/zsh
 
 - hosts: hoid
   become: true
@@ -422,5 +447,6 @@
     - role: fuzzymistborn.autorestic
     - role: install/runitor
     - role: desktop
+    - role: install/zsh
     - role: hoid
     - role: bash_alias
