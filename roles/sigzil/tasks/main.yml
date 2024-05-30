@@ -1,0 +1,178 @@
+---
+### SSH Config
+- name: Fix SFTP for Ansible
+  lineinfile:
+    dest: "/etc/ssh/sshd_config"
+    state: present
+    regexp: "Subsystem sftp*"
+    line: "Subsystem sftp internal-sftp"
+
+- name: Restart ssh
+  service:
+    name: sshd
+    state: restarted
+
+- name: create .ssh folder
+  file:
+    dest: /home/{{main_username}}/.ssh
+    state: directory
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0700
+
+- name: Add SSH Keys
+  copy:
+    dest: /home/{{ main_username }}/.ssh/{{ item.dest }}
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0600
+    content: "{{ item.key }}"
+  loop:
+    - dest: desktop_lxcs
+      key: "{{ secret_desktop_lxc_ssh }}"
+    - dest: desktop_ambition
+      key: "{{ secret_desktop_ambition_ssh }}"
+    - dest: github
+      key: "{{ secret_github_ssh }}"
+
+- name: Copy template files
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+  loop:
+    - {src: "ssh_config.j2", dest: "/home/{{ main_username }}/.ssh/config", mode: "600"}
+
+### Packages
+- name: Remove unwanted packages
+  ansible.builtin.dnf:
+    name:
+      - akregator
+      - akonadi-import-wizard
+      - dragon
+      - elisa-player
+      - grantlee-editor
+      - kamoso
+      - kaddressbook
+      - khelpcenter
+      - kmahjongg
+      - kmail
+      - kmail-account-wizard
+      - kmines
+      - kmouth
+      - kontact
+      - kontactinterface
+      - korganizer
+      - kpat
+      - pim-data-exporter
+      - pim-sieve-editor
+      - plasma-welcome
+      - neochat
+    state: absent
+
+### Flatpak
+- name: Add the flathub flatpak repository remote
+  community.general.flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+    method: system
+
+- name: Install Flatpaks
+  community.general.flatpak:
+    name:
+      - "{{ item.name }}"
+    state: present
+#    method: user
+  loop: "{{ flatpak_list }}"
+
+### fstab/disk mounts
+- name: make sure disks unmounted
+  mount:
+    path: "{{ item.path }}"
+    state: unmounted
+  loop: "{{ mountpoints }}"
+
+- name: create /mnt points
+  file:
+    dest: "{{ item.path }}"
+    state: directory
+    owner: "{{ main_username }}"
+    group: nobody
+    mode: 0777
+  loop: "{{ mountpoints }}"
+
+- name: Add smbcredentials
+  copy:
+    dest: /home/{{ main_username }}/.smbcredentials
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0600
+    content: |
+      user=samba
+      password={{ secret_samba_pass }}
+      domain=cosmere
+
+- name: mount disks
+  mount:
+    path: "{{ item.path }}"
+    src: "{{ item.source }}"
+    fstype: "{{ item.fs }}"
+    opts: "{{ item.opts }}"
+    # change to 'mounted' to auto mount versus 'present' for just loaded into fstab
+    state: present
+  loop: "{{ mountpoints }}"
+
+### Backup/Restore
+- name: Create restore script
+  copy:
+    dest: /home/{{ main_username }}/restore.sh
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: +x
+    content: |
+      #!/bin/bash
+      /usr/local/bin/autorestic restore -f -l home --from local_docker --to /
+  when: pull_backup == true
+- name: Run restore script
+  command: /bin/bash ./restore.sh
+  args:
+    chdir: "/home/{{ main_username }}"
+  when: pull_backup == true
+- name: Remove restore script
+  file:
+    path: /home/{{ main_username }}/restore.sh
+    state: absent
+  when: pull_backup == true
+
+### Final Tweaks
+- name: Enable WOL
+  command: nmcli c modify "Wired connection 1" 802-3-ethernet.wake-on-lan magic
+
+- name: Set Hostname
+  command: hostnamectl set-hostname {{ hostname }}
+
+- name: Copy Personal avatar
+  copy:
+    src: face
+    dest: /home/{{ main_username }}/.face
+    mode: 0644
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+
+- name: Copy login screen image
+  copy:
+    src: WayofKings.jpg
+    dest: /usr/share/backgrounds/WayofKings.jpg
+    mode: 0644
+    owner: root
+    group: root
+
+- name: enable bluetooth auto-power on
+  lineinfile:
+    dest: "/etc/bluetooth/main.conf"
+    state: present
+    regexp: "^AutoEnable"
+    line: "AutoEnable=true"

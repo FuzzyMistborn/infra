@@ -1,0 +1,67 @@
+---
+target_os: fedora
+bootstrap_user: "{{ main_username }}"
+
+### Install packages with grog.package
+package_list:
+  - name: "@core"
+  - name: "@multimedia"
+  - name: "@sound-and-video"
+  - name: intel-media-driver
+  - name: audacity
+  - name: cifs-utils
+  - name: curl
+  - name: ethtool
+  - name: firefox
+  - name: flameshot
+  - name: flatpak
+  - name: gcc
+  - name: gimp
+  - name: git
+  - name: hddtemp
+  - name: htop
+  - name: kate
+  - name: kolourpaint
+  - name: lm_sensors
+  - name: nano
+  - name: ncdu
+  - name: net-tools
+  - name: nfs-utils
+  - name: python
+  - name: python-psutil
+  - name: python3-devel
+  - name: screen
+  - name: sudo
+  - name: vlc
+  - name: wget
+
+flatpak_list:
+  - name: com.vivaldi.Vivaldi
+  - name: com.bambulab.BambuStudio
+
+### Mounts
+mountpoints:
+  - path: "/mnt/Media"
+    source: "//192.168.1.10/Media"
+    fs: cifs
+    opts: "_netdev,noauto,nofail,x-systemd.automount,uid=1000,gid=1000,credentials=/home/{{ main_username }}/.smbcredentials"
+
+### Variables
+pip_package: python-pip
+pip_packages:
+  - konsave
+
+### Bash Aliases
+bash_aliases:
+  - alias: c
+    command: clear
+  - alias: e
+    command: exit
+  - alias: ssh-remove
+    command: ssh-keygen -f /home/{{ main_username }}/.ssh/known_hosts -R $c
+  - alias: konsave-install
+    command: wget -qO - https://ansible.{{ secret_personal_internal_url }} | bash"
+bash_autorestic: true
+bash_systemctl: true
+bash_git: true
+bash_dnf: true
