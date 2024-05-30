@@ -198,7 +198,7 @@ containers:
   - service_name: selenium
     container_name: selenium
     active: true
-    image: selenium/standalone-firefox:125.0
+    image: selenium/standalone-firefox:126.0
     restart: unless-stopped
     ports:
       - 4444:4444
