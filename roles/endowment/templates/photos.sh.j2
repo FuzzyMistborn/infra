@@ -1,16 +1,37 @@
 #!/bin/bash
 
-YEAR=$(date +"%Y")
-MONTH=$(date +"%m")
-
 cd '{{ secret_photopath_1 }}'
 
-mkdir -p "${YEAR}/${MONTH}"
+for file in $(find PXL_* -type f -mtime +8 -maxdepth 1); do
+  # 1. Extract the date from the file name
+  date="${file#PXL_}"
+  date="${date%%_*}" 
 
-find -maxdepth 1 -type f -name "*_${YEAR}${MONTH}*" -exec mv -t ${YEAR}/${MONTH} {} +
+  # 2. Rearrange the date into the desired format
+  year="$(echo $date | cut -c 1-4)"
+  month="$(echo $date | cut -c 5-6)"
+  dir="$year/$month"
+
+  # 3. Move the file into the appropriate directory
+  mkdir -p $dir
+  # If older than 8 days, move
+  mv "$file" -t $dir
+done
 
 cd '{{ secret_photopath_2 }}'
 
-mkdir -p "${YEAR}/${MONTH}"
+for file in $(find PXL_* -type f -mtime +8 -maxdepth 1); do
+  # 1. Extract the date from the file name
+  date="${file#PXL_}"
+  date="${date%%_*}"
 
-find -maxdepth 1 -type f -name "*_${YEAR}${MONTH}*" -exec mv -t ${YEAR}/${MONTH} {} +
+  # 2. Rearrange the date into the desired format
+  year="$(echo $date | cut -c 1-4)"
+  month="$(echo $date | cut -c 5-6)"
+  dir="$year/$month"
+
+  # 3. Move the file into the appropriate directory
+  mkdir -p $dir
+  # If older than 8 days, move
+  mv "$file" -t $dir
+done
