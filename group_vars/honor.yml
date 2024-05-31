@@ -122,7 +122,7 @@ containers:
   - service_name: wireguard
     container_name: wireguard
     active: true
-    image: fuzzymistborn/wg-easy:stable
+    image: ghcr.io/wg-easy/wg-easy:13
     restart: always
     ports:
       - "51280:51820/udp"
