@@ -336,6 +336,42 @@ containers:
       - SERVER_PORT=8083
     include_global_env_vars: false
   ###
+  - service_name: piper
+    container_name: piper
+    active: true
+    image: rhasspy/wyoming-piper:1.5.0
+    restart: unless-stopped
+    ports:
+      - 10200:10200
+    volumes:
+      - "{{ appdata_path }}/piper:/data"
+    command: --voice en_GB-northern_english_male-medium
+    include_global_env_vars: false
+  ###
+  - service_name: wakeword
+    container_name: wakeword
+    active: true
+    image: rhasspy/wyoming-openwakeword:1.10.0
+    restart: unless-stopped
+    ports:
+      - 10400:10400
+    volumes:
+      - "{{ appdata_path }}/wakeword:/custom"
+    command: --preload-model 'jarvis_v2' --custom-model-dir /custom
+    include_global_env_vars: false
+  ###
+  - service_name: whisper
+    container_name: whisper
+    active: true
+    image: rhasspy/wyoming-whisper:2.0.0
+    restart: unless-stopped
+    ports:
+      - 10300:10300
+    volumes:
+      - "{{ appdata_path }}/whisper:/data"
+    command: --model base-int8 --language en
+    include_global_env_vars: false
+  ###
   - service_name: portainer_agent
     container_name: portainer_agent
     active: true
