@@ -12,7 +12,6 @@
 
 - name: Create LXCs w/ VLAN Tags
   proxmox:
-    proxmox_default_behavior: no_defaults
     vmid: "{{ item.vmid }}"
     hostname: "{{ item.name }}"
     unprivileged: "{{ item.privileged }}"
@@ -41,7 +40,6 @@
 
 - name: Create LXC CT w/ Mounts
   proxmox:
-    proxmox_default_behavior: no_defaults
     vmid: "{{ item.vmid }}"
     hostname: "{{ item.name }}"
     unprivileged: "{{ item.privileged }}"
@@ -69,6 +67,36 @@
       - keyctl={{ item.keyctl | default ('0') }}
       - mount={{ item.fsmount }}
   loop: "{{ lxc_mounts }}"
+
+- name: Create VM with UEFI Secure Boot Enabled
+  community.general.proxmox_kvm:
+    api_user: root@pam
+    api_host: localhost
+    api_token_id: Ansible
+    api_token_secret: "{{ secret_proxmox_api_token }}"
+    name: "{{ item.name }}"
+    node: adonalsium
+    vmid: "{{ item.vmid }}"
+    onboot: "{{ item.onboot | default ('false') }}"
+    net:
+      net0: "virtio,bridge={{ item.bridge | default ('vmbr1') }},tag={{ item.tag | default ('50') }},firewall=1"
+    cores: "{{ item.cores }}"
+    cpu: "{{ item.cpu_type | default ('kvm64') }}"
+    memory: "{{ item.memory }}"
+    balloon: "{{ item.balloon }}"
+    bios: "{{ item.bios | default ('seabios') }}"
+    scsihw: virtio-scsi-single
+    scsi:
+      scsi0: "{{ item.disk }},ssd=1,iothread=1"
+    format: qcow2
+    ide:
+      ide2: "NFS:iso/{{ item.iso | default ('ubuntu-24.04-live-server-amd64.iso') }},media=cdrom"
+    efidisk0:
+      storage: local-lvm
+      format: raw
+      efitype: 4m
+      pre_enrolled_keys: 1
+  loop: "{{ vm_uefi }}"
 
 - name: Set boot order
   shell: pct set {{ item.lxc }} --startup order={{ item.order }}

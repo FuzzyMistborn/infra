@@ -153,6 +153,20 @@ lxc_mounts:
     keyctl: 0
     fsmount: cifs
 
+vm_uefi:
+  - name: Virtuosity
+    vmid: 310
+    bridge: vmbr1
+    tag: 50
+    disk: local-lvm:80
+    cores: 8
+    cpu_type: host
+    memory: 16384
+    balloon: 2048
+    bios: ovmf
+    onboot: true
+    iso: ubuntu-24.04-live-server-amd64.iso
+
 ### Bash Aliases
 bash_docker: true
 bash_autorestic: true
@@ -284,13 +298,6 @@ autorestic_config_yaml:
       env:
         - B2_ACCOUNT_ID: "{{ secret_media_b2_account_id }}"
         - B2_ACCOUNT_KEY: "{{ secret_media_b2_account_key }}"
-    b2_immich:
-      type: b2
-      path: "{{ secret_media_b2_bucket }}:/immich"
-      key: "{{ secret_restic_repo_password }}"
-      env:
-        - B2_ACCOUNT_ID: "{{ secret_media_b2_account_id }}"
-        - B2_ACCOUNT_KEY: "{{ secret_media_b2_account_key }}"
     b2_music:
       type: b2
       path: "{{ secret_media_b2_bucket }}:/music"
@@ -351,7 +358,6 @@ autorestic_config_yaml:
       from: '/mnt/Media/Immich'
       to:
         - local_immich
-        - b2_immich
       options:
         forget:
           keep-daily: 1

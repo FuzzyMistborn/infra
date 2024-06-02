@@ -1,3 +1,4 @@
+---
 - name: Install pipx
   ansible.builtin.package:
     name: pipx

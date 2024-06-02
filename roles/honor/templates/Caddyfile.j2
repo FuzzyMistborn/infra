@@ -318,7 +318,7 @@ filament.{{ secret_personal_internal_url }} {
 }
 # Ollama
 ai.{{ secret_personal_internal_url }} {
-	reverse_proxy http://192.168.1.57:3010
+	reverse_proxy http://192.168.50.25:3010
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
