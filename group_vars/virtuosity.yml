@@ -215,7 +215,7 @@ containers:
   - service_name: immich-redis
     container_name: immich_redis
     active: true
-    image: registry.hub.docker.com/library/redis:6.2-alpine@sha256:84882e87b54734154586e5f8abd4dce69fe7311315e2fc6d67c29614c8de2672
+    image: registry.hub.docker.com/library/redis:7.2-alpine@sha256:0389bb8416d7c6ed065c25745179bf5d358e5d9472dd30a687ab36ffbb650262
     restart: always
   - service_name: immich-database
     container_name: immich_database
