@@ -3,6 +3,7 @@ hostname: adonalsium
 
 ### Install packages with grog.package
 package_list:
+  - name: acl
   - name: pve-headers
   - name: git
   - name: fail2ban
@@ -167,6 +168,12 @@ vm_uefi:
     onboot: true
     iso: ubuntu-24.04-live-server-amd64.iso
 
+### LNXLink
+lnxlink_bash: true
+lnxlink_temperature: true
+lnxlink_diskuse: true
+lnxlink_mounts: true
+
 ### Bash Aliases
 bash_docker: true
 bash_autorestic: true
@@ -178,14 +185,6 @@ pull_backup: false
 infrastructure: false
 # mergerfs_ver: 2.32.4
 # nag_ver: 0.0.7
-
-### Telegraf
-telegraf_influx_token: "{{ secret_telegraf_adonalsium }}"
-telegraf_influx_bucket: Adonalsium
-telegraf_influx_disk_mounts: '"/","/mnt/Media"'
-telegraf_influx_docker: true
-telegraf_influx_pve: true
-telegraf_influx_pve_api: "{{ secret_telegraf_adonalsium_api }}"
 
 ### Cronjobs
 cronjobs:

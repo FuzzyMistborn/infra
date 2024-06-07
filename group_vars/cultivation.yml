@@ -4,6 +4,7 @@ hostname: cultivation
 
 ### Install packages with grog.package
 package_list:
+  - name: acl
   - name: curl
   - name: git
   - name: htop
@@ -18,13 +19,10 @@ package_list:
 
 pull_backup: false
 
-### Telegraf
-telegraf_influx_token: "{{ secret_telegraf_cultivation }}"
-telegraf_influx_bucket: Cultivation
-telegraf_influx_docker: true
+### LNXLink
+lnxlink_diskuse: true
 
 ### Bash Aliases
-
 bash_docker: true
 bash_autorestic: true
 bash_systemctl: true

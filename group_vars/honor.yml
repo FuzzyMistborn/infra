@@ -119,30 +119,6 @@ containers:
       - NET_ADMIN
     include_global_env_vars: false
   ###
-  - service_name: wireguard
-    container_name: wireguard
-    active: true
-    image: ghcr.io/wg-easy/wg-easy:13
-    restart: always
-    ports:
-      - "51280:51820/udp"
-      - "51821:51821/tcp"
-    volumes:
-      - "{{ appdata_path }}/wireguard:/etc/wireguard"
-    environment:
-      - WG_HOST={{ secret_wireguard_url }}
-      - WG_PORT=51280
-      - PASSWORD={{ secret_wireguard_pass }}
-      - WG_PERSISTENT_KEEPALIVE=25
-      - WG_DEFAULT_DNS=192.168.50.10, 192.168.1.11
-    cap_add:
-      - NET_ADMIN
-      - SYS_MODULE
-    sysctl:
-      - net.ipv4.ip_forward=1
-      - net.ipv4.conf.all.src_valid_mark=1
-    include_global_env_vars: false
-  ###
   - service_name: portainer_agent
     container_name: portainer_agent
     active: true

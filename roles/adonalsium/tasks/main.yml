@@ -76,17 +76,6 @@
     group: root
     mode: 0644
 
-### Webhooks
-- name: Copy webhook template
-  template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    mode: "{{ item.mode }}"
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-  loop:
-    - {src: "hooks.yaml.j2", dest: "/home/{{ main_username }}/.hooks.yaml", mode: "644"}
-
 ### Infrastructure
 - name: Set up disks/mounts
   include_tasks: disks.yml

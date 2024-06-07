@@ -2,6 +2,7 @@
 - hosts: all
   become: true
   tasks:
+# Ubuntu
     - name: Set timezone
       timezone:
         name: "{{ ntp_timezone }}"
@@ -24,6 +25,37 @@
         state: absent
         purge: true
       when: ansible_distribution == 'Ubuntu'
+# Fedora
+    - name: Install the rpmfusion and fonts repo packages
+      dnf:
+        state: present
+        disable_gpg_check: yes
+        name:
+          - https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_facts.distribution_version }}.noarch.rpm
+          - https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_facts.distribution_version }}.noarch.rpm
+      become: yes
+      when: ansible_distribution == 'Fedora'
+    - name: Improve DNF Performances
+      blockinfile:
+        path: /etc/dnf/dnf.conf
+        create: yes
+        block: |
+          [main]
+          gpgcheck=1
+          installonly_limit=3
+          clean_requirements_on_remove=True
+          best=False
+          skip_if_unavailable=True
+          fastestmirror=1
+          max_parallel_downloads=10
+          deltarpm=true
+      become: yes
+      when: ansible_distribution == 'Fedora'
+    - name: Upgrade all packages
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+      when: ansible_distribution == 'Fedora'
 
 - hosts: adonalsium
   become: true
@@ -53,14 +85,13 @@
     - role: install/mergerfs
     - role: fuzzymistborn.autorestic
     - role: install/runitor
-    - role: install/telegraf
     - role: install/zsh
     - role: adonalsium
     - role: bash_alias
     - role: cronjobs
     - role: geerlingguy.docker
     - role: geerlingguy.ntp
-    - role: install/webhook
+    - role: install/lnxlink
     - role: ironicbadger.docker_compose_generator
     - role: ironicbadger.snapraid
 
@@ -127,7 +158,7 @@
     - role: geerlingguy.docker
     - role: geerlingguy.pip
     - role: fuzzymistborn.autorestic
-    - role: install/telegraf
+    - role: install/lnxlink
     - role: install/runitor
     - role: install/zsh
     - role: endowment
@@ -146,13 +177,12 @@
     - role: geerlingguy.pip
     - role: install/pip_packages
     - role: fuzzymistborn.autorestic
-    - role: install/telegraf
     - role: install/runitor
     - role: install/zsh
     - role: autonomy
     - role: bash_alias
     - role: cronjobs
-    - role: install/webhook
+    - role: install/lnxlink
     - role: ironicbadger.docker_compose_generator
 
 - hosts: unity
@@ -198,7 +228,7 @@
     - role: geerlingguy.docker
     - role: geerlingguy.pip
     - role: fuzzymistborn.autorestic
-    - role: install/telegraf
+    - role: install/lnxlink
     - role: install/runitor
     - role: install/zsh
     - role: cultivation
@@ -215,7 +245,7 @@
     - role: geerlingguy.docker
     - role: geerlingguy.pip
     - role: fuzzymistborn.autorestic
-    - role: install/telegraf
+    - role: install/lnxlink
     - role: install/runitor
     - role: install/zsh
     - role: ironicbadger.docker_compose_generator
@@ -326,34 +356,6 @@
 ### Desktops
 - hosts: vasher
   become: true
-  pre_tasks:
-    - name: Install the rpmfusion and fonts repo packages
-      dnf:
-        state: present
-        disable_gpg_check: yes
-        name:
-          - https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_facts.distribution_version }}.noarch.rpm
-          - https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_facts.distribution_version }}.noarch.rpm
-      become: yes
-    - name: Improve DNF Performances
-      blockinfile:
-        path: /etc/dnf/dnf.conf
-        create: yes
-        block: |
-          [main]
-          gpgcheck=1
-          installonly_limit=3
-          clean_requirements_on_remove=True
-          best=False
-          skip_if_unavailable=True
-          fastestmirror=1
-          max_parallel_downloads=10
-          deltarpm=true
-      become: yes
-    - name: Upgrade all packages
-      ansible.builtin.dnf:
-        name: "*"
-        state: latest
   vars_files:
     - 'vars/vault.yaml'
     - 'group_vars/desktop.yml'
@@ -370,34 +372,6 @@
 
 - hosts: szeth
   become: true
-  pre_tasks:
-    - name: Install the rpmfusion and fonts repo packages
-      dnf:
-        state: present
-        disable_gpg_check: yes
-        name:
-          - https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_facts.distribution_version }}.noarch.rpm
-          - https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_facts.distribution_version }}.noarch.rpm
-      become: yes
-    - name: Improve DNF Performances
-      blockinfile:
-        path: /etc/dnf/dnf.conf
-        create: yes
-        block: |
-          [main]
-          gpgcheck=1
-          installonly_limit=3
-          clean_requirements_on_remove=True
-          best=False
-          skip_if_unavailable=True
-          fastestmirror=1
-          max_parallel_downloads=10
-          deltarpm=true
-      become: yes
-    - name: Upgrade all packages
-      ansible.builtin.dnf:
-        name: "*"
-        state: latest
   vars_files:
     - 'vars/vault.yaml'
     - 'group_vars/desktop.yml'
@@ -412,18 +386,6 @@
     - role: install/zsh
     - role: bash_alias
 
-- hosts: sigzil
-  become: true
-  vars_files:
-    - 'vars/vault.yaml'
-    - 'group_vars/sigzil.yml'
-  roles:
-    - role: grog.package
-    - role: geerlingguy.pip
-    - role: desktop
-    - role: bash_alias
-    - role: install/zsh
-
 - hosts: design
   become: true
   vars_files:
@@ -432,7 +394,8 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
-    - role: desktop
+    - role: install/pip_packages
+    - role: design
     - role: bash_alias
     - role: install/zsh
 

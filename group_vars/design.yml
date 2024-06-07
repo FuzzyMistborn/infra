@@ -1,6 +1,11 @@
----
-target_os: fedora
-bootstrap_user: "{{ main_username }}"
+### Variables
+hostname: design
+pull_backup: false
+
+### LNXLink
+lnxlink_shutdown: true
+lnxlink_diskuse: true
+lnxlink_desktop: true
 
 ### Install packages with grog.package
 package_list:
@@ -41,6 +46,14 @@ flatpak_list:
 
 ### Mounts
 mountpoints:
+  - path: /mnt/Backup
+    source: 192.168.1.5:/config
+    fs: nfs
+    opts: "defaults"
+  - path: /mnt/NVR
+    source: 192.168.1.5:/NVR
+    fs: nfs
+    opts: "defaults"
   - path: "/mnt/Media"
     source: "//192.168.1.10/Media"
     fs: cifs

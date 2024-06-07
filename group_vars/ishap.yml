@@ -3,6 +3,7 @@ hostname: ishap
 
 ### Install packages with grog.package
 package_list:
+  - name: acl
   - name: pve-headers
   - name: git
   - name: fail2ban
@@ -85,6 +86,13 @@ lxc_main:
     memory: 2048
     nesting: 1
     keyctl: 1
+
+### LNXLink
+lnxlink_bash: true
+lnxlink_temperature: true
+lnxlink_diskuse: true
+lnxlink_mounts: true
+lnxlink_shutdown: true
 
 ### Bash Aliases
 bash_docker: true

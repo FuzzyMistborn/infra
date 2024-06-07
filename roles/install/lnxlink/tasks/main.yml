@@ -18,7 +18,7 @@
 
 - name: create config directory
   file:
-    path: /home/{{ main_username }}/lnxlink
+    path: /home/{{ main_username }}/.lnxlink
     state: directory
     owner: "{{ main_username }}"
     group: "{{ main_groupname }}"
@@ -31,7 +31,7 @@
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
   loop:
-    - {src: "config.yaml.j2", dest: "/home/{{ main_username }}/lnxlink/config.yaml", mode: "0644"}
+    - {src: "config.yaml.j2", dest: "/home/{{ main_username }}/.lnxlink/config.yaml", mode: "0644"}
 
 - name: Copy systemd service file
   template:

@@ -8,7 +8,7 @@ Type=simple
 Restart=always
 RestartSec=5
 
-ExecStart=/usr/local/bin/lnxlink -c /home/{{ main_username }}/lnxlink/config.yaml
+ExecStart=/usr/local/bin/lnxlink -c /home/{{ main_username }}/.lnxlink/config.yaml
 
 [Install]
 WantedBy=default.target

@@ -16,27 +16,31 @@ mqtt:
     enabled: true
     qos: 1
     retain: false
-update_interval: 5
+update_interval: 15
 hass_url: null
 hass_api: null
 modules:
-# All
 - network
 - cpu
 - update
 - memory
-- disk_usage
 - restart
 {% if lnxlink_desktop %}
-- audio_select
 - microphone_used
-- screen_onoff
-- shutdown
 - speaker_used
 - suspend
 {% endif %}
+{% if lnxlink_shutdown %}
+- shutdown
+{% endif %}
 {% if lnxlink_temperature %}
 - temperature
+{% endif %}
+{% if lnxlink_mounts %}
+- mounts
+{% endif %}
+{% if lnxlink_diskuse %}
+- disk_usage
 {% endif %}
 {% if lnxlink_bash %}
 - bash
@@ -45,11 +49,61 @@ custom_modules: null
 exclude: null
 settings:
   hotkeys: null
+{% if ansible_hostname == "ishap" %}
+  mounts:
+    autocheck: false
+    directories:
+    - /mnt/Backup
+  disk_usage:
+    include_disks:
+      - /dev/mapper/pve-root
+    exclude_disks: []
+{% elif ansible_hostname == "adonalsium" %}
+  mounts:
+    autocheck: false
+    directories:
+    - /mnt/Media
+  disk_usage:
+    include_disks:
+      - /dev/mapper/pve-root
+    exclude_disks: []
+{% else %}
+  mounts:
+    autocheck: false
+    directories: []
   disk_usage:
     include_disks: []
     exclude_disks: []
+{% endif %}
+{% if ansible_hostname == "ishap" %}
   bash:
-    expose: null
+    expose:
+    - name: Start Trell
+      command: /usr/sbin/qm start 300
+    - name: Stop Trell
+      command: /usr/sbin/qm stop 300
+{% elif ansible_hostname == "adonalsium" %}
+  bash:
+    expose:
+    - name: Start Invention
+      command: /usr/sbin/pct start 210
+    - name: Stop Invention
+      command: /usr/sbin/pct stop 210
+{% elif ansible_hostname == "Autonomy" %}
+  bash:
+    expose:
+    - name: Cast Traffic
+      command: /home/{{main_username}}/scripts/cast_traffic.sh
+    - name: Cast Front Door
+      command: /home/{{main_username}}/scripts/cast_frontdoor.sh
+    - name: Cast Weather
+      command: /home/{{main_username}}/scripts/cast_weather.sh
+    - name: Update HASS
+      command: /home/{{main_username}}/scripts/update_hass.sh
+{% else %}
+  bash:
+    expose: []
+{% endif %}
   systemd: null
   gpio:
     inputs: null

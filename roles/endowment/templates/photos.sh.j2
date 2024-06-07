@@ -2,7 +2,7 @@
 
 cd '{{ secret_photopath_1 }}'
 
-for file in $(find PXL_* -type f -mtime +8 -maxdepth 1); do
+for file in $(find PXL_* -maxdepth 1 -type f -mtime +8); do
   # 1. Extract the date from the file name
   date="${file#PXL_}"
   date="${date%%_*}" 
@@ -20,7 +20,7 @@ done
 
 cd '{{ secret_photopath_2 }}'
 
-for file in $(find PXL_* -type f -mtime +8 -maxdepth 1); do
+for file in $(find PXL_* -maxdepth 1 -type f -mtime +8); do
   # 1. Extract the date from the file name
   date="${file#PXL_}"
   date="${date%%_*}"

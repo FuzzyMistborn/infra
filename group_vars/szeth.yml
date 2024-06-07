@@ -3,6 +3,11 @@
 hostname: szeth
 pull_backup: false
 
+### LNXLink
+lnxlink_shutdown: true
+lnxlink_diskuse: true
+lnxlink_desktop: true
+
 ### Autorestic Config
 autorestic_config_user: "{{ main_username}}"
 autorestic_user_directory: /home/"{{ main_username}}"
@@ -37,8 +42,3 @@ autorestic_config_yaml:
 
 desktop_hc_prune_id: "{{ secret_hc_restic_prune_szeth }}"
 desktop_hc_backup_id: "{{ secret_hc_restic_backup_szeth }}"
-
-### Telegraf
-telegraf_influx_token: "{{ secret_telegraf_szeth }}"
-telegraf_influx_bucket: szeth
-telegraf_influx_disk_mounts: '"/"'

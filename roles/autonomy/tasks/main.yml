@@ -46,34 +46,8 @@
     mode: +x
   loop:
     - {src: 'cast_frontdoor.sh.j2', dest: 'cast_frontdoor.sh'}
-    - {src: 'cast_stop.sh.j2', dest: 'cast_stop.sh'}
     - {src: 'docker.sh.j2', dest: 'docker.sh'}
     - {src: 'hass_update.sh.j2', dest: 'hass_update.sh'}
-
-- name: Copy webhook template config
-  template:
-    src: "hooks.yaml.j2"
-    dest: /home/{{ main_username }}/.hooks.yaml
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: 644
-
-### CATT
-
-- name: Install CATT python package
-  command: pip3 install catt
-
-- name: Set CATT Defaults
-  copy:
-    dest: /home/{{ main_username }}/.config/catt/catt.cfg
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: 0644
-    content: |
-      [options]
-      device = Kitchen
-
-      [aliases]
 
 #### HASS Git
 

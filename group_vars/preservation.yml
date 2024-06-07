@@ -4,6 +4,7 @@ hostname: preservation
 
 ### Install packages with grog.package
 package_list:
+  - name: acl
   - name: curl
   - name: htop
   - name: net-tools
@@ -13,8 +14,10 @@ package_list:
 
 pull_backup: false
 
-### Bash Aliases
+### LNXLink
+lnxlink_diskuse: true
 
+### Bash Aliases
 bash_docker: true
 bash_autorestic: true
 bash_systemctl: true
@@ -45,11 +48,6 @@ cronjobs:
     minute: 30
     hour: 3
     weekday: 5
-
-### Telegraf
-telegraf_influx_token: "{{ secret_telegraf_preservation }}"
-telegraf_influx_bucket: Preservation
-telegraf_influx_docker: true
 
 ### Autorestic Config
 autorestic_config_user: "{{ main_username}}"

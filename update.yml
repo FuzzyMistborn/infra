@@ -56,5 +56,3 @@
     - 'group_vars/all.yaml'
   roles:
     - role: install/runitor
-    - role: install/telegraf
-      become: true

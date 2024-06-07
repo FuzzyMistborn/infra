@@ -2,3 +2,6 @@
 lnxlink_desktop: false
 lnxlink_bash: false
 lnxlink_temperature: false
+lnxlink_mounts: false
+lnxlink_diskuse: false
+lnxlink_shutdown: false
