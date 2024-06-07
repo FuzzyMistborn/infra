@@ -407,9 +407,7 @@
   roles:
     - role: grog.package
     - role: geerlingguy.pip
-    - role: fuzzymistborn.autorestic
-    - role: install/runitor
+    - role: install/pip_packages
     - role: desktop
     - role: install/zsh
-    - role: hoid
     - role: bash_alias
