@@ -1,22 +1,18 @@
----
-kind: pipeline
-type: docker
-name: Infra Checks
-
 steps:
   - name: ansible-lint and yamllint
     image: fuzzymistborn/docker-linting:latest
-    environment:
-      VAULT_PW:
-        from_secret: ansible_vault_password
+    secrets:
+      - ansible_vault_password
     commands:
       - ansible-galaxy role install -r requirements.yaml
       - ansible-galaxy collection install -r requirements.yaml
-      - sed -i '8d' ansible.cfg  #  Delete vault_password_file from ansible.cfg
-      - echo $VAULT_PW > .vault-password
-      - "ansible-lint ."
-      - "yamllint ."
-      - "find . -maxdepth 1 -name '*.yml' | grep -v '.drone.yml' | grep -v 'FUNDING.yml' | xargs ansible-playbook --syntax-check --list-tasks --vault-password-file .vault-password"
+      - sed -i '8d' ansible.cfg
+      - echo $ansible_vault_password > .vault-password
+      - ansible-lint .
+      - yamllint .
+      - find . -maxdepth 1 -name '*.yml' | grep -v '.woodpecker.yml' | grep -v 'FUNDING.yml' | xargs ansible-playbook --syntax-check --list-tasks --vault-password-file .vault-password
+    when:
+      - event: push
 
   - name: Send TG Notification
     image: appleboy/drone-telegram
@@ -28,4 +24,7 @@ steps:
       format: markdown
       message: "{{#success build.status}}✅  Build for `{{repo.name}}` was *successful*!{{else}}❌  Build for `{{repo.name}}` has *FAILED*!{{/success}} \n🌐  [Output]({{build.link}})\n👤 Author: {{ commit.author }}\n📝  Commit: {{ commit.message }}"
     when:
-      status: [ success, failure ]
+      event: push
+      status:
+        - success
+        - failure
