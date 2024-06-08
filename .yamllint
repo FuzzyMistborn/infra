@@ -29,3 +29,4 @@ ignore: |
   requirements.yaml
   vars/vault.yaml
   FUNDING.yml
+  .woodpecker.yml

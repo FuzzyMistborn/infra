@@ -281,6 +281,49 @@ snapraid_config_excludes:
 appdata_path: "/home/{{ main_username }}/docker"
 containers:
   ###
+  - service_name: gluetun
+    container_name: gluetun
+    active: true
+    image: qmcgaw/gluetun:v3.38.0
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - "{{ appdata_path }}/gluetun:/gluetun"
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    environment:
+      - VPN_SERVICE_PROVIDER=mullvad
+      - VPN_TYPE=wireguard
+      - WIREGUARD_PRIVATE_KEY={{ secret_mullvad_key }}
+      - WIREGUARD_ADDRESSES={{ secret_mullvad_url }}
+      - SERVER_CITIES={{ secret_mullvad_cities }}
+      - DNS_ADDRESS=192.168.1.11
+      - TZ=America/New_York
+      - UPDATER_PERIOD=24h
+    include_global_env_vars: false
+  ###
+  - service_name: tailscale
+    container_name: tailscale
+    active: true
+    image: tailscale/tailscale:v1.66.4
+    restart: unless-stopped
+    network_mode: "service:gluetun"
+    cap_add:
+      - net_admin
+      - sys_module
+    volumes:
+      - "{{ appdata_path }}/tailscale:/var/lib/tailscale"
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    environment:
+      - TS_HOSTNAME=ishap
+      - TS_AUTHKEY={{ secret_ishap_tailscale_key }}
+      - TS_EXTRA_ARGS= --advertise-exit-node --accept-routes
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_USERSPACE=true
+    include_global_env_vars: false
+  ###
   - service_name: docker-proxy
     container_name: docker-proxy
     active: true
