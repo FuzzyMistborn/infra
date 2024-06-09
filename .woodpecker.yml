@@ -12,7 +12,7 @@ steps:
       - yamllint .
       - find . -maxdepth 1 -name '*.yml' | grep -v '.woodpecker.yml' | grep -v 'FUNDING.yml' | xargs ansible-playbook --syntax-check --list-tasks --vault-password-file .vault-password
     when:
-      - event: [ push, pull_request ]
+      - event: push
 
   - name: Send TG Notification
     image: appleboy/drone-telegram
@@ -24,7 +24,7 @@ steps:
       format: markdown
       message: "{{#success build.status}}✅  Build for `{{repo.name}}` was *successful*!{{else}}❌  Build for `{{repo.name}}` has *FAILED*!{{/success}} \n🌐  [Output]({{build.link}})\n👤 Author: {{ commit.author }}\n📝  Commit: {{ commit.message }}"
     when:
-      event: [ push, pull_request ]
+      event: push 
       status:
         - success
         - failure
