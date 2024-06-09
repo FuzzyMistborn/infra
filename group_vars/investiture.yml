@@ -1,6 +1,6 @@
 ---
 target_os: ubuntu
-hostname: drone
+hostname: investiture
 
 ### Install packages with grog.package
 package_list:
@@ -22,7 +22,7 @@ bash_apt: true
 ### Cronjobs
 cronjobs:
   - name: Docker Image Prune
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_drone_docker_prune }} -- /usr/bin/docker system prune -a -f
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_investiture_docker_prune }} -- /usr/bin/docker system prune -a -f
     user: "{{ main_username }}"
     minute: 35
     hour: 5
@@ -32,40 +32,40 @@ cronjobs:
 appdata_path: "/home/{{ main_username }}/docker"
 containers:
   ###
-  - service_name: drone-runner-gh
-    container_name: drone-runner-gh
+  - service_name: woodpecker-agent-github
+    container_name: woodpecker-agent-github
     active: true
-    image: drone/drone-runner-docker:1.8.3
-    restart: always
+    image: woodpeckerci/woodpecker-agent:v2.5.0
+    restart: unless-stopped
     ports:
       - 4300:3000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro
     environment:
-      - DRONE_RPC_PROTO=https
-      - DRONE_RPC_HOST=github.ci.fuzzymistborn.com
-      - DRONE_RPC_SECRET={{ secret_drone_rpc }}
-      - DRONE_RUNNER_CAPACITY=2
-      - DRONE_RUNNER_NAME=Adonalsium-GitHub
+      - WOODPECKER_SERVER=githubagent.ci.fuzzymistborn.com
+      - WOODPECKER_GRPC_SECURE=true
+      - WOODPECKER_AGENT_SECRET={{ secret_investiture_rpc }}
+      - WOODPECKER_HOSTNAME=Ishap-Github
+      - WOODPECKER_MAX_WORKFLOWS=2
     include_global_env_vars: false
   ###
-  - service_name: drone-runner-gitea
-    container_name: drone-runner-gitea
+  - service_name: woodpecker-agent-gitea
+    container_name: woodpecker-agent-gitea
     active: true
-    image: drone/drone-runner-docker:1.8.3
-    restart: always
+    image: woodpeckerci/woodpecker-agent:v2.5.0
+    restart: unless-stopped
     ports:
       - 4301:3000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro
     environment:
-      - DRONE_RPC_PROTO=https
-      - DRONE_RPC_HOST=gitea.ci.fuzzymistborn.com
-      - DRONE_RPC_SECRET={{ secret_drone_rpc }}
-      - DRONE_RUNNER_CAPACITY=2
-      - DRONE_RUNNER_NAME=Adonalsium-Gitea
+      - WOODPECKER_SERVER=giteaagent.ci.fuzzymistborn.com
+      - WOODPECKER_GRPC_SECURE=true
+      - WOODPECKER_AGENT_SECRET={{ secret_investiture_rpc }}
+      - WOODPECKER_HOSTNAME=Ishap-Gitea
+      - WOODPECKER_MAX_WORKFLOWS=2
     include_global_env_vars: false
   ###
   - service_name: portainer_agent

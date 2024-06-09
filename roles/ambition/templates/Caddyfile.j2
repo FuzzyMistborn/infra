@@ -107,6 +107,18 @@ gitea.ci.fuzzymistborn.com {
 	import fuzzy_headers
 }
 
+giteaagent.ci.fuzzymistborn.com {
+        reverse_proxy h2c://localhost:9002
+        tls /home/geoff/lego/certificates/_.ci.fuzzymistborn.com.crt /home/geoff/lego/certificates/_.ci.fuzzymistborn.com.key
+        import fuzzy_headers
+}
+
+githubagent.ci.fuzzymistborn.com {
+        reverse_proxy h2c://localhost:9000
+        tls /home/geoff/lego/certificates/_.ci.fuzzymistborn.com.crt /home/geoff/lego/certificates/_.ci.fuzzymistborn.com.key
+        import fuzzy_headers
+}
+
 *.fuzzymistborn.com {
 	redir {{ secret_redirect }}
 	tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key

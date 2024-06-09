@@ -40,7 +40,7 @@
     - {user: "{{ main_username }}", state: absent, ssh: "{{ secret_main_user_alt_ssh }}"}
     - {user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_ambition_ssh }}"}
     - {user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_pixel_ssh }}"}
-    - {user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_ambition_drone }}"}
+    - {user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_ambition_investiture }}"}
     - {user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_ambition_work_ssh }}"}
     - {user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_ambition_lxc_ssh }}"}
     - {user: "{{ main_username }}", state: present, ssh: "{{ secret_main_user_code_server_ssh }}"}

@@ -319,7 +319,7 @@
     - role: cronjobs
     - role: ironicbadger.docker_compose_generator
 
-- hosts: drone
+- hosts: investiture
   become: true
   vars_files:
     - 'vars/vault.yaml'

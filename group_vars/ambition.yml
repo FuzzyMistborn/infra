@@ -273,55 +273,53 @@ containers:
     mem_limit: 200M
     include_global_env_vars: false
   ###
-  - service_name: drone-gh
-    container_name: drone-gh
+  - service_name: woodpecker-github
+    container_name: woodpecker-github
     active: true
-    image: drone/drone:2.24.0
-    restart: always
+    image: woodpeckerci/woodpecker-server:v2.5.0
+    restart: unless-stopped
     ports:
-      - 127.0.0.1:4000:80
+      - 127.0.0.1:4000:8000
       - 127.0.0.1:9000:9000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro
-      - "{{ appdata_path }}/drone-gh:/data"
+      - "{{ appdata_path }}/woodpecker-github:/data"
     environment:
-      - DRONE_DATABASE_DRIVER=sqlite3
-      - DRONE_DATABASE_DATASOURCE=/data/database.sqlite
-      - DRONE_GIT_ALWAYS_AUTH=false
-      - DRONE_USER_FILTER=FuzzyMistborn
-      - DRONE_USER_CREATE=username:FuzzyMistborn,admin:true
-      - DRONE_RPC_SECRET={{ secret_drone_rpc }}
-      - DRONE_SERVER_PROTO=https
-      - DRONE_SERVER_HOST=github.ci.fuzzymistborn.com
-      - DRONE_GITHUB_CLIENT_ID={{ secret_drone_github_id }}
-      - DRONE_GITHUB_CLIENT_SECRET={{ secret_drone_github_secret }}
+      - WOODPECKER_GITHUB=true
+      - WOODPECKER_GITHUB_CLIENT={{ secret_investiture_github_id }}
+      - WOODPECKER_GITHUB_SECRET={{ secret_investiture_github_secret }}
+      - WOODPECKER_HOST=https://github.ci.fuzzymistborn.com
+      - WOODPECKER_AGENT_SECRET={{ secret_investiture_rpc }}
+      - WOODPECKER_DATABASE_DRIVER=sqlite3
+      - WOODPECKER_DATABASE_DATASOURCE=/data/woodpecker.sqlite
+      - WOODPECKER_ADMIN=FuzzyMistborn
+      - WOODPECKER_GRPC_ADDR=:9000
     include_global_env_vars: false
   ###
-  - service_name: drone-gitea
-    container_name: drone-gitea
+  - service_name: woodpecker-gitea
+    container_name: woodpecker-gitea
     active: true
-    image: drone/drone:2.24.0
-    restart: always
+    image: woodpeckerci/woodpecker-server:v2.5.0
+    restart: unless-stopped
     ports:
-      - 127.0.0.1:4001:80
-      - 127.0.0.1:9002:9000
+      - 127.0.0.1:4001:8000
+      - 127.0.0.1:9002:9002
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro
-      - "{{ appdata_path }}/drone-gitea:/data"
+      - "{{ appdata_path }}/woodpecker-gitea:/data"
     environment:
-      - DRONE_DATABASE_DRIVER=sqlite3
-      - DRONE_DATABASE_DATASOURCE=/data/database.sqlite
-      - DRONE_GIT_ALWAYS_AUTH=false
-      - DRONE_USER_FILTER=FuzzyMistborn
-      - DRONE_USER_CREATE=username:FuzzyMistborn,admin:true
-      - DRONE_RPC_SECRET={{ secret_drone_rpc }}
-      - DRONE_SERVER_PROTO=https
-      - DRONE_SERVER_HOST=gitea.ci.fuzzymistborn.com
-      - DRONE_GITEA_SERVER=https://git.fuzzymistborn.com
-      - DRONE_GITEA_CLIENT_ID={{ secret_drone_gitea_id }}
-      - DRONE_GITEA_CLIENT_SECRET={{ secret_drone_gitea_secret }}
+      - WOODPECKER_GITEA=true
+      - WOODPECKER_GITEA_URL=https://git.fuzzymistborn.com
+      - WOODPECKER_GITEA_CLIENT={{ secret_investiture_gitea_id }}
+      - WOODPECKER_GITEA_SECRET={{ secret_investiture_gitea_secret }}
+      - WOODPECKER_HOST=https://gitea.ci.fuzzymistborn.com
+      - WOODPECKER_AGENT_SECRET={{ secret_investiture_rpc }}
+      - WOODPECKER_DATABASE_DRIVER=sqlite3
+      - WOODPECKER_DATABASE_DATASOURCE=/data/woodpecker.sqlite
+      - WOODPECKER_ADMIN=FuzzyMistborn
+      - WOODPECKER_GRPC_ADDR=:9002
     include_global_env_vars: false
   ###
   - service_name: gotify
