@@ -139,7 +139,7 @@ containers:
   - service_name: immich-server
     container_name: immich-server
     active: true
-    image: ghcr.io/immich-app/immich-server:v1.105.1
+    image: ghcr.io/immich-app/immich-server:v1.106.2
     restart: unless-stopped
     ports:
       - "2283:3001"
@@ -164,7 +164,7 @@ containers:
   - service_name: immich-microservices
     container_name: immich_microservices
     active: true
-    image: ghcr.io/immich-app/immich-server:v1.105.1
+    image: ghcr.io/immich-app/immich-server:v1.106.2
     restart: unless-stopped
     command:
       - 'start.sh'
