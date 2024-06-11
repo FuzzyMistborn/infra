@@ -541,7 +541,7 @@ containers:
   - service_name: bambustudio
     container_name: bambustudio
     active: true
-    image: lscr.io/linuxserver/bambustudio:01.09.01
+    image: lscr.io/linuxserver/bambustudio:01.09.02
     restart: unless-stopped
     ports:
       - 3100:3000
