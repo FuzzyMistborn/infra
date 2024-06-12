@@ -58,6 +58,11 @@
     - name: move to /usr/local/bin
       shell: "mv {{ runitor_download_directory }}/runitor-v{{ runitor_ver }}-{{ runitor_distro }} {{ runitor_install_path }}"
 
+    - name: Fedora - SELinux Fix
+      ansible.builtin.command: restorecon -Rv /usr/local/bin
+      become: true
+      when: ansible_distribution == 'Fedora'
+
   when: runitor_is_installed == False or ( runitor_is_installed == True and runitor_download_latest_ver == True and installed_version_registered.stdout != runitor_ver ) or ( runitor_is_installed == True and runitor_download_latest_ver == False and installed_version_registered.stdout != runitor_pinned_ver )
 
 - name: populate /etc/environment

@@ -403,11 +403,14 @@
   become: true
   vars_files:
     - 'vars/vault.yaml'
+    - 'group_vars/desktop.yml'
     - 'group_vars/hoid.yml'
   roles:
     - role: grog.package
     - role: geerlingguy.pip
     - role: install/pip_packages
+    - role: fuzzymistborn.autorestic
+    - role: install/runitor
     - role: desktop
     - role: install/zsh
     - role: bash_alias

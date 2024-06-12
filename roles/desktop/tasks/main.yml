@@ -81,6 +81,12 @@
       - neochat
     state: absent
 
+- name: Install Intel-media-driver
+  ansible.builtin.dnf:
+    name: intel-media-driver
+    state: present
+  when: ansible_hostname != 'hoid'
+
 - name: Add VS Code repo
   become: true
   ansible.builtin.yum_repository:
@@ -245,6 +251,7 @@
 ### Final Tweaks
 - name: Enable WOL
   command: nmcli c modify "Wired connection 1" 802-3-ethernet.wake-on-lan magic
+  when: ansible_hostname != 'hoid'
 
 - name: Set Hostname
   command: hostnamectl set-hostname {{ hostname }}
@@ -271,6 +278,7 @@
     state: present
     regexp: "^AutoEnable"
     line: "AutoEnable=true"
+  when: ansible_hostname != 'hoid'
 
 ### Restic Finish
 - name: Copy systemd service file
@@ -308,7 +316,7 @@
     owner: root
     group: root
     mode: 0644
-  when: ansible_hostname == 'szeth'
+  when: ansible_hostname == 'szeth' or ansible_hostname == 'hoid'
 
 - name: Reload/Enable Systemd processes
   systemd:
@@ -318,4 +326,4 @@
     name: "{{ item }}"
   loop:
     - logid
-  when: ansible_hostname == 'szeth'
+  when: ansible_hostname == 'szeth' or ansible_hostname == 'hoid'
