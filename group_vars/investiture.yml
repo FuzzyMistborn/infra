@@ -35,7 +35,7 @@ containers:
   - service_name: woodpecker-agent-github
     container_name: woodpecker-agent-github
     active: true
-    image: woodpeckerci/woodpecker-agent:v2.5.0
+    image: woodpeckerci/woodpecker-agent:v2.6.0
     restart: unless-stopped
     ports:
       - 4300:3000
@@ -53,7 +53,7 @@ containers:
   - service_name: woodpecker-agent-gitea
     container_name: woodpecker-agent-gitea
     active: true
-    image: woodpeckerci/woodpecker-agent:v2.5.0
+    image: woodpeckerci/woodpecker-agent:v2.6.0
     restart: unless-stopped
     ports:
       - 4301:3000
