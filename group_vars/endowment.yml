@@ -306,6 +306,20 @@ containers:
     privileged: true
     include_global_env_vars: false
   ###
+  - service_name: butlarr
+    container_name: butlarr
+    active: true
+    image: trimforce/butlarr:1.1.8
+    restart: unless-stopped
+    volumes:
+      - "{{ appdata_path }}/butlarr/data:/app/data"
+      - "{{ appdata_path }}/butlarr/config.yaml:/app/config.yaml"
+    environment:
+      - BUTLARR_CONFIG_FILE=./config.yaml
+      - BUTLARR_INTERACTIVE_SETUP=false
+    privileged: false
+    include_global_env_vars: false
+  ###
   - service_name: docker-proxy
     container_name: docker-proxy
     active: true
