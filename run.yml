@@ -217,6 +217,7 @@
     - role: virtuosity
     - role: bash_alias
     - role: cronjobs
+    - role: install/lnxlink
     - role: ironicbadger.docker_compose_generator
 
 - hosts: cultivation

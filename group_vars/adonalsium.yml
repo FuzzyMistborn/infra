@@ -125,7 +125,7 @@ lxc_vlans:
     tag: 50
     disk: 'local-lvm:30'
     cores: 4
-    memory: 4096
+    memory: 4608
     nesting: 1
     keyctl: 1
   - name: Preservation
@@ -597,6 +597,7 @@ containers:
       - /etc/localtime:/etc/localtime:ro
     environment:
       - "FRIGATE_RTSP_PASSWORD='password'"
+      - PLUS_API_KEY={{ secret_frigate_plus_api }}
     ports:
       - '5000:5000'
       - '8554:8554'

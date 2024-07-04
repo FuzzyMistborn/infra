@@ -1,6 +1,6 @@
 ---
 
-- hosts: shards ambition unity
+- hosts: shards ambition unity virtuosity
   tasks:
     - name: update all packages
       become: true
