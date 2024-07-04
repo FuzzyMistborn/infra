@@ -325,7 +325,7 @@ containers:
   - service_name: owntracks-frontend
     container_name: owntracks-frontend
     active: true
-    image: owntracks/frontend:2.15.0
+    image: owntracks/frontend:2.15.3
     restart: unless-stopped
     ports:
       - 8084:80
