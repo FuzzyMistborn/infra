@@ -327,7 +327,7 @@ containers:
   - service_name: docker-proxy
     container_name: docker-proxy
     active: true
-    image: tecnativa/docker-socket-proxy:0.1.2
+    image: tecnativa/docker-socket-proxy:0.2.0
     restart: unless-stopped
     ports:
       - 2375:2375
