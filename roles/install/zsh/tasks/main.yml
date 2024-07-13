@@ -4,6 +4,7 @@
   ansible.builtin.package:
     name:
       - zsh
+      - acl
 # Not present on Ubuntu, at least not easily.  Need to fix
 #      - eza
     state: present

@@ -102,6 +102,8 @@ containers:
       - /dev/zwave:/dev/zwave
     environment:
       - TZ={{ ntp_timezone }}
+      # Hopefully temporary, see https://github.com/zwave-js/node-zwave-js/releases/tag/v12.12.0
+      - ZWAVEJS_DISABLE_WATCHDOG=false
     include_global_env_vars: false
   ###
   - service_name: zigbee2mqtt

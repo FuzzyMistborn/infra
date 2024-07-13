@@ -301,7 +301,7 @@ containers:
       - BNB_URL=http://192.168.30.5:4534
       - BNB_SECRET=Flashily.Conform5.Shrimp
       - BNB_SONOS_SERVICE_NAME=Navidrome
-      - BNB_SONOS_SEED_HOST=192.168.30.188
+      - BNB_SONOS_SEED_HOST=192.168.30.38
       - BNB_SONOS_AUTO_REGISTER=true
       - BNB_SONOS_DEVICE_DISCOVERY=true
       - BNB_SUBSONIC_URL=http://192.168.50.20:4533
