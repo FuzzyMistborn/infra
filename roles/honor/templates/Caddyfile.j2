@@ -8,7 +8,7 @@
 	}
 	email {{ secret_email }}
 	servers {
-		trusted_proxies static 10.10.10.1/32
+		trusted_proxies static private_ranges
 	}
 }
 
@@ -28,7 +28,7 @@
 
 # Gotify
 gotify.{{ secret_personal_url }} {
-	reverse_proxy https://10.10.10.1:443  {
+	reverse_proxy https://10.10.10.1:443 {
 			transport http {
 				tls_server_name gotify.{{ secret_personal_url }}
 			}
@@ -39,7 +39,7 @@ gotify.{{ secret_personal_url }} {
 
 # Uptime-Kuma
 uptime.{{ secret_personal_url }} {
-	reverse_proxy https://10.10.10.1:443  {
+	reverse_proxy https://10.10.10.1:443 {
 			transport http {
 				tls_server_name uptime.{{ secret_personal_url }}
 			}
@@ -273,18 +273,6 @@ draw.{{ secret_personal_internal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
-# Wireguard (Honor)
-wghonor.{{ secret_personal_internal_url }} {
-	reverse_proxy http://192.168.50.21:8080
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
-	import headers
-}
-# Wireguard (Ambition)
-wgvps.{{ secret_personal_internal_url }} {
-	reverse_proxy http://remote.fuzzymistborn.com:51821
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
-	import headers
-}
 # Traffic
 traffic.{{ secret_personal_internal_url }} {
 	file_server
@@ -322,8 +310,15 @@ ai.{{ secret_personal_internal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
-# Ansible Desktop
-ansible.{{ secret_personal_internal_url }} {
-	redir /* {{ secret_ansible_desktop_url }} 301
+# Fooocus
+image.{{ secret_personal_internal_url }} {
+	reverse_proxy http://192.168.50.25:7865
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	import headers
 }
-
+# PDF
+pdf.{{ secret_personal_internal_url }} {
+	reverse_proxy http://192.168.50.21:8081
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	import headers
+}

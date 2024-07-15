@@ -10,10 +10,8 @@ package_list:
   - name: htop
   - name: lm-sensors
   - name: net-tools
-  - name: fail2ban
   - name: python
   - name: restic
-  - name: rsyslog
   - name: sudo
   - name: wget
 
@@ -347,6 +345,24 @@ containers:
       - DEFAULT_IGNORE_HTTPS_ERRORS=true
     volumes:
       - "{{ appdata_path }}/change:/datastore"
+    include_global_env_vars: false
+  ###
+  - service_name: crowdsec
+    container_name: crowdsec
+    active: true
+    image: crowdsecurity/crowdsec:v1.6.2
+    restart: unless-stopped
+    volumes:
+      - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"
+      - "{{ appdata_path }}/bitwarden/data:/var/log/vaultwarden:ro"
+      - "{{ appdata_path }}/crowdsec/db:/var/lib/crowdsec/data/"
+    environment:
+      - COLLECTIONS=Dominic-Wagner/vaultwarden
+      - GID=1000
+      - DISABLE_LOCAL_API=true
+      - AGENT_USERNAME={{ hostname }}
+      - AGENT_PASSWORD={{ secret_crowdsec_cultivation_pw }}
+      - LOCAL_API_URL=http://{{ secret_ambition_ip }}:8080
     include_global_env_vars: false
   ###
   - service_name: docker-proxy

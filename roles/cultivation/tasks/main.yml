@@ -40,21 +40,3 @@
     path: /home/{{ main_username }}/restore.sh
     state: absent
   when: pull_backup == true
-
-### Rsyslog
-- name: Copy rsyslog config templates
-  template:
-    src: "{{ item.src }}"
-    dest: /etc/{{ item.dest }}
-    owner: root
-    group: root
-    mode: 0644
-  loop:
-    - {src: 'rsyslog.conf.j2', dest: 'rsyslog.conf'}
-    - {src: 'bitwarden.conf.j2', dest: 'rsyslog.d/bitwarden.conf'}
-
-- name: restart rsyslog service
-  service:
-    name: rsyslog
-    enabled: 'true'
-    state: restarted

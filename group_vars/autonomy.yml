@@ -10,11 +10,9 @@ package_list:
   - name: htop
   - name: lm-sensors
   - name: net-tools
-  - name: fail2ban
   - name: mosquitto-clients
   - name: python
   - name: restic
-  - name: rsyslog
   - name: skopeo
   - name: sudo
   - name: wget
@@ -370,6 +368,24 @@ containers:
     volumes:
       - "{{ appdata_path }}/whisper:/data"
     command: --model base-int8 --language en
+    include_global_env_vars: false
+  ###
+  - service_name: crowdsec
+    container_name: crowdsec
+    active: true
+    image: crowdsecurity/crowdsec:v1.6.2
+    restart: unless-stopped
+    volumes:
+      - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"
+      - /home/{{ main_username }}/hass/:/var/log/homeassistant
+      - "{{ appdata_path }}/crowdsec/db:/var/lib/crowdsec/data/"
+    environment:
+      - COLLECTIONS=crowdsecurity/home-assistant
+      - GID=1000
+      - DISABLE_LOCAL_API=true
+      - AGENT_USERNAME={{ hostname }}
+      - AGENT_PASSWORD={{ secret_crowdsec_autonomy_pw }}
+      - LOCAL_API_URL=http://{{ secret_ambition_ip }}:8080
     include_global_env_vars: false
   ###
   - service_name: portainer_agent

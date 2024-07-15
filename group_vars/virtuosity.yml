@@ -170,6 +170,24 @@ containers:
       - "host.docker.internal:host-gateway"
     include_global_env_vars: false
   ###
+  - service_name: crowdsec
+    container_name: crowdsec
+    active: true
+    image: crowdsecurity/crowdsec:v1.6.2
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"
+      - "{{ appdata_path }}/crowdsec/db:/var/lib/crowdsec/data/"
+    environment:
+      - COLLECTIONS=gauth-fr/immich
+      - GID=1000
+      - DISABLE_LOCAL_API=true
+      - AGENT_USERNAME={{ hostname }}
+      - AGENT_PASSWORD={{ secret_crowdsec_virtuosity_pw }}
+      - LOCAL_API_URL=http://{{ secret_ambition_ip }}:8080
+    include_global_env_vars: false
+  ###
   - service_name: immich-server
     container_name: immich-server
     active: true
@@ -220,11 +238,13 @@ containers:
     depends_on:
       - immich-redis
       - immich-database
+  ###
   - service_name: immich-redis
     container_name: immich_redis
     active: true
     image: docker.io/redis:6.2-alpine@sha256:328fe6a5822256d065debb36617a8169dbfbd77b797c525288e465f56c1d392b
     restart: always
+  ###
   - service_name: immich-database
     container_name: immich_database
     active: true

@@ -7,14 +7,12 @@ package_list:
   - name: acl
   - name: curl
   - name: cifs-utils
-  - name: fail2ban
   - name: git
   - name: htop
   - name: lm-sensors
   - name: net-tools
   - name: python
   - name: restic
-  - name: rsyslog
   - name: sudo
   - name: wget
 
@@ -318,6 +316,27 @@ containers:
       - BUTLARR_CONFIG_FILE=./config.yaml
       - BUTLARR_INTERACTIVE_SETUP=false
     privileged: false
+    include_global_env_vars: false
+  ###
+  - service_name: crowdsec
+    container_name: crowdsec
+    active: true  
+    image: crowdsecurity/crowdsec:v1.6.2
+    restart: unless-stopped
+    volumes:
+      - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"
+      - "{{ appdata_path }}/nextcloud_docker/html/data:/var/log/nextcloud:ro"
+      - "{{ appdata_path }}/sonarr/logs:/var/log/sonarr:ro"
+      - "{{ appdata_path }}/radarr/logs:/var/log/radarr:ro"
+      - "{{ appdata_path }}/jellyfin/config/log/:/var/log/jellyfin:ro"
+      - "{{ appdata_path }}/crowdsec/db:/var/lib/crowdsec/data/"
+    environment:
+      - COLLECTIONS=LePresidente/jellyfin schiz0phr3ne/sonarr schiz0phr3ne/radarr crowdsecurity/nextcloud
+      - GID=1000
+      - DISABLE_LOCAL_API=true
+      - AGENT_USERNAME={{ hostname }}
+      - AGENT_PASSWORD={{ secret_crowdsec_endowment_pw }}
+      - LOCAL_API_URL=http://{{ secret_ambition_ip }}:8080
     include_global_env_vars: false
   ###
   - service_name: docker-proxy

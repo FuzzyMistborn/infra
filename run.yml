@@ -270,7 +270,6 @@
     - role: honor
     - role: bash_alias
     - role: cronjobs
-    - role: install/fail2ban
     - role: ironicbadger.docker_compose_generator
 
 - hosts: omada
@@ -352,7 +351,6 @@
     - role: caddy_ansible.caddy_ansible
     - role: bash_alias
     - role: cronjobs
-    - role: install/fail2ban
 
 ### Desktops
 - hosts: vasher

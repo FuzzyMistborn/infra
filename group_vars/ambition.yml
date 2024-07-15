@@ -6,9 +6,7 @@ hostname: ambition
 package_list:
   - name: curl
   - name: iperf3
-  - name: fail2ban
   - name: restic
-  - name: rsyslog
   - name: net-tools
   - name: python3
   - name: wget
@@ -77,11 +75,6 @@ ufw:
     port: '5201'
     proto: 'tcp'
     route: 'no'
-  - comment: 'rsyslog'
-    rule: 'allow'
-    port: '{{ secret_rsyslog_port }}'
-    proto: 'tcp'
-    route: 'no'
   - comment: 'wireguard tunnel'
     rule: 'allow'
     port: '51282'
@@ -107,6 +100,7 @@ ufw:
 ### Caddy Config
 caddy_systemd_capabilities_enabled: true
 caddy_systemd_network_dependency: false
+caddy_packages:  ["github.com/hslatman/caddy-crowdsec-bouncer"]
 caddy_conf_dir: /home/{{ main_username }}/caddy
 caddy_config: "{{ lookup('template', 'roles/ambition/templates/Caddyfile.j2') }}"
 
@@ -389,6 +383,28 @@ containers:
       - TELEGRAM_TOKEN={{ secret_healthchecks_tg_token }}
       - DOCKER_MODS=linuxserver/mods:healthchecks-apprise
     include_global_env_vars: true
+  ###
+  - service_name: crowdsec
+    container_name: crowdsec
+    active: true
+    image: crowdsecurity/crowdsec:v1.6.2
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - "{{ appdata_path }}/crowdsec/data/:/etc/crowdsec"
+      - /home/{{ main_username }}/caddy/:/var/log/caddy
+      - "{{ appdata_path }}/gitea/data/gitea/log:/var/log/gitea:ro"
+      - /var/log/auth.log:/var/log/ssh/auth.log:ro
+      - "{{ appdata_path }}/crowdsec/db:/var/lib/crowdsec/data/"
+    environment:
+      - COLLECTIONS=crowdsecurity/caddy crowdsecurity/http-cve crowdsecurity/whitelist-good-actors LePresidente/gitea timokoessler/uptime-kuma crowdsecurity/sshd
+      - BOUNCER_KEY_CADDY={{secret_crowdsec_api}}
+      - GID=1000
+      - USE_WAL=true
+      - TZ={{ ntp_timezone }}
+    include_global_env_vars: false
   ###
   - service_name: portainer_agent
     container_name: portainer_agent

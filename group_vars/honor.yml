@@ -6,7 +6,6 @@ hostname: honor
 package_list:
   - name: curl
   - name: htop
-  - name: fail2ban
   - name: net-tools
   - name: sudo
   - name: restic
@@ -117,6 +116,23 @@ containers:
       - "{{ appdata_path }}/adguard/work:/opt/adguardhome/work"
     cap_add:
       - NET_ADMIN
+    include_global_env_vars: false
+  - service_name: crowdsec
+    container_name: crowdsec
+    active: true
+    image: crowdsecurity/crowdsec:v1.6.2
+    restart: unless-stopped
+    volumes:
+      - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"
+      - /var/log/auth.log:/var/log/ssh/auth.log:ro
+      - "{{ appdata_path }}/crowdsec/db:/var/lib/crowdsec/data/"
+    environment:
+      - COLLECTIONS=crowdsecurity/http-cve crowdsecurity/whitelist-good-actors crowdsecurity/sshd
+      - GID=1000
+      - DISABLE_LOCAL_API=true
+      - AGENT_USERNAME={{ hostname }}
+      - AGENT_PASSWORD={{ secret_crowdsec_honor_pw }}
+      - LOCAL_API_URL=http://{{ secret_ambition_ip }}:8080
     include_global_env_vars: false
   ###
   - service_name: portainer_agent

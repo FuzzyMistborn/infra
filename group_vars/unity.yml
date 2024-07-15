@@ -14,7 +14,6 @@ package_list:
   - name: net-tools
   - name: python3
   - name: restic
-  - name: rsyslog
   - name: sudo
   - name: wget
 

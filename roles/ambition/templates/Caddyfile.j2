@@ -7,6 +7,13 @@
 		}
 	}
 	email {{ secret_email }}
+	order crowdsec first
+	# Crowdsec Bouncer
+	crowdsec {
+		api_url http://localhost:8080
+		api_key {{ secret_crowdsec_api }}
+		ticker_interval 15s
+	}
 }
 (fuzzy_headers) {
 	header {
@@ -46,6 +53,7 @@ www.fuzzymistborn.com {
 }
 
 blog.fuzzymistborn.com {
+	crowdsec
 	file_server
 	root * /var/www/blog/public
 	tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key
@@ -53,6 +61,7 @@ blog.fuzzymistborn.com {
 }
 
 blog.ci.fuzzymistborn.com {
+	crowdsec
 	file_server
 	root * /var/www/staging/public
 	tls /home/{{ main_username }}/lego/certificates/_.ci.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.ci.fuzzymistborn.com.key
@@ -60,63 +69,73 @@ blog.ci.fuzzymistborn.com {
 }
 
 hc.fuzzymistborn.com {
+	crowdsec
 	reverse_proxy localhost:8000
 	tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key
 	import fuzzy_headers
 }
 
 stats.fuzzymistborn.com {
+	crowdsec
 	reverse_proxy localhost:3500
 	tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key
 	import fuzzy_headers
 }
 
 change.fuzzymistborn.com {
+	crowdsec
 	reverse_proxy localhost:5000
 	tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key
 	import fuzzy_headers
 }
 
 gist.fuzzymistborn.com {
+	crowdsec
 	reverse_proxy localhost:6157
 	tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key
 	import fuzzy_headers
 }
 
 drop.fuzzymistborn.com {
+	crowdsec
 	reverse_proxy localhost:3200
 	tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key
 	import fuzzy_headers
 }
 
 git.fuzzymistborn.com {
+	crowdsec
 	reverse_proxy localhost:3030
 	tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key
 	import fuzzy_headers
 }
 
 github.ci.fuzzymistborn.com {
+	crowdsec
 	reverse_proxy localhost:4000
 	tls /home/{{ main_username }}/lego/certificates/_.ci.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.ci.fuzzymistborn.com.key
 	import fuzzy_headers
 }
 
 gitea.ci.fuzzymistborn.com {
+	crowdsec
 	reverse_proxy localhost:4001
 	tls /home/{{ main_username }}/lego/certificates/_.ci.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.ci.fuzzymistborn.com.key
 	import fuzzy_headers
 }
 
 giteaagent.ci.fuzzymistborn.com {
-        reverse_proxy h2c://localhost:9002
-        tls /home/geoff/lego/certificates/_.ci.fuzzymistborn.com.crt /home/geoff/lego/certificates/_.ci.fuzzymistborn.com.key
-        import fuzzy_headers
+	crowdsec
+	reverse_proxy h2c://localhost:9002
+	tls /home/geoff/lego/certificates/_.ci.fuzzymistborn.com.crt /home/geoff/lego/certificates/_.ci.fuzzymistborn.com.key
+	import fuzzy_headers
 }
 
 githubagent.ci.fuzzymistborn.com {
-        reverse_proxy h2c://localhost:9000
-        tls /home/geoff/lego/certificates/_.ci.fuzzymistborn.com.crt /home/geoff/lego/certificates/_.ci.fuzzymistborn.com.key
-        import fuzzy_headers
+	crowdsec
+	reverse_proxy h2c://localhost:9000
+	tls /home/geoff/lego/certificates/_.ci.fuzzymistborn.com.crt /home/geoff/lego/certificates/_.ci.fuzzymistborn.com.key
+	import fuzzy_headers
 }
 
 *.fuzzymistborn.com {
@@ -127,18 +146,21 @@ githubagent.ci.fuzzymistborn.com {
 ### {{ secret_personal_url }}
 
 gotify.{{ secret_personal_url }} {
+	crowdsec
 	reverse_proxy localhost:8090
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
 }
 
 uptime.{{ secret_personal_url }} {
+	crowdsec
 	reverse_proxy localhost:3001
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
 }
 
 smarthome.{{ secret_personal_url }} {
+	crowdsec
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name smarthome.{{ secret_personal_url }}
@@ -149,6 +171,7 @@ smarthome.{{ secret_personal_url }} {
 }
 
 cloud.{{ secret_personal_url }} {
+	crowdsec
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name cloud.{{ secret_personal_url }}
@@ -165,6 +188,7 @@ calendar.{{ secret_personal_url }} {
 }
 
 bitwarden.{{ secret_personal_url }} {
+	crowdsec
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name bitwarden.{{ secret_personal_url }}
@@ -177,6 +201,7 @@ bitwarden.{{ secret_personal_url }} {
 }
 
 news.{{ secret_personal_url }} {
+	crowdsec
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name news.{{ secret_personal_url }}
@@ -187,6 +212,7 @@ news.{{ secret_personal_url }} {
 }
 
 code.{{ secret_personal_url }} {
+	crowdsec
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name code.{{ secret_personal_url }}
@@ -197,6 +223,7 @@ code.{{ secret_personal_url }} {
 }
 
 media.{{ secret_personal_url }} {
+	crowdsec
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name media.{{ secret_personal_url }}
@@ -207,6 +234,7 @@ media.{{ secret_personal_url }} {
 }
 
 office.{{ secret_personal_url }} {
+	crowdsec
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name office.{{ secret_personal_url }}
@@ -219,6 +247,7 @@ office.{{ secret_personal_url }} {
 }
 
 radarr.{{ secret_personal_url }} {
+	crowdsec
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name radarr.{{ secret_personal_url }}
@@ -229,6 +258,7 @@ radarr.{{ secret_personal_url }} {
 }
 
 sonarr.{{ secret_personal_url }} {
+	crowdsec
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name sonarr.{{ secret_personal_url }}
@@ -239,6 +269,7 @@ sonarr.{{ secret_personal_url }} {
 }
 
 wallabag.{{ secret_personal_url }} {
+	crowdsec
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name wallabag.{{ secret_personal_url }}
@@ -249,6 +280,7 @@ wallabag.{{ secret_personal_url }} {
 }
 
 ferdium.{{ secret_personal_url }} {
+	crowdsec
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name ferdium.{{ secret_personal_url }}
@@ -259,6 +291,7 @@ ferdium.{{ secret_personal_url }} {
 }
 
 matrix.{{ secret_personal_url }} {
+	crowdsec
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name matrix.{{ secret_personal_url }}
@@ -269,6 +302,7 @@ matrix.{{ secret_personal_url }} {
 }
 
 chat.{{ secret_personal_url }} {
+	crowdsec
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name chat.{{ secret_personal_url }}
@@ -279,6 +313,7 @@ chat.{{ secret_personal_url }} {
 }
 
 change.{{ secret_personal_url }} {
+	crowdsec
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name change.{{ secret_personal_url }}
@@ -289,6 +324,7 @@ change.{{ secret_personal_url }} {
 }
 
 video.{{ secret_personal_url }} {
+	crowdsec
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name video.{{ secret_personal_url }}
@@ -299,6 +335,7 @@ video.{{ secret_personal_url }} {
 }
 
 music.{{ secret_personal_url }} {
+	crowdsec
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name music.{{ secret_personal_url }}
@@ -309,6 +346,7 @@ music.{{ secret_personal_url }} {
 }
 
 photos.{{ secret_personal_url }} {
+	crowdsec
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name notes.{{ secret_personal_url }}
@@ -319,6 +357,7 @@ photos.{{ secret_personal_url }} {
 }
 
 search.{{ secret_personal_url }} {
+	crowdsec
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name notes.{{ secret_personal_url }}
