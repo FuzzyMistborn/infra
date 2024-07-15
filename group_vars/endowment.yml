@@ -320,7 +320,7 @@ containers:
   ###
   - service_name: crowdsec
     container_name: crowdsec
-    active: true  
+    active: true
     image: crowdsecurity/crowdsec:v1.6.2
     restart: unless-stopped
     volumes:
