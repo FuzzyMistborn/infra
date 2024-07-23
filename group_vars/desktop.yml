@@ -17,6 +17,7 @@ package_list:
   - name: firefox
   - name: flameshot
   - name: flatpak
+  - name: flatseal
   - name: freerdp
   - name: gcc
   - name: gimp

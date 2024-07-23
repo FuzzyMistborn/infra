@@ -246,7 +246,7 @@ containers:
   ###
   - service_name: deemix
     container_name: deemix
-    active: true
+    active: false
     image: registry.gitlab.com/bockiii/deemix-docker:latest
     restart: always
     ports:

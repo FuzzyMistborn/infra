@@ -123,7 +123,7 @@ lxc_vlans:
     tag: 50
     disk: 'local-lvm:30'
     cores: 4
-    memory: 4608
+    memory: 5120
     nesting: 1
     keyctl: 1
   - name: Preservation
