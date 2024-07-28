@@ -246,7 +246,7 @@ containers:
   - service_name: diagrams
     container_name: diagrams
     active: true
-    image: jgraph/drawio:24.6.4
+    image: jgraph/drawio:24.7.5
     restart: always
     ports:
       - 8080:8080
