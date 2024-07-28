@@ -308,7 +308,7 @@ containers:
   - service_name: owntracks-recorder
     container_name: owntracks-recorder
     active: true
-    image: owntracks/recorder:0.9.7
+    image: owntracks/recorder:0.9.8
     restart: unless-stopped
     ports:
       - 8083:8083
