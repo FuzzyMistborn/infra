@@ -304,7 +304,7 @@ containers:
   - service_name: tailscale
     container_name: tailscale
     active: true
-    image: tailscale/tailscale:v1.68.1
+    image: tailscale/tailscale:v1.70.0
     restart: unless-stopped
     network_mode: "service:gluetun"
     cap_add:
