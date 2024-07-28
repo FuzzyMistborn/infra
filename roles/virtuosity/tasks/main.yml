@@ -62,9 +62,9 @@
     dest: /etc/apt/sources.list.d/nvidia-docker.list
     mode: 0644
 
-- name: Install Nvidia
-  command: sudo ubuntu-drivers install
-  become: true
+#- name: Install Nvidia
+#  command: sudo ubuntu-drivers install
+#  become: true
 
 - name: Install Nvidia container toolkit
   apt:

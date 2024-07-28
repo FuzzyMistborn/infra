@@ -126,7 +126,7 @@ containers:
   - service_name: fooocus
     container_name: fooocus
     active: true
-    image: fuzzymistborn/fooocus
+    image: ghcr.io/lllyasviel/fooocus:2.5.2
     restart: unless-stopped
     ports:
       - "7865:7865"
