@@ -391,7 +391,7 @@ containers:
   - service_name: restic-server
     container_name: restic-server
     active: true
-    image: restic/rest-server:0.12.1
+    image: restic/rest-server:0.13.0
     restart: unless-stopped
     ports:
       - 8500:8000
