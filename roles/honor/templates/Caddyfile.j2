@@ -255,9 +255,15 @@ influx.{{ secret_personal_internal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
-# Scrutiny
+# Scrutiny (Adonalsium)
 scrutiny.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.1.10:8080
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	import headers
+}
+# Scrutiny (Ishap)
+scrutiny2.{{ secret_personal_internal_url }} {
+	reverse_proxy http://192.168.1.5:8080
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
