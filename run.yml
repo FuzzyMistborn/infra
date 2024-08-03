@@ -271,6 +271,7 @@
     - role: bash_alias
     - role: cronjobs
     - role: ironicbadger.docker_compose_generator
+    - role: install/crowdesec_bouncer
 
 - hosts: omada
   become: true
@@ -349,6 +350,7 @@
     - role: ironicbadger.docker_compose_generator
     - role: ambition
     - role: caddy_ansible.caddy_ansible
+    - role: install/crowdesec_bouncer
     - role: bash_alias
     - role: cronjobs
 
