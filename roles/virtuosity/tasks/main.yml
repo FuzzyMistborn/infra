@@ -51,6 +51,19 @@
     - docker/ollama
 
 ### GPU
+- name: Add Nvidia PPA repo
+  apt_repository:
+    repo: ppa:graphics-drivers/ppa
+    state: present
+
+- name: Install NVIDIA driver and utils
+  apt:
+    pkg: nvidia-driver-{{ nvidia_driver_version }}
+    install_recommends: no
+    state: present
+    update_cache: yes
+    autoremove: yes
+
 - name: Add Nvidia repo gpg key
   apt_key:
     url: https://nvidia.github.io/libnvidia-container/gpgkey
@@ -61,10 +74,6 @@
     url: https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list
     dest: /etc/apt/sources.list.d/nvidia-docker.list
     mode: 0644
-
-#- name: Install Nvidia
-#  command: sudo ubuntu-drivers install
-#  become: true
 
 - name: Install Nvidia container toolkit
   apt:

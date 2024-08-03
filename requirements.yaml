@@ -14,4 +14,3 @@ roles:
 collections:
 - community.docker
 - ansible.posix
-- kewlfft.aur
