@@ -12,6 +12,7 @@ package_list:
   - name: htop
   - name: lm-sensors
   - name: net-tools
+  - name: ncdu
   - name: sudo
   - name: wget
 

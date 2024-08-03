@@ -110,7 +110,7 @@ lxc_vlans:
     gw: 192.168.30.1
     ip: 192.168.30.5
     tag: 30
-    disk: 'local-lvm:35'
+    disk: 'local-lvm:40'
     cores: 6
     memory: 5120
     swap: 1024
@@ -122,9 +122,9 @@ lxc_vlans:
     gw: 192.168.50.1
     ip: 192.168.50.21
     tag: 50
-    disk: 'local-lvm:30'
+    disk: 'local-lvm:35'
     cores: 4
-    memory: 5120
+    memory: 5632
     nesting: 1
     keyctl: 1
   - name: Preservation
@@ -133,7 +133,7 @@ lxc_vlans:
     gw: 192.168.50.1
     ip: 192.168.50.22
     tag: 50
-    disk: 'local-lvm:40'
+    disk: 'local-lvm:45'
     cores: 4
     memory: 3072
     nesting: 1
@@ -146,7 +146,7 @@ lxc_mounts:
     gw: 192.168.50.1
     ip: 192.168.50.20
     bridge: vmbr2
-    disk: 'local-lvm:60'
+    disk: 'local-lvm:65'
     cores: 8
     memory: 5120
     nesting: 1

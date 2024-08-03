@@ -286,6 +286,21 @@ containers:
       - "TZ={{ ntp_timezone }}"
     include_global_env_vars: false
   ###
+  - service_name: stirling-pdf
+    container_name: stirling-pdf
+    active: true
+    image: frooodle/s-pdf:0.26.1
+    restart: unless-stopped
+    volumes:
+      - "{{ appdata_path }}/stirlingpdf/extraConfigs:/configs"
+    ports:
+      - 8081:8080
+    environment:
+      - DOCKER_ENABLE_SECURITY=false
+      - INSTALL_BOOK_AND_ADVANCED_HTML_OPS=false
+      - LANGS=en_US
+    include_global_env_vars: false
+  ###
   - service_name: ferdium-server
     container_name: ferdium-server
     active: true
