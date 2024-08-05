@@ -283,7 +283,7 @@ containers:
   - service_name: calibre-web
     container_name: calibre-web
     active: true
-    image: lscr.io/linuxserver/calibre-web:0.6.22
+    image: lscr.io/linuxserver/calibre-web:0.6.23
     restart: always
     ports:
       - 8083:8083
