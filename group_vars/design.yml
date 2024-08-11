@@ -27,7 +27,7 @@ package_list:
   - name: hddtemp
   - name: htop
   - name: kate
-  - name: kolourpaint
+  - name: pinta
   - name: lm_sensors
   - name: nano
   - name: ncdu

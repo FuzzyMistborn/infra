@@ -7,7 +7,7 @@ mount /mnt/local_backup
 sleep 10s
 
 # rsync script
-rsync -Aavx --progress --delete --exclude '.*' --exclude 'TV Shows' --exclude 'Parents *' --exclude 'Frigate' /mnt/Media/ /media/external_hdd/Media
+rsync -Aavx --progress --delete --exclude '.*' --exclude 'TV Shows' --exclude 'Parents *' --exclud 'UHD' --exclude 'Frigate' /mnt/Media/ /media/external_hdd/Media
 rsync -Aavx --progress --delete --exclude '.*' --exclude '.snapraid.content' /mnt/local_backup/ /media/external_hdd/Backup
 
 # Wait for dismount
