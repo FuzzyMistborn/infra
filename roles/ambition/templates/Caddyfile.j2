@@ -170,6 +170,17 @@ smarthome.{{ secret_personal_url }} {
 	import personal_headers
 }
 
+frigate.{{ secret_personal_url }} {
+	crowdsec
+	reverse_proxy https://10.10.10.10:443 {
+		transport http {
+			tls_server_name frigate.{{ secret_personal_url }}
+		}
+	}
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	import personal_headers
+}
+
 cloud.{{ secret_personal_url }} {
 	crowdsec
 	reverse_proxy https://10.10.10.10:443 {

@@ -597,7 +597,9 @@ containers:
     environment:
       - "FRIGATE_RTSP_PASSWORD='password'"
       - PLUS_API_KEY={{ secret_frigate_plus_api }}
+      - FRIGATE_JWT_SECRET={{ secret_frigate_jwt }}
     ports:
+      - '8971:8971'
       - '5000:5000'
       - '8554:8554'
       - '1984:1984'

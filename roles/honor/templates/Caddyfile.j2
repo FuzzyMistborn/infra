@@ -55,6 +55,12 @@ smarthome.{{ secret_personal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import headers
 }
+# Frigate
+frigate.{{ secret_personal_url }} {
+	reverse_proxy http://192.168.1.10:8971
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	import headers
+}
 # Bitwarden
 bitwarden.{{ secret_personal_url }} {
 	reverse_proxy http://192.168.50.21:6482
@@ -180,12 +186,6 @@ nodered.{{ secret_personal_internal_url }} {
 # Uptime
 uptime.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.1.10:3001
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
-	import headers
-}
-# Frigate
-frigate.{{ secret_personal_internal_url }} {
-	reverse_proxy http://192.168.1.10:5000
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
