@@ -307,7 +307,7 @@ containers:
   - service_name: butlarr
     container_name: butlarr
     active: true
-    image: trimforce/butlarr:1.1.8
+    image: trimforce/butlarr:1.2.0
     restart: unless-stopped
     volumes:
       - "{{ appdata_path }}/butlarr/data:/app/data"
