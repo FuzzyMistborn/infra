@@ -162,7 +162,7 @@ containers:
   - service_name: open-webui
     container_name: open-webui
     active: true
-    image: ghcr.io/open-webui/open-webui:v0.3.12
+    image: ghcr.io/open-webui/open-webui:0.3.15
     restart: unless-stopped
     ports:
       - "3010:8080"
