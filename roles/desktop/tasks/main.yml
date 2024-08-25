@@ -114,6 +114,18 @@
     disable_gpg_check: true
     state: present
 
+### WebEx
+- name: Install WebEx
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - libxcrypt-compat # https://www.reddit.com/r/Cisco/comments/1d2flio/solution_to_webex_on_linux_not_starting/
+      - https://binaries.webex.com/WebexDesktop-CentOS-Official-Package/Webex.rpm
+    update_cache: true
+    disable_gpg_check: true
+    state: present
+    when: ansible_hostname == 'hoid'
+
 ### AppImage
 - name: Create directories
   ansible.builtin.file:
