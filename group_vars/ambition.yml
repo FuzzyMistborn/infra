@@ -198,7 +198,7 @@ containers:
   - service_name: umami
     container_name: umami
     active: true
-    image: ghcr.io/umami-software/umami:mysql-v2.12.0
+    image: ghcr.io/umami-software/umami:mysql-v2.13.1
     restart: always
     ports:
       - 127.0.0.1:3500:3000
