@@ -510,7 +510,7 @@ containers:
     ports:
       - 8080:8080
     volumes:
-      - "{{ appdata_path }}/scrutiny:/scrutiny/config"
+      - "{{ appdata_path }}/scrutiny:/opt/scrutiny/config"
       - /run/udev:/run/udev:ro
     devices:
       ### THIS IS LIKELY UNNCESSARY WITH THE PRIVILEGED FLAG
