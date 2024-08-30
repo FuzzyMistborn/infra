@@ -14,7 +14,6 @@
     - docker/wallabag_db
     - docker/hass_db
     - docker/influx_db
-    - docker/matrix
     - docker/invidious
     - db_backups
     - scripts

@@ -25,11 +25,6 @@ echo Backing up Invidious DB
 today=$(date +"%Y_%m_%d")
 docker exec invidious-db sh -c 'pg_dumpall -U kemal' > /home/{{ main_username }}/db_backups/indivious/invidiousDB_$today.sql
 
-#### Matrix DB Backup
-echo Backing up Matrix DB
-today=$(date +"%Y_%m_%d")
-docker exec matrix-db sh -c 'pg_dumpall -U synapse' > /home/{{ main_username }}/db_backups/matrix/matrixDB_$today.sql
-
 #### InfluxDB Backup
 echo Backing up InfluxDB
 docker exec influx-db sh -c 'influx backup \

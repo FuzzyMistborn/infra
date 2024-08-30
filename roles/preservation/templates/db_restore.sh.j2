@@ -29,11 +29,6 @@ cd /home/{{ main_username }}/db_backups/invidious
 LAST_INVIDIOUS=$(ls -t | head -n 1)
 cat /home/{{ main_username }}/db_backups/invidious/$LAST_INVIDIOUS | docker exec -i invidious-db psql -U kemal -d invidious
 
-echo Restoring Matrix DB
-cd /home/{{ main_username }}/db_backups/matrix
-LAST_MATRIX=$(ls -t | head -n 1)
-cat /home/{{ main_username }}/db_backups/matrix/$LAST_Matrix | docker exec -i matrix-db psql -U synapse -d synapse
-
 #echo Restoring InfluxDB
 # Run `docker exec -it influx-db sh` and then run below commands
 # influx setup -t {{ secret_influxdb_token }}

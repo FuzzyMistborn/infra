@@ -93,17 +93,6 @@ lxc_vlans:
     nesting: 1
     keyctl: 1
     onboot: false
-  - name: Connection
-    vmid: 201
-    privileged: true
-    gw: 192.168.50.1
-    ip: 192.168.50.5
-    tag: 50
-    disk: 'local-lvm:15'
-    cores: 4
-    memory: 2048
-    nesting: 1
-    keyctl: 1
   - name: Autonomy
     vmid: 251
     privileged: false

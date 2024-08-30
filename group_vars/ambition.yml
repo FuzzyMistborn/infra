@@ -316,18 +316,27 @@ containers:
       - WOODPECKER_GRPC_ADDR=:9002
     include_global_env_vars: false
   ###
-  - service_name: gotify
-    container_name: gotify
+  - service_name: ntfy
+    container_name: ntfy
+    image: binwiederhier/ntfy:v2.11.0
     active: true
-    image: gotify/server:2.5.0
-    restart: always
-    ports:
-      - 127.0.0.1:8090:80
-    volumes:
-      - "{{ appdata_path }}/gotify:/app/data"
+    command:
+      - serve
     environment:
-      - GOTIFY_DEFAULTUSER_PASS={{ main_username }}
-      - GOTIFY_DEFAULTUSER_PASS='{{ secret_gotify_pass }}'
+      - TZ={{ ntp_timezone }}
+      - NTFY_BASE_URL=http://ntfy.{{ secret_personal_url }}
+      - NTFY_CACHE_FILE=/var/cache/ntfy/cache.db
+      - NTFY_AUTH_FILE=/var/cache/ntfy/auth.db
+      - NTFY_AUTH_DEFAULT_ACCESS=deny-all
+      - NTFY_BEHIND_PROXY=true
+      - NTFY_ATTACHMENT_CACHE_DIR=/var/cache/ntfy/attachments
+      - NTFY_ENABLE_LOGIN=true
+    user: 1000:1000
+    volumes:
+      - "{{ appdata_path }}/ntfy/cache:/var/cache/ntfy"
+    ports:
+      - 127.0.0.1:4600:80
+    restart: unless-stopped
     include_global_env_vars: false
   ###
   - service_name: opengist

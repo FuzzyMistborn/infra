@@ -304,22 +304,6 @@
     - role: bash_alias
     - role: ironicbadger.docker_compose_generator
 
-- hosts: connection
-  become: true
-  vars_files:
-    - 'vars/vault.yaml'
-  roles:
-    - role: grog.package
-    - role: geerlingguy.pip
-    - role: geerlingguy.docker
-    - role: install/zsh
-    - role: connection
-    - role: fuzzymistborn.autorestic
-    - role: install/runitor
-    - role: bash_alias
-    - role: cronjobs
-    - role: ironicbadger.docker_compose_generator
-
 - hosts: investiture
   become: true
   vars_files:
