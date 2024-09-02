@@ -152,7 +152,7 @@ containers:
   - service_name: docker-proxy
     container_name: docker-proxy
     active: true
-    image: tecnativa/docker-socket-proxy:0.2.0
+    image: ghcr.io/linuxserver/socket-proxy:1.26.2
     restart: always
     ports:
       - 2375:2375
