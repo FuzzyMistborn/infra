@@ -224,7 +224,7 @@ containers:
   - service_name: jellyfin
     container_name: jellyfin
     active: true
-    image: ghcr.io/linuxserver/jellyfin:10.9.9
+    image: ghcr.io/linuxserver/jellyfin:10.9.11
     restart: always
     ports:
       - 8096:8096
