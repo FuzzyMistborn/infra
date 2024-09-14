@@ -115,7 +115,7 @@ containers:
     ports:
       - "11434:11434"
     volumes:
-      - "{{ appdata_path }}/ollama:/root/.ollama"
+      - "/mnt/llms/ollama:/root/.ollama"
     deploy:
       resources:
         reservations:
@@ -148,7 +148,7 @@ containers:
       - path_fooocus_expansion=/content/data/models/prompt_expansion/fooocus_expansion/
       - path_outputs=/content/app/outputs/    # Warning: If it is not located under '/content/app', you can't see history log!
     volumes:
-      - "{{ appdata_path }}/fooocus/data:/content/data"
+      - "/mnt/llms/fooocus/data:/content/data"
     tty: true
     deploy:
       resources:
@@ -167,7 +167,7 @@ containers:
     ports:
       - "3010:8080"
     volumes:
-      - "{{ appdata_path }}/ollama/webui:/app/backend/data"
+      - "{{ appdata_path }}/ollama-webui:/app/backend/data"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     include_global_env_vars: false

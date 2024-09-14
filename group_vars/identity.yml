@@ -92,7 +92,7 @@ containers:
       - DATABASE_NAME=dawarich
       - MIN_MINUTES_SPENT_IN_CITY=60
       - APPLICATION_HOST=localhost
-      - APPLICATION_HOSTS=localhost
+      - APPLICATION_HOSTS=localhost,track.{{ secret_personal_url }}
       - TIME_ZONE={{ ntp_timezone }}
       - APPLICATION_PROTOCOL=http
       - DISTANCE_UNIT=mi
