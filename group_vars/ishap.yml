@@ -73,6 +73,17 @@ lxc_vlans:
     memory: 2048
     nesting: 1
     keyctl: 1
+  - name: Identity
+    vmid: 402
+    privileged: false
+    gw: 192.168.50.1
+    ip: 192.168.50.23
+    tag: 50
+    disk: 'local-lvm:25'
+    cores: 6
+    memory: 4096
+    nesting: 1
+    keyctl: 1
 
 lxc_main:
   - name: Omada
