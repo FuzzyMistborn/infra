@@ -256,7 +256,7 @@ containers:
   - service_name: stirling-pdf
     container_name: stirling-pdf
     active: true
-    image: frooodle/s-pdf:0.28.3
+    image: frooodle/s-pdf:0.29.0
     restart: unless-stopped
     volumes:
       - "{{ appdata_path }}/stirlingpdf/extraConfigs:/configs"
