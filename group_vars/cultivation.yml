@@ -243,6 +243,24 @@ containers:
       - "diun.regopt=docker.io"
     include_global_env_vars: false
   ###
+  - service_name: inv-sig-helper
+    container_name: inv-sig-helper
+    active: true
+    image: quay.io/invidious/inv-sig-helper:latest
+    restart: unless-stopped
+    command: ["--tcp", "0.0.0.0:12999"]
+    environment:
+      - RUST_LOG=info
+    cap_drop:
+      - ALL
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    labels:
+      - "diun.enable=true"
+      - "diun.regopt=docker.io"
+    include_global_env_vars: false    
+  ###
   - service_name: diagrams
     container_name: diagrams
     active: true
