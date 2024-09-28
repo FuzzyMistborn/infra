@@ -280,16 +280,17 @@ containers:
       - ND_BASEURL=https://music.{{ secret_personal_internal_url }}
     include_global_env_vars: false
   ###
-  - service_name: calibre-web
-    container_name: calibre-web
+  - service_name: calibre-web-automated
+    container_name: calibre-web-automated
     active: true
-    image: lscr.io/linuxserver/calibre-web:0.6.23
-    restart: always
+    image: crocodilestick/calibre-web-automated:v2.0.1
+    restart: unless-stopped
     ports:
       - 8083:8083
     volumes:
-      - "{{ appdata_path }}/calibre-web:/config"
-      - /mnt/Media/Ebooks/Calibre:/books
+      - "{{ appdata_path }}/calibre-web-automated:/config"
+      - /mnt/Media/Ebooks/Calibre:/calibre-library
+      - /mnt/Media/Ebooks/Import:/cwa-book-ingest
     environment:
       - DOCKER_MODS=linuxserver/mods:universal-calibre
     include_global_env_vars: true
