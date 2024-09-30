@@ -294,7 +294,7 @@ containers:
   - service_name: gluetun
     container_name: gluetun
     active: true
-    image: qmcgaw/gluetun:v3.39.0
+    image: qmcgaw/gluetun:v3.39.1
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
