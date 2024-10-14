@@ -127,7 +127,7 @@ containers:
   - service_name: dawarich-redis
     container_name: dawarich-redis
     active: true
-    image: redis:7.4.0
+    image: redis:7.4.1
     restart: unless-stopped
     command: redis-server
     volumes:
