@@ -284,6 +284,14 @@
     owner: root
     group: root
 
+- name: Copy login screen image 2
+  copy:
+    src: stormlight_arc1_wallpaper_uw.png
+    dest: /usr/share/backgrounds/stormlight_arc1_wallpaper_uw.png
+    mode: 0644
+    owner: root
+    group: root
+
 - name: enable bluetooth auto-power on
   lineinfile:
     dest: "/etc/bluetooth/main.conf"

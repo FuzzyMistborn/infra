@@ -206,3 +206,11 @@
     mode: 0644
     owner: root
     group: root
+
+- name: Copy login screen image 2
+  copy:
+    src: stormlight_arc1_wallpaper.png
+    dest: /usr/share/backgrounds/stormlight_arc1_wallpaper.png
+    mode: 0644
+    owner: root
+    group: root

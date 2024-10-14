@@ -107,21 +107,6 @@ autorestic_config_yaml:
 appdata_path: "/home/{{ main_username }}/docker"
 containers:
   ###
-  - service_name: diun
-    container_name: diun
-    active: true
-    image: crazymax/diun:4.28.0
-    restart: always
-    volumes:
-      - "{{ appdata_path }}/diun/data:/data"
-      - "{{ appdata_path }}/diun/config.yml:/diun.yml:ro"
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - LOG_LEVEL=info
-      - LOG_JSON=false
-    hostname: "{{ hostname }}"
-    include_global_env_vars: true
-  ###
   - service_name: radarr
     container_name: radarr
     active: true
@@ -244,25 +229,6 @@ containers:
       - /dev/dri/renderD128:/dev/dri/renderD128
     include_global_env_vars: true
   ###
-  - service_name: deemix
-    container_name: deemix
-    active: false
-    image: registry.gitlab.com/bockiii/deemix-docker:latest
-    restart: always
-    ports:
-      - 6595:6595
-    volumes:
-      - "{{ appdata_path }}/deemix/config:/config"
-      - "/mnt/scratch/music:/downloads"
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - UMASK_SET=022
-    labels:
-      - "diun.enable=true"
-      - "diun.regopt=ghcr.io"
-    include_global_env_vars: false
-  ###
   - service_name: navidrome
     container_name: navidrome
     active: true
@@ -338,33 +304,6 @@ containers:
       - AGENT_USERNAME={{ hostname }}
       - AGENT_PASSWORD={{ secret_crowdsec_endowment_pw }}
       - LOCAL_API_URL=http://{{ secret_ambition_ip }}:8080
-    include_global_env_vars: false
-  ###
-  - service_name: docker-proxy
-    container_name: docker-proxy
-    active: true
-    image: ghcr.io/linuxserver/socket-proxy:1.26.2
-    restart: always
-    ports:
-      - 2375:2375
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    environment:
-      - LOG_LEVEL=err
-      - BUILD=1
-      - COMMIT=1
-      - CONFIGS=1
-      - CONTAINERS=1
-      - DISTRIBUTION=1
-      - EXEC=1
-      - IMAGES=1
-      - INFO=1
-      - NETWORKS=1
-      - NODES=1
-      - PLUGINS=1
-      - SERVICES=1
-      - SESSSION=1
-      - POST=1
     include_global_env_vars: false
   ###
   - service_name: portainer_agent

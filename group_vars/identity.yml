@@ -72,7 +72,7 @@ containers:
   - service_name: dawarich-app
     container_name: dawarich-app
     active: true
-    image: freikin/dawarich:0.14.5
+    image: freikin/dawarich:0.14.6
     restart: unless-stopped
     volumes:
       - "{{ appdata_path }}/dawarich/gem:/usr/local/bundle/gems"
@@ -92,10 +92,11 @@ containers:
       - DATABASE_NAME=dawarich
       - MIN_MINUTES_SPENT_IN_CITY=60
       - APPLICATION_HOST=localhost
-      - APPLICATION_HOSTS=localhost,track.{{ secret_personal_url }}
+      - APPLICATION_HOSTS=localhost,track.{{ secret_personal_internal_url }}
       - TIME_ZONE={{ ntp_timezone }}
       - APPLICATION_PROTOCOL=http
       - DISTANCE_UNIT=mi
+      - REVERSE_GEOCODING_ENABLED=true
     logging:
       driver: "json-file"
       options:
@@ -136,7 +137,7 @@ containers:
   - service_name: dawarich-sidekiq
     container_name: dawarich-sidekiq
     active: true
-    image: freikin/dawarich:0.14.5
+    image: freikin/dawarich:0.14.6
     restart: unless-stopped
     volumes:
       - "{{ appdata_path }}/dawarich/gem:/usr/local/bundle/gems"
@@ -157,6 +158,7 @@ containers:
       - BACKGROUND_PROCESSING_CONCURRENCY=10
       - APPLICATION_PROTOCOL=http
       - DISTANCE_UNIT=mi
+      - REVERSE_GEOCODING_ENABLED=true
     logging:
       driver: "json-file"
       options:
