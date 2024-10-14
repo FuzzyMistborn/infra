@@ -123,33 +123,6 @@ containers:
       - TZ={{ ntp_timezone }}
     include_global_env_vars: false
   ###
-  - service_name: docker-proxy
-    container_name: docker-proxy
-    active: true
-    image: ghcr.io/linuxserver/socket-proxy:1.26.2
-    restart: always
-    ports:
-      - 2375:2375
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    environment:
-      - LOG_LEVEL=err
-      - BUILD=1
-      - COMMIT=1
-      - CONFIGS=1
-      - CONTAINERS=1
-      - DISTRIBUTION=1
-      - EXEC=1
-      - IMAGES=1
-      - INFO=1
-      - NETWORKS=1
-      - NODES=1
-      - PLUGINS=1
-      - SERVICES=1
-      - SESSSION=1
-      - POST=1
-    include_global_env_vars: false
-  ###
   - service_name: adguard
     container_name: adguard
     active: true
