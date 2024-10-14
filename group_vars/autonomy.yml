@@ -305,7 +305,7 @@ containers:
   - service_name: music-assistant
     container_name: music-assistant
     active: true
-    image: ghcr.io/music-assistant/server:2.2.6
+    image: ghcr.io/music-assistant/server:2.2.7
     restart: unless-stopped
     network_mode: host
     privileged: true
