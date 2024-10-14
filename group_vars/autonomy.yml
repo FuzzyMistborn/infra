@@ -246,6 +246,20 @@ containers:
       - GOVEE_MQTT_PASSWORD={{ secret_mqtt_pass }}
     include_global_env_vars: false
   ###
+  - service_name: signal-api
+    container_name: signal-api
+    active: true
+    image: bbernhard/signal-cli-rest-api:0.168-dev
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    volumes:
+      - "{{ appdata_path }}/signal-api:/home/.local/share/signal-cli"
+    environment:
+      #- MODE=normal
+      - MODE=json-rpc
+    include_global_env_vars: false
+  ###
   - service_name: nodered
     container_name: nodered
     active: true
