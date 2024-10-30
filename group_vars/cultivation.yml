@@ -297,7 +297,7 @@ containers:
       - "{{ appdata_path }}/ferdium/data:/data"
       - "{{ appdata_path }}/ferdium/app:/app/recipes"
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
       - APP_URL=https://ferdium.{{ secret_personal_url }}
       - DB_CONNECTION=sqlite
       - SMTP_HOST={{ secret_snapraid_smtp_host }}
