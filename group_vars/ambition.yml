@@ -270,7 +270,7 @@ containers:
   - service_name: woodpecker-github
     container_name: woodpecker-github
     active: true
-    image: woodpeckerci/woodpecker-server:v2.7.1
+    image: woodpeckerci/woodpecker-server:v2.7.3
     restart: unless-stopped
     ports:
       - 127.0.0.1:4000:8000
@@ -294,7 +294,7 @@ containers:
   - service_name: woodpecker-gitea
     container_name: woodpecker-gitea
     active: true
-    image: woodpeckerci/woodpecker-server:v2.7.1
+    image: woodpeckerci/woodpecker-server:v2.7.3
     restart: unless-stopped
     ports:
       - 127.0.0.1:4001:8000
