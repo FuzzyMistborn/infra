@@ -72,7 +72,7 @@ containers:
   - service_name: dawarich-app
     container_name: dawarich-app
     active: true
-    image: freikin/dawarich:0.15.11
+    image: freikin/dawarich:0.16.3
     restart: unless-stopped
     volumes:
       - "{{ appdata_path }}/dawarich/gem:/usr/local/bundle/gems_app"
@@ -137,7 +137,7 @@ containers:
   - service_name: dawarich-sidekiq
     container_name: dawarich-sidekiq
     active: true
-    image: freikin/dawarich:0.15.11
+    image: freikin/dawarich:0.16.3
     restart: unless-stopped
     volumes:
       - "{{ appdata_path }}/dawarich/gem:/usr/local/bundle/gems_sidekiq"
