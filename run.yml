@@ -415,3 +415,4 @@
     - role: desktop
     - role: install/zsh
     - role: bash_alias
+    - role: cronjobs

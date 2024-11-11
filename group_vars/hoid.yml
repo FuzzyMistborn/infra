@@ -43,3 +43,12 @@ autorestic_config_yaml:
 
 desktop_hc_prune_id: "{{ secret_hc_restic_prune_hoid }}"
 desktop_hc_backup_id: "{{ secret_hc_restic_backup_hoid }}"
+
+### Cronjobs
+cronjobs:
+  - name: Restic Check
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_check_hoid }} -- /usr/local/bin/autorestic exec -a -- check
+    user: "{{ main_username }}"
+    minute: 20
+    hour: 20
+    day: 1

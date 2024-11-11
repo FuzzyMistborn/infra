@@ -578,7 +578,7 @@ containers:
     ports:
       - 3493:3493
     devices:
-      - /dev/bus/usb/001/002:/dev/bus/usb/001/002
+      - /dev/bus/usb/001/003:/dev/bus/usb/001/003
     environment:
       - API_USER=homeassistant
       - API_PASSWORD=Throng.Cane.Spinner4

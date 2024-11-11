@@ -196,7 +196,7 @@ containers:
     image: ghcr.io/immich-app/immich-server:v1.119.1
     restart: unless-stopped
     ports:
-      - "2283:3001"
+      - "2283:2283"
     volumes:
       - /mnt/immich-uploads:/usr/src/app/upload
       - /mnt/photos:/mnt/photos:ro
@@ -244,7 +244,7 @@ containers:
   - service_name: immich-redis
     container_name: immich_redis
     active: true
-    image: docker.io/redis:6.2-alpine@sha256:2d1463258f2764328496376f5d965f20c6a67f66ea2b06dc42af351f75248792
+    image: docker.io/redis:6.2-alpine@sha256:2ba50e1ac3a0ea17b736ce9db2b0a9f6f8b85d4c27d5f5accc6a416d8f42c6d5
     restart: always
   ###
   - service_name: immich-database

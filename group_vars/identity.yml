@@ -75,7 +75,7 @@ containers:
     image: freikin/dawarich:0.15.11
     restart: unless-stopped
     volumes:
-      - "{{ appdata_path }}/dawarich/gem:/usr/local/bundle/gems"
+      - "{{ appdata_path }}/dawarich/gem:/usr/local/bundle/gems_app"
       - "{{ appdata_path }}/dawarich/public:/var/app/public"
     stdin_open: true
     tty: true
@@ -140,7 +140,7 @@ containers:
     image: freikin/dawarich:0.15.11
     restart: unless-stopped
     volumes:
-      - "{{ appdata_path }}/dawarich/gem:/usr/local/bundle/gems"
+      - "{{ appdata_path }}/dawarich/gem:/usr/local/bundle/gems_sidekiq"
       - "{{ appdata_path }}/dawarich/public:/var/app/public"
     stdin_open: true
     tty: true
