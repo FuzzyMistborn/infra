@@ -249,7 +249,7 @@ containers:
   - service_name: signal-api
     container_name: signal-api
     active: true
-    image: bbernhard/signal-cli-rest-api:0.168-dev
+    image: bbernhard/signal-cli-rest-api:0.172-dev
     restart: unless-stopped
     ports:
       - 8080:8080
