@@ -112,7 +112,7 @@ containers:
   - service_name: dawarich-db
     container_name: dawarich-db
     active: true
-    image: postgres:15.8-alpine
+    image: postgres:15.10-alpine
     restart: always
     volumes:
       - "{{ appdata_path }}/dawarich/db:/var/lib/postgresql/data"
