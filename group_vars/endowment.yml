@@ -161,15 +161,16 @@ containers:
       - "{{ appdata_path }}/prowlarr:/config"
     include_global_env_vars: true
   ###
-  - service_name: jellyseerr
-    container_name: jellyseerr
+  - service_name: readarr
+    container_name: readarr
     active: true
-    image: fallenbagel/jellyseerr:2.0.1
+    image: lscr.io/linuxserver/readarr:develop
     restart: unless-stopped
     ports:
-      - 5055:5055
+      - 8787:8787
     volumes:
-      - "{{ appdata_path }}/jellyseerr/config:/app/config"
+      - "{{ appdata_path }}/readarr/config:/config"
+      - "/mnt/scratch/books:/downloads"
     include_global_env_vars: true
   ###
   - service_name: sabnzbd
@@ -184,6 +185,19 @@ containers:
       - "{{ appdata_path }}/sabnzb:/config"
       - "/mnt/scratch/complete:/downloads"
       - "/mnt/scratch/incomplete:/incomplete-downloads"
+    include_global_env_vars: true
+  ###
+  - service_name: audiobookshelf
+    container_name: audiobookshelf
+    active: true
+    image: ghcr.io/advplyr/audiobookshelf:2.16.2
+    restart: unless-stopped
+    ports:
+      - 13378:80
+    volumes:
+      - "{{ appdata_path }}/audiobookshelf/config:/config"
+      - "{{ appdata_path }}/audiobookshelf/metadata:/metadata"
+      - "/mnt/Media/Audiobooks:/audiobooks"
     include_global_env_vars: true
   ###
   - service_name: nextcloud
@@ -249,7 +263,7 @@ containers:
   - service_name: calibre-web-automated
     container_name: calibre-web-automated
     active: true
-    image: crocodilestick/calibre-web-automated:v2.0.1
+    image: crocodilestick/calibre-web-automated:V2.1.2
     restart: unless-stopped
     ports:
       - 8083:8083
@@ -269,20 +283,6 @@ containers:
     volumes:
       - "{{ appdata_path }}/southwest/config.json:/app/config.json"
     privileged: true
-    include_global_env_vars: false
-  ###
-  - service_name: butlarr
-    container_name: butlarr
-    active: true
-    image: trimforce/butlarr:1.2.1
-    restart: unless-stopped
-    volumes:
-      - "{{ appdata_path }}/butlarr/data:/app/data"
-      - "{{ appdata_path }}/butlarr/config.yaml:/app/config.yaml"
-    environment:
-      - BUTLARR_CONFIG_FILE=./config.yaml
-      - BUTLARR_INTERACTIVE_SETUP=false
-    privileged: false
     include_global_env_vars: false
   ###
   - service_name: crowdsec

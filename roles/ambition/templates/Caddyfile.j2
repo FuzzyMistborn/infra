@@ -338,18 +338,19 @@ photos.{{ secret_personal_url }} {
 	crowdsec
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
-			tls_server_name notes.{{ secret_personal_url }}
+			tls_server_name photos.{{ secret_personal_url }}
 		}
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
 }
 
-search.{{ secret_personal_url }} {
+books.{{ secret_personal_url }} {
 	crowdsec
+	encode gzip zstd
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
-			tls_server_name notes.{{ secret_personal_url }}
+			tls_server_name books.{{ secret_personal_url }}
 		}
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
