@@ -48,6 +48,7 @@ containers:
       - WOODPECKER_AGENT_SECRET={{ secret_investiture_rpc }}
       - WOODPECKER_HOSTNAME=Ishap-Github
       - WOODPECKER_MAX_WORKFLOWS=2
+      - WOODPECKER_PLUGINS_PRIVILEGED=woodpeckerci/plugin-docker-buildx:5.0.0
     include_global_env_vars: false
   ###
   - service_name: woodpecker-agent-gitea
@@ -66,6 +67,7 @@ containers:
       - WOODPECKER_AGENT_SECRET={{ secret_investiture_rpc }}
       - WOODPECKER_HOSTNAME=Ishap-Gitea
       - WOODPECKER_MAX_WORKFLOWS=2
+      - WOODPECKER_PLUGINS_PRIVILEGED=woodpeckerci/plugin-docker-buildx:5.0.0
     include_global_env_vars: false
   ###
   - service_name: portainer_agent

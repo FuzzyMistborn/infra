@@ -289,6 +289,7 @@ containers:
       - WOODPECKER_DATABASE_DATASOURCE=/data/woodpecker.sqlite
       - WOODPECKER_ADMIN=FuzzyMistborn
       - WOODPECKER_GRPC_ADDR=:9000
+      - WOODPECKER_PLUGINS_PRIVILEGED=woodpeckerci/plugin-docker-buildx:5.0.0
     include_global_env_vars: false
   ###
   - service_name: woodpecker-gitea
@@ -314,6 +315,7 @@ containers:
       - WOODPECKER_DATABASE_DATASOURCE=/data/woodpecker.sqlite
       - WOODPECKER_ADMIN=FuzzyMistborn
       - WOODPECKER_GRPC_ADDR=:9002
+      - WOODPECKER_PLUGINS_PRIVILEGED=woodpeckerci/plugin-docker-buildx:5.0.0
     include_global_env_vars: false
   ###
   - service_name: ntfy
