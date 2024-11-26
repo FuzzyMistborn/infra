@@ -352,7 +352,7 @@ containers:
   - service_name: crowdsec
     container_name: crowdsec
     active: true
-    image: crowdsecurity/crowdsec:v1.6.3
+    image: crowdsecurity/crowdsec:v1.6.4
     restart: unless-stopped
     volumes:
       - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"
