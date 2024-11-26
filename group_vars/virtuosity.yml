@@ -175,7 +175,7 @@ containers:
   - service_name: crowdsec
     container_name: crowdsec
     active: true
-    image: crowdsecurity/crowdsec:v1.6.3
+    image: crowdsecurity/crowdsec:v1.6.4
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
