@@ -138,7 +138,7 @@ containers:
   - service_name: sonarr
     container_name: sonarr
     active: true
-    image: ghcr.io/linuxserver/sonarr:4.0.10
+    image: ghcr.io/linuxserver/sonarr:4.0.11
     restart: always
     ports:
       - 8989:8989
