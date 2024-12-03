@@ -92,7 +92,7 @@ containers:
   - service_name: zwavejs
     container_name: zwavejs
     active: true
-    image: zwavejs/zwave-js-ui:9.27.7
+    image: zwavejs/zwave-js-ui:9.27.8
     restart: always
     ports:
       - 8091:8091
