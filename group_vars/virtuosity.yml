@@ -110,7 +110,7 @@ containers:
   - service_name: ollama-server
     container_name: ollama-server
     active: true
-    image: ollama/ollama:0.4.4
+    image: ollama/ollama:0.5.1
     restart: unless-stopped
     ports:
       - "11434:11434"
