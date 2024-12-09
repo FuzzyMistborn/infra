@@ -193,7 +193,7 @@ containers:
   - service_name: immich-server
     container_name: immich-server
     active: true
-    image: ghcr.io/immich-app/immich-server:v1.121.0
+    image: ghcr.io/immich-app/immich-server:v1.122.2
     restart: unless-stopped
     ports:
       - "2283:2283"
