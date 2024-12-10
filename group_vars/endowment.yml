@@ -176,7 +176,7 @@ containers:
   - service_name: sabnzbd
     container_name: sabnzbd
     active: true
-    image: ghcr.io/linuxserver/sabnzbd:4.3.3
+    image: ghcr.io/linuxserver/sabnzbd:4.4.0
     restart: always
     ports:
       - 8060:8080
