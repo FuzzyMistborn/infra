@@ -190,7 +190,7 @@ containers:
   - service_name: audiobookshelf
     container_name: audiobookshelf
     active: true
-    image: ghcr.io/advplyr/audiobookshelf:2.17.2
+    image: ghcr.io/advplyr/audiobookshelf:2.17.5
     restart: unless-stopped
     ports:
       - 13378:80
