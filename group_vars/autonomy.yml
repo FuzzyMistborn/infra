@@ -340,7 +340,7 @@ containers:
   - service_name: whisper
     container_name: whisper
     active: true
-    image: rhasspy/wyoming-whisper:2.2.0
+    image: rhasspy/wyoming-whisper:2.4.0
     restart: unless-stopped
     ports:
       - 10300:10300
