@@ -156,7 +156,9 @@ containers:
           devices:
             - driver: nvidia
               device_ids: ['0']
-              capabilities: [compute, utility]
+              capabilities:
+                - compute
+                - utility
     include_global_env_vars: false
   ###
   - service_name: open-webui

@@ -90,3 +90,11 @@
     path: /home/{{ main_username }}/restore.sh
     state: absent
   when: pull_backup == true
+
+### Pip Virtualenv
+- name: Install selenium/splinter
+  ansible.builtin.pip:
+    name:
+      - splinter
+      - selenium
+    virtualenv: .venv

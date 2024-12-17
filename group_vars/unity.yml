@@ -4,6 +4,7 @@ hostname: unity
 
 ### Install packages with grog.package
 package_list:
+  - name: acl
   - name: corosync-qnetd
   - name: corosync-qdevice
   - name: cron
@@ -19,10 +20,6 @@ package_list:
   - name: sudo
   - name: wget
 
-### Pip Packages
-pip_packages:
-  - yamllint
-
 ### Variables
 pull_backup: false
 
@@ -31,6 +28,11 @@ bash_docker: true
 bash_autorestic: true
 bash_systemctl: true
 bash_apt: true
+
+### LNXLink
+lnxlink_temperature: true
+lnxlink_diskuse: true
+lnxlink_mounts: true
 
 ### Cronjobs
 cronjobs:

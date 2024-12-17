@@ -18,10 +18,8 @@ package_list:
   - name: wget
 
 ### Pip Packages
-pip_packages:
+pipx_packages:
   - yamllint
-  - selenium
-  - splinter
   - catt
 
 clone_git: false
@@ -40,13 +38,13 @@ bash_apt: true
 ### Cronjobs
 cronjobs:
   - name: Traffic AM
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_traffic }} -- /usr/bin/python3 /home/{{ main_username }}/scripts/traffic.py
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_traffic }} -- .venv/bin/python3 /home/{{ main_username }}/scripts/traffic.py
     user: "{{ main_username }}"
     minute: '*/10'
     hour: 7-8,16-18
     weekday: 1-5
   - name: Traffic PM
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_traffic }} -- /usr/bin/python3 /home/{{ main_username }}/scripts/traffic.py
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_traffic }} -- .venv/bin/python3 /home/{{ main_username }}/scripts/traffic.py
     user: "{{ main_username }}"
     minute: '*/30'
     hour: 9-15
@@ -256,7 +254,6 @@ containers:
     volumes:
       - "{{ appdata_path }}/signal-api:/home/.local/share/signal-cli"
     environment:
-      #- MODE=normal
       - MODE=json-rpc
     include_global_env_vars: false
   ###

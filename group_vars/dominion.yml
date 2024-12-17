@@ -14,7 +14,7 @@ package_list:
   - name: unzip
 
 ### Pip Packages
-pip_packages:
+pipx_packages:
   - ansible
   - ansible-lint
   - yamllint

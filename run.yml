@@ -193,13 +193,13 @@
     - role: grog.package
     - role: geerlingguy.docker
     - role: geerlingguy.pip
-    - role: install/pip_packages
     - role: fuzzymistborn.autorestic
     - role: install/runitor
     - role: install/zsh
     - role: unity
     - role: bash_alias
     - role: install/tailscale
+    - role: install/lnxlink
     - role: cronjobs
     - role: ironicbadger.docker_compose_generator
 

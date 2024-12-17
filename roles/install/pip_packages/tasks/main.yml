@@ -4,3 +4,10 @@
     name: "{{ item }}"
     extra_args:  --break-system-packages
   loop: "{{ pip_packages }}"
+  when: pip_packages is defined
+
+- name: Install Pipx Packages
+  community.general.pipx:
+    name: "{{ item }}"
+  loop: "{{ pipx_packages }}"
+  when: pipx_packages is defined
