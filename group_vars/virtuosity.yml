@@ -227,7 +227,7 @@ containers:
   - service_name: immich-machine-learning
     container_name: immich_machine_learning
     active: true
-    image: ghcr.io/immich-app/immich-machine-learning:v1.122.2-cuda
+    image: ghcr.io/immich-app/immich-machine-learning:v1.123.0-cuda
     restart: unless-stopped
     volumes:
       - "{{ appdata_path }}/immich/model-cache:/cache"
