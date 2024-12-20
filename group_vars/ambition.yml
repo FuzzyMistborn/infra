@@ -370,7 +370,7 @@ containers:
   - service_name: healthchecks
     container_name: healthchecks
     active: true
-    image: ghcr.io/linuxserver/healthchecks:3.8.20241209
+    image: ghcr.io/linuxserver/healthchecks:3.9.20241220
     restart: always
     ports:
       - 127.0.0.1:8000:8000
