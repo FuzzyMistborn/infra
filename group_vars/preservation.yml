@@ -208,6 +208,19 @@ containers:
     mem_limit: 200M
     include_global_env_vars: false
   ###
+  - service_name: phpmyadmin
+    container_name: phpmyadmin
+    active: true
+    image: ghcr.io/linuxserver/phpmyadmin:5.2.1
+    restart: unless-stopped
+    ports:
+      - 8000:80/tcp
+    volumes:
+      - "{{ appdata_path }}/phpmyadmin:/config"
+    environment:
+      - PMA_ARBITRARY=1
+    include_global_env_vars: true
+  ###
   - service_name: diun
     container_name: diun
     active: true
