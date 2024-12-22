@@ -520,7 +520,7 @@ containers:
   - service_name: calibre
     container_name: calibre
     active: true
-    image: lscr.io/linuxserver/calibre:7.22.0
+    image: lscr.io/linuxserver/calibre:7.23.0
     restart: unless-stopped
     ports:
       - 8085:8080
