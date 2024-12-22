@@ -40,17 +40,12 @@ data_disks:
     opts: defaults
     content: true
   - path: /mnt/disk2
-    source: /dev/disk/by-id/ata-ST8000NM0055-1RM112_ZA11KJXC-part1
+    source: /dev/disk/by-id/ata-WDC_WD140EDGZ-11B1PA0_9LK5AR2G-part1
     fs: ext4
     opts: defaults
     content: true
   - path: /mnt/disk3
     source: /dev/disk/by-id/ata-WDC_WD100EMAZ-00WJTA0_JEGRB9VN-part1
-    fs: ext4
-    opts: defaults
-    content: true
-  - path: /mnt/disk4
-    source: /dev/disk/by-id/ata-WDC_WD140EDGZ-11B1PA0_9LK5AR2G-part1
     fs: ext4
     opts: defaults
     content: true
@@ -320,6 +315,11 @@ autorestic_config_yaml:
             - '*.rvz'
             - '*.nsp'
             - '*.xci'
+            - '.mp4'
+            - '.mpeg'
+            - '.wmv'
+            - '.avi'
+
   locations:
     docker:
       from: '/home/{{ main_username }}/docker'
@@ -406,8 +406,8 @@ snapraid_data_disks:
     content: true
   - path: /mnt/disk3
     content: true
-  - path: /mnt/disk4
-    content: true
+#  - path: /mnt/disk4
+#    content: true
 snapraid_parity_disks:
   - path: /mnt/parity1
     content: true
@@ -481,7 +481,7 @@ containers:
       - /dev/sdc:/dev/sdc
       - /dev/sdd:/dev/sdd
       - /dev/sde:/dev/sde
-      - /dev/sdf:/dev/sdf
+#      - /dev/sdf:/dev/sdf
       - /dev/nvme0:/dev/nvme0
     cap_add:
       - SYS_RAWIO
@@ -498,19 +498,6 @@ containers:
     volumes:
       - "{{ appdata_path }}/uptime:/app/data"
     include_global_env_vars: false
-  ###
-  - service_name: bambustudio
-    container_name: bambustudio
-    active: true
-    image: lscr.io/linuxserver/bambustudio:01.10.01
-    restart: unless-stopped
-    ports:
-      - 3100:3000
-      - 3101:3001
-    volumes:
-      - "{{ appdata_path }}/bambu:/config"
-      - /mnt/Media/Files/3DPrints/:/prints
-    include_global_env_vars: true
   ###
   - service_name: handbrake
     container_name: handbrake
