@@ -246,7 +246,7 @@ containers:
   - service_name: navidrome
     container_name: navidrome
     active: true
-    image: deluan/navidrome:0.53.3
+    image: deluan/navidrome:0.54.2
     restart: unless-stopped
     user: 1000:1000
     ports:
