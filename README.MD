@@ -24,7 +24,7 @@ Most of my servers are named after Shards of Adonalsium from my favorite fantasy
 * **Preservation** - Databases
 * **Ambition** - Cloud VPS
 
-Then my desktops are named after some of my favorite characters from the Cosmere: Kelsier, Vasher, and Szeth.
+Then my desktops are named after some of my favorite characters from the Cosmere: Kelsier and Hoid.
 
 # First Deploy instructions:
 
