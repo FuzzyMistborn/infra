@@ -299,9 +299,9 @@ ai.{{ secret_personal_internal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
-# Fooocus
+# Stable Diffusion
 image.{{ secret_personal_internal_url }} {
-	reverse_proxy http://192.168.50.25:7865
+	reverse_proxy http://192.168.50.25:8080
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }

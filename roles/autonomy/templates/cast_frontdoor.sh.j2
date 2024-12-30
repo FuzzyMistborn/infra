@@ -1,6 +1,6 @@
 #!/bin/bash
-catt -d 192.168.30.70 cast_site "http://192.168.1.10:5000/api/frontdoor?h=1080&fps=15"
+/home/{{ main_username }}/.local/bin/catt -d 192.168.30.70 cast_site "http://192.168.1.10:5000/api/frontdoor?h=1080&fps=15"
 
 sleep 45s
 
-catt -d 192.168.30.70 stop
+/home/{{ main_username }}/.local/bin/catt -d 192.168.30.70 stop

@@ -125,42 +125,6 @@ containers:
               capabilities: [gpu]
     include_global_env_vars: false
   ###
-  - service_name: fooocus
-    container_name: fooocus
-    active: true
-    image: ghcr.io/lllyasviel/fooocus:2.5.5
-    restart: unless-stopped
-    ports:
-      - "7865:7865"
-    environment:
-      - CMDARGS=--listen    # Arguments for launch.py.
-      - DATADIR=/content/data   # Directory which stores models, outputs dir
-      - config_path=/content/data/config.txt
-      - config_example_path=/content/data/config_modification_tutorial.txt
-      - path_checkpoints=/content/data/models/checkpoints/
-      - path_loras=/content/data/models/loras/
-      - path_embeddings=/content/data/models/embeddings/
-      - path_vae_approx=/content/data/models/vae_approx/
-      - path_upscale_models=/content/data/models/upscale_models/
-      - path_inpaint=/content/data/models/inpaint/
-      - path_controlnet=/content/data/models/controlnet/
-      - path_clip_vision=/content/data/models/clip_vision/
-      - path_fooocus_expansion=/content/data/models/prompt_expansion/fooocus_expansion/
-      - path_outputs=/content/app/outputs/    # Warning: If it is not located under '/content/app', you can't see history log!
-    volumes:
-      - "/mnt/llms/fooocus/data:/content/data"
-    tty: true
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              device_ids: ['0']
-              capabilities:
-                - compute
-                - utility
-    include_global_env_vars: false
-  ###
   - service_name: open-webui
     container_name: open-webui
     active: true
@@ -172,6 +136,35 @@ containers:
       - "{{ appdata_path }}/ollama-webui:/app/backend/data"
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    include_global_env_vars: false
+  ###
+  - service_name: stable-diffusion-webui
+    container_name: stable-diffusion-webui
+    active: true
+    image: universonic/stable-diffusion-webui:minimal
+    restart: unless-stopped
+    command: --no-half --no-half-vae --precision full --medvram-sdxl --xformers --opt-sdp-attention --opt-sdp-no-mem-attention --opt-split-attention --opt-channelslast
+    ports:
+      - "8080:8080/tcp"
+    volumes:
+      - "{{ appdata_path }}/stable-diffusion/inputs:/app/stable-diffusion-webui/inputs"
+      - "{{ appdata_path }}/stable-diffusion/textual_inversion_templates:/app/stable-diffusion-webui/textual_inversion_templates"
+      - "{{ appdata_path }}/stable-diffusion/embeddings:/app/stable-diffusion-webui/embeddings"
+      - "{{ appdata_path }}/stable-diffusion/extensions:/app/stable-diffusion-webui/extensions"
+      - /mnt/llms/stable-diffusion/models:/app/stable-diffusion-webui/models
+      - /mnt/llms/stable-diffusion/outputs:/app/stable-diffusion-webui/outputs
+      - "{{ appdata_path }}/stable-diffusion/localizations:/app/stable-diffusion-webui/localizations"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
     include_global_env_vars: false
   ###
   - service_name: crowdsec
