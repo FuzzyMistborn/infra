@@ -319,31 +319,7 @@ containers:
       - 10200:10200
     volumes:
       - "{{ appdata_path }}/piper:/data"
-    command: --voice en_GB-northern_english_male-medium
-    include_global_env_vars: false
-  ###
-  - service_name: wakeword
-    container_name: wakeword
-    active: true
-    image: rhasspy/wyoming-openwakeword:1.10.0
-    restart: unless-stopped
-    ports:
-      - 10400:10400
-    volumes:
-      - "{{ appdata_path }}/wakeword:/custom"
-    command: --preload-model 'jarvis_v2' --custom-model-dir /custom
-    include_global_env_vars: false
-  ###
-  - service_name: whisper
-    container_name: whisper
-    active: true
-    image: rhasspy/wyoming-whisper:2.4.0
-    restart: unless-stopped
-    ports:
-      - 10300:10300
-    volumes:
-      - "{{ appdata_path }}/whisper:/data"
-    command: --model base-int8 --language en
+    command: --voice en_US-hfc_female-medium
     include_global_env_vars: false
   ###
   - service_name: crowdsec
