@@ -1,8 +1,10 @@
 {
   "enabledManagers": ["ansible", "docker-compose", "dockerfile"],
-  "dependencyDashboard": true,
+  "dependencyDashboard": false,
   "prConcurrentLimit": 0,
-  "ansible": {
-    "fileMatch": ["^group_vars/.*\\.ya?ml$"]
-  }
+  "baseBranches": ["main"],
+  "enabled": true,
+  "extends": [
+    "config:recommended"
+  ]
 }

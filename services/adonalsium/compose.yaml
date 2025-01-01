@@ -1,0 +1,131 @@
+services:
+  portainer:
+    image: portainer/portainer-ce:2.25.1
+    container_name: portainer
+    volumes:
+      - /srv/docker/portainer:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 9000:9000
+      - 8000:8000
+    environment:
+      - AGENT_SECRET={{ secret_portainer_key }}
+    mem_limit: 200M
+    restart: always
+  scrutiny:
+    image: ghcr.io/analogj/scrutiny:v0.8.1-omnibus
+    container_name: scrutiny
+    privileged: true
+    cap_add:
+      - SYS_RAWIO
+      - SYS_ADMIN
+    devices:
+      - /dev/sda:/dev/sda
+      - /dev/sdb:/dev/sdb
+      - /dev/sdc:/dev/sdc
+      - /dev/sdd:/dev/sdd
+      - /dev/sde:/dev/sde
+      - /dev/nvme0:/dev/nvme0
+    volumes:
+      - {{ appdata_path }}/scrutiny:/opt/scrutiny/config
+      - /run/udev:/run/udev:ro
+    ports:
+      - 8080:8080
+    restart: always
+  uptime:
+    image: louislam/uptime-kuma:1.23.16
+    container_name: uptime
+    volumes:
+      - {{ appdata_path }}/uptime:/app/data
+    ports:
+      - 3001:3001
+    restart: always
+  handbrake:
+    image: jlesage/handbrake:v24.12.1
+    container_name: handbrake
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128
+    volumes:
+      - {{ appdata_path }}/handbrake/config:/config
+      - {{ appdata_path }}/handbrake/storage:/storage
+      - /mnt/Media/Movies/1-Processing/Handbrake/Watch:/watch
+      - /mnt/Media/Movies/1-Processing/Handbrake/Output:/output
+    ports:
+      - 5800:5800
+    environment:
+      - TZ={{ ntp_timezone }}
+    restart: always
+  calibre:
+    image: lscr.io/linuxserver/calibre:7.23.0
+    container_name: calibre
+    volumes:
+      - {{ appdata_path }}/calibre:/config
+      - /mnt/Media/Ebooks:/books
+    ports:
+      - 8085:8080
+      - 8181:8181
+      - 8081:8081
+    environment:
+      - UID={{ main_uid }}
+      - GID={{ main_gid }}
+      - PUID={{ main_uid }}
+      - PGID={{ main_gid }}
+      - TZ={{ ntp_timezone }}
+    restart: unless-stopped
+  frigate:
+    image: ghcr.io/blakeblackshear/frigate:0.14.1
+    container_name: frigate
+    privileged: true
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+      - /dev/dri/renderD128:/dev/dri/renderD128
+    volumes:
+      - {{ appdata_path }}/frigate/config:/config
+      - /mnt/Media/Frigate:/media/frigate
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 8971:8971
+      - 5000:5000
+      - 8554:8554
+      - 8555:8555/tcp
+      - 8555:8555/udp
+      - 1984:1984
+    environment:
+      - FRIGATE_RTSP_PASSWORD='password'
+      - PLUS_API_KEY={{ secret_frigate_plus_api }}
+      - FRIGATE_JWT_SECRET={{ secret_frigate_jwt }}
+    shm_size: 200mb
+    tmpfs:
+      - /tmp/cache
+    restart: unless-stopped
+  nut-ups:
+    image: fuzzymistborn/nut-upsd:2.8.2
+    container_name: nut-ups
+    devices:
+      - /dev/bus/usb/001/003:/dev/bus/usb/001/003
+    ports:
+      - 3493:3493
+    environment:
+      - API_USER=homeassistant
+      - API_PASSWORD={{ secret_nut_api_pw }}
+    restart: always
+  firefox:
+    image: lscr.io/linuxserver/firefox:133.0.3
+    container_name: firefox
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ={{ ntp_timezone }}
+      - TITLE=Firefox
+    volumes:
+      - /tmp/firefox/data:/config
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 3200:3000
+      - 3201:3001
+    devices:
+      - /dev/dri:/dev/dri
+    shm_size: "2gb"
+    restart: unless-stopped

@@ -164,14 +164,9 @@ ntp_timezone: America/New_York
 docker_users:
   - "{{ main_username }}"
 
-# ironicbadger.docker_compose_generator
+### Docker-Compose with docker-compose-generator
 appdata_path: /home/{{ main_username }}/docker
-global_env_vars:
-  - "UID={{ main_uid }}"
-  - "GID={{ main_gid }}"
-  - "PUID={{ main_uid }}"
-  - "PGID={{ main_gid }}"
-  - "TZ={{ ntp_timezone }}"
 docker_compose_generator_uid: "{{ main_uid }}"
 docker_compose_generator_gid: "{{ main_gid }}"
 docker_compose_generator_output_path: /home/{{ main_username }}
+docker_compose_hostname: "{{ hostname }}"

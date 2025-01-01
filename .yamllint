@@ -25,6 +25,8 @@ rules:
 
 ignore: |
   galaxy_roles/
+  roles/docker-compose-generator
+  services/
   test.yml
   requirements.yaml
   vars/vault.yaml

@@ -92,7 +92,7 @@
     - role: geerlingguy.docker
     - role: geerlingguy.ntp
     - role: install/lnxlink
-    - role: ironicbadger.docker_compose_generator
+    - role: docker-compose-generator
     - role: ironicbadger.snapraid
 
 - hosts: ishap
@@ -128,7 +128,7 @@
     - role: cronjobs
     - role: geerlingguy.docker
     - role: geerlingguy.ntp
-    - role: ironicbadger.docker_compose_generator
+    - role: docker-compose-generator
     - role: ironicbadger.snapraid
 
 ### LXCs/VMs/VPS
@@ -164,7 +164,7 @@
     - role: endowment
     - role: bash_alias
     - role: cronjobs
-    - role: ironicbadger.docker_compose_generator
+    - role: docker-compose-generator
 
 - hosts: autonomy
   become: true
@@ -183,7 +183,7 @@
     - role: bash_alias
     - role: cronjobs
     - role: install/lnxlink
-    - role: ironicbadger.docker_compose_generator
+    - role: docker-compose-generator
 
 - hosts: unity
   become: true
@@ -201,7 +201,7 @@
     - role: install/tailscale
     - role: install/lnxlink
     - role: cronjobs
-    - role: ironicbadger.docker_compose_generator
+    - role: docker-compose-generator
 
 - hosts: virtuosity
   become: true
@@ -218,7 +218,7 @@
     - role: bash_alias
     - role: cronjobs
     - role: install/lnxlink
-    - role: ironicbadger.docker_compose_generator
+    - role: docker-compose-generator
 
 - hosts: cultivation
   become: true
@@ -235,7 +235,7 @@
     - role: cultivation
     - role: bash_alias
     - role: cronjobs
-    - role: ironicbadger.docker_compose_generator
+    - role: docker-compose-generator
 
 - hosts: preservation
   become: true
@@ -249,7 +249,7 @@
     - role: install/lnxlink
     - role: install/runitor
     - role: install/zsh
-    - role: ironicbadger.docker_compose_generator
+    - role: docker-compose-generator
     - role: preservation
     - role: bash_alias
     - role: cronjobs
@@ -270,7 +270,7 @@
     - role: honor
     - role: bash_alias
     - role: cronjobs
-    - role: ironicbadger.docker_compose_generator
+    - role: docker-compose-generator
     - role: install/crowdsec_bouncer
 
 - hosts: omada
@@ -287,7 +287,7 @@
     - role: omada
     - role: bash_alias
     - role: cronjobs
-    - role: ironicbadger.docker_compose_generator
+    - role: docker-compose-generator
 
 - hosts: invention
   become: true
@@ -302,7 +302,7 @@
     - role: fuzzymistborn.autorestic
     - role: install/runitor
     - role: bash_alias
-    - role: ironicbadger.docker_compose_generator
+    - role: docker-compose-generator
 
 - hosts: identity
   become: true
@@ -318,7 +318,7 @@
     - role: install/runitor
     - role: install/lnxlink
     - role: bash_alias
-    - role: ironicbadger.docker_compose_generator
+    - role: docker-compose-generator
 
 - hosts: investiture
   become: true
@@ -331,7 +331,7 @@
     - role: install/runitor
     - role: install/zsh
     - role: bash_alias
-    - role: ironicbadger.docker_compose_generator
+    - role: docker-compose-generator
     - role: cronjobs
 
 - hosts: ambition
@@ -347,7 +347,7 @@
     - role: install/zsh
     - role: fuzzymistborn.autorestic
     - role: install/runitor
-    - role: ironicbadger.docker_compose_generator
+    - role: docker-compose-generator
     - role: ambition
     - role: caddy_ansible.caddy_ansible
     - role: install/crowdsec_bouncer

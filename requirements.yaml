@@ -1,6 +1,5 @@
 ---
 roles:
-- src: ironicbadger.docker_compose_generator
 - src: ironicbadger.snapraid
 - src: caddy_ansible.caddy_ansible
 - src: grog.package

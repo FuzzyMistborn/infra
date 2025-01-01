@@ -127,14 +127,14 @@ gitea.ci.fuzzymistborn.com {
 giteaagent.ci.fuzzymistborn.com {
 	crowdsec
 	reverse_proxy h2c://localhost:9002
-	tls /home/geoff/lego/certificates/_.ci.fuzzymistborn.com.crt /home/geoff/lego/certificates/_.ci.fuzzymistborn.com.key
+	tls /home/{{ main_username }}/lego/certificates/_.ci.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.ci.fuzzymistborn.com.key
 	import fuzzy_headers
 }
 
 githubagent.ci.fuzzymistborn.com {
 	crowdsec
 	reverse_proxy h2c://localhost:9000
-	tls /home/geoff/lego/certificates/_.ci.fuzzymistborn.com.crt /home/geoff/lego/certificates/_.ci.fuzzymistborn.com.key
+	tls /home/{{ main_username }}/lego/certificates/_.ci.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.ci.fuzzymistborn.com.key
 	import fuzzy_headers
 }
 

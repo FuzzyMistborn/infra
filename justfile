@@ -12,7 +12,7 @@ build_ishap:
 	ansible-playbook -u root -b run.yml --limit ishap --ask-pass
 
 build_virtuosity:
-	ansible-playbook -u geoff -b run.yml --limit virtuosity --ask-pass  --ask-become-pass
+	ansible-playbook -u root -b run.yml --limit virtuosity --ask-pass  --ask-become-pass
 
 build +HOST:
 	ansible-playbook -b run.yml --limit {{ HOST }}
@@ -53,3 +53,21 @@ bootstrap +HOST:
 install:
 	@./prereqs.sh
 	@echo "Ansible Vault pre-hook script setup and vault password set"
+
+### Git
+# git submodule - repo URL + optional local folder name
+add-submodule URL *NAME:
+    #!/usr/bin/env sh
+    if [ -z "{{NAME}}" ]; then
+        # Extract repo name from URL if no name provided
+        basename=$(basename "{{URL}}" .git)
+        git submodule add {{URL}} "roles/${basename}"
+        git submodule update --init --recursive
+        git add .gitmodules "roles/${basename}"
+        git commit -m "Adds ${basename} as a submodule"
+    else
+        git submodule add {{URL}} "roles/{{NAME}}"
+        git submodule update --init --recursive
+        git add .gitmodules "roles/{{NAME}}"
+        git commit -m "Adds {{NAME}} as a submodule"
+    fi
