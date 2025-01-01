@@ -1,13 +1,20 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "enabledManagers": ["docker-compose"],
   "dependencyDashboard": true,
   "prConcurrentLimit": 0,
+  "prHourlyLimit": 0,
   "baseBranches": ["main"],
   "enabled": true,
   "extends": [
-    "config:recommended"
-  ],
-  
+    ":dependencyDashboard",
+    ":semanticPrefixFixDepsChoreOthers",
+    ":ignoreModulesAndTests",
+    "group:monorepos",
+    "group:recommended",
+    "replacements:all",
+    "workarounds:all"
+  ],  
   "packageRules": [
     {
       "matchPackageNames": ["ghcr.io/umami-software/umami"],
