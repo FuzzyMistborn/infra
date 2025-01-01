@@ -59,7 +59,7 @@ services:
       - AGENT_SECRET={{ secret_portainer_key }}
     restart: always
   scrutiny:
-    image: ghcr.io/analogj/scrutiny:v0.8.1-omnibus
+    image: ghcr.io/analogj/scrutiny:v0.8.1-web
     container_name: scrutiny
     privileged: true
     cap_add:
