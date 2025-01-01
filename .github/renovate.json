@@ -1,6 +1,6 @@
 {
   "enabledManagers": ["ansible", "docker-compose", "dockerfile"],
-  "dependencyDashboard": false,
+  "dependencyDashboard": true,
   "prConcurrentLimit": 0,
   "baseBranches": ["main"],
   "enabled": true,
