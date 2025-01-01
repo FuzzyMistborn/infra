@@ -27,7 +27,7 @@ services:
       - /dev/sde:/dev/sde
       - /dev/nvme0:/dev/nvme0
     volumes:
-      - {{ appdata_path }}/scrutiny:/opt/scrutiny/config
+      - "{{ appdata_path }}/scrutiny:/opt/scrutiny/config"
       - /run/udev:/run/udev:ro
     ports:
       - 8080:8080
@@ -36,7 +36,7 @@ services:
     image: louislam/uptime-kuma:1.23.16
     container_name: uptime
     volumes:
-      - {{ appdata_path }}/uptime:/app/data
+      - "{{ appdata_path }}/uptime:/app/data"
     ports:
       - 3001:3001
     restart: always
@@ -46,8 +46,8 @@ services:
     devices:
       - /dev/dri/renderD128:/dev/dri/renderD128
     volumes:
-      - {{ appdata_path }}/handbrake/config:/config
-      - {{ appdata_path }}/handbrake/storage:/storage
+      - "{{ appdata_path }}/handbrake/config:/config"
+      - "{{ appdata_path }}/handbrake/storage:/storage"
       - /mnt/Media/Movies/1-Processing/Handbrake/Watch:/watch
       - /mnt/Media/Movies/1-Processing/Handbrake/Output:/output
     ports:
@@ -59,7 +59,7 @@ services:
     image: lscr.io/linuxserver/calibre:7.23.0
     container_name: calibre
     volumes:
-      - {{ appdata_path }}/calibre:/config
+      - "{{ appdata_path }}/calibre:/config"
       - /mnt/Media/Ebooks:/books
     ports:
       - 8085:8080
@@ -80,7 +80,7 @@ services:
       - /dev/bus/usb:/dev/bus/usb
       - /dev/dri/renderD128:/dev/dri/renderD128
     volumes:
-      - {{ appdata_path }}/frigate/config:/config
+      - "{{ appdata_path }}/frigate/config:/config"
       - /mnt/Media/Frigate:/media/frigate
       - /etc/localtime:/etc/localtime:ro
     ports:

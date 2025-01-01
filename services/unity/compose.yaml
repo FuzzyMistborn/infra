@@ -5,7 +5,7 @@ services:
     devices:
       - /dev/zwave:/dev/zwave
     volumes:
-      - {{ appdata_path }}/zwavejs:/usr/src/app/store
+      - "{{ appdata_path }}/zwavejs:/usr/src/app/store"
     ports:
       - 8091:8091
       - 3500:3000
@@ -18,7 +18,7 @@ services:
     devices:
       - /dev/zigbee:/dev/zigbee
     volumes:
-      - {{ appdata_path }}/zigbee2mqtt:/app/data
+      - "{{ appdata_path }}/zigbee2mqtt:/app/data"
       - /run/udev:/run/udev:ro
     ports:
       - 8080:8080
@@ -31,8 +31,8 @@ services:
     cap_add:
       - NET_ADMIN
     volumes:
-      - {{ appdata_path }}/adguard/conf:/opt/adguardhome/conf
-      - {{ appdata_path }}/adguard/work:/opt/adguardhome/work
+      - "{{ appdata_path }}/adguard/conf:/opt/adguardhome/conf"
+      - "{{ appdata_path }}/adguard/work:/opt/adguardhome/work"
     ports:
       - 53:53/tcp
       - 53:53/udp

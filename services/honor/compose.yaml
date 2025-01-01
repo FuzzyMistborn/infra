@@ -5,8 +5,8 @@ services:
     cap_add:
       - NET_ADMIN
     volumes:
-      - {{ appdata_path }}/adguard/conf:/opt/adguardhome/conf
-      - {{ appdata_path }}adguard/work:/opt/adguardhome/work
+      - "{{ appdata_path }}/adguard/conf:/opt/adguardhome/conf"
+      - "{{ appdata_path }}adguard/work:/opt/adguardhome/work"
     ports:
       - 53:53/tcp
       - 53:53/udp
@@ -19,9 +19,9 @@ services:
     image: crowdsecurity/crowdsec:v1.6.4
     container_name: crowdsec
     volumes:
-      - {{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml
+      - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"
       - /var/log/auth.log:/var/log/ssh/auth.log:ro
-      - {{ appdata_path }}/crowdsec/db:/var/lib/crowdsec/data/
+      - "{{ appdata_path }}/crowdsec/db:/var/lib/crowdsec/data/"
     environment:
       - COLLECTIONS=crowdsecurity/http-cve crowdsecurity/whitelist-good-actors crowdsecurity/sshd
       - GID=1000
@@ -45,7 +45,7 @@ services:
     image: ghcr.io/linuxserver/adguardhome-sync:0.6.16
     container_name: adguard-sync
     volumes:
-      - {{ appdata_path }}/adguardsync/config:/config
+      - "{{ appdata_path }}/adguardsync/config:/config"
     ports:
       - 8080:8080
     environment:

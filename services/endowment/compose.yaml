@@ -3,7 +3,7 @@ services:
     image: ghcr.io/linuxserver/radarr:5.16.3
     container_name: radarr
     volumes:
-      - {{ appdata_path }}/radarr:/config
+      - "{{ appdata_path }}/radarr:/config"
       - /mnt/Media/Movies:/movies
       - /mnt/Media/Kids Movies:/kids_movies
       - /mnt/Media/Parents Movies:/parents_movies
@@ -21,7 +21,7 @@ services:
     image: ghcr.io/linuxserver/radarr:5.16.3
     container_name: radarr_uhd
     volumes:
-      - {{ appdata_path }}/radarr_uhd:/config
+      - "{{ appdata_path }}/radarr_uhd:/config"
       - /mnt/Media/UHD:/uhd
       - /mnt/scratch/complete:/downloads
     ports:
@@ -37,7 +37,7 @@ services:
     image: ghcr.io/linuxserver/sonarr:4.0.11
     container_name: sonarr
     volumes:
-      - {{ appdata_path }}/sonarr:/config
+      - "{{ appdata_path }}/sonarr:/config"
       - /mnt/Media/TV Shows:/tv
       - /mnt/Media/Kids TV:/kids_tv
       - /mnt/Media/Parents TV:/parents_tv
@@ -55,7 +55,7 @@ services:
     image: ghcr.io/linuxserver/prowlarr:1.28.2
     container_name: prowlarr
     volumes:
-      - {{ appdata_path }}/prowlarr:/config
+      - "{{ appdata_path }}/prowlarr:/config"
     ports:
       - 9696:9696
     environment:
@@ -69,7 +69,7 @@ services:
     image: lscr.io/linuxserver/readarr:develop
     container_name: readarr
     volumes:
-      - {{ appdata_path }}/readarr/config:/config
+      - "{{ appdata_path }}/readarr/config:/config"
       - /mnt/scratch/books:/downloads
     ports:
       - 8787:8787
@@ -84,7 +84,7 @@ services:
     image: ghcr.io/linuxserver/sabnzbd:4.4.1
     container_name: sabnzbd
     volumes:
-      - {{ appdata_path }}/sabnzb:/config
+      - "{{ appdata_path }}/sabnzb:/config"
       - /mnt/scratch/complete:/downloads
       - /mnt/scratch/incomplete:/incomplete-downloads
     ports:
@@ -101,8 +101,8 @@ services:
     image: ghcr.io/advplyr/audiobookshelf:2.17.5
     container_name: audiobookshelf
     volumes:
-      - {{ appdata_path }}/audiobookshelf/config:/config
-      - {{ appdata_path }}/audiobookshelf/metadata:/metadata
+      - "{{ appdata_path }}/audiobookshelf/config:/config"
+      - "{{ appdata_path }}/audiobookshelf/metadata:/metadata"
       - /mnt/Media/Audiobooks:/audiobooks
     ports:
       - 13378:80
@@ -117,7 +117,7 @@ services:
     image: fuzzymistborn/nextcloud-docker:30.0.4
     container_name: nextcloud
     volumes:
-      - {{ appdata_path }}/nextcloud_docker/html:/var/www/html
+      - "{{ appdata_path }}/nextcloud_docker/html:/var/www/html"
     ports:
       - 3491:80
       - 3492:443
@@ -139,7 +139,7 @@ services:
     devices:
       - /dev/dri/renderD128:/dev/dri/renderD128
     volumes:
-      - {{ appdata_path }}/jellyfin/config:/config
+      - "{{ appdata_path }}/jellyfin/config:/config"
       - /mnt/scratch/transcode:/transcode
       - /mnt/Media/Movies:/mnt/movies:ro
       - /mnt/Media/UHD:/mnt/UHD:ro
@@ -163,7 +163,7 @@ services:
     image: deluan/navidrome:0.54.2
     container_name: navidrome
     volumes:
-      - {{ appdata_path }}/navidrome/data:/data
+      - "{{ appdata_path }}/navidrome/data:/data"
       - /mnt/Media/Music:/music:ro
     ports:
       - 4533:4533
@@ -177,7 +177,7 @@ services:
     image: crocodilestick/calibre-web-automated:V2.1.2
     container_name: calibre-web-automated
     volumes:
-      - {{ appdata_path }}/calibre-web-automated:/config
+      - "{{ appdata_path }}/calibre-web-automated:/config"
       - /mnt/Media/Ebooks/Calibre:/calibre-library
       - /mnt/Media/Ebooks/Import:/cwa-book-ingest
     ports:
@@ -195,18 +195,18 @@ services:
     container_name: southwest
     privileged: true
     volumes:
-      - {{ appdata_path }}/southwest/config.json:/app/config.json
+      - "{{ appdata_path }}/southwest/config.json:/app/config.json"
     restart: unless-stopped
   crowdsec:
     image: crowdsecurity/crowdsec:v1.6.4
     container_name: crowdsec
     volumes:
-      - {{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml
-      - {{ appdata_path }}/nextcloud_docker/html/data:/var/log/nextcloud:ro
-      - {{ appdata_path }}/sonarr/logs:/var/log/sonarr:ro
-      - {{ appdata_path }}/radarr/logs:/var/log/radarr:ro
-      - {{ appdata_path }}/jellyfin/config/log/:/var/log/jellyfin:ro
-      - {{ appdata_path }}/crowdsec/db:/var/lib/crowdsec/data/
+      - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"
+      - "{{ appdata_path }}/nextcloud_docker/html/data:/var/log/nextcloud:ro"
+      - "{{ appdata_path }}/sonarr/logs:/var/log/sonarr:ro"
+      - "{{ appdata_path }}/radarr/logs:/var/log/radarr:ro"
+      - "{{ appdata_path }}/jellyfin/config/log/:/var/log/jellyfin:ro"
+      - "{{ appdata_path }}/crowdsec/db:/var/lib/crowdsec/data/"
     environment:
       - COLLECTIONS=LePresidente/jellyfin schiz0phr3ne/sonarr schiz0phr3ne/radarr crowdsecurity/nextcloud
       - GID=1000

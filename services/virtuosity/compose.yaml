@@ -32,7 +32,7 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
     volumes:
-      - {{ appdata_path }}/ollama-webui:/app/backend/data
+      - "{{ appdata_path }}/ollama-webui:/app/backend/data"
     ports:
       - 3010:8080
     restart: unless-stopped
@@ -44,13 +44,13 @@ services:
     cap_drop:
       - ALL
     volumes:
-      - {{ appdata_path }}/stable-diffusion/inputs:/app/stable-diffusion-webui/inputs
-      - {{ appdata_path }}/stable-diffusion/textual_inversion_templates:/app/stable-diffusion-webui/textual_inversion_templates
-      - {{ appdata_path }}/stable-diffusion/embeddings:/app/stable-diffusion-webui/embeddings
-      - {{ appdata_path }}/stable-diffusion/extensions:/app/stable-diffusion-webui/extensions
+      - "{{ appdata_path }}/stable-diffusion/inputs:/app/stable-diffusion-webui/inputs"
+      - "{{ appdata_path }}/stable-diffusion/textual_inversion_templates:/app/stable-diffusion-webui/textual_inversion_templates"
+      - "{{ appdata_path }}/stable-diffusion/embeddings:/app/stable-diffusion-webui/embeddings"
+      - "{{ appdata_path }}/stable-diffusion/extensions:/app/stable-diffusion-webui/extensions"
       - /mnt/llms/stable-diffusion/models:/app/stable-diffusion-webui/models
       - /mnt/llms/stable-diffusion/outputs:/app/stable-diffusion-webui/outputs
-      - {{ appdata_path }}/stable-diffusion/localizations:/app/stable-diffusion-webui/localizations
+      - "{{ appdata_path }}/stable-diffusion/localizations:/app/stable-diffusion-webui/localizations"
     ports:
       - 8080:8080/tcp
     command: --no-half --no-half-vae --precision full --medvram-sdxl --xformers --opt-sdp-attention --opt-sdp-no-mem-attention --opt-split-attention --opt-channelslast
@@ -68,8 +68,8 @@ services:
     container_name: crowdsec
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - {{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml
-      - {{ appdata_path }}/crowdsec/db:/var/lib/crowdsec/data/
+      - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"
+      - "{{ appdata_path }}/crowdsec/db:/var/lib/crowdsec/data/"
     environment:
       - COLLECTIONS=gauth-fr/immich
       - GID=1000
@@ -111,7 +111,7 @@ services:
     image: ghcr.io/immich-app/immich-machine-learning:v1.123.0-cuda
     container_name: immich_machine_learning
     volumes:
-      - {{ appdata_path }}/immich/model-cache:/cache
+      - "{{ appdata_path }}/immich/model-cache:/cache"
     depends_on:
       - immich-redis
       - immich-database
@@ -132,7 +132,7 @@ services:
     image: docker.io/tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
     container_name: immich_database
     volumes:
-      - {{ appdata_path }}/immich/database:/var/lib/postgresql/data
+      - "{{ appdata_path }}/immich/database:/var/lib/postgresql/data"
     environment:
       - POSTGRES_PASSWORD={{ secret_immich_db_pass }}
       - POSTGRES_USER=postgres
@@ -160,7 +160,7 @@ services:
       - WHISPER_BEAM=5
       - WHISPER_LANG=en
     volumes:
-      - {{ appdata_path }}/whisper:/data
+      - "{{ appdata_path }}/whisper:/data"
     ports:
       - 10300:10300
     deploy:

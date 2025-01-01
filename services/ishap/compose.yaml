@@ -7,7 +7,7 @@ services:
     devices:
       - /dev/net/tun:/dev/net/tun
     volumes:
-      - {{ appdata_path }}/gluetun:/gluetun
+      - "{{ appdata_path }}/gluetun:/gluetun"
     environment:
       - VPN_SERVICE_PROVIDER=mullvad
       - VPN_TYPE=wireguard
@@ -28,7 +28,7 @@ services:
     devices:
       - /dev/net/tun:/dev/net/tun
     volumes:
-      - {{ appdata_path }}/tailscale:/var/lib/tailscale
+      - "{{ appdata_path }}/tailscale:/var/lib/tailscale"
     environment:
       - TS_HOSTNAME=ishap
       - TS_AUTHKEY={{ secret_ishap_tailscale_key }}
@@ -41,7 +41,7 @@ services:
     container_name: imap-backup
     volumes:
       - /mnt/Backup/config/Email:/data
-      - {{ appdata_path }}/imap/config:/config
+      - "{{ appdata_path }}/imap/config:/config"
     environment:
       - UID={{ main_uid }}
       - GID={{ main_gid }}
@@ -74,7 +74,7 @@ services:
       - /dev/sdf:/dev/sdf
       - /dev/nvme0:/dev/nvme0
     volumes:
-      - {{ appdata_path }}/scrutiny:/opt/scrutiny/config
+      - "{{ appdata_path }}/scrutiny:/opt/scrutiny/config"
       - /run/udev:/run/udev:ro
     ports:
       - 8080:8080

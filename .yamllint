@@ -15,6 +15,9 @@ rules:
     max-spaces-after: -1
     level: error
   comments-indentation: disable
+  document-start:
+      ignore:
+      - services/
   empty-lines:
     max: 3
     level: error
@@ -26,7 +29,6 @@ rules:
 ignore: |
   galaxy_roles/
   roles/docker-compose-generator
-  services/
   test.yml
   requirements.yaml
   vars/vault.yaml

@@ -3,8 +3,8 @@ services:
     image: freikin/dawarich:0.21.0
     container_name: dawarich-app
     volumes:
-      - {{ appdata_path }}/dawarich/gem:/usr/local/bundle/gems_app
-      - {{ appdata_path }}/dawarich/public:/var/app/public
+      - "{{ appdata_path }}/dawarich/gem:/usr/local/bundle/gems_app"
+      - "{{ appdata_path }}/dawarich/public:/var/app/public"
     ports:
       - 3000:3000
     environment:
@@ -35,8 +35,8 @@ services:
     image: postgres:15.10-alpine
     container_name: dawarich-db
     volumes:
-      - {{ appdata_path }}/dawarich/db:/var/lib/postgresql/data
-      - {{ appdata_path }}/dawarich/shared:/var/shared
+      - "{{ appdata_path }}/dawarich/db:/var/lib/postgresql/data"
+      - "{{ appdata_path }}/dawarich/shared:/var/shared"
     environment:
       - POSTGRES_DB=dawarich
       - POSTGRES_USER=dawarich
@@ -47,15 +47,15 @@ services:
     image: redis:7.4.1
     container_name: dawarich-redis
     volumes:
-      - {{ appdata_path }}/dawarich/shared:/var/shared/redis
+      - "{{ appdata_path }}/dawarich/shared:/var/shared/redis"
     command: redis-server
     restart: unless-stopped
   dawarich-sidekiq:
     image: freikin/dawarich:0.21.0
     container_name: dawarich-sidekiq
     volumes:
-      - {{ appdata_path }}/dawarich/gem:/usr/local/bundle/gems_sidekiq
-      - {{ appdata_path }}/dawarich/public:/var/app/public
+      - "{{ appdata_path }}/dawarich/gem:/usr/local/bundle/gems_sidekiq"
+      - "{{ appdata_path }}/dawarich/public:/var/app/public"
     environment:
       - RAILS_ENV=development
       - REDIS_URL=redis://dawarich-redis:6379/0

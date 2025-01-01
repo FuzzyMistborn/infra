@@ -3,8 +3,8 @@ services:
     image: crazymax/diun:4.29.0
     container_name: diun
     volumes:
-      - {{ appdata_path }}/diun/data:/data
-      - {{ appdata_path }}/diun/config.yml:/diun.yml:ro
+      - "{{ appdata_path }}/diun/data:/data"
+      - "{{ appdata_path }}/diun/config.yml:/diun.yml:ro"
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - UID={{ main_uid }}
@@ -14,13 +14,13 @@ services:
       - TZ={{ ntp_timezone }}
       - LOG_LEVEL=info
       - LOG_JSON=false
-    hostname: {{ hostname }}
+    hostname: "{{ hostname }}"
     restart: always
   uptime:
     image: louislam/uptime-kuma:1.23.16
     container_name: uptime
     volumes:
-      - {{ appdata_path }}/uptime:/app/data
+      - "{{ appdata_path }}/uptime:/app/data"
     ports:
       - 127.0.0.1:3001:3001
     restart: always
@@ -43,7 +43,7 @@ services:
     image: mariadb:11.6
     container_name: umami-db
     volumes:
-      - {{ appdata_path }}/umami/mariadb:/var/lib/mysql
+      - "{{ appdata_path }}/umami/mariadb:/var/lib/mysql"
     environment:
       - MYSQL_ROOT_PASSWORD={{ secret_db_root_pass }}
       - MYSQL_USER=umami
@@ -55,7 +55,7 @@ services:
     image: gitea/gitea:1.22.6
     container_name: gitea
     volumes:
-      - {{ appdata_path }}/gitea/data:/data
+      - "{{ appdata_path }}/gitea/data:/data"
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     ports:
@@ -76,7 +76,7 @@ services:
     image: mariadb:11.6
     container_name: gitea-db
     volumes:
-      - {{ appdata_path }}/gitea/mariadb:/var/lib/mysql
+      - "{{ appdata_path }}/gitea/mariadb:/var/lib/mysql"
     environment:
       - MYSQL_ROOT_PASSWORD={{ secret_db_root_pass }}
       - MYSQL_USER=gitea
@@ -90,7 +90,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro
-      - {{ appdata_path }}/woodpecker-github:/data
+      - "{{ appdata_path }}/woodpecker-github:/data"
     ports:
       - 127.0.0.1:4000:8000
       - 127.0.0.1:9000:9000
@@ -112,7 +112,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro
-      - {{ appdata_path }}/woodpecker-gitea:/data
+      - "{{ appdata_path }}/woodpecker-gitea:/data"
     ports:
       - 127.0.0.1:4001:8000
       - 127.0.0.1:9002:9002
@@ -133,7 +133,7 @@ services:
     image: binwiederhier/ntfy:v2.11.0
     container_name: ntfy
     volumes:
-      - {{ appdata_path }}/ntfy/cache:/var/cache/ntfy
+      - "{{ appdata_path }}/ntfy/cache:/var/cache/ntfy"
     ports:
       - 127.0.0.1:4600:80
     environment:
@@ -152,7 +152,7 @@ services:
     image: ghcr.io/thomiceli/opengist:1.8
     container_name: opengist
     volumes:
-      - {{ appdata_path }}/opengist:/opengist
+      - "{{ appdata_path }}/opengist:/opengist"
     ports:
       - 127.0.0.1:6157:6157
     restart: unless-stopped
@@ -160,7 +160,7 @@ services:
     image: lscr.io/linuxserver/pairdrop:1.10.10
     container_name: pairdrop
     volumes:
-      - {{ appdata_path }}/pairdrop:/opt/pairdrop
+      - "{{ appdata_path }}/pairdrop:/opt/pairdrop"
     ports:
       - 127.0.0.1:3200:3000
     environment:
@@ -177,7 +177,7 @@ services:
     image: ghcr.io/linuxserver/healthchecks:3.9.20241220
     container_name: healthchecks
     volumes:
-      - {{ appdata_path }}/healthchecks/config:/config
+      - "{{ appdata_path }}/healthchecks/config:/config"
     ports:
       - 127.0.0.1:8000:8000
     environment:
@@ -208,11 +208,11 @@ services:
     container_name: crowdsec
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - {{ appdata_path }}/crowdsec/data/:/etc/crowdsec
+      - "{{ appdata_path }}/crowdsec/data/:/etc/crowdsec"
       - /home/{{ main_username }}/caddy/:/var/log/caddy
-      - {{ appdata_path }}/gitea/data/gitea/log:/var/log/gitea:ro
+      - "{{ appdata_path }}/gitea/data/gitea/log:/var/log/gitea:ro"
       - /var/log/auth.log:/var/log/ssh/auth.log:ro
-      - {{ appdata_path }}/crowdsec/db:/var/lib/crowdsec/data/
+      - "{{ appdata_path }}/crowdsec/db:/var/lib/crowdsec/data/"
     ports:
       - 8080:8080
     environment:

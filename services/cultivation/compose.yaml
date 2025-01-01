@@ -3,8 +3,8 @@ services:
     image: crazymax/diun:4.29.0
     container_name: diun
     volumes:
-      - {{ appdata_path }}/diun/data:/data
-      - {{ appdata_path }}/diun/config.yml:/diun.yml:ro
+      - "{{ appdata_path }}/diun/data:/data"
+      - "{{ appdata_path }}/diun/config.yml:/diun.yml:ro"
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - UID={{ main_uid }}
@@ -20,7 +20,7 @@ services:
     image: vaultwarden/server:1.32.7
     container_name: bitwarden
     volumes:
-      - {{ appdata_path }}/bitwarden/data:/data
+      - "{{ appdata_path }}/bitwarden/data:/data"
     ports:
       - 6482:80
     environment:
@@ -45,7 +45,7 @@ services:
     image: ghcr.io/linuxserver/freshrss:1.24.3
     container_name: freshrss
     volumes:
-      - {{ appdata_path }}/freshrss:/config
+      - "{{ appdata_path }}/freshrss:/config"
     ports:
       - 8010:80
     environment:
@@ -59,7 +59,7 @@ services:
     image: ghcr.io/linuxserver/code-server:4.96.2
     container_name: code-server
     volumes:
-      - {{ appdata_path }}/code:/config
+      - "{{ appdata_path }}/code:/config"
     ports:
       - 8443:8443
     environment:
@@ -76,7 +76,7 @@ services:
     image: wallabag/wallabag:2.6.10
     container_name: wallabag
     volumes:
-      - {{ appdata_path }}/wallabag/images:/var/www/wallabag/web/assets/images
+      - "{{ appdata_path }}/wallabag/images:/var/www/wallabag/web/assets/images"
     ports:
       - 300:80
     environment:
@@ -122,10 +122,10 @@ services:
     image: ghcr.io/paperless-ngx/paperless-ngx:2.13.5
     container_name: paperless
     volumes:
-      - {{ appdata_path }}/paperless/data:/usr/src/paperless/data
-      - {{ appdata_path }}/paperless/media:/usr/src/paperless/media
-      - {{ appdata_path }}/paperless/export:/usr/src/paperless/export
-      - {{ appdata_path }}/paperless/consume:/usr/src/paperless/consume
+      - "{{ appdata_path }}/paperless/data:/usr/src/paperless/data"
+      - "{{ appdata_path }}/paperless/media:/usr/src/paperless/media"
+      - "{{ appdata_path }}/paperless/export:/usr/src/paperless/export"
+      - "{{ appdata_path }}/paperless/consume:/usr/src/paperless/consume"
     ports:
       - 8000:8000
     environment:
@@ -141,7 +141,7 @@ services:
     image: quay.io/invidious/invidious:latest
     container_name: invidious
     volumes:
-      - {{ appdata_path }}/invidious:/invidious/config
+      - "{{ appdata_path }}/invidious:/invidious/config"
     labels:
       - diun.enable=true
       - diun.regopt=docker.io
@@ -176,7 +176,7 @@ services:
     image: frooodle/s-pdf:0.36.5
     container_name: stirling-pdf
     volumes:
-      - {{ appdata_path }}/stirlingpdf/extraConfigs:/configs
+      - "{{ appdata_path }}/stirlingpdf/extraConfigs:/configs"
     ports:
       - 8081:8080
     environment:
@@ -188,8 +188,8 @@ services:
     image: ferdium/ferdium-server:2.0.10
     container_name: ferdium-server
     volumes:
-      - {{ appdata_path }}/ferdium/data:/data
-      - {{ appdata_path }}/ferdium/app:/app/recipes
+      - "{{ appdata_path }}/ferdium/data:/data"
+      - "{{ appdata_path }}/ferdium/app:/app/recipes"
     ports:
       - 3333:3333
     environment:
@@ -211,7 +211,7 @@ services:
     image: ghcr.io/dgtlmoon/changedetection.io:0.48.04
     container_name: changedetection
     volumes:
-      - {{ appdata_path }}/change:/datastore
+      - "{{ appdata_path }}/change:/datastore"
     ports:
       - 5000:5000
     environment:
@@ -222,7 +222,7 @@ services:
     image: browserless/chrome:1.61.1-chrome-stable
     container_name: playwright
     volumes:
-      - {{ appdata_path }}/change:/datastore
+      - "{{ appdata_path }}/change:/datastore"
     environment:
       - SCREEN_WIDTH=1920
       - SCREEN_HEIGHT=1024
@@ -240,9 +240,9 @@ services:
     image: crowdsecurity/crowdsec:v1.6.4
     container_name: crowdsec
     volumes:
-      - {{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml
-      - {{ appdata_path }}/bitwarden/data:/var/log/vaultwarden:ro
-      - {{ appdata_path }}/crowdsec/db:/var/lib/crowdsec/data/
+      - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"
+      - "{{ appdata_path }}/bitwarden/data:/var/log/vaultwarden:ro"
+      - "{{ appdata_path }}/crowdsec/db:/var/lib/crowdsec/data/"
     environment:
       - COLLECTIONS=Dominic-Wagner/vaultwarden
       - GID=1000
