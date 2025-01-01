@@ -1,5 +1,5 @@
 {
-  "enabledManagers": ["ansible", "docker-compose", "dockerfile"],
+  "enabledManagers": ["docker-compose"],
   "dependencyDashboard": true,
   "prConcurrentLimit": 0,
   "baseBranches": ["main"],
@@ -7,11 +7,11 @@
   "extends": [
     "config:recommended"
   ],
+  
   "packageRules": [
     {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["ghcr.io/umami-software/umami", "bbernhard/signal-cli-rest-api", "ghcr.io/tasmoadmin/tasmoadmin", "crowdsecurity/crowdsec", "jdholtz/auto-southwest-check-in", "ghcr.io/open-webui/open-webui"],
-      "versioning": "loose"
+      "matchPackageNames": ["ghcr.io/umami-software/umami"],
+      "versioning": "regex:^(?<compatibility>.*)-v?(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)?$"
     }
   ]
 }
