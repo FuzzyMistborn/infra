@@ -10,6 +10,7 @@
   "packageRules": [
     {
       "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/umami-software/umami", "bbernhard/signal-cli-rest-api", "ghcr.io/tasmoadmin/tasmoadmin", "crowdsecurity/crowdsec", "jdholtz/auto-southwest-check-in", "ghcr.io/open-webui/open-webui"],
       "versioning": "loose"
     }
   ]
