@@ -148,7 +148,7 @@ services:
       -c wal_compression=on
     restart: always
   whisper:
-    image: lscr.io/linuxserver/faster-whisper:gpu
+    image: lscr.io/linuxserver/faster-whisper:2.4.0-gpu
     container_name: whisper
     environment:
       - UID={{ main_uid }}

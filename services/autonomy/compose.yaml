@@ -37,15 +37,15 @@ services:
     container_name: esphome
     network_mode: host
     volumes:
-      - {{ appdata_path }}/esphome:/config
+      - "{{ appdata_path }}/esphome:/config"
     restart: always
   mqtt:
     image: eclipse-mosquitto:2.0.20
     container_name: MQTT
     volumes:
-      - {{ appdata_path }}/mqtt/config:/mosquitto/config/
-      - {{ appdata_path }}/mqtt/data:/mosquitto/data/
-      - {{ appdata_path }}/mqtt/log:/mosquitto/log/
+      - "{{ appdata_path }}/mqtt/config:/mosquitto/config/"
+      - "{{ appdata_path }}/mqtt/data:/mosquitto/data/"
+      - "{{ appdata_path }}/mqtt/log:/mosquitto/log/"
     ports:
       - 1883:1883
     restart: always
@@ -68,7 +68,7 @@ services:
     image: bbernhard/signal-cli-rest-api:0.175-dev
     container_name: signal-api
     volumes:
-      - {{ appdata_path }}/signal-api:/home/.local/share/signal-cli
+      - "{{ appdata_path }}/signal-api:/home/.local/share/signal-cli"
     ports:
       - 8080:8080
     environment:
@@ -78,7 +78,7 @@ services:
     image: nodered/node-red:4.0.8
     container_name: nodered
     volumes:
-      - {{ appdata_path }}/nodered:/data
+      - "{{ appdata_path }}/nodered:/data"
       - /etc/localtime:/etc/localtime:ro
     ports:
       - 1880:1880
@@ -91,7 +91,7 @@ services:
     image: ghcr.io/tasmoadmin/tasmoadmin:v4.2.1
     container_name: tasmota
     volumes:
-      - {{ appdata_path }}/tasmota:/data
+      - "{{ appdata_path }}/tasmota:/data"
     ports:
       - 5555:80
     restart: always
@@ -99,7 +99,7 @@ services:
     image: kevdliu/anylist:latest
     container_name: anylist
     volumes:
-      - {{ appdata_path }}/anylist:/data
+      - "{{ appdata_path }}/anylist:/data"
     ports:
       - 9500:9000
     environment:
@@ -113,13 +113,13 @@ services:
     network_mode: host
     privileged: true
     volumes:
-      - {{ appdata_path }}/music-assistant:/data
+      - "{{ appdata_path }}/music-assistant:/data"
     restart: unless-stopped
   piper:
     image: rhasspy/wyoming-piper:1.5.0
     container_name: piper
     volumes:
-      - {{ appdata_path }}/piper:/data
+      - "{{ appdata_path }}/piper:/data"
     ports:
       - 10200:10200
     command: --voice en_US-hfc_female-medium
@@ -128,9 +128,9 @@ services:
     image: crowdsecurity/crowdsec:v1.6.4
     container_name: crowdsec
     volumes:
-      - {{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml
+      - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"
       - /home/{{ main_username }}/hass/:/var/log/homeassistant:ro
-      - {{ appdata_path }}/crowdsec/db:/var/lib/crowdsec/data/
+      - "{{ appdata_path }}/crowdsec/db:/var/lib/crowdsec/data/"
     environment:
       - COLLECTIONS=crowdsecurity/home-assistant
       - GID=1000

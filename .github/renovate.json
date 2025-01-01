@@ -7,14 +7,8 @@
   "baseBranches": ["main"],
   "enabled": true,
   "extends": [
-    ":dependencyDashboard",
-    ":semanticPrefixFixDepsChoreOthers",
-    ":ignoreModulesAndTests",
-    "group:monorepos",
-    "group:recommended",
-    "replacements:all",
-    "workarounds:all"
-  ],  
+    "config:recommended"
+  ],
   "packageRules": [
     {
       "matchPackageNames": ["ghcr.io/umami-software/umami"],
