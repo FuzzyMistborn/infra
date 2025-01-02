@@ -173,7 +173,7 @@ services:
       - 8444:8443
     restart: always
   stirling-pdf:
-    image: frooodle/s-pdf:0.36.5
+    image: frooodle/s-pdf:0.36.6
     container_name: stirling-pdf
     volumes:
       - "{{ appdata_path }}/stirlingpdf/extraConfigs:/configs"
