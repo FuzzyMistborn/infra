@@ -16,7 +16,7 @@ rules:
     level: error
   comments-indentation: disable
   document-start:
-      ignore:
+    ignore:
       - services/
   empty-lines:
     max: 3
