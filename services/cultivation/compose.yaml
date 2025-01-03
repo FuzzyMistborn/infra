@@ -184,6 +184,12 @@ services:
       - INSTALL_BOOK_AND_ADVANCED_HTML_OPS=false
       - LANGS=en_US
     restart: unless-stopped
+  it-tools:
+      image: corentinth/it-tools:2024.10.22-7ca5933
+      container_name: it-tools
+      ports:
+        - '8800:80'
+      restart: unless-stopped
   ferdium-server:
     image: ferdium/ferdium-server:2.0.10
     container_name: ferdium-server
