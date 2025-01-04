@@ -83,7 +83,7 @@
     - role: geerlingguy.samba
     - role: geerlingguy.nfs
     - role: install/mergerfs
-    - role: fuzzymistborn.autorestic
+    - role: install/autorestic
     - role: install/runitor
     - role: install/zsh
     - role: adonalsium
@@ -120,7 +120,7 @@
     - role: install/pip_packages
     - role: geerlingguy.nfs
     - role: install/mergerfs
-    - role: fuzzymistborn.autorestic
+    - role: install/autorestic
     - role: install/runitor
     - role: install/zsh
     - role: ishap
@@ -157,7 +157,7 @@
     - role: geerlingguy.samba
     - role: geerlingguy.docker
     - role: geerlingguy.pip
-    - role: fuzzymistborn.autorestic
+    - role: install/autorestic
     - role: install/lnxlink
     - role: install/runitor
     - role: install/zsh
@@ -176,7 +176,7 @@
     - role: geerlingguy.docker
     - role: geerlingguy.pip
     - role: install/pip_packages
-    - role: fuzzymistborn.autorestic
+    - role: install/autorestic
     - role: install/runitor
     - role: install/zsh
     - role: autonomy
@@ -193,7 +193,7 @@
     - role: grog.package
     - role: geerlingguy.docker
     - role: geerlingguy.pip
-    - role: fuzzymistborn.autorestic
+    - role: install/autorestic
     - role: install/runitor
     - role: install/zsh
     - role: unity
@@ -211,7 +211,7 @@
     - role: grog.package
     - role: geerlingguy.docker
     - role: geerlingguy.pip
-    - role: fuzzymistborn.autorestic
+    - role: install/autorestic
     - role: install/runitor
     - role: install/zsh
     - role: virtuosity
@@ -228,7 +228,7 @@
     - role: grog.package
     - role: geerlingguy.docker
     - role: geerlingguy.pip
-    - role: fuzzymistborn.autorestic
+    - role: install/autorestic
     - role: install/lnxlink
     - role: install/runitor
     - role: install/zsh
@@ -245,7 +245,7 @@
     - role: grog.package
     - role: geerlingguy.docker
     - role: geerlingguy.pip
-    - role: fuzzymistborn.autorestic
+    - role: install/autorestic
     - role: install/lnxlink
     - role: install/runitor
     - role: install/zsh
@@ -263,7 +263,7 @@
     - role: geerlingguy.pip
     - role: geerlingguy.docker
     - role: install/lego
-    - role: fuzzymistborn.autorestic
+    - role: install/autorestic
     - role: install/runitor
     - role: caddy_ansible.caddy_ansible
     - role: install/zsh
@@ -281,7 +281,7 @@
     - role: grog.package
     - role: geerlingguy.pip
     - role: geerlingguy.docker
-    - role: fuzzymistborn.autorestic
+    - role: install/autorestic
     - role: install/runitor
     - role: install/zsh
     - role: omada
@@ -299,7 +299,7 @@
     - role: geerlingguy.docker
     - role: install/zsh
     - role: invention
-    - role: fuzzymistborn.autorestic
+    - role: install/autorestic
     - role: install/runitor
     - role: bash_alias
     - role: docker-compose-generator
@@ -314,7 +314,7 @@
     - role: geerlingguy.docker
     - role: install/zsh
     - role: identity
-    - role: fuzzymistborn.autorestic
+    - role: install/autorestic
     - role: install/runitor
     - role: install/lnxlink
     - role: bash_alias
@@ -345,7 +345,7 @@
     - role: install/lego
     - role: install/tailscale
     - role: install/zsh
-    - role: fuzzymistborn.autorestic
+    - role: install/autorestic
     - role: install/runitor
     - role: docker-compose-generator
     - role: ambition
@@ -378,7 +378,7 @@
     - role: grog.package
     - role: geerlingguy.pip
     - role: install/pip_packages
-    - role: fuzzymistborn.autorestic
+    - role: install/autorestic
     - role: install/runitor
     - role: desktop
     - role: install/zsh
