@@ -1,3 +1,6 @@
 [submodule "roles/docker-compose-generator"]
 	path = roles/docker-compose-generator
 	url = https://github.com/ironicbadger/ansible-role-docker-compose-generator/
+[submodule "roles/install/autorestic"]
+	path = roles/install/autorestic
+	url = https://github.com/FuzzyMistborn/ansible-role-autorestic/
