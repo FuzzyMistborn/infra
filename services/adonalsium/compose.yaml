@@ -120,7 +120,7 @@ services:
       - TZ={{ ntp_timezone }}
       - TITLE=Firefox
     volumes:
-      - /tmp/firefox/data:/config
+      - "{{ appdata_path }}/firefox/data:/config"
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - 3200:3000
