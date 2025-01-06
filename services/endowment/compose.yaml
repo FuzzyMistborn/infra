@@ -52,7 +52,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: always
   prowlarr:
-    image: ghcr.io/linuxserver/prowlarr:1.28.2
+    image: ghcr.io/linuxserver/prowlarr:1.29.2
     container_name: prowlarr
     volumes:
       - "{{ appdata_path }}/prowlarr:/config"
