@@ -1,6 +1,6 @@
 services:
   dawarich-app:
-    image: freikin/dawarich:0.21.0
+    image: freikin/dawarich:0.21.4
     container_name: dawarich-app
     volumes:
       - "{{ appdata_path }}/dawarich/gem:/usr/local/bundle/gems_app"
@@ -51,7 +51,7 @@ services:
     command: redis-server
     restart: unless-stopped
   dawarich-sidekiq:
-    image: freikin/dawarich:0.21.0
+    image: freikin/dawarich:0.21.4
     container_name: dawarich-sidekiq
     volumes:
       - "{{ appdata_path }}/dawarich/gem:/usr/local/bundle/gems_sidekiq"
