@@ -130,7 +130,7 @@ services:
     mem_limit: 1000M
     restart: always
   nextcloud-redis:
-    image: redis:7.4.1
+    image: redis:7.4.2
     container_name: nextcloud-redis
     restart: always
   jellyfin:

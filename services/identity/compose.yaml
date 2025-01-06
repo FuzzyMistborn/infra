@@ -44,7 +44,7 @@ services:
     mem_limit: 200M
     restart: always
   dawarich-redis:
-    image: redis:7.4.1
+    image: redis:7.4.2
     container_name: dawarich-redis
     volumes:
       - "{{ appdata_path }}/dawarich/shared:/var/shared/redis"

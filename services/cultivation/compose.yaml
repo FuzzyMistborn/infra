@@ -115,7 +115,7 @@ services:
     mem_limit: 1000M
     restart: always
   paperless-redis:
-    image: redis:7.4.1
+    image: redis:7.4.2
     container_name: paperless-redis
     restart: always
   paperless:
