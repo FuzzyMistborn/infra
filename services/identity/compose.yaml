@@ -87,7 +87,7 @@ services:
         max-file: 5
     restart: unless-stopped
   photon:
-    image: rtuszik/photon-docker:0.6.1
+    image: rtuszik/photon-docker:0.6.2
     container_name: photon
     environment:
       - COUNTRY_CODE=us
