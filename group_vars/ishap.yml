@@ -291,3 +291,4 @@ snapraid_config_excludes:
   - ".TemporaryItems"
   - ".AppleDB"
   - ".Trash*"
+  - "*.raw"

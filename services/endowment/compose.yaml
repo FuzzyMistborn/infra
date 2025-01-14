@@ -141,15 +141,15 @@ services:
     volumes:
       - "{{ appdata_path }}/jellyfin/config:/config"
       - /mnt/scratch/transcode:/transcode
-      - /mnt/Media/Movies:/mnt/movies:ro
-      - /mnt/Media/UHD:/mnt/UHD:ro
-      - /mnt/Media/TV Shows:/mnt/tv:ro
-      - /mnt/Media/Kids Movies:/mnt/kids:ro
-      - /mnt/Media/Kids TV:/mnt/kids_tv:ro
-      - /mnt/Media/YouTube/Kids:/mnt/kids_youtube:ro
-      - /mnt/Media/Parents Movies:/mnt/parents_movies:ro
-      - /mnt/Media/Parents TV:/mnt/parents_tv:ro
-      - /mnt/Media/Family Videos:/mnt/home_videos:ro
+      - /mnt/Media/Movies:/mnt/movies
+      - /mnt/Media/UHD:/mnt/UHD
+      - /mnt/Media/TV Shows:/mnt/tv
+      - /mnt/Media/Kids Movies:/mnt/kids
+      - /mnt/Media/Kids TV:/mnt/kids_tv
+      - /mnt/Media/YouTube/Kids:/mnt/kids_youtube
+      - /mnt/Media/Parents Movies:/mnt/parents_movies
+      - /mnt/Media/Parents TV:/mnt/parents_tv
+      - /mnt/Media/Family Videos:/mnt/home_videos
     ports:
       - 8096:8096
     environment:

@@ -21,6 +21,8 @@ services:
       - APPLICATION_PROTOCOL=http
       - DISTANCE_UNIT=mi
       - REVERSE_GEOCODING_ENABLED=true
+      - PHOTON_API_HOST=192.168.50.23:2322
+      - PHOTON_API_USE_HTTPS=false
     command: bin/dev
     stdin_open: true
     tty: true
@@ -37,11 +39,14 @@ services:
     volumes:
       - "{{ appdata_path }}/dawarich/db:/var/lib/postgresql/data"
       - "{{ appdata_path }}/dawarich/shared:/var/shared"
+      - "{{ appdata_path }}/dawarich/postgresql.conf:/etc/postgresql/postgresql.conf"
     environment:
       - POSTGRES_DB=dawarich
       - POSTGRES_USER=dawarich
       - POSTGRES_PASSWORD={{ secret_dawarich_db_pass }}
-    mem_limit: 200M
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    mem_limit: 400M
+    shm_size: 1G
     restart: always
   dawarich-redis:
     image: redis:7.4.1
@@ -69,6 +74,8 @@ services:
       - APPLICATION_PROTOCOL=http
       - DISTANCE_UNIT=mi
       - REVERSE_GEOCODING_ENABLED=true
+      - PHOTON_API_HOST=192.168.50.23:2322
+      - PHOTON_API_USE_HTTPS=false
     command: sidekiq
     stdin_open: true
     tty: true
@@ -79,6 +86,16 @@ services:
         max-size: 100m
         max-file: 5
     restart: unless-stopped
+  photon:
+    image: rtuszik/photon-docker:0.6.1
+    container_name: photon
+    environment:
+      - COUNTRY_CODE=us
+    volumes:
+      - /mnt/external_data/photon:/photon/photon_data
+    restart: unless-stopped
+    ports:
+      - 2322:2322
   portainer_agent:
     image: portainer/agent:2.25.1
     container_name: portainer_agent
