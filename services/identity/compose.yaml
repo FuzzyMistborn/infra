@@ -97,7 +97,7 @@ services:
     ports:
       - 2322:2322
   portainer_agent:
-    image: portainer/agent:2.25.1
+    image: portainer/agent:2.26.0
     container_name: portainer_agent
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
