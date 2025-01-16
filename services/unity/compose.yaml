@@ -1,6 +1,6 @@
 services:
   zwavejs:
-    image: zwavejs/zwave-js-ui:9.29.0
+    image: zwavejs/zwave-js-ui:9.29.1
     container_name: zwavejs
     devices:
       - /dev/zwave:/dev/zwave
