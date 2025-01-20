@@ -65,21 +65,6 @@ services:
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
     restart: always
-  readarr:
-    image: lscr.io/linuxserver/readarr:develop
-    container_name: readarr
-    volumes:
-      - "{{ appdata_path }}/readarr/config:/config"
-      - /mnt/scratch/books:/downloads
-    ports:
-      - 8787:8787
-    environment:
-      - UID={{ main_uid }}
-      - GID={{ main_gid }}
-      - PUID={{ main_uid }}
-      - PGID={{ main_gid }}
-      - TZ={{ ntp_timezone }}
-    restart: unless-stopped
   sabnzbd:
     image: ghcr.io/linuxserver/sabnzbd:4.4.1
     container_name: sabnzbd
