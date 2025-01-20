@@ -176,7 +176,7 @@ services:
       - DOCKER_MODS=linuxserver/mods:universal-calibre
     restart: unless-stopped
   southwest:
-    image: jdholtz/auto-southwest-check-in:v8.1
+    image: jdholtz/auto-southwest-check-in:v8.2
     container_name: southwest
     privileged: true
     volumes:
