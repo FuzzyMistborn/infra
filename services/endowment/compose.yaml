@@ -98,7 +98,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: always
   audiobookshelf:
-    image: ghcr.io/advplyr/audiobookshelf:2.17.7
+    image: ghcr.io/advplyr/audiobookshelf:2.18.0
     container_name: audiobookshelf
     volumes:
       - "{{ appdata_path }}/audiobookshelf/config:/config"
