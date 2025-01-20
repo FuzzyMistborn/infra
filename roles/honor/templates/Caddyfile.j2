@@ -120,12 +120,6 @@ sonarr.{{ secret_personal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import headers
 }
-# Wallabag
-wallabag.{{ secret_personal_url }} {
-	reverse_proxy http://192.168.50.21:300
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
-	import headers
-}
 # Invidious
 video.{{ secret_personal_url }} {
 	reverse_proxy http://192.168.50.21:3500
@@ -238,12 +232,6 @@ prowlarr.{{ secret_personal_internal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
-# Readarr
-readarr.{{ secret_personal_internal_url }} {
-	reverse_proxy http://192.168.50.20:8787
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
-	import headers
-}
 # Influx
 influx.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.22:8086
@@ -326,6 +314,18 @@ tools.{{ secret_personal_internal_url }} {
 # Dawarich
 track.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.23:3000
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	import headers
+}
+# Obsidian Live-Sync
+obsidian.{{ secret_personal_internal_url }} {
+	reverse_proxy http://192.168.50.22:5984
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	import headers
+}
+# Readeck
+readlater.{{ secret_personal_internal_url }} {
+	reverse_proxy http://192.168.50.21:8100
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }

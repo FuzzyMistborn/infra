@@ -72,30 +72,6 @@ services:
       - SUDO_PASSWORD={{ secret_code_server_pass }}
       - PROXY_DOMAIN=code.{{ secret_personal_url }}
     restart: always
-  wallabag:
-    image: wallabag/wallabag:2.6.10
-    container_name: wallabag
-    volumes:
-      - "{{ appdata_path }}/wallabag/images:/var/www/wallabag/web/assets/images"
-    ports:
-      - 300:80
-    environment:
-      - UID={{ main_uid }}
-      - GID={{ main_gid }}
-      - PUID={{ main_uid }}
-      - PGID={{ main_gid }}
-      - TZ={{ ntp_timezone }}
-      - MYSQL_ROOT_PASSWORD={{ secret_db_root_pass }}
-      - SYMFONY__ENV__DATABASE_DRIVER=pdo_mysql
-      - SYMFONY__ENV__DATABASE_HOST=192.168.50.22
-      - SYMFONY__ENV__DATABASE_PORT=3309
-      - SYMFONY__ENV__DATABASE_NAME=symfony
-      - SYMFONY__ENV__DATABASE_PASSWORD={{ secret_db_root_pass }}
-      - SYMFONY__ENV__FOSUSER_REGISTRATION=false
-      - SYMFONY__ENV__FOSUSER_CONFIRMATION=false
-      - SYMFONY__ENV__DOMAIN_NAME={{ secret_wallabag_url }}
-      - SYMFONY__ENV__TWOFACTOR_AUTH=true
-    restart: always
   collabora:
     image: collabora/code:24.04.11.1.1
     container_name: collabora
@@ -241,6 +217,20 @@ services:
       - DEFAULT_BLOCK_ADS=true
       - DEFAULT_STEALTH=true
       - DEFAULT_IGNORE_HTTPS_ERRORS=true
+    restart: unless-stopped
+  readeck:
+    image: codeberg.org/readeck/readeck:0.17.1
+    container_name: readeck
+    ports:
+      - 8100:8000
+    environment:
+      - READECK_LOG_LEVEL=info
+      - READECK_SERVER_HOST=0.0.0.0
+      - READECK_SERVER_PORT=8000
+      - READECK_SERVER_PREFIX=/
+      - READECK_ALLOWED_HOSTS=readlater.{{ secret_personal_internal_url }}
+    volumes:
+      - "{{ appdata_path }}/change:/readeck"
     restart: unless-stopped
   crowdsec:
     image: crowdsecurity/crowdsec:v1.6.4

@@ -72,18 +72,6 @@ services:
       - MYSQL_PASSWORD={{ secret_nextcloud_db_pass }}
     mem_limit: 300M
     restart: always
-  wallabag-db:
-    image: mariadb:11.6.2
-    container_name: wallabag-db
-    volumes:
-      - "{{ appdata_path }}/wallabag_db:/var/lib/mysql"
-    ports:
-      - 3309:3306
-    environment:
-      - MYSQL_ROOT_PASSWORD={{ secret_db_root_pass }}
-      - MYSQL_DATABASE=symfony
-    mem_limit: 300M
-    restart: always
   invidious-db:
     image: postgres:15.10-alpine
     container_name: invidious-db
@@ -102,6 +90,19 @@ services:
       - POSTGRES_PASSWORD={{ secret_invidious_db_pass }}
     mem_limit: 200M
     restart: always
+  obsidian-livesync:
+    image: couchdb:3.4.2
+    container_name: obsidian-livesync
+    user: 1000:1000
+    environment:
+      - COUCHDB_USER=obsidian
+      - COUCHDB_PASSWORD={{ secret_obsidian_sync_pw }}
+    volumes:
+      - "{{ appdata_path }}/obsidian/data:/opt/couchdb/data"
+      - "{{ appdata_path }}/obsidian/etc/local.ini:/opt/couchdb/etc/local.ini"
+    ports:
+      - 5984:5984
+    restart: unless-stopped
   phpmyadmin:
     image: ghcr.io/linuxserver/phpmyadmin:5.2.1
     container_name: phpmyadmin

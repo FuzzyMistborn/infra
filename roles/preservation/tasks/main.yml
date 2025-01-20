@@ -11,7 +11,6 @@
     - docker/bitwarden_db
     - docker/diun
     - docker/nextcloud_db
-    - docker/wallabag_db
     - docker/hass_db
     - docker/influx_db
     - docker/invidious

@@ -10,11 +10,6 @@ echo Backing up Bitwarden DB
 today=$(date +"%Y_%m_%d")
 docker exec bitwarden-db sh -c 'exec mariadb-dump --single-transaction -h localhost -u bitwarden -p{{ secret_bitwarden_db_pass }} bitwarden_rs' > /home/{{ main_username }}/db_backups/bitwarden/bitwardenDB_$today.sql
 
-#### Wallabag DB Backup
-echo Backing up Wallabag DB
-today=$(date +"%Y_%m_%d")
-docker exec wallabag-db sh -c 'exec mariadb-dump --single-transaction -h localhost -u root -p{{ secret_wallabag_db_pass }} symfony' > /home/{{ main_username }}/db_backups/wallabag/wallabagDB_$today.sql
-
 #### Hass DB Backup
 echo Backing up Hass DB
 today=$(date +"%Y_%m_%d")
