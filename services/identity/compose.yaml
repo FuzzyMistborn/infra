@@ -3,7 +3,6 @@ services:
     image: freikin/dawarich:0.22.4
     container_name: dawarich-app
     volumes:
-      - "{{ appdata_path }}/dawarich/gem:/usr/local/bundle/gems_app"
       - "{{ appdata_path }}/dawarich/public:/var/app/public"
     ports:
       - 3000:3000
@@ -23,10 +22,10 @@ services:
       - REVERSE_GEOCODING_ENABLED=true
       - PHOTON_API_HOST=192.168.50.23:2322
       - PHOTON_API_USE_HTTPS=false
-    command: bin/dev
     stdin_open: true
     tty: true
-    entrypoint: dev-entrypoint.sh
+    entrypoint: web-entrypoint.sh
+    command: ['bin/rails', 'server', '-p', '3000', '-b', '::']
     logging:
       driver: json-file
       options:
@@ -59,7 +58,6 @@ services:
     image: freikin/dawarich:0.22.4
     container_name: dawarich-sidekiq
     volumes:
-      - "{{ appdata_path }}/dawarich/gem:/usr/local/bundle/gems_sidekiq"
       - "{{ appdata_path }}/dawarich/public:/var/app/public"
     environment:
       - RAILS_ENV=development
@@ -76,10 +74,10 @@ services:
       - REVERSE_GEOCODING_ENABLED=true
       - PHOTON_API_HOST=192.168.50.23:2322
       - PHOTON_API_USE_HTTPS=false
-    command: sidekiq
     stdin_open: true
     tty: true
-    entrypoint: dev-entrypoint.sh
+    entrypoint: sidekiq-entrypoint.sh
+    command: ['bundle', 'exec', 'sidekiq']
     logging:
       driver: json-file
       options:
