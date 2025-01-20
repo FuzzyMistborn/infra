@@ -33,7 +33,7 @@ services:
     shm_size: 2g
     restart: unless-stopped
   esphome:
-    image: esphome/esphome:2024.12.2
+    image: esphome/esphome:2024.12.4
     container_name: esphome
     network_mode: host
     volumes:
