@@ -1,8 +1,9 @@
 steps:
   - name: ansible-lint and yamllint
     image: fuzzymistborn/docker-linting:latest
-    secrets:
-      - ansible_vault_password
+    environment:
+      ansible_vault_password:
+        from_secret: my_token
     commands:
       - ansible-galaxy role install -r requirements.yaml
       - ansible-galaxy collection install -r requirements.yaml
