@@ -110,7 +110,7 @@ services:
       - API_PASSWORD={{ secret_nut_api_pw }}
     restart: always
   firefox:
-    image: lscr.io/linuxserver/firefox:134.0.1
+    image: lscr.io/linuxserver/firefox:134.0.2
     container_name: firefox
     security_opt:
       - seccomp:unconfined
