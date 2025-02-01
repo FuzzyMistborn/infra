@@ -30,6 +30,7 @@ services:
       - 4444:4444
     environment:
       - SE_NODE_MAX_SESSIONS=2
+      - TZ={{ ntp_timezone }}
     shm_size: 2g
     restart: unless-stopped
   esphome:

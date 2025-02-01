@@ -21,7 +21,7 @@
 		Strict-Transport-Security "max-age=31536000; includeSubdomains"
 		X-XSS-Protection "1; mode=block"
 		X-Content-Type-Options "nosniff"
-		X-Robots-Tag noindex, nofollow
+		X-Robots-Tag noindex,nofollow
 		Referrer-Policy "same-origin"
 		Content-Security-Policy "frame-ancestors fuzzymistborn.com *.fuzzymistborn.com"
 		-Server
@@ -34,7 +34,7 @@
 		Strict-Transport-Security "max-age=31536000; includeSubdomains"
 		X-XSS-Protection "1; mode=block"
 		X-Content-Type-Options "nosniff"
-		X-Robots-Tag noindex, nofollow
+		X-Robots-Tag noindex,nofollow
 		Referrer-Policy "same-origin"
 		Content-Security-Policy "frame-ancestors {{ secret_personal_url }} *.{{ secret_personal_url }}"
 		-Server
@@ -344,23 +344,4 @@ books.{{ secret_personal_url }} {
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
-}
-
-browse.{{ secret_personal_url }} {
-	crowdsec
-	basic_auth {
-		{{ main_username }} {{ secret_browse_hash }}
-	}
-	reverse_proxy https://10.10.10.10:443 {
-		transport http {
-			tls_server_name browse.{{ secret_personal_url }}
-		}
-	}
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
-	import personal_headers
-}
-
-*.{{ secret_personal_url }} {
-	redir {{ secret_redirect }}
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 }

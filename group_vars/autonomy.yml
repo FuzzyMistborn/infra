@@ -49,6 +49,18 @@ cronjobs:
     minute: '*/30'
     hour: 9-15
     weekday: 1-5
+  - name: Waze Daycare
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_waze_daycare }} -- .venv/bin/python3 /home/{{ main_username }}/scripts/waze_daycare.py
+    user: "{{ main_username }}"
+    minute: 29
+    hour: 16
+    weekday: 1-5
+  - name: Waze Home
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_waze_home }} -- .venv/bin/python3 /home/{{ main_username }}/scripts/waze_home.py
+    user: "{{ main_username }}"
+    minute: 29
+    hour: 16
+    weekday: 1-5
   - name: Docker Version Check
     job: /usr/local/bin/runitor -uuid {{ secret_hc_docker_version_check }} -- bash -c /home/{{ main_username }}/scripts/docker.sh > /dev/null
     user: "{{ main_username }}"

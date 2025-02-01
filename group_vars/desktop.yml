@@ -10,6 +10,7 @@ package_list:
   - name: "@sound-and-video"
   - name: audacity
   - name: calibre
+  - name: chromium
   - name: cifs-utils
   - name: curl
   - name: ethtool
@@ -63,7 +64,6 @@ flatpak_list:
   - name: com.github.IsmaelMartinez.teams_for_linux
   - name: com.github.iwalton3.jellyfin-media-player
   - name: com.mojang.Minecraft
-  - name: com.vivaldi.Vivaldi
   - name: md.obsidian.Obsidian
   - name: com.bambulab.BambuStudio
   - name: org.ferdium.Ferdium
