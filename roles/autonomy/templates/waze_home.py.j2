@@ -1,0 +1,15 @@
+from splinter import Browser
+
+browser = Browser(driver_name='remote',
+    command_executor='http://localhost:4444/wd/hub',
+    browser='firefox',
+    wait_time=20
+)
+browser.visit("{{ secret_waze_home }}")
+
+browser.is_text_present("Arrive")
+browser.find_by_xpath("/html/body/div[1]/div[2]/button").click()
+
+browser.screenshot("/home/{{ main_username }}/hass/tmp/waze_home", full=True, unique_file=False)
+
+browser.quit()

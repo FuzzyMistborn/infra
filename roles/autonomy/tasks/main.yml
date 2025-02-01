@@ -47,7 +47,10 @@
   loop:
     - {src: 'cast_frontdoor.sh.j2', dest: 'cast_frontdoor.sh'}
     - {src: 'docker.sh.j2', dest: 'docker.sh'}
-    - {src: 'hass_update.sh.j2', dest: 'hass_update.sh'}
+    - {src: 'update_hass.sh.j2', dest: 'update_hass.sh'}
+    - {src: 'google_traffic.py.j2', dest: 'google_traffic.py'}
+    - {src: 'waze_daycare.py.j2', dest: 'waze_daycare.py'}
+    - {src: 'waze_home.py.j2', dest: 'waze_home.py'}
 
 #### HASS Git
 

@@ -38,13 +38,13 @@ bash_apt: true
 ### Cronjobs
 cronjobs:
   - name: Traffic AM
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_traffic }} -- .venv/bin/python3 /home/{{ main_username }}/scripts/traffic.py
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_traffic }} -- .venv/bin/python3 /home/{{ main_username }}/scripts/google_traffic.py
     user: "{{ main_username }}"
     minute: '*/10'
     hour: 7-8,16-18
     weekday: 1-5
   - name: Traffic PM
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_traffic }} -- .venv/bin/python3 /home/{{ main_username }}/scripts/traffic.py
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_traffic }} -- .venv/bin/python3 /home/{{ main_username }}/scripts/google_traffic.py
     user: "{{ main_username }}"
     minute: '*/30'
     hour: 9-15

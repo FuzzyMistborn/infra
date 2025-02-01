@@ -8,8 +8,8 @@ browser = Browser(driver_name='remote',
 browser.visit("https://traffic.{{ secret_personal_internal_url }}")
 
 # Solution to fix "wait" which is broken
-browser.find_by_css('test')
+browser.find_by_css('Test')
 
-screenshot_path = browser.screenshot("/home/{{ main_username }}/hass/tmp/commute", full=True, unique_file=False)
+browser.screenshot("/home/{{ main_username }}/hass/tmp/google_traffic", full=True, unique_file=False)
 
 browser.quit()
