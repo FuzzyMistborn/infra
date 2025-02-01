@@ -13,7 +13,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: always
   zigbee2mqtt:
-    image: koenkk/zigbee2mqtt:2.0.0
+    image: koenkk/zigbee2mqtt:2.1.0
     container_name: zigbee2mqtt
     devices:
       - /dev/zigbee:/dev/zigbee
