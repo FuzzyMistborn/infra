@@ -66,7 +66,7 @@ services:
       - GOVEE_MQTT_PASSWORD={{ secret_mqtt_pass }}
     restart: unless-stopped
   signal-api:
-    image: bbernhard/signal-cli-rest-api:0.176-dev
+    image: bbernhard/signal-cli-rest-api:0.178-dev
     container_name: signal-api
     volumes:
       - "{{ appdata_path }}/signal-api:/home/.local/share/signal-cli"
