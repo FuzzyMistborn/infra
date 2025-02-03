@@ -17,7 +17,7 @@ services:
     hostname: cultivation
     restart: always
   bitwarden:
-    image: vaultwarden/server:1.32.7
+    image: vaultwarden/server:1.33.0
     container_name: bitwarden
     volumes:
       - "{{ appdata_path }}/bitwarden/data:/data"
