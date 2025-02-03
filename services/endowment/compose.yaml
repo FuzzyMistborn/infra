@@ -119,7 +119,7 @@ services:
     container_name: nextcloud-redis
     restart: always
   jellyfin:
-    image: ghcr.io/linuxserver/jellyfin:10.10.3
+    image: ghcr.io/linuxserver/jellyfin:10.10.5
     container_name: jellyfin
     devices:
       - /dev/dri/renderD128:/dev/dri/renderD128
