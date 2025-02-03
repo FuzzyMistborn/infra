@@ -104,7 +104,7 @@ services:
       - 5984:5984
     restart: unless-stopped
   phpmyadmin:
-    image: ghcr.io/linuxserver/phpmyadmin:5.2.1
+    image: ghcr.io/linuxserver/phpmyadmin:5.2.2
     container_name: phpmyadmin
     volumes:
       - "{{ appdata_path }}/phpmyadmin:/config"
