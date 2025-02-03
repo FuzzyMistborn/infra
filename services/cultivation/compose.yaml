@@ -142,7 +142,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   diagrams:
-    image: jgraph/drawio:26.0.6
+    image: jgraph/drawio:26.0.9
     container_name: diagrams
     ports:
       - 8080:8080
