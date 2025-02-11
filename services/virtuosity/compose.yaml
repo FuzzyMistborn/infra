@@ -79,7 +79,7 @@ services:
       - LOCAL_API_URL=http://{{ secret_ambition_ip }}:8080
     restart: unless-stopped
   immich-server:
-    image: ghcr.io/immich-app/immich-server:v1.125.7
+    image: ghcr.io/immich-app/immich-server:v1.126.1
     container_name: immich-server
     volumes:
       - /mnt/immich-uploads:/usr/src/app/upload
