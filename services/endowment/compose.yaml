@@ -34,7 +34,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: always
   sonarr:
-    image: ghcr.io/linuxserver/sonarr:4.0.12
+    image: ghcr.io/linuxserver/sonarr:4.0.13
     container_name: sonarr
     volumes:
       - "{{ appdata_path }}/sonarr:/config"
