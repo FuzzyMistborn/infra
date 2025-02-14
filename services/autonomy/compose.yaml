@@ -76,7 +76,7 @@ services:
       - MODE=json-rpc
     restart: unless-stopped
   nodered:
-    image: nodered/node-red:4.0.8
+    image: nodered/node-red:4.0.9
     container_name: nodered
     volumes:
       - "{{ appdata_path }}/nodered:/data"
