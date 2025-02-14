@@ -40,7 +40,7 @@ services:
       - umami-db
     restart: always
   umami-db:
-    image: mariadb:11.6
+    image: mariadb:11.7
     container_name: umami-db
     volumes:
       - "{{ appdata_path }}/umami/mariadb:/var/lib/mysql"
@@ -73,7 +73,7 @@ services:
       - gitea-db
     restart: always
   gitea-db:
-    image: mariadb:11.6
+    image: mariadb:11.7
     container_name: gitea-db
     volumes:
       - "{{ appdata_path }}/gitea/mariadb:/var/lib/mysql"

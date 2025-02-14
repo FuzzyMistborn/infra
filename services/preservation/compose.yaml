@@ -1,6 +1,6 @@
 services:
   hass-db:
-    image: mariadb:11.6.2
+    image: mariadb:11.7.2
     container_name: hass-db
     volumes:
       - "{{ appdata_path }}/hass_db:/var/lib/mysql"
@@ -42,7 +42,7 @@ services:
   # rm -r influxdb2-client-2.2.0-linux-amd64
   # rm influxdb2-client-2.2.0-linux-amd64.tar.gz
   bitwarden-db:
-    image: mariadb:11.6.2
+    image: mariadb:11.7.2
     container_name: bitwarden-db
     volumes:
       - "{{ appdata_path }}/bitwarden_db:/var/lib/mysql"
@@ -59,7 +59,7 @@ services:
     mem_limit: 300M
     restart: always
   nextcloud-db:
-    image: mariadb:11.6.2
+    image: mariadb:11.7.2
     container_name: nextcloud-db
     volumes:
       - "{{ appdata_path }}/nextcloud_db:/var/lib/mysql"
