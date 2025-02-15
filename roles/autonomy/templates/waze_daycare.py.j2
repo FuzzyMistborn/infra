@@ -8,6 +8,8 @@ browser = Browser(driver_name='remote',
 browser.visit("{{ secret_waze_daycare }}")
 
 browser.is_text_present("Arrive")
+browser.find_by_text('Got it').click()
+browser.find_by_text('Got it').click()
 browser.find_by_xpath("/html/body/div[1]/div[2]/button").click()
 
 browser.screenshot("/home/{{ main_username }}/hass/tmp/waze_daycare", full=True, unique_file=False)

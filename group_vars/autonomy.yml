@@ -37,13 +37,13 @@ bash_apt: true
 
 ### Cronjobs
 cronjobs:
-  - name: Traffic AM
+  - name: Traffic Commute
     job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_traffic }} -- .venv/bin/python3 /home/{{ main_username }}/scripts/google_traffic.py
     user: "{{ main_username }}"
     minute: '*/10'
     hour: 7-8,16-18
     weekday: 1-5
-  - name: Traffic PM
+  - name: Traffic Rest of Day
     job: /usr/local/bin/runitor -uuid {{ secret_hc_autonomy_traffic }} -- .venv/bin/python3 /home/{{ main_username }}/scripts/google_traffic.py
     user: "{{ main_username }}"
     minute: '*/30'
@@ -60,6 +60,12 @@ cronjobs:
     user: "{{ main_username }}"
     minute: 29
     hour: 16
+    weekday: 1-5
+  - name: Waze Live Commute
+    job: .venv/bin/python3 /home/{{ main_username }}/scripts/waze_live.py
+    user: "{{ main_username }}"
+    minute: '*/20'
+    hour: 7-8,16-18
     weekday: 1-5
   - name: Docker Version Check
     job: /usr/local/bin/runitor -uuid {{ secret_hc_docker_version_check }} -- bash -c /home/{{ main_username }}/scripts/docker.sh > /dev/null

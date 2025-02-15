@@ -1,0 +1,16 @@
+from splinter import Browser
+import time
+
+browser = Browser(driver_name='remote',
+    command_executor='http://localhost:4444/wd/hub',
+    browser='firefox',
+    wait_time=20
+)
+browser.visit("{{ secret_waze_live }}")
+
+# Hack to wait for JavaScript to fully load
+time.sleep(10)
+
+browser.screenshot("/home/{{ main_username }}/hass/tmp/waze_live", full=True, unique_file=False)
+
+browser.quit()
