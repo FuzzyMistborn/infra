@@ -99,7 +99,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: unless-stopped
   nextcloud:
-    image: fuzzymistborn/nextcloud-docker:30.0.5
+    image: fuzzymistborn/nextcloud-docker:30.0.6
     container_name: nextcloud
     volumes:
       - "{{ appdata_path }}/nextcloud_docker/html:/var/www/html"
