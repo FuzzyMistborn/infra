@@ -89,7 +89,7 @@ services:
       - hass
     restart: always
   tasmota:
-    image: ghcr.io/tasmoadmin/tasmoadmin:v4.2.2
+    image: ghcr.io/tasmoadmin/tasmoadmin:v4.2.3
     container_name: tasmota
     volumes:
       - "{{ appdata_path }}/tasmota:/data"
