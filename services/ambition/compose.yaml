@@ -204,7 +204,7 @@ services:
       - DOCKER_MODS=linuxserver/mods:healthchecks-apprise
     restart: always
   crowdsec:
-    image: crowdsecurity/crowdsec:v1.6.4
+    image: crowdsecurity/crowdsec:v1.6.5
     container_name: crowdsec
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

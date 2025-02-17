@@ -183,7 +183,7 @@ services:
       - "{{ appdata_path }}/southwest/config.json:/app/config.json"
     restart: unless-stopped
   crowdsec:
-    image: crowdsecurity/crowdsec:v1.6.4
+    image: crowdsecurity/crowdsec:v1.6.5
     container_name: crowdsec
     volumes:
       - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"
