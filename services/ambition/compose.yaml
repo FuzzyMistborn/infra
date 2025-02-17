@@ -157,7 +157,7 @@ services:
       - 127.0.0.1:6157:6157
     restart: unless-stopped
   pairdrop:
-    image: lscr.io/linuxserver/pairdrop:1.10.10
+    image: lscr.io/linuxserver/pairdrop:1.10.11
     container_name: pairdrop
     volumes:
       - "{{ appdata_path }}/pairdrop:/opt/pairdrop"
