@@ -159,7 +159,7 @@ services:
       - ND_BASEURL=https://music.{{ secret_personal_internal_url }}
     restart: unless-stopped
   calibre-web-automated:
-    image: crocodilestick/calibre-web-automated:V3.0.1
+    image: crocodilestick/calibre-web-automated:V3.0.4
     container_name: calibre-web-automated
     volumes:
       - "{{ appdata_path }}/calibre-web-automated:/config"
