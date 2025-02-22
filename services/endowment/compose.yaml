@@ -145,7 +145,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: always
   navidrome:
-    image: ghcr.io/deluan/navidrome:0.54.4
+    image: ghcr.io/navidrome/navidrome:0.54.4
     container_name: navidrome
     volumes:
       - "{{ appdata_path }}/navidrome/data:/data"

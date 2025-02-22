@@ -149,7 +149,7 @@ services:
       - 8444:8443
     restart: always
   stirling-pdf:
-    image: ghcr.io/frooodle/s-pdf:0.41.0
+    image: ghcr.io/stirling-tools/s-pdf:0.41.0
     container_name: stirling-pdf
     volumes:
       - "{{ appdata_path }}/stirlingpdf/extraConfigs:/configs"
