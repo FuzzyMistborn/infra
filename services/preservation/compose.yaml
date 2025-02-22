@@ -119,7 +119,7 @@ services:
       - PMA_ARBITRARY=1
     restart: unless-stopped
   diun:
-    image: ghcr.io/crazymax/diun:4.29.0
+    image: ghcr.io/crazy-max/diun:4.29.0
     container_name: diun
     volumes:
       - "{{ appdata_path }}/diun/data:/data"

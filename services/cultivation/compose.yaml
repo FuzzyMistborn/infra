@@ -1,6 +1,6 @@
 services:
   diun:
-    image: ghcr.io/crazymax/diun:4.29.0
+    image: ghcr.io/crazy-max/diun:4.29.0
     container_name: diun
     volumes:
       - "{{ appdata_path }}/diun/data:/data"
@@ -198,26 +198,21 @@ services:
       - 5000:5000
     environment:
       - BASE_URL=https://change.{{ secret_personal_url }}
-      - PLAYWRIGHT_DRIVER_URL=ws://playwright:3000/?stealth=1&--disable-web-security=true
+      - PLAYWRIGHT_DRIVER_URL=ws://sockpuppetbrowser:3000
+      - HIDE_REFERER=true
     restart: unless-stopped
-  playwright:
-    image: ghcr.io/browserless/chrome:v2.25.1
-    container_name: playwright
-    volumes:
-      - "{{ appdata_path }}/change:/datastore"
+  sockpuppetbrowser:
+    image: dgtlmoon/sockpuppetbrowser:0.0.1
+    container_name: sockpuppetbrowser
+    restart: unless-stopped
+    tmpfs:
+      - /tmp
     environment:
       - SCREEN_WIDTH=1920
       - SCREEN_HEIGHT=1024
       - SCREEN_DEPTH=16
-      - ENABLE_DEBUGGER=false
-      - PREBOOT_CHROME=true
-      - CONNECTION_TIMEOUT=300000
-      - MAX_CONCURRENT_SESSIONS=10
-      - CHROME_REFRESH_TIME=600000
-      - DEFAULT_BLOCK_ADS=true
-      - DEFAULT_STEALTH=true
-      - DEFAULT_IGNORE_HTTPS_ERRORS=true
-    restart: unless-stopped
+      - MAX_CONCURRENT_CHROME_PROCESSES=10
+      - STATS_REFRESH_SECONDS=120 # Default is 3 seconds which is way too much
   readeck:
     image: codeberg.org/readeck/readeck:0.17.1
     container_name: readeck
