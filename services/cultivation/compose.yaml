@@ -1,6 +1,6 @@
 services:
   diun:
-    image: crazymax/diun:4.29.0
+    image: ghcr.io/crazymax/diun:4.29.0
     container_name: diun
     volumes:
       - "{{ appdata_path }}/diun/data:/data"
@@ -17,7 +17,7 @@ services:
     hostname: cultivation
     restart: always
   bitwarden:
-    image: vaultwarden/server:1.33.2
+    image: ghcr.io/vaultwarden/server:1.33.2
     container_name: bitwarden
     volumes:
       - "{{ appdata_path }}/bitwarden/data:/data"
@@ -149,7 +149,7 @@ services:
       - 8444:8443
     restart: always
   stirling-pdf:
-    image: frooodle/s-pdf:0.41.0
+    image: ghcr.io/frooodle/s-pdf:0.41.0
     container_name: stirling-pdf
     volumes:
       - "{{ appdata_path }}/stirlingpdf/extraConfigs:/configs"
@@ -167,7 +167,7 @@ services:
       - '8800:80'
     restart: unless-stopped
   ferdium-server:
-    image: ferdium/ferdium-server:2.0.10
+    image: ghcr.io/ferdium/ferdium-server:2.0.10
     container_name: ferdium-server
     volumes:
       - "{{ appdata_path }}/ferdium/data:/data"
@@ -201,7 +201,7 @@ services:
       - PLAYWRIGHT_DRIVER_URL=ws://playwright:3000/?stealth=1&--disable-web-security=true
     restart: unless-stopped
   playwright:
-    image: browserless/chrome:1.61.1-chrome-stable
+    image: ghcr.io/browserless/chrome:v2.25.1
     container_name: playwright
     volumes:
       - "{{ appdata_path }}/change:/datastore"
@@ -233,7 +233,7 @@ services:
       - "{{ appdata_path }}/change:/readeck"
     restart: unless-stopped
   crowdsec:
-    image: crowdsecurity/crowdsec:v1.6.5
+    image: ghcr.io/crowdsecurity/crowdsec:v1.6.5
     container_name: crowdsec
     volumes:
       - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"

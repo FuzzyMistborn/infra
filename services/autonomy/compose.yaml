@@ -1,6 +1,6 @@
 services:
   hass:
-    image: homeassistant/home-assistant:stable
+    image: ghcr.io/homeassistant/home-assistant:stable
     container_name: hass
     network_mode: host
     volumes:
@@ -12,7 +12,7 @@ services:
       - mqtt
     restart: unless-stopped
   hass-beta:
-    image: homeassistant/home-assistant:beta
+    image: ghcr.io/homeassistant/home-assistant:beta
     container_name: HASS-Beta
     network_mode: host
     volumes:
@@ -34,7 +34,7 @@ services:
     shm_size: 2g
     restart: unless-stopped
   esphome:
-    image: esphome/esphome:2024.12.4
+    image: ghcr.io/esphome/esphome:2024.12.4
     container_name: esphome
     network_mode: host
     volumes:
@@ -126,7 +126,7 @@ services:
     command: --voice en_US-hfc_female-medium
     restart: unless-stopped
   crowdsec:
-    image: crowdsecurity/crowdsec:v1.6.5
+    image: ghcr.io/crowdsecurity/crowdsec:v1.6.5
     container_name: crowdsec
     volumes:
       - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"

@@ -1,6 +1,6 @@
 services:
   diun:
-    image: crazymax/diun:4.29.0
+    image: ghcr.io/crazymax/diun:4.29.0
     container_name: diun
     volumes:
       - "{{ appdata_path }}/diun/data:/data"
@@ -85,7 +85,7 @@ services:
     mem_limit: 200M
     restart: always
   woodpecker-github:
-    image: woodpeckerci/woodpecker-server:v3.1.0
+    image: quay.io/woodpeckerci/woodpecker-server:v3.1.0
     container_name: woodpecker-github
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -107,7 +107,7 @@ services:
       - WOODPECKER_PLUGINS_PRIVILEGED=woodpeckerci/plugin-docker-buildx:5.0.0
     restart: unless-stopped
   woodpecker-gitea:
-    image: woodpeckerci/woodpecker-server:v3.1.0
+    image: quay.io/woodpeckerci/woodpecker-server:v3.1.0
     container_name: woodpecker-gitea
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -204,7 +204,7 @@ services:
       - DOCKER_MODS=linuxserver/mods:healthchecks-apprise
     restart: always
   crowdsec:
-    image: crowdsecurity/crowdsec:v1.6.5
+    image: ghcr.io/crowdsecurity/crowdsec:v1.6.5
     container_name: crowdsec
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

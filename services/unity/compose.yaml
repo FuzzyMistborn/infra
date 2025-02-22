@@ -1,6 +1,6 @@
 services:
   zwavejs:
-    image: zwavejs/zwave-js-ui:9.30.1
+    image: ghcr.io/zwavejs/zwave-js-ui:9.30.1
     container_name: zwavejs
     devices:
       - /dev/zwave:/dev/zwave
@@ -13,7 +13,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: always
   zigbee2mqtt:
-    image: koenkk/zigbee2mqtt:2.1.1
+    image: ghcr.io/koenkk/zigbee2mqtt:2.1.1
     container_name: zigbee2mqtt
     devices:
       - /dev/zigbee:/dev/zigbee

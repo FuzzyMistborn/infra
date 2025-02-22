@@ -99,7 +99,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: unless-stopped
   nextcloud:
-    image: fuzzymistborn/nextcloud-docker:30.0.6
+    image: ghcr.io/fuzzymistborn/nextcloud-docker:30.0.6
     container_name: nextcloud
     volumes:
       - "{{ appdata_path }}/nextcloud_docker/html:/var/www/html"
@@ -145,7 +145,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: always
   navidrome:
-    image: deluan/navidrome:0.54.4
+    image: ghcr.io/deluan/navidrome:0.54.4
     container_name: navidrome
     volumes:
       - "{{ appdata_path }}/navidrome/data:/data"
@@ -183,7 +183,7 @@ services:
       - "{{ appdata_path }}/southwest/config.json:/app/config.json"
     restart: unless-stopped
   crowdsec:
-    image: crowdsecurity/crowdsec:v1.6.5
+    image: ghcr.io/crowdsecurity/crowdsec:v1.6.5
     container_name: crowdsec
     volumes:
       - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"
