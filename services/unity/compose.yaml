@@ -1,6 +1,6 @@
 services:
   zwavejs:
-    image: ghcr.io/zwave-js/zwave-js-ui:9.30.1
+    image: ghcr.io/zwave-js/zwave-js-ui:9.31.0
     container_name: zwavejs
     devices:
       - /dev/zwave:/dev/zwave
