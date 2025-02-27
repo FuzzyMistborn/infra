@@ -48,7 +48,7 @@ services:
     command: imap-backup backup --config /config/personal.json
     restart: unless-stopped
   portainer_agent:
-    image: portainer/agent:2.26.1
+    image: portainer/agent:2.27.1
     container_name: portainer_agent
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
