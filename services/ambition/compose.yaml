@@ -25,7 +25,7 @@ services:
       - 127.0.0.1:3001:3001
     restart: always
   umami:
-    image: ghcr.io/umami-software/umami:mysql-v2.15.1
+    image: ghcr.io/umami-software/umami:mysql-v2.16.1
     container_name: umami
     labels:
       - diun.enable=true
