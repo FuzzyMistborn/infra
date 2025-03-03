@@ -44,6 +44,13 @@ autorestic_config_yaml:
 desktop_hc_prune_id: "{{ secret_hc_restic_prune_hoid }}"
 desktop_hc_backup_id: "{{ secret_hc_restic_backup_hoid }}"
 
+### Bash Aliases
+bash_aliases:
+  - alias: fingerprint-enable
+    command: sudo authselect enable-feature with-fingerprint
+  - alias: fingerprint-disable
+    command: sudo authselect disable-feature with-fingerprint
+
 ### Cronjobs
 cronjobs:
   - name: Restic Check
