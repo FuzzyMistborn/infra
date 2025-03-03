@@ -41,7 +41,7 @@ services:
       - 3001:3001
     restart: always
   handbrake:
-    image: ghcr.io/jlesage/handbrake:v25.02.2
+    image: ghcr.io/jlesage/handbrake:v25.02.3
     container_name: handbrake
     devices:
       - /dev/dri/renderD128:/dev/dri/renderD128
