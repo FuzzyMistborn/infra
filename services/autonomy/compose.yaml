@@ -41,7 +41,7 @@ services:
       - "{{ appdata_path }}/esphome:/config"
     restart: always
   mqtt:
-    image: eclipse-mosquitto:2.0.20
+    image: eclipse-mosquitto:2.0.21
     container_name: MQTT
     volumes:
       - "{{ appdata_path }}/mqtt/config:/mosquitto/config/"
