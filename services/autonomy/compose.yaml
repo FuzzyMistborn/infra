@@ -1,6 +1,6 @@
 services:
   hass:
-    image: ghcr.io/homeassistant/home-assistant:stable
+    image: ghcr.io/home-assistant/home-assistant:stable
     container_name: hass
     network_mode: host
     volumes:
@@ -12,7 +12,7 @@ services:
       - mqtt
     restart: unless-stopped
   hass-beta:
-    image: ghcr.io/homeassistant/home-assistant:beta
+    image: ghcr.io/home-assistant/home-assistant:beta
     container_name: HASS-Beta
     network_mode: host
     volumes:
