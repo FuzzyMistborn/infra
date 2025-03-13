@@ -73,7 +73,7 @@ services:
       - PROXY_DOMAIN=code.{{ secret_personal_url }}
     restart: always
   collabora:
-    image: collabora/code:24.04.13.1.1
+    image: collabora/code:24.04.13.2.1
     container_name: collabora
     privileged: true
     cap_add:
