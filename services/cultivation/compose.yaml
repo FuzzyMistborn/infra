@@ -42,7 +42,7 @@ services:
       - DOMAIN={{ secret_bitwarden_url }}
     restart: always
   freshrss:
-    image: ghcr.io/linuxserver/freshrss:1.26.0
+    image: ghcr.io/linuxserver/freshrss:1.26.1
     container_name: freshrss
     volumes:
       - "{{ appdata_path }}/freshrss:/config"
