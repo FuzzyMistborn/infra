@@ -17,7 +17,7 @@ services:
     hostname: omada
     restart: always
   portainer_agent:
-    image: portainer/agent:2.27.1
+    image: portainer/agent:2.28.1
     container_name: portainer_agent
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
