@@ -228,7 +228,7 @@ services:
       - "{{ appdata_path }}/change:/readeck"
     restart: unless-stopped
   crowdsec:
-    image: ghcr.io/crowdsecurity/crowdsec:v1.6.5
+    image: ghcr.io/crowdsecurity/crowdsec:v1.6.8
     container_name: crowdsec
     volumes:
       - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"
