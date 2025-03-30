@@ -56,7 +56,7 @@ services:
     image: fuzzymistborn/nut-upsd:2.8.2
     container_name: nut-ups
     devices:
-      - /dev/bus/usb/001/004:/dev/bus/usb/001/004
+      - /dev/bus/usb/001/005:/dev/bus/usb/001/005
     ports:
       - 3493:3493
     environment:
