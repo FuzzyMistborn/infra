@@ -1,6 +1,6 @@
 services:
   dawarich-app:
-    image: freikin/dawarich:0.24.1
+    image: freikin/dawarich:0.25.3
     container_name: dawarich-app
     volumes:
       - "{{ appdata_path }}/dawarich/public:/var/app/public"
@@ -55,7 +55,7 @@ services:
     command: redis-server
     restart: unless-stopped
   dawarich-sidekiq:
-    image: freikin/dawarich:0.24.1
+    image: freikin/dawarich:0.25.3
     container_name: dawarich-sidekiq
     volumes:
       - "{{ appdata_path }}/dawarich/public:/var/app/public"
