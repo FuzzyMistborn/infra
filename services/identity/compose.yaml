@@ -36,7 +36,7 @@ services:
     image: postgis/postgis:17-3.5-alpine
     container_name: dawarich-db
     volumes:
-      - "{{ appdata_path }}/dawarich/db:/var/lib/postgresql/data"
+      - "{{ appdata_path }}/dawarich/db17:/var/lib/postgresql/data"
       - "{{ appdata_path }}/dawarich/shared:/var/shared"
       - "{{ appdata_path }}/dawarich/postgresql.conf:/etc/postgresql/postgresql.conf"
     environment:
