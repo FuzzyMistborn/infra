@@ -66,7 +66,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: always
   sabnzbd:
-    image: ghcr.io/linuxserver/sabnzbd:4.5.0
+    image: ghcr.io/linuxserver/sabnzbd:4.5.1
     container_name: sabnzbd
     volumes:
       - "{{ appdata_path }}/sabnzb:/config"
