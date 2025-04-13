@@ -50,6 +50,10 @@ services:
       - "{{ appdata_path }}/handbrake/storage:/storage"
       - /mnt/Media/Movies/1-Processing/Handbrake/Watch:/watch
       - /mnt/Media/Movies/1-Processing/Handbrake/Output:/output
+      - "/mnt/Media/Kids Movies:/stuff/kids_movies:ro"
+      - "/mnt/Media/Kids TV:/stuff/kids_tv:ro"
+      - "/mnt/Media/Movies:/stuff/movies:ro"
+      - "/mnt/Media/TV Shows:/stuff/tv:ro"
     ports:
       - 5800:5800
     environment:

@@ -160,6 +160,9 @@ autorestic_config_yaml:
         - local_hass_docker
         - b2_hass_docker
       options:
+        backup:
+          exclude:
+            - '*.tar'
         forget:
           keep-daily: 1
           keep-weekly: 4

@@ -143,7 +143,7 @@ services:
       - PUID={{ main_uid }}
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
-    restart: always
+    restart: unless-stopped
   navidrome:
     image: ghcr.io/navidrome/navidrome:0.55.1
     container_name: navidrome
