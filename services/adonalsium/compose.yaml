@@ -77,7 +77,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: unless-stopped
   frigate:
-    image: ghcr.io/blakeblackshear/frigate:0.15.0
+    image: ghcr.io/blakeblackshear/frigate:0.15.1
     container_name: frigate
     privileged: true
     devices:
