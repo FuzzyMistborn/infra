@@ -56,7 +56,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: always
   code-server:
-    image: ghcr.io/linuxserver/code-server:4.99.2
+    image: ghcr.io/linuxserver/code-server:4.99.3
     container_name: code-server
     volumes:
       - "{{ appdata_path }}/code:/config"
