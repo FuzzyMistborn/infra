@@ -60,7 +60,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: always
   calibre:
-    image: lscr.io/linuxserver/calibre:8.2.100
+    image: lscr.io/linuxserver/calibre:8.3.0
     container_name: calibre
     volumes:
       - "{{ appdata_path }}/calibre:/config"
