@@ -55,23 +55,6 @@ services:
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
     restart: always
-  code-server:
-    image: ghcr.io/linuxserver/code-server:4.99.2
-    container_name: code-server
-    volumes:
-      - "{{ appdata_path }}/code:/config"
-    ports:
-      - 8443:8443
-    environment:
-      - UID={{ main_uid }}
-      - GID={{ main_gid }}
-      - PUID={{ main_uid }}
-      - PGID={{ main_gid }}
-      - TZ={{ ntp_timezone }}
-      - PASSWORD={{ secret_code_server_pass }}
-      - SUDO_PASSWORD={{ secret_code_server_pass }}
-      - PROXY_DOMAIN=code.{{ secret_personal_url }}
-    restart: always
   collabora:
     image: collabora/code:24.04.13.3.1
     container_name: collabora
