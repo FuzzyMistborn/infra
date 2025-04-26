@@ -8,4 +8,4 @@
 # /srv/nfs4        gss/krb5i(rw,sync,fsid=0,crossmnt,no_subtree_check)
 # /srv/nfs4/homes  gss/krb5i(rw,sync,no_subtree_check)
 #
-/mnt/Backup *(rw,sync,fsid=0,no_root_squash,crossmnt,subtree_check)
+/mnt/Backup *(rw,sync,fsid=0,no_root_squash,crossmnt,subtree_check,insecure)
