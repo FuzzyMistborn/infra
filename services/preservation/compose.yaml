@@ -91,7 +91,7 @@ services:
     mem_limit: 200M
     restart: always
   obsidian-livesync:
-    image: couchdb:3.4.3
+    image: couchdb:3.5.0
     container_name: obsidian-livesync
     user: 1000:1000
     environment:
