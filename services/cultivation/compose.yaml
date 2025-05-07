@@ -197,7 +197,7 @@ services:
       - MAX_CONCURRENT_CHROME_PROCESSES=10
       - STATS_REFRESH_SECONDS=120 # Default is 3 seconds which is way too much
   readeck:
-    image: codeberg.org/readeck/readeck:0.18.0
+    image: codeberg.org/readeck/readeck:0.18.2
     container_name: readeck
     ports:
       - 8100:8000
