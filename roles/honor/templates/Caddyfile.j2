@@ -76,7 +76,10 @@ news.{{ secret_personal_url }} {
 # Jellyfin
 media.{{ secret_personal_url }} {
 	reverse_proxy http://192.168.50.20:8096
-	header X-Forwarded-Host {host}
+	header {
+		X-Frame-Options "SAMEORIGIN"
+		X-Forwarded-Host {host}
+	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import headers
 }
@@ -314,6 +317,12 @@ obsidian.{{ secret_personal_internal_url }} {
 # Readeck
 readlater.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.21:8100
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	import headers
+}
+# MusicAssistant
+mass.{{ secret_personal_internal_url }} {
+	reverse_proxy http://192.168.30.5:8095
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }

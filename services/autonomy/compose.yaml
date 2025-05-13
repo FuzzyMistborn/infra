@@ -51,7 +51,7 @@ services:
       - 1883:1883
     restart: always
   govee2mqtt:
-    image: ghcr.io/wez/govee2mqtt:2025.01.02-63e73826
+    image: ghcr.io/wez/govee2mqtt:2025.04.13-17d43d72
     container_name: govee2mqtt
     network_mode: host
     environment:

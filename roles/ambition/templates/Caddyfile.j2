@@ -240,6 +240,10 @@ media.{{ secret_personal_url }} {
 			tls_server_name media.{{ secret_personal_url }}
 		}
 	}
+	header {
+		X-Frame-Options "SAMEORIGIN"
+		X-Forwarded-Host {host}
+	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
 }
