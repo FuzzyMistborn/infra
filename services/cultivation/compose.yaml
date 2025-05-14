@@ -15,7 +15,7 @@ services:
       - LOG_LEVEL=info
       - LOG_JSON=false
     hostname: cultivation
-    restart: always
+    restart: unless-stopped
   bitwarden:
     image: ghcr.io/dani-garcia/vaultwarden:1.33.2
     container_name: bitwarden
@@ -40,7 +40,7 @@ services:
       - DATABASE_URL={{ secret_bitwarden_db_url }}
       - ENABLE_DB_WAL=false
       - DOMAIN={{ secret_bitwarden_url }}
-    restart: always
+    restart: unless-stopped
   freshrss:
     image: ghcr.io/linuxserver/freshrss:1.26.2
     container_name: freshrss
@@ -54,7 +54,7 @@ services:
       - PUID={{ main_uid }}
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
-    restart: always
+    restart: unless-stopped
   collabora:
     image: collabora/code:25.04.1.1.1
     container_name: collabora
@@ -72,11 +72,11 @@ services:
       - domain={{ secret_collabora_url }}
       - dictionaries=en
     mem_limit: 1000M
-    restart: always
+    restart: unless-stopped
   paperless-redis:
     image: redis:8.0.0
     container_name: paperless-redis
-    restart: always
+    restart: unless-stopped
   paperless:
     image: ghcr.io/paperless-ngx/paperless-ngx:2.15.3
     container_name: paperless
@@ -95,7 +95,7 @@ services:
       - PAPERLESS_FILENAME_FORMAT={added_year}/{document_type}/{title}
       - USERMAP_UID={{ main_uid }}
       - USERMAP_GID={{ main_gid }}
-    restart: always
+    restart: unless-stopped
   invidious:
     image: quay.io/invidious/invidious:latest
     container_name: invidious
@@ -106,7 +106,7 @@ services:
       - diun.regopt=docker.io
     ports:
       - 3500:3000
-    restart: always
+    restart: unless-stopped
   inv-sig-helper:
     image: quay.io/invidious/inv-sig-helper:latest
     container_name: inv-sig-helper
@@ -130,7 +130,7 @@ services:
     ports:
       - 8080:8080
       - 8444:8443
-    restart: always
+    restart: unless-stopped
   stirling-pdf:
     image: ghcr.io/stirling-tools/s-pdf:0.46.1
     container_name: stirling-pdf
@@ -235,4 +235,4 @@ services:
       - 9001:9001
     environment:
       - AGENT_SECRET={{ secret_portainer_key }}
-    restart: always
+    restart: unless-stopped

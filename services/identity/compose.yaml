@@ -49,7 +49,7 @@ services:
     command: postgres -c config_file=/etc/postgresql/postgresql.conf
     mem_limit: 400M
     shm_size: 1G
-    restart: always
+    restart: unless-stopped
   dawarich-redis:
     image: redis:8.0.0
     container_name: dawarich-redis
@@ -110,4 +110,4 @@ services:
       - 9001:9001
     environment:
       - AGENT_SECRET={{ secret_portainer_key }}
-    restart: always
+    restart: unless-stopped

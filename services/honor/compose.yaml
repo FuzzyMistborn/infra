@@ -14,7 +14,7 @@ services:
       - 81:80/tcp
       - 444:443/tcp
       - 3000:3000/tcp
-    restart: always
+    restart: unless-stopped
   crowdsec:
     image: ghcr.io/crowdsecurity/crowdsec:v1.6.8
     container_name: crowdsec
@@ -40,7 +40,7 @@ services:
       - 9001:9001
     environment:
       - AGENT_SECRET={{ secret_portainer_key }}
-    restart: always
+    restart: unless-stopped
   adguard-sync:
     image: ghcr.io/linuxserver/adguardhome-sync:0.7.5
     container_name: adguard-sync
@@ -54,4 +54,4 @@ services:
       - PUID={{ main_uid }}
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
-    restart: always
+    restart: unless-stopped

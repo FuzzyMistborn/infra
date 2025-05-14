@@ -14,7 +14,7 @@ services:
       - MYSQL_DATABASE=homeassistant
       - MYSQL_USER=hass
       - MYSQL_PASSWORD={{ secret_hass_db_pass }}
-    restart: always
+    restart: unless-stopped
   influx-db:
     image: influxdb:2.7.11
     container_name: influx-db
@@ -32,7 +32,7 @@ services:
       - DOCKER_INFLUXDB_INIT_BUCKET=Default
       - DOCKER_INFLUXDB_INIT_RETENTION=168h
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN={{ secret_influxdb_token }}
-    restart: always
+    restart: unless-stopped
   #  image: quay.io/influxdb/influxdb:2.1-nightly
   # NOTE: quay.io image does not include influx client.  To install, run following:
   # apt install wget -y
@@ -57,7 +57,7 @@ services:
       - MYSQL_USER=bitwarden
       - MYSQL_PASSWORD={{ secret_bitwarden_db_pass }}
     mem_limit: 300M
-    restart: always
+    restart: unless-stopped
   nextcloud-db:
     image: mariadb:11.7.2
     container_name: nextcloud-db
@@ -71,7 +71,7 @@ services:
       - MYSQL_USER={{ main_username }}
       - MYSQL_PASSWORD={{ secret_nextcloud_db_pass }}
     mem_limit: 300M
-    restart: always
+    restart: unless-stopped
   invidious-db:
     image: postgres:15.13-alpine
     container_name: invidious-db
@@ -89,7 +89,7 @@ services:
       - POSTGRES_USER=kemal
       - POSTGRES_PASSWORD={{ secret_invidious_db_pass }}
     mem_limit: 200M
-    restart: always
+    restart: unless-stopped
   obsidian-livesync:
     image: couchdb:3.5.0
     container_name: obsidian-livesync
@@ -134,7 +134,7 @@ services:
       - LOG_LEVEL=info
       - LOG_JSON=false
     hostname: preservation
-    restart: always
+    restart: unless-stopped
   portainer_agent:
     image: portainer/agent:2.29.2
     container_name: portainer_agent
@@ -145,4 +145,4 @@ services:
       - 9001:9001
     environment:
       - AGENT_SECRET={{ secret_portainer_key }}
-    restart: always
+    restart: unless-stopped

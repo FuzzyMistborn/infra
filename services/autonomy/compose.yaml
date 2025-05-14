@@ -39,7 +39,7 @@ services:
     network_mode: host
     volumes:
       - "{{ appdata_path }}/esphome:/config"
-    restart: always
+    restart: unless-stopped
   mqtt:
     image: eclipse-mosquitto:2.0.21
     container_name: MQTT
@@ -49,7 +49,7 @@ services:
       - "{{ appdata_path }}/mqtt/log:/mosquitto/log/"
     ports:
       - 1883:1883
-    restart: always
+    restart: unless-stopped
   govee2mqtt:
     image: ghcr.io/wez/govee2mqtt:2025.04.13-17d43d72
     container_name: govee2mqtt
@@ -87,7 +87,7 @@ services:
       - TZ={{ ntp_timezone }}
     depends_on:
       - hass
-    restart: always
+    restart: unless-stopped
   tasmota:
     image: ghcr.io/tasmoadmin/tasmoadmin:v4.3.0
     container_name: tasmota
@@ -95,7 +95,7 @@ services:
       - "{{ appdata_path }}/tasmota:/data"
     ports:
       - 5555:80
-    restart: always
+    restart: unless-stopped
   anylist:
     image: kevdliu/anylist:latest
     container_name: anylist
@@ -107,7 +107,7 @@ services:
       - PORT=9000
       - EMAIL={{ secret_email }}
       - PASSWORD={{ secret_anylist_pw }}
-    restart: always
+    restart: unless-stopped
   music-assistant:
     image: ghcr.io/music-assistant/server:2.5.2
     container_name: music-assistant
@@ -150,4 +150,4 @@ services:
       - 9001:9001
     environment:
       - AGENT_SECRET={{ secret_portainer_key }}
-    restart: always
+    restart: unless-stopped

@@ -21,7 +21,7 @@ services:
   tailscale:
     image: ghcr.io/tailscale/tailscale:v1.82.5
     container_name: tailscale
-    network_mode: service:gluetun
+#    network_mode: service:gluetun
     cap_add:
       - net_admin
       - sys_module
@@ -57,7 +57,7 @@ services:
       - 9001:9001
     environment:
       - AGENT_SECRET={{ secret_portainer_key }}
-    restart: always
+    restart: unless-stopped
   scrutiny:
     image: ghcr.io/analogj/scrutiny:v0.8.1-omnibus
     container_name: scrutiny

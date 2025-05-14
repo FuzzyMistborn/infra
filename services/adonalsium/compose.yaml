@@ -11,7 +11,7 @@ services:
     environment:
       - AGENT_SECRET={{ secret_portainer_key }}
     mem_limit: 200M
-    restart: always
+    restart: unless-stopped
   scrutiny:
     image: ghcr.io/analogj/scrutiny:v0.8.1-omnibus
     container_name: scrutiny
@@ -31,7 +31,7 @@ services:
       - /run/udev:/run/udev:ro
     ports:
       - 8080:8080
-    restart: always
+    restart: unless-stopped
   uptime:
     image: louislam/uptime-kuma:1.23.16
     container_name: uptime
@@ -39,7 +39,7 @@ services:
       - "{{ appdata_path }}/uptime:/app/data"
     ports:
       - 3001:3001
-    restart: always
+    restart: unless-stopped
   handbrake:
     image: ghcr.io/jlesage/handbrake:v25.02.3
     container_name: handbrake
@@ -58,7 +58,7 @@ services:
       - 5800:5800
     environment:
       - TZ={{ ntp_timezone }}
-    restart: always
+    restart: unless-stopped
   calibre:
     image: lscr.io/linuxserver/calibre:8.4.0
     container_name: calibre
@@ -112,4 +112,4 @@ services:
     environment:
       - API_USER=homeassistant
       - API_PASSWORD={{ secret_nut_api_pw }}
-    restart: always
+    restart: unless-stopped

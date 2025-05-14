@@ -9,7 +9,7 @@ services:
       - 9001:9001
     environment:
       - AGENT_SECRET={{ secret_portainer_key }}
-    restart: always
+    restart: unless-stopped
   ollama-server:
     image: ollama/ollama:0.6.8
     container_name: ollama-server
@@ -127,7 +127,7 @@ services:
   immich-redis:
     image: docker.io/valkey/valkey:8-bookworm@sha256:42cba146593a5ea9a622002c1b7cba5da7be248650cbb64ecb9c6c33d29794b1
     container_name: immich_redis
-    restart: always
+    restart: unless-stopped
   immich-database:
     image: docker.io/tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:739cdd626151ff1f796dc95a6591b55a714f341c737e27f045019ceabf8e8c52
     container_name: immich_database
@@ -146,7 +146,7 @@ services:
       -c max_wal_size=2GB
       -c shared_buffers=512MB
       -c wal_compression=on
-    restart: always
+    restart: unless-stopped
   whisper:
     image: lscr.io/linuxserver/faster-whisper:2.4.0-gpu
     container_name: whisper

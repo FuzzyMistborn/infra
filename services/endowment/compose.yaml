@@ -16,7 +16,7 @@ services:
       - PUID={{ main_uid }}
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
-    restart: always
+    restart: unless-stopped
   radarr_uhd:
     image: ghcr.io/linuxserver/radarr:5.22.4
     container_name: radarr_uhd
@@ -32,7 +32,7 @@ services:
       - PUID={{ main_uid }}
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
-    restart: always
+    restart: unless-stopped
   sonarr:
     image: ghcr.io/linuxserver/sonarr:4.0.14
     container_name: sonarr
@@ -50,7 +50,7 @@ services:
       - PUID={{ main_uid }}
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
-    restart: always
+    restart: unless-stopped
   prowlarr:
     image: ghcr.io/linuxserver/prowlarr:1.35.1
     container_name: prowlarr
@@ -64,7 +64,7 @@ services:
       - PUID={{ main_uid }}
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
-    restart: always
+    restart: unless-stopped
   sabnzbd:
     image: ghcr.io/linuxserver/sabnzbd:4.5.1
     container_name: sabnzbd
@@ -81,7 +81,15 @@ services:
       - PUID={{ main_uid }}
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
-    restart: always
+    restart: unless-stopped
+  watcharr:
+    image: ghcr.io/sbondco/watcharr:v2.0.2
+    container_name: watcharr
+    ports:
+      - 3080:3080
+    volumes:
+      - "{{ appdata_path }}//watcharr:/data"
+    restart: unless-stopped
   audiobookshelf:
     image: ghcr.io/advplyr/audiobookshelf:2.21.0
     container_name: audiobookshelf
@@ -113,11 +121,11 @@ services:
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
     mem_limit: 1000M
-    restart: always
+    restart: unless-stopped
   nextcloud-redis:
     image: redis:8.0.0
     container_name: nextcloud-redis
-    restart: always
+    restart: unless-stopped
   jellyfin:
     image: ghcr.io/linuxserver/jellyfin:10.10.7
     container_name: jellyfin
@@ -159,6 +167,16 @@ services:
       - ND_SCANSCHEDULE=12h
       - ND_BASEURL=https://music.{{ secret_personal_internal_url }}
     restart: unless-stopped
+  pinchflat:
+    image: ghcr.io/kieraneglin/pinchflat:v2025.3.17
+    container_name: pinchflat
+    volumes:
+      - "{{ appdata_path }}/pinchflat/config:/config"
+      - /mnt/Media/YouTube/Pinchflat:/downloads
+    ports:
+      - 8945:8945
+    environment:
+      - TZ={{ ntp_timezone }}
   calibre-web-automated:
     image: crocodilestick/calibre-web-automated:V3.0.4
     container_name: calibre-web-automated
@@ -211,4 +229,4 @@ services:
       - 9001:9001
     environment:
       - AGENT_SECRET={{ secret_portainer_key }}
-    restart: always
+    restart: unless-stopped

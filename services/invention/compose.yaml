@@ -15,7 +15,7 @@ services:
       - LOG_LEVEL=info
       - LOG_JSON=false
     hostname: invention
-    restart: always
+    restart: unless-stopped
   portainer_agent:
     image: portainer/agent:2.29.2
     container_name: portainer_agent
@@ -26,7 +26,7 @@ services:
       - 9001:9001
     environment:
       - AGENT_SECRET={{ secret_portainer_key }}
-    restart: always
+    restart: unless-stopped
   minecraft:
     image: 05jchambers/legendary-minecraft-geyser-floodgate:latest
     container_name: minecraft

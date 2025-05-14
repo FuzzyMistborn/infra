@@ -15,7 +15,7 @@ services:
       - LOG_LEVEL=info
       - LOG_JSON=false
     hostname: "{{ hostname }}"
-    restart: always
+    restart: unless-stopped
   uptime:
     image: louislam/uptime-kuma:1.23.16
     container_name: uptime
@@ -23,7 +23,7 @@ services:
       - "{{ appdata_path }}/uptime:/app/data"
     ports:
       - 127.0.0.1:3001:3001
-    restart: always
+    restart: unless-stopped
   umami:
     image: ghcr.io/umami-software/umami:mysql-v2.18.1
     container_name: umami
@@ -38,7 +38,7 @@ services:
       - HASH_SALT={{ secret_umami_hash }}
     depends_on:
       - umami-db
-    restart: always
+    restart: unless-stopped
   umami-db:
     image: mariadb:11.7
     container_name: umami-db
@@ -50,7 +50,7 @@ services:
       - MYSQL_PASSWORD={{ secret_umami_db_pass }}
       - MYSQL_DATABASE=umami
     mem_limit: 200M
-    restart: always
+    restart: unless-stopped
   gitea:
     image: gitea/gitea:1.23.8
     container_name: gitea
@@ -71,7 +71,7 @@ services:
       - DB_PASSWD={{ secret_gitea_db_pass }}
     depends_on:
       - gitea-db
-    restart: always
+    restart: unless-stopped
   gitea-db:
     image: mariadb:11.7
     container_name: gitea-db
@@ -83,7 +83,7 @@ services:
       - MYSQL_PASSWORD={{ secret_gitea_db_pass }}
       - MYSQL_DATABASE=gitea
     mem_limit: 200M
-    restart: always
+    restart: unless-stopped
   woodpecker-github:
     image: quay.io/woodpeckerci/woodpecker-server:v3.6.0
     container_name: woodpecker-github
@@ -202,7 +202,7 @@ services:
       - TELEGRAM_BOT_NAME=Cosmere HealthChecks
       - TELEGRAM_TOKEN={{ secret_healthchecks_tg_token }}
       - DOCKER_MODS=linuxserver/mods:healthchecks-apprise
-    restart: always
+    restart: unless-stopped
   crowdsec:
     image: ghcr.io/crowdsecurity/crowdsec:v1.6.8
     container_name: crowdsec
@@ -232,4 +232,4 @@ services:
       - 9001:9001
     environment:
       - AGENT_SECRET={{ secret_portainer_key }}
-    restart: always
+    restart: unless-stopped

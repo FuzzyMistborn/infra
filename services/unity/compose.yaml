@@ -11,7 +11,7 @@ services:
       - 3500:3000
     environment:
       - TZ={{ ntp_timezone }}
-    restart: always
+    restart: unless-stopped
   zigbee2mqtt:
     image: ghcr.io/koenkk/zigbee2mqtt:2.3.0
     container_name: zigbee2mqtt
@@ -24,7 +24,7 @@ services:
       - 8080:8080
     environment:
       - TZ={{ ntp_timezone }}
-    restart: always
+    restart: unless-stopped
   adguard:
     image: adguard/adguardhome:v0.107.61
     container_name: adguard
@@ -40,7 +40,7 @@ services:
       - 81:80/tcp
       - 444:443/tcp
       - 3000:3000/tcp
-    restart: always
+    restart: unless-stopped
   portainer_agent:
     image: portainer/agent:2.29.2
     container_name: portainer_agent
@@ -51,7 +51,7 @@ services:
       - 9001:9001
     environment:
       - AGENT_SECRET={{ secret_portainer_key }}
-    restart: always
+    restart: unless-stopped
   nut-ups:
     image: fuzzymistborn/nut-upsd:2.8.2
     container_name: nut-ups
@@ -62,4 +62,4 @@ services:
     environment:
       - API_USER=homeassistant
       - API_PASSWORD={{ secret_nut_api_pw }}
-    restart: always
+    restart: unless-stopped
