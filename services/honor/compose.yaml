@@ -42,7 +42,7 @@ services:
       - AGENT_SECRET={{ secret_portainer_key }}
     restart: unless-stopped
   adguard-sync:
-    image: ghcr.io/linuxserver/adguardhome-sync:0.7.5
+    image: ghcr.io/linuxserver/adguardhome-sync:0.7.6
     container_name: adguard-sync
     volumes:
       - "{{ appdata_path }}/adguardsync/config:/config"
