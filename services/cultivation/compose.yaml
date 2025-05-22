@@ -107,6 +107,29 @@ services:
     ports:
       - 3500:3000
     restart: unless-stopped
+  invidious-companion:
+    container_name: invidious-companion
+    image: quay.io/invidious/invidious-companion:latest
+    environment:
+       - SERVER_SECRET_KEY={{ secret_invidious_companion_key }}
+    restart: unless-stopped
+    labels:
+      - diun.enable=true
+      - diun.regopt=docker.io
+    ports:
+      - 8282:8282
+    logging:
+      options:
+        max-size: "1G"
+        max-file: "4"
+    cap_drop:
+      - ALL
+    read_only: true
+    volumes:
+      - /var/tmp/youtubei.js:/var/tmp/youtubei.js:rw
+    security_opt:
+      - no-new-privileges:true
+
   inv-sig-helper:
     image: quay.io/invidious/inv-sig-helper:latest
     container_name: inv-sig-helper
@@ -209,6 +232,14 @@ services:
       - READECK_ALLOWED_HOSTS=readlater.{{ secret_personal_internal_url }}
     volumes:
       - "{{ appdata_path }}/change:/readeck"
+    restart: unless-stopped
+  memos:
+    image: neosmemo/memos:0.24.3
+    container_name: memos
+    volumes:
+      - "{{ appdata_path }}/memos/data:/var/opt/memos"
+    ports:
+      - 5230:5230
     restart: unless-stopped
   crowdsec:
     image: ghcr.io/crowdsecurity/crowdsec:v1.6.8

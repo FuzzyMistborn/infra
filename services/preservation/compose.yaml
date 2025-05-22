@@ -90,19 +90,6 @@ services:
       - POSTGRES_PASSWORD={{ secret_invidious_db_pass }}
     mem_limit: 200M
     restart: unless-stopped
-  obsidian-livesync:
-    image: couchdb:3.5.0
-    container_name: obsidian-livesync
-    user: 1000:1000
-    environment:
-      - COUCHDB_USER=obsidian
-      - COUCHDB_PASSWORD={{ secret_obsidian_sync_pw }}
-    volumes:
-      - "{{ appdata_path }}/obsidian/data:/opt/couchdb/data"
-      - "{{ appdata_path }}/obsidian/etc/local.ini:/opt/couchdb/etc/local.ini"
-    ports:
-      - 5984:5984
-    restart: unless-stopped
   phpmyadmin:
     image: ghcr.io/linuxserver/phpmyadmin:5.2.2
     container_name: phpmyadmin

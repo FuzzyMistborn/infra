@@ -195,7 +195,7 @@ services:
       - EMAIL_HOST_PASSWORD={{ secret_snapraid_email_pass }}
       - EMAIL_USE_TLS=True
       - SUPERUSER_EMAIL={{ secret_email }}
-      - SUPERUSER_PASSWORD={{ secret_healtchecks_pass }}
+      - SUPERUSER_PASSWORD={{ secret_healthchecks_pass }}
       - REGENERATE_SETTINGS=True
       - REGISTRATION_OPEN=False
       - SECRET_KEY={{ secret_healthchecks_key }}
