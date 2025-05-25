@@ -111,7 +111,7 @@ services:
     container_name: invidious-companion
     image: quay.io/invidious/invidious-companion:latest
     environment:
-       - SERVER_SECRET_KEY={{ secret_invidious_companion_key }}
+      - SERVER_SECRET_KEY={{ secret_invidious_companion_key }}
     restart: unless-stopped
     labels:
       - diun.enable=true
@@ -218,7 +218,7 @@ services:
       - SCREEN_HEIGHT=1024
       - SCREEN_DEPTH=16
       - MAX_CONCURRENT_CHROME_PROCESSES=10
-      - STATS_REFRESH_SECONDS=120 # Default is 3 seconds which is way too much
+      - STATS_REFRESH_SECONDS=120
   readeck:
     image: codeberg.org/readeck/readeck:0.18.2
     container_name: readeck
