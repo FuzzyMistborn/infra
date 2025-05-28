@@ -1,6 +1,6 @@
 services:
   adguard:
-    image: adguard/adguardhome:v0.107.61
+    image: adguard/adguardhome:v0.107.62
     container_name: adguard
     cap_add:
       - NET_ADMIN
