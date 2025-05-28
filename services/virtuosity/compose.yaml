@@ -108,7 +108,7 @@ services:
                 - video
     restart: unless-stopped
   immich-machine-learning:
-    image: ghcr.io/immich-app/immich-machine-learning:v1.132.3-cuda
+    image: ghcr.io/immich-app/immich-machine-learning:v1.134.0-cuda
     container_name: immich_machine_learning
     volumes:
       - "{{ appdata_path }}/immich/model-cache:/cache"
@@ -125,11 +125,11 @@ services:
                 - gpu
     restart: unless-stopped
   immich-redis:
-    image: docker.io/valkey/valkey:8-bookworm@sha256:42cba146593a5ea9a622002c1b7cba5da7be248650cbb64ecb9c6c33d29794b1
+    image: docker.io/valkey/valkey:8-bookworm@sha256:ff21bc0f8194dc9c105b769aeabf9585fea6a8ed649c0781caeac5cb3c247884
     container_name: immich_redis
     restart: unless-stopped
   immich-database:
-    image: docker.io/tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:739cdd626151ff1f796dc95a6591b55a714f341c737e27f045019ceabf8e8c52
+    image: ghcr.io/immich-app/postgres:14-vectorchord0.3.0-pgvectors0.2.0@sha256:fa4f6e0971f454cd95fec5a9aaed2ed93d8f46725cc6bc61e0698e97dba96da1
     container_name: immich_database
     volumes:
       - "{{ appdata_path }}/immich/database:/var/lib/postgresql/data"
