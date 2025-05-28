@@ -220,7 +220,7 @@ services:
       - MAX_CONCURRENT_CHROME_PROCESSES=10
       - STATS_REFRESH_SECONDS=120
   readeck:
-    image: codeberg.org/readeck/readeck:0.18.2
+    image: codeberg.org/readeck/readeck:0.19.1
     container_name: readeck
     ports:
       - 8100:8000
