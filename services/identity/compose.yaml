@@ -20,7 +20,6 @@ services:
       - APPLICATION_HOSTS=localhost,track.{{ secret_personal_internal_url }}
       - TIME_ZONE={{ ntp_timezone }}
       - APPLICATION_PROTOCOL=http
-      - DISTANCE_UNIT=mi
       - REVERSE_GEOCODING_ENABLED=true
       - PHOTON_API_HOST=192.168.50.23:2322
       - PHOTON_API_USE_HTTPS=false
@@ -75,7 +74,6 @@ services:
       - APPLICATION_HOSTS=localhost
       - BACKGROUND_PROCESSING_CONCURRENCY=10
       - APPLICATION_PROTOCOL=http
-      - DISTANCE_UNIT=mi
       - REVERSE_GEOCODING_ENABLED=true
       - PHOTON_API_HOST=192.168.50.23:2322
       - PHOTON_API_USE_HTTPS=false
