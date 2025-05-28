@@ -51,7 +51,7 @@ services:
     shm_size: 1G
     restart: unless-stopped
   dawarich-redis:
-    image: redis:8.0.0
+    image: redis:8.0.1
     container_name: dawarich-redis
     volumes:
       - "{{ appdata_path }}/dawarich/shared:/var/shared/redis"
