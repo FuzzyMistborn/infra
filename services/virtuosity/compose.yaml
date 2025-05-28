@@ -129,7 +129,7 @@ services:
     container_name: immich_redis
     restart: unless-stopped
   immich-database:
-    image: ghcr.io/immich-app/postgres:14-vectorchord0.3.0-pgvectors0.2.0@sha256:fa4f6e0971f454cd95fec5a9aaed2ed93d8f46725cc6bc61e0698e97dba96da1
+    image: ghcr.io/immich-app/postgres:16-vectorchord0.3.0-pgvectors0.2.0@sha256:16175084f68ca781d1b05ef1427e513f6cfe583e90d4f7776ac174e5b8b8245b
     container_name: immich_database
     volumes:
       - "{{ appdata_path }}/immich/database:/var/lib/postgresql/data"
