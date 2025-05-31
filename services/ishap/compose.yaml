@@ -80,7 +80,7 @@ services:
       - 8080:8080
     restart: unless-stopped
   restic-server:
-    image: restic/rest-server:0.13.0
+    image: restic/rest-server:0.14.0
     container_name: restic-server
     volumes:
       - /mnt/Backup/restic:/data
