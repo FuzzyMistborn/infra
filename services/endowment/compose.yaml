@@ -168,7 +168,7 @@ services:
       - ND_BASEURL=https://music.{{ secret_personal_internal_url }}
     restart: unless-stopped
   pinchflat:
-    image: ghcr.io/kieraneglin/pinchflat:v2025.3.17
+    image: ghcr.io/kieraneglin/pinchflat:v2025.6.6
     container_name: pinchflat
     volumes:
       - "{{ appdata_path }}/pinchflat/config:/config"
