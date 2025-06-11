@@ -66,6 +66,7 @@
   loop:
     - {src: "backup.sh", dest: "/home/{{ main_username }}/backup.sh"}
     - {src: "trim.sh", dest: "/home/{{ main_username }}/trim.sh"}
+    - {src: "storage.sh", dest: "/home/{{ main_username }}/storage.sh"}
 
 # Source: https://www.reddit.com/r/Proxmox/comments/118i6ct/tutorialguide_how_to_make_the_prelogin_banner/
 - name: Copy issue file to adjust displayer IP address
