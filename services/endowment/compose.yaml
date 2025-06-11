@@ -52,7 +52,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: unless-stopped
   prowlarr:
-    image: ghcr.io/linuxserver/prowlarr:1.36.3
+    image: ghcr.io/linuxserver/prowlarr:1.37.0
     container_name: prowlarr
     volumes:
       - "{{ appdata_path }}/prowlarr:/config"
@@ -91,7 +91,7 @@ services:
       - "{{ appdata_path }}//watcharr:/data"
     restart: unless-stopped
   audiobookshelf:
-    image: ghcr.io/advplyr/audiobookshelf:2.23.0
+    image: ghcr.io/advplyr/audiobookshelf:2.24.0
     container_name: audiobookshelf
     volumes:
       - "{{ appdata_path }}/audiobookshelf/config:/config"
@@ -123,7 +123,7 @@ services:
     mem_limit: 1000M
     restart: unless-stopped
   nextcloud-redis:
-    image: redis:8.0.1
+    image: redis:8.0.2
     container_name: nextcloud-redis
     restart: unless-stopped
   jellyfin:
@@ -154,7 +154,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: unless-stopped
   navidrome:
-    image: ghcr.io/navidrome/navidrome:0.55.2
+    image: ghcr.io/navidrome/navidrome:0.56.1
     container_name: navidrome
     volumes:
       - "{{ appdata_path }}/navidrome/data:/data"
@@ -168,7 +168,7 @@ services:
       - ND_BASEURL=https://music.{{ secret_personal_internal_url }}
     restart: unless-stopped
   pinchflat:
-    image: ghcr.io/kieraneglin/pinchflat:v2025.3.17
+    image: ghcr.io/kieraneglin/pinchflat:v2025.6.6
     container_name: pinchflat
     volumes:
       - "{{ appdata_path }}/pinchflat/config:/config"

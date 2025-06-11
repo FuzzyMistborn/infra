@@ -1,6 +1,6 @@
 services:
   dawarich-app:
-    image: freikin/dawarich:0.26.6
+    image: freikin/dawarich:0.28.0
     container_name: dawarich-app
     volumes:
       - "{{ appdata_path }}/dawarich/public:/var/app/public"
@@ -50,14 +50,14 @@ services:
     shm_size: 1G
     restart: unless-stopped
   dawarich-redis:
-    image: redis:8.0.1
+    image: redis:8.0.2
     container_name: dawarich-redis
     volumes:
       - "{{ appdata_path }}/dawarich/shared:/var/shared/redis"
     command: redis-server
     restart: unless-stopped
   dawarich-sidekiq:
-    image: freikin/dawarich:0.26.6
+    image: freikin/dawarich:0.28.0
     container_name: dawarich-sidekiq
     volumes:
       - "{{ appdata_path }}/dawarich/public:/var/app/public"

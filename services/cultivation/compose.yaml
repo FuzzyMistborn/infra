@@ -42,7 +42,7 @@ services:
       - DOMAIN={{ secret_bitwarden_url }}
     restart: unless-stopped
   freshrss:
-    image: ghcr.io/linuxserver/freshrss:1.26.2
+    image: ghcr.io/linuxserver/freshrss:1.26.3
     container_name: freshrss
     volumes:
       - "{{ appdata_path }}/freshrss:/config"
@@ -56,7 +56,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: unless-stopped
   collabora:
-    image: collabora/code:25.04.2.1.1
+    image: collabora/code:25.04.2.2.1
     container_name: collabora
     privileged: true
     cap_add:
@@ -74,11 +74,11 @@ services:
     mem_limit: 1000M
     restart: unless-stopped
   paperless-redis:
-    image: redis:8.0.1
+    image: redis:8.0.2
     container_name: paperless-redis
     restart: unless-stopped
   paperless:
-    image: ghcr.io/paperless-ngx/paperless-ngx:2.16.2
+    image: ghcr.io/paperless-ngx/paperless-ngx:2.16.3
     container_name: paperless
     volumes:
       - "{{ appdata_path }}/paperless/data:/usr/src/paperless/data"
@@ -196,7 +196,7 @@ services:
       - CONNECT_WITH_FRANZ=false
     restart: unless-stopped
   changedetection:
-    image: ghcr.io/dgtlmoon/changedetection.io:0.49.18
+    image: ghcr.io/dgtlmoon/changedetection.io:0.50.2
     container_name: changedetection
     volumes:
       - "{{ appdata_path }}/change:/datastore"
@@ -234,7 +234,7 @@ services:
       - "{{ appdata_path }}/change:/readeck"
     restart: unless-stopped
   memos:
-    image: neosmemo/memos:0.24.3
+    image: neosmemo/memos:0.24.4
     container_name: memos
     volumes:
       - "{{ appdata_path }}/memos/data:/var/opt/memos"

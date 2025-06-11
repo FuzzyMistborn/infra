@@ -11,7 +11,7 @@ services:
       - AGENT_SECRET={{ secret_portainer_key }}
     restart: unless-stopped
   ollama-server:
-    image: ollama/ollama:0.7.1
+    image: ollama/ollama:0.9.0
     container_name: ollama-server
     volumes:
       - /mnt/llms/ollama:/root/.ollama
@@ -27,7 +27,7 @@ services:
                 - gpu
     restart: unless-stopped
   open-webui:
-    image: ghcr.io/open-webui/open-webui:v0.6.11
+    image: ghcr.io/open-webui/open-webui:v0.6.14
     container_name: open-webui
     extra_hosts:
       - host.docker.internal:host-gateway

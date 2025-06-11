@@ -52,7 +52,7 @@ services:
     mem_limit: 200M
     restart: unless-stopped
   gitea:
-    image: gitea/gitea:1.23.8
+    image: gitea/gitea:1.24.0
     container_name: gitea
     volumes:
       - "{{ appdata_path }}/gitea/data:/data"
@@ -85,7 +85,7 @@ services:
     mem_limit: 200M
     restart: unless-stopped
   woodpecker-github:
-    image: quay.io/woodpeckerci/woodpecker-server:v3.6.0
+    image: quay.io/woodpeckerci/woodpecker-server:v3.7.0
     container_name: woodpecker-github
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -107,7 +107,7 @@ services:
       - WOODPECKER_PLUGINS_PRIVILEGED=woodpeckerci/plugin-docker-buildx:5.0.0
     restart: unless-stopped
   woodpecker-gitea:
-    image: quay.io/woodpeckerci/woodpecker-server:v3.6.0
+    image: quay.io/woodpeckerci/woodpecker-server:v3.7.0
     container_name: woodpecker-gitea
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -130,7 +130,7 @@ services:
       - WOODPECKER_PLUGINS_PRIVILEGED=woodpeckerci/plugin-docker-buildx:5.0.0
     restart: unless-stopped
   ntfy:
-    image: binwiederhier/ntfy:v2.11.0
+    image: binwiederhier/ntfy:v2.12.0
     container_name: ntfy
     volumes:
       - "{{ appdata_path }}/ntfy/cache:/var/cache/ntfy"
@@ -174,7 +174,7 @@ services:
       - RTC_CONFIG=/opt/pairdrop/rtc.json
     restart: unless-stopped
   healthchecks:
-    image: ghcr.io/linuxserver/healthchecks:3.10.20250526
+    image: ghcr.io/linuxserver/healthchecks:3.10.20250609
     container_name: healthchecks
     volumes:
       - "{{ appdata_path }}/healthchecks/config:/config"

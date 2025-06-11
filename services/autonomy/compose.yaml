@@ -24,7 +24,7 @@ services:
       - mqtt
     restart: unless-stopped
   selenium:
-    image: selenium/standalone-firefox:138.0
+    image: selenium/standalone-firefox:139.0
     container_name: selenium
     ports:
       - 4444:4444
@@ -34,7 +34,7 @@ services:
     shm_size: 2g
     restart: unless-stopped
   esphome:
-    image: ghcr.io/esphome/esphome:2025.5.1
+    image: ghcr.io/esphome/esphome:2025.5.2
     container_name: esphome
     network_mode: host
     volumes:
@@ -66,7 +66,7 @@ services:
       - GOVEE_MQTT_PASSWORD={{ secret_mqtt_pass }}
     restart: unless-stopped
   signal-api:
-    image: bbernhard/signal-cli-rest-api:0.92
+    image: bbernhard/signal-cli-rest-api:0.93
     container_name: signal-api
     volumes:
       - "{{ appdata_path }}/signal-api:/home/.local/share/signal-cli"
@@ -109,7 +109,7 @@ services:
       - PASSWORD={{ secret_anylist_pw }}
     restart: unless-stopped
   music-assistant:
-    image: ghcr.io/music-assistant/server:2.5.2
+    image: ghcr.io/music-assistant/server:2.5.4
     container_name: music-assistant
     network_mode: host
     privileged: true
