@@ -234,7 +234,7 @@ services:
       - "{{ appdata_path }}/change:/readeck"
     restart: unless-stopped
   memos:
-    image: neosmemo/memos:0.24.3
+    image: neosmemo/memos:0.24.4
     container_name: memos
     volumes:
       - "{{ appdata_path }}/memos/data:/var/opt/memos"
