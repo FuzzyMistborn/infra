@@ -6,11 +6,12 @@ services:
       - "{{ appdata_path }}/dawarich/public:/var/app/public"
       - "{{ appdata_path }}/dawarich/imports:/var/app/tmp/imports/watched"
       - "{{ appdata_path }}/dawarich/storage:/var/app/storage"
+      - "{{ appdata_path }}/dawarich/db17:/dawarich_db_data"
     ports:
       - 3000:3000
     environment:
       - RAILS_ENV=development
-      - REDIS_URL=redis://dawarich-redis:6379/0
+      - REDIS_URL=redis://dawarich-redis:6379
       - DATABASE_HOST=dawarich-db
       - DATABASE_USERNAME=dawarich
       - DATABASE_PASSWORD={{ secret_dawarich_db_pass }}
@@ -63,9 +64,10 @@ services:
       - "{{ appdata_path }}/dawarich/public:/var/app/public"
       - "{{ appdata_path }}/dawarich/imports:/var/app/tmp/imports/watched"
       - "{{ appdata_path }}/dawarich/storage:/var/app/storage"
+      - "{{ appdata_path }}/dawarich/db17:/dawarich_db_data"
     environment:
       - RAILS_ENV=development
-      - REDIS_URL=redis://dawarich-redis:6379/0
+      - REDIS_URL=redis://dawarich-redis:6379
       - DATABASE_HOST=dawarich-db
       - DATABASE_USERNAME=dawarich
       - DATABASE_PASSWORD={{ secret_dawarich_db_pass }}
