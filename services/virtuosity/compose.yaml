@@ -64,7 +64,7 @@ services:
                 - gpu
     restart: unless-stopped
   crowdsec:
-    image: ghcr.io/crowdsecurity/crowdsec:v1.6.8
+    image: ghcr.io/crowdsecurity/crowdsec:v1.6.9
     container_name: crowdsec
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
