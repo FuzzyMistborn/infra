@@ -108,7 +108,7 @@ services:
                 - video
     restart: unless-stopped
   immich-machine-learning:
-    image: ghcr.io/immich-app/immich-machine-learning:v1.134.0-cuda
+    image: ghcr.io/immich-app/immich-machine-learning:v1.135.3-cuda
     container_name: immich_machine_learning
     volumes:
       - "{{ appdata_path }}/immich/model-cache:/cache"
