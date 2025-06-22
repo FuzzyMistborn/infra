@@ -140,7 +140,7 @@ services:
       - POSTGRES_INITDB_ARGS='--data-checksums'
     restart: unless-stopped
   whisper:
-    image: lscr.io/linuxserver/faster-whisper:2.4.0-gpu
+    image: lscr.io/linuxserver/faster-whisper:2.5.0-gpu
     container_name: whisper
     environment:
       - UID={{ main_uid }}
