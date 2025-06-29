@@ -87,7 +87,7 @@ autorestic_config_yaml:
         forget:
           keep-daily: 1
           keep-weekly: 8
-          keep-monthly: 4
+          keep-monthly: 3
 
 ### Caddy Config
 caddy_systemd_capabilities_enabled: true
