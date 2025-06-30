@@ -96,7 +96,7 @@ cronjobs:
 
 ### Autorestic Config
 autorestic_config_user: "{{ main_username}}"
-autorestic_config_directory: /home/"{{ main_username}}"
+autorestic_config_directory: "/home/{{ main_username}}"
 autorestic_run_check: false
 autorestic_config_yaml:
   version: 2

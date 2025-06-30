@@ -14,6 +14,7 @@ package_list:
   - name: sudo
   - name: nano
   - name: restic
+  - name: qemu-guest-agent
   - name: wget
 
 pull_backup: false
@@ -58,7 +59,7 @@ mountpoints:
 
 ### Autorestic Config
 autorestic_config_user: "{{ main_username}}"
-autorestic_config_directory: /home/"{{ main_username}}"
+autorestic_config_directory: "/home/{{ main_username}}"
 autorestic_run_check: false
 autorestic_config_yaml:
   version: 2
