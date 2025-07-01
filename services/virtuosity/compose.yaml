@@ -36,33 +36,6 @@ services:
     ports:
       - 3010:8080
     restart: unless-stopped
-  stable-diffusion-webui:
-    image: universonic/stable-diffusion-webui:minimal
-    container_name: stable-diffusion-webui
-    cap_add:
-      - NET_BIND_SERVICE
-    cap_drop:
-      - ALL
-    volumes:
-      - "{{ appdata_path }}/stable-diffusion/inputs:/app/stable-diffusion-webui/inputs"
-      - "{{ appdata_path }}/stable-diffusion/textual_inversion_templates:/app/stable-diffusion-webui/textual_inversion_templates"
-      - "{{ appdata_path }}/stable-diffusion/embeddings:/app/stable-diffusion-webui/embeddings"
-      - "{{ appdata_path }}/stable-diffusion/extensions:/app/stable-diffusion-webui/extensions"
-      - /mnt/llms/stable-diffusion/models:/app/stable-diffusion-webui/models
-      - /mnt/llms/stable-diffusion/outputs:/app/stable-diffusion-webui/outputs
-      - "{{ appdata_path }}/stable-diffusion/localizations:/app/stable-diffusion-webui/localizations"
-    ports:
-      - 8080:8080/tcp
-    command: --no-half --no-half-vae --precision full --medvram-sdxl --xformers --opt-sdp-attention --opt-sdp-no-mem-attention --opt-split-attention --opt-channelslast
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities:
-                - gpu
-    restart: unless-stopped
   crowdsec:
     image: ghcr.io/crowdsecurity/crowdsec:v1.6.9
     container_name: crowdsec

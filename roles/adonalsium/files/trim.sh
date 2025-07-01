@@ -7,7 +7,7 @@ echo "Trimming Invention"
 sudo pct fstrim 210
 
 echo "Trimming Endowment"
-sudo pct fstrim 250
+sudo pct fstrim 250 --ignore-mountpoint true
 
 echo "Trimming Autonomy"
 sudo pct fstrim 251

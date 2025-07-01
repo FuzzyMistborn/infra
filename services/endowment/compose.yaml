@@ -126,33 +126,6 @@ services:
     image: redis:8.0.2
     container_name: nextcloud-redis
     restart: unless-stopped
-  jellyfin:
-    image: ghcr.io/linuxserver/jellyfin:10.10.7
-    container_name: jellyfin
-    devices:
-      - /dev/dri/renderD128:/dev/dri/renderD128
-    volumes:
-      - "{{ appdata_path }}/jellyfin/config:/config"
-      - /mnt/scratch/transcode:/transcode
-      - /mnt/Media/Movies:/mnt/movies
-      - /mnt/Media/UHD:/mnt/UHD
-      - /mnt/Media/TV Shows:/mnt/tv
-      - /mnt/Media/Kids Movies:/mnt/kids
-      - /mnt/Media/Kids TV:/mnt/kids_tv
-      - /mnt/Media/YouTube/Kids:/mnt/kids_youtube
-      - /mnt/Media/YouTube/Pinchflat:/mnt/pinchflat
-      - /mnt/Media/Parents Movies:/mnt/parents_movies
-      - /mnt/Media/Parents TV:/mnt/parents_tv
-      - /mnt/Media/Family Videos:/mnt/home_videos
-    ports:
-      - 8096:8096
-    environment:
-      - UID={{ main_uid }}
-      - GID={{ main_gid }}
-      - PUID={{ main_uid }}
-      - PGID={{ main_gid }}
-      - TZ={{ ntp_timezone }}
-    restart: unless-stopped
   navidrome:
     image: ghcr.io/navidrome/navidrome:0.56.1
     container_name: navidrome
@@ -209,10 +182,9 @@ services:
       - "{{ appdata_path }}/nextcloud_docker/html/data:/var/log/nextcloud:ro"
       - "{{ appdata_path }}/sonarr/logs:/var/log/sonarr:ro"
       - "{{ appdata_path }}/radarr/logs:/var/log/radarr:ro"
-      - "{{ appdata_path }}/jellyfin/config/log/:/var/log/jellyfin:ro"
       - "{{ appdata_path }}/crowdsec/db:/var/lib/crowdsec/data/"
     environment:
-      - COLLECTIONS=LePresidente/jellyfin schiz0phr3ne/sonarr schiz0phr3ne/radarr crowdsecurity/nextcloud
+      - COLLECTIONS=schiz0phr3ne/sonarr schiz0phr3ne/radarr crowdsecurity/nextcloud
       - GID=1000
       - DISABLE_LOCAL_API=true
       - AGENT_USERNAME={{ hostname }}

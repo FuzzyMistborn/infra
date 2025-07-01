@@ -10,6 +10,7 @@ package_list:
   - name: ifupdown2
   - name: libgl1
   - name: libegl1
+  - name: intel-gpu-tools
   - name: restic
   - name: screen
   - name: sudo
@@ -85,10 +86,24 @@ lxc_vlans:
     nesting: 1
     keyctl: 1
 
+vm_uefi:
+  - name: Whimsy
+    vmid: 311
+    tag: 50
+    cores: 6
+    memory: 10240
+    balloon: 1024
+    onboot: true
+    pcie: '0000:03:00.0'
+    usb_devices:
+      - vendor_id: "1a6e"
+        product_id: "089a"
+        description: "Google USB Device"
+
 lxc_main:
   - name: Omada
     vmid: 410
-    privileged: true
+    privileged: false
     gw: 192.168.1.1
     ip: 192.168.1.10
     disk: 'local-lvm:15'
@@ -164,7 +179,7 @@ cronjobs:
 
 ### Autorestic Config
 autorestic_config_user: "{{ main_username}}"
-autorestic_config_directory: /home/"{{ main_username}}"
+autorestic_config_directory: "/home/{{ main_username}}"
 autorestic_run_check: false
 autorestic_config_yaml:
   version: 2
@@ -227,7 +242,7 @@ autorestic_config_yaml:
         forget:
           keep-daily: 1
           keep-weekly: 8
-          keep-monthly: 4
+          keep-monthly: 3
     config:
       from: '/mnt/Backup/config'
       to:
@@ -237,7 +252,7 @@ autorestic_config_yaml:
         forget:
           keep-daily: 1
           keep-weekly: 8
-          keep-monthly: 4
+          keep-monthly: 3
     nvr:
       from: '/mnt/Backup/NVR'
       to:
@@ -247,7 +262,7 @@ autorestic_config_yaml:
         forget:
           keep-daily: 1
           keep-weekly: 8
-          keep-monthly: 4
+          keep-monthly: 3
 
 ### Snapraid Config
 snapraid_force_install: false

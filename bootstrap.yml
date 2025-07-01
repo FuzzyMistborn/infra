@@ -55,7 +55,57 @@
         mode: 0600
     - name: Restart ssh
       service:
-        name: sshd
+        name: ssh
+        state: restarted
+
+- hosts: vms
+  remote_user: ansible
+  gather_facts: true
+  vars_files:
+    - 'vars/vault.yaml'
+  tasks:
+    - name: Ensure user groups exists
+      group:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - "{{ main_username }}"
+    - name: Add users
+      user:
+        name: "{{ item.user }}"
+        password: "{{ item.pass }}"
+        groups:
+          - "{{ item.user }}"
+          - sudo
+        shell: /bin/bash
+      loop:
+        - {user: "{{ main_username }}", pass: "{{ secret_main_user_pass }}"}
+    - name: Add sudoers file for ansible
+      copy:
+        src: sudoer_ansible
+        dest: /etc/sudoers.d/ansible
+        owner: root
+        group: root
+        mode: 0440
+    - name: SSH Keys
+      authorized_key:
+        user: "{{ item.user }}"
+        state: present
+        key: "{{ item.ssh }}"
+      loop:
+        - {user: "{{ main_username }}", ssh: "{{ secret_main_user_ssh }}"}
+        - {user: "{{ main_username }}", ssh: "{{ secret_main_user_alt_ssh }}"}
+        - {user: "{{ main_username }}", ssh: "{{ secret_main_user_pixel_ssh }}"}
+    - name: Add hardened SSH config
+      copy:
+        src: sshd_config
+        dest: /etc/ssh/sshd_config
+        owner: root
+        group: root
+        mode: 0600
+    - name: Restart ssh
+      service:
+        name: ssh
         state: restarted
 
 ### Arch/Fedora

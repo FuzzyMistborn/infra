@@ -1,5 +1,9 @@
 ---
 
+- name: Set a hostname
+  ansible.builtin.hostname:
+    name: "{{ hostname }}"
+
 - name: create directories
   file:
     path: "/home/{{ main_username }}/{{ item }}"
@@ -8,27 +12,6 @@
     group: "{{ main_groupname }}"
   loop:
     - docker
-    - scripts
-
-- name: Copy scripts
-  copy:
-    src: "{{ item.path }}"
-    dest: /home/{{ main_username }}/scripts/{{ item.path }}
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: "{{ item.mode }}"
-  loop:
-    - {path: "nextcloud_cron.sh", mode: "+x"}
-
-- name: Copy photos script templates
-  template:
-    src: "{{ item.src }}"
-    dest: /home/{{ main_username }}/scripts/{{ item.dest }}
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: +x
-  loop:
-    - {src: 'photos.sh.j2', dest: 'photos.sh'}
 
 #### Mount disks
 - name: Set up disks/mounts

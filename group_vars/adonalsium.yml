@@ -10,6 +10,7 @@ package_list:
   - name: ifupdown2
   - name: libgl1
   - name: libegl1
+  - name: intel-gpu-tools
   - name: restic
   - name: sudo
   - name: screen
@@ -72,7 +73,7 @@ nfs_mount:
 lxc_vlans:
   - name: Honor
     vmid: 200
-    privileged: true
+    privileged: false
     gw: 192.168.50.1
     ip: 192.168.50.10
     tag: 50
@@ -83,7 +84,7 @@ lxc_vlans:
     keyctl: 1
   - name: Invention
     vmid: 210
-    privileged: true
+    privileged: false
     gw: 192.168.30.1
     ip: 192.168.30.7
     tag: 30
@@ -95,7 +96,7 @@ lxc_vlans:
     onboot: false
   - name: Autonomy
     vmid: 251
-    privileged: false
+    privileged: true
     gw: 192.168.30.1
     ip: 192.168.30.5
     tag: 30
@@ -107,7 +108,7 @@ lxc_vlans:
     keyctl: 1
   - name: Cultivation
     vmid: 252
-    privileged: true
+    privileged: false
     gw: 192.168.50.1
     ip: 192.168.50.21
     tag: 50
@@ -118,7 +119,7 @@ lxc_vlans:
     keyctl: 1
   - name: Preservation
     vmid: 253
-    privileged: true
+    privileged: false
     gw: 192.168.50.1
     ip: 192.168.50.22
     tag: 50
@@ -131,7 +132,7 @@ lxc_vlans:
 lxc_mounts:
   - name: Endowment
     vmid: 250
-    privileged: false
+    privileged: true
     gw: 192.168.50.1
     ip: 192.168.50.20
     bridge: vmbr2
@@ -155,6 +156,7 @@ vm_uefi:
     bios: ovmf
     onboot: true
     iso: ubuntu-24.04-live-server-amd64.iso
+    pcie: '0000:01:00'
 
 ### LNXLink
 lnxlink_bash: true
@@ -217,7 +219,7 @@ cronjobs:
 
 ### Autorestic Config
 autorestic_config_user: "{{ main_username}}"
-autorestic_config_directory: /home/"{{ main_username}}"
+autorestic_config_directory: "/home/{{ main_username}}"
 autorestic_run_check: false
 autorestic_config_yaml:
   version: 2
@@ -335,7 +337,7 @@ autorestic_config_yaml:
         forget:
           keep-daily: 1
           keep-weekly: 8
-          keep-monthly: 4
+          keep-monthly: 3
     photos:
       from: '/mnt/Media/Photos'
       to:
@@ -345,7 +347,7 @@ autorestic_config_yaml:
         forget:
           keep-daily: 1
           keep-weekly: 8
-          keep-monthly: 4
+          keep-monthly: 3
     immich:
       from: '/mnt/Media/Immich'
       to:
@@ -354,7 +356,7 @@ autorestic_config_yaml:
         forget:
           keep-daily: 1
           keep-weekly: 8
-          keep-monthly: 4
+          keep-monthly: 3
     music:
       from: '/mnt/Media/Music'
       to:
@@ -364,7 +366,7 @@ autorestic_config_yaml:
         forget:
           keep-daily: 1
           keep-weekly: 8
-          keep-monthly: 4
+          keep-monthly: 3
     audiobooks:
       from: '/mnt/Media/Audiobooks'
       to:
@@ -374,7 +376,7 @@ autorestic_config_yaml:
         forget:
           keep-daily: 1
           keep-weekly: 8
-          keep-monthly: 4
+          keep-monthly: 3
     ebooks:
       from: '/mnt/Media/Ebooks'
       to:
@@ -384,7 +386,7 @@ autorestic_config_yaml:
         forget:
           keep-daily: 1
           keep-weekly: 8
-          keep-monthly: 4
+          keep-monthly: 3
     files:
       from: '/mnt/Media/Files'
       to:
@@ -398,7 +400,7 @@ autorestic_config_yaml:
         forget:
           keep-daily: 1
           keep-weekly: 8
-          keep-monthly: 4
+          keep-monthly: 3
 
 ### Snapraid Config
 snapraid_force_install: false

@@ -102,11 +102,3 @@
     name: net.ipv4.ip_forward
     value: 1
     reload: yes
-
-- name: Reboot Cronjob
-  cron:
-    name: "Set /dev/dri to 777"
-    job: "chmod -R 777 /dev/dri"
-    user: "root"
-    special_time: reboot
-    state: present

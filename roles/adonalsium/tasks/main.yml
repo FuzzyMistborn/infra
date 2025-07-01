@@ -125,14 +125,6 @@
     value: 1
     reload: yes
 
-- name: Reboot Cronjob
-  cron:
-    name: "Set /dev/dri to 777"
-    job: "chmod -R 777 /dev/dri"
-    user: "root"
-    special_time: reboot
-    state: present
-
 - name: Fix e1000 driver hang
   command: ethtool -K eno1 tso off gso off
   become: yes

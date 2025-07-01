@@ -220,6 +220,23 @@
     - role: install/lnxlink
     - role: docker-compose-generator
 
+- hosts: whimsy
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+  roles:
+    - role: grog.package
+    - role: geerlingguy.samba
+    - role: geerlingguy.docker
+    - role: install/autorestic
+    - role: install/lnxlink
+    - role: install/runitor
+    - role: install/zsh
+    - role: whimsy
+    - role: bash_alias
+    - role: cronjobs
+    - role: docker-compose-generator
+
 - hosts: cultivation
   become: true
   vars_files:

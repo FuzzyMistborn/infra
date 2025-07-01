@@ -1,17 +1,19 @@
 ---
 target_os: ubuntu
-hostname: endowment
+hostname: whimsy
 
 ### Install packages with grog.package
 package_list:
   - name: acl
   - name: curl
   - name: cifs-utils
+  - name: cron
   - name: git
   - name: htop
   - name: lm-sensors
+  - name: intel-gpu-tools
   - name: net-tools
-  - name: python
+  - name: qemu-guest-agent
   - name: restic
   - name: sudo
   - name: wget
@@ -23,8 +25,6 @@ smb_mountpoints:
     opts: "defaults,uid=1000,gid=1000,credentials=/home/{{ main_username }}/.smbcredentials"
 
 pull_backup: false
-
-### LNXLink
 lnxlink_diskuse: true
 
 ### Bash Aliases
@@ -35,32 +35,32 @@ bash_apt: true
 
 ### Cronjobs
 cronjobs:
-  - name: Nextcloud
-    job: /home/{{ main_username }}/scripts/nextcloud_cron.sh
+  - name: Restart Jellyfin
+    job: docker container restart jellyfin > /dev/null 2>&1
     user: "{{ main_username }}"
-    minute: '*/5'
+    hour: 2
+    minute: 30
   - name: Restic Prune
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_endowment }} -- /usr/local/bin/autorestic forget -a -- prune
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_whimsy }} -- /usr/local/bin/autorestic forget -a -- prune
     user: "{{ main_username }}"
     minute: 30
     hour: 22
     weekday: 1
   - name: Restic Check
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_check_endowment }} -- /usr/local/bin/autorestic exec -a -- check
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_check_whimsy }} -- /usr/local/bin/autorestic exec -a -- check
     user: "{{ main_username }}"
     minute: 30
     hour: 2
     day: 1
-  - name: Photo Reorg
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_photo_reorg }} -- /home/{{ main_username }}/scripts/photos.sh
-    user: "{{ main_username }}"
-    minute: 0
-    hour: 3
   - name: Media Backup
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_backup_endowment }} -- /usr/local/bin/autorestic backup -a -c /home/{{ main_username }}/.autorestic.yml
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_backup_whimsy }} -- /usr/local/bin/autorestic backup -a -c /home/{{ main_username }}/.autorestic.yml
     user: root
     minute: 30
     hour: 0
+
+### Docker Compose
+docker_compose_generator_uid: 1001
+docker_compose_generator_gid: 1001
 
 ### Autorestic Config
 autorestic_config_user: "{{ main_username}}"
@@ -71,14 +71,14 @@ autorestic_config_yaml:
   backends:
     local_docker:
       type: rest
-      path: 'http://192.168.1.5:8500/endowment'
+      path: 'http://192.168.1.5:8500/whimsy'
       key: "{{ secret_restic_repo_password }}"
       rest:
         user: "{{ secret_restic_rest_user }}"
         password: "{{ secret_restic_rest_password }}"
     b2_docker:
       type: b2
-      path: "{{ secret_restic_b2_bucket }}:/endowment"
+      path: "{{ secret_restic_b2_bucket }}:/whimsy"
       key: "{{ secret_restic_repo_password }}"
       env:
         - B2_ACCOUNT_ID: "{{ secret_restic_b2_account_id }}"
@@ -95,5 +95,5 @@ autorestic_config_yaml:
             - 'transcodes'
         forget:
           keep-daily: 1
-          keep-weekly: 8
+          keep-weekly: 6
           keep-monthly: 3

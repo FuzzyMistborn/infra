@@ -47,6 +47,9 @@ ansible-lint: yamllint
 bootstrap_lxc:
 	ansible-playbook -b bootstrap.yml --limit lxc ambition
 
+bootstrap_vm +HOST:
+	ansible-playbook -b bootstrap.yml --limit {{ HOST }} --ask-pass --ask-become-pass
+
 bootstrap +HOST:
 	ansible-playbook -b bootstrap.yml --limit {{ HOST }} --ask-pass --ask-become-pass
 
