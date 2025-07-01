@@ -127,7 +127,7 @@ services:
     container_name: nextcloud-redis
     restart: unless-stopped
   navidrome:
-    image: ghcr.io/navidrome/navidrome:0.56.1
+    image: ghcr.io/navidrome/navidrome:0.57.0
     container_name: navidrome
     volumes:
       - "{{ appdata_path }}/navidrome/data:/data"
