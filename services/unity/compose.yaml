@@ -42,7 +42,7 @@ services:
       - 3000:3000/tcp
     restart: unless-stopped
   portainer_agent:
-    image: portainer/agent:2.31.1
+    image: portainer/agent:2.31.3
     container_name: portainer_agent
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
