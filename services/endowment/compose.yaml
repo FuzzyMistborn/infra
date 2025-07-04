@@ -150,22 +150,17 @@ services:
       - 8945:8945
     environment:
       - TZ={{ ntp_timezone }}
-  calibre-web-automated:
-    image: crocodilestick/calibre-web-automated:V3.0.4
-    container_name: calibre-web-automated
+  komga:
+    image: gotson/komga:1.22.0
+    container_name: komga
     volumes:
-      - "{{ appdata_path }}/calibre-web-automated:/config"
-      - /mnt/Media/Ebooks/Calibre:/calibre-library
-      - /mnt/Media/Ebooks/Import:/cwa-book-ingest
+      - "{{ appdata_path }}/komga/config:/config"
+      - /mnt/Media/Ebooks/Komga:/data
     ports:
-      - 8083:8083
+      - 25600:25600
+    user: "1000:1000"
     environment:
-      - UID={{ main_uid }}
-      - GID={{ main_gid }}
-      - PUID={{ main_uid }}
-      - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
-      - DOCKER_MODS=linuxserver/mods:universal-calibre
     restart: unless-stopped
   southwest:
     image: jdholtz/auto-southwest-check-in:v8.3
