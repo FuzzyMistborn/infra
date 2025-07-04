@@ -96,8 +96,8 @@ vm_uefi:
     onboot: true
     pcie: '0000:03:00.0'
     usb_devices:
-      - vendor_id: "1a6e"
-        product_id: "089a"
+      - vendor_id: "18d1"
+        product_id: "9302"
         description: "Google USB Device"
 
 lxc_main:
