@@ -44,7 +44,7 @@
 ### Restic
 - name: Copy systemd service file
   template:
-    src: ../templates//systemd/{{ item }}.j2
+    src: ../templates/systemd/{{ item }}.j2
     dest: /etc/systemd/system/{{ item }}
     owner: root
     group: root

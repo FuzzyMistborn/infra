@@ -69,7 +69,7 @@
 - name: Stop resolved
   service:
     name: systemd-resolved
-    enabled: no
+    enabled: false
     state: stopped
 
 - name: Copy WG Tunnel Check Scripts
