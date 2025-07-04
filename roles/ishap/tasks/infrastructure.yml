@@ -159,14 +159,11 @@
     VMID="{{ item.0.vmid }}"
     USB_VENDOR="{{ item.1.vendor_id }}"
     USB_PRODUCT="{{ item.1.product_id }}"
-    
     # Find next available USB slot
     LAST_USB=$(qm config $VMID | grep -E "^usb[0-9]:" | sed 's/usb\([0-9]\+\):.*/\1/' | sort -n | tail -1)
     NEXT_USB=$((${LAST_USB:-0} + 1))
-    
     # Add the USB device
     qm set $VMID -usb${NEXT_USB} host=${USB_VENDOR}:${USB_PRODUCT}
-    
     echo "USB device ${USB_VENDOR}:${USB_PRODUCT} added to VM {{ item.0.name }} ($VMID) as usb${NEXT_USB}"
   register: add_usb_results
   with_subelements:

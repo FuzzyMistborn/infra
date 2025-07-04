@@ -98,7 +98,10 @@ vm_uefi:
     usb_devices:
       - vendor_id: "18d1"
         product_id: "9302"
-        description: "Google USB Device"
+        description: "Google USB Device Initialized"
+      - vendor_id: "1a6e"
+        product_id: "089a"
+        description: "Google USB Device Uninitialized"
 
 lxc_main:
   - name: Omada
