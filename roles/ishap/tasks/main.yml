@@ -21,6 +21,19 @@
     - {user: "{{ main_username }}", pass: "{{ secret_main_user_pass }}"}
     - {user: ansible, pass: "{{ secret_ansible_pass }}"}
 
+- name: Add samba users
+  user:
+    name: samba
+    password: "!"
+    create_home: no
+
+- name: Add samba user password
+  command:
+    cmd: /usr/bin/smbpasswd -s -a samba
+    stdin: |
+      {{ secret_samba_pass }}
+      {{ secret_samba_pass }}
+
 - name: Add sudoers file for ansible
   copy:
     src: sudoer_ansible
@@ -74,6 +87,17 @@
 - name: Set up containers
   include_tasks: infrastructure.yml
   when: infrastructure == true
+
+- name: Install samba config
+  template:
+    src: smb.conf.j2
+    dest: /etc/samba/smb.conf
+    owner: root
+    group: root
+- name: Restart samba
+  service:
+    name: smbd
+    state: restarted
 
 ### udev Rules
 - name: Add udev rules

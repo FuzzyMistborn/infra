@@ -38,7 +38,6 @@ package_list:
   - name: ncdu
   - name: net-tools
   - name: nextcloud-client
-  - name: nfs-utils
   - name: pdfarranger
   - name: python
   - name: python-psutil
@@ -77,14 +76,14 @@ flatpak_list:
 
 ### Mounts
 mountpoints:
-  - path: /mnt/Backup
-    source: 192.168.1.5:/config
-    fs: nfs
-    opts: "defaults"
-  - path: /mnt/NVR
-    source: 192.168.1.5:/NVR
-    fs: nfs
-    opts: "defaults"
+  - path: "/mnt/Backup"
+    source: "//192.168.1.5/Backup/config"
+    fs: cifs
+    opts: "_netdev,noauto,nofail,x-systemd.automount,uid=1000,gid=1000,credentials=/home/{{ main_username }}/.smbcredentials"
+  - path: "/mnt/NVR"
+    source: "//192.168.1.5/Backup/NVR"
+    fs: cifs
+    opts: "_netdev,noauto,nofail,x-systemd.automount,uid=1000,gid=1000,credentials=/home/{{ main_username }}/.smbcredentials"
   - path: "/mnt/Media"
     source: "//192.168.1.10/Media"
     fs: cifs

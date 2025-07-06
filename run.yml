@@ -118,6 +118,7 @@
     - role: grog.package
     - role: geerlingguy.pip
     - role: install/pip_packages
+    - role: geerlingguy.samba
     - role: geerlingguy.nfs
     - role: install/mergerfs
     - role: install/autorestic

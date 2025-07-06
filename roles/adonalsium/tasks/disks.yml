@@ -4,7 +4,7 @@
   mount:
     path: "{{ item.path }}"
     state: unmounted
-  loop: "{{ data_disks + parity_disks + nfs_mount }}"
+  loop: "{{ data_disks + parity_disks + cifs_mount }}"
 
 - name: create /mnt points
   file:
@@ -13,7 +13,7 @@
     owner: nobody
     group: nogroup
     mode: 0777
-  loop: "{{ mergerfs_mount + data_disks + parity_disks + nfs_mount + external_mount }}"
+  loop: "{{ mergerfs_mount + data_disks + parity_disks + cifs_mount + external_mount }}"
 
 - name: mount disks
   mount:
@@ -25,7 +25,7 @@
     state: mounted
   loop: "{{ data_disks + parity_disks }}"
 
-- name: NFS mounts to fstab
+- name: CIFS mounts to fstab
   mount:
     path: "{{ item.path }}"
     src: "{{ item.source }}"
@@ -33,7 +33,7 @@
     opts: "{{ item.opts }}"
     # change to 'mounted' to auto mount versus 'present' for just loaded into fstab
     state: present
-  loop: "{{ nfs_mount }}"
+  loop: "{{ cifs_mount }}"
 
 - name: mount mergerfs array
   mount:

@@ -28,7 +28,22 @@
     create_home: no
 
 - name: Add samba user password
-  shell: "printf '{{ secret_samba_pass }}\n{{ secret_samba_pass }}\n' | smbpasswd -a samba"
+  command:
+    cmd: /usr/bin/smbpasswd -s -a samba
+    stdin: |
+      {{ secret_samba_pass }}
+      {{ secret_samba_pass }}
+
+- name: Add smbcredentials
+  copy:
+    dest: /home/{{ main_username }}/.smbcredentials
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0600
+    content: |
+      user=samba
+      password={{ secret_samba_pass }}
+      domain=cosmere
 
 - name: Add sudoers file for ansible
   copy:

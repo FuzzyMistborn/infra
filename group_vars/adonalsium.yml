@@ -62,12 +62,11 @@ fstab_mergerfs:
     fs: fuse.mergerfs
     opts: "defaults,nonempty,allow_other,use_ino,cache.files=off,moveonenospc=true,category.create=mfs,dropcacheonclose=true,minfreespace=100G,fsname=mergerfs"
 
-nfs_mount:
-  - path: /mnt/local_backup
-    source: 192.168.1.5:/mnt/Backup/
-    fs: nfs
-    opts: defaults
-    content: false
+cifs_mount:
+  - path: "/mnt/local_backup"
+    source: "//192.168.1.5/Backup"
+    fs: cifs
+    opts: "_netdev,noauto,nofail,x-systemd.automount,uid=1000,gid=1000,credentials=/home/{{ main_username }}/.smbcredentials"
 
 ### Infrastructure
 lxc_vlans:
