@@ -372,20 +372,6 @@
     - role: bash_alias
     - role: cronjobs
 
-### Desktops/Laptops
-- hosts: design
-  become: true
-  vars_files:
-    - 'vars/vault.yaml'
-    - 'group_vars/design.yml'
-  roles:
-    - role: grog.package
-    - role: geerlingguy.pip
-    - role: install/pip_packages
-    - role: design
-    - role: bash_alias
-    - role: install/zsh
-
 - hosts: hoid
   become: true
   vars_files:

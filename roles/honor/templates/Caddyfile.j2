@@ -57,7 +57,7 @@ smarthome.{{ secret_personal_url }} {
 }
 # Frigate
 frigate.{{ secret_personal_url }} {
-	reverse_proxy http://192.168.50.24:8971
+	reverse_proxy http://192.168.1.10:8971
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import headers
 }

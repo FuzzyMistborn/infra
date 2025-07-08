@@ -150,6 +150,7 @@ services:
       - 8945:8945
     environment:
       - TZ={{ ntp_timezone }}
+    restart: unless-stopped
   komga:
     image: gotson/komga:1.22.0
     container_name: komga
