@@ -82,9 +82,6 @@ settings:
       command: /usr/sbin/qm start 300
     - name: Stop Trell
       command: /usr/sbin/qm stop 300
-{% elif ansible_hostname == "adonalsium" %}
-  bash:
-    expose:
     - name: Start Invention
       command: /usr/sbin/pct start 210
     - name: Stop Invention
