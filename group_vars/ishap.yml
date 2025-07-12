@@ -21,36 +21,11 @@ pip_packages:
   - proxmoxer
 
 ### Disks
-mergerfs_mount:
+zfs_mount:
   - path: /mnt/Backup
 
 external_mount:
   - path: /media/external_hdd
-
-parity_disks:
-  - path: /mnt/parity1
-    source: /dev/disk/by-id/wwn-0x50014ee20bf4b5c6-part1
-    fs: ext4
-    opts: defaults
-    content: false
-
-data_disks:
-  - path: /mnt/disk1
-    source: /dev/disk/by-id/wwn-0x50014ee20c155f4e-part1
-    fs: ext4
-    opts: defaults
-    content: true
-  - path: /mnt/disk2
-    source: /dev/disk/by-id/wwn-0x50014ee2616a8078-part1
-    fs: ext4
-    opts: defaults
-    content: true
-
-fstab_mergerfs:
-  - source: "/mnt/disk*"
-    mountpoint: "/mnt/Backup"
-    fs: fuse.mergerfs
-    opts: "defaults,nonempty,allow_other,use_ino,cache.files=off,moveonenospc=true,category.create=mfs,dropcacheonclose=true,minfreespace=100G,fsname=mergerfs"
 
 ### Infrastructure
 lxc_vlans:
@@ -266,47 +241,3 @@ autorestic_config_yaml:
           keep-daily: 1
           keep-weekly: 8
           keep-monthly: 3
-
-### Snapraid Config
-snapraid_force_install: false
-snapraid_install: true
-snapraid_runner: true
-snapraid_data_disks:
-  - path: /mnt/disk1
-    content: true
-  - path: /mnt/disk2
-    content: true
-snapraid_parity_disks:
-  - path: /mnt/parity1
-    content: true
-snapraid_bin_path: /usr/local/bin/snapraid
-snapraid_runner_email_address_from: "{{ secret_snapraid_email_from }}"
-snapraid_runner_email_address_to: "{{ secret_snapraid_email_to }}"
-snapraid_runner_email_address: "{{ secret_snapraid_email_address }}"
-snapraid_runner_email_pass: "{{ secret_snapraid_email_pass }}"
-snapraid_runner_smtp_host: "{{ secret_snapraid_smtp_host }}"
-snapraid_runner_email_subject: "[SnapRAID] Ishap Status Report"
-snapraid_runner_smtp_port: 465
-snapraid_runner_use_ssl: true
-snapraid_runner_touch: false
-snapraid_runner_command: "python3 {{ snapraid_runner_bin }} -c {{ snapraid_runner_conf }}"
-snapraid_runner_cron_jobs:
-  - {job: '/usr/local/bin/runitor -uuid {{ secret_hc_ishap_snapraid }} -- {{ snapraid_runner_command }}', name: 'snapraid_runner', weekday: '*', hour: '04'}
-snapraid_config_excludes:
-  - "*.unrecoverable"
-  - "/tmp/"
-  - "/lost+found/"
-  - "downloads/"
-  - "appdata/"
-  - "*.!sync"
-  - ".AppleDouble"
-  - "._AppleDouble"
-  - ".DS_Store"
-  - "._.DS_Store"
-  - ".Thumbs.db"
-  - ".fseventsd"
-  - ".Spotlight-V100"
-  - ".TemporaryItems"
-  - ".AppleDB"
-  - ".Trash*"
-  - "*.raw"

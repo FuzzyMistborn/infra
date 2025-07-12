@@ -15,9 +15,12 @@
 
 [backup]
   comment = Backup on ishap
-  public = yes
-  writeable = yes
   path = /mnt/Backup
   valid users = samba
   force user = {{ main_username }}
   force group = {{ main_username }}
+  writeable = yes
+  case sensitive = no
+  vfs objects = acl_xattr
+  map acl inherit = yes
+  store dos attributes = yes

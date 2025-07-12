@@ -130,7 +130,6 @@
     - role: geerlingguy.docker
     - role: geerlingguy.ntp
     - role: docker-compose-generator
-    - role: ironicbadger.snapraid
 
 ### LXCs/VMs/VPS
 - hosts: dominion
