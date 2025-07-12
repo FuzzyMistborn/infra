@@ -41,6 +41,20 @@ services:
     environment:
       - AGENT_SECRET={{ secret_portainer_key }}
     restart: unless-stopped
+  pocket-id:
+    image: ghcr.io/pocket-id/pocket-id:v1.6.2
+    container_name: pocket-id
+    restart: unless-stopped
+    environment:
+     - APP_URL=https://id.{{ secret_personal_url }}
+     - TRUST_PROXY=false
+     - MAXMIND_LICENSE_KEY={{ secret_pocket_id_maxmind_api }}
+     - PUID=1000
+     - PGID=1000
+    ports:
+      - 1411:1411
+    volumes:
+      - "{{ appdata_path }}/pocketid/data:/app/data"
   adguard-sync:
     image: ghcr.io/linuxserver/adguardhome-sync:0.7.6
     container_name: adguard-sync
