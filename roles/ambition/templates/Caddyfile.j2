@@ -98,6 +98,8 @@
 		not maxmind_geolocation {
 			db_path "/home/{{ main_username }}/caddy/GeoLite2-Country.mmdb"
 			deny_countries RU CN UNK
+			not remote_ip 10.0.0.0/24
+			not remote_ip 172.17.0.0/16
 		}
 	}
 	respond @geofilter 403
@@ -107,6 +109,8 @@
 		not maxmind_geolocation {
 			db_path "/home/{{ main_username }}/caddy/GeoLite2-Country.mmdb"
 			allow_countries US
+			not remote_ip 10.0.0.0/24
+			not remote_ip 172.17.0.0/16
 		}
 	}
 	respond @geofilter 403
@@ -241,7 +245,7 @@ uptime.{{ secret_personal_url }} {
 	reverse_proxy localhost:3001
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
-	import max-geofilter
+#	import max-geofilter
 }
 
 smarthome.{{ secret_personal_url }} {

@@ -46,11 +46,23 @@ services:
     container_name: pocket-id
     restart: unless-stopped
     environment:
+      - APP_NAME=Identity
       - APP_URL=https://id.{{ secret_personal_url }}
-      - TRUST_PROXY=false
+      - TRUST_PROXY=true
+      - SESSION_DURATION=120
       - MAXMIND_LICENSE_KEY={{ secret_pocket_id_maxmind_api }}
+      - ENCRYPTION_KEY={{ secret_pocket_id_encryption_key }}
       - PUID=1000
       - PGID=1000
+      - ALLOW_OWN_ACCOUNT_EDIT=true
+      - EMAILS_VERIFIED=true
+      - EMAIL_ONE_TIME_ACCESS_AS_ADMIN_ENABLED=true
+      - SMTP_HOST={{ secret_snapraid_smtp_host }}
+      - SMTP_PORT=587
+      - SMTP_FROM=pocketid@{{ secret_personal_url }}
+      - SMTP_USER={{ secret_snapraid_email_address }}
+      - SMTP_PASSWORD={{ secret_snapraid_email_pass }}
+      - SMTP_TLS=starttls
     ports:
       - 1411:1411
     volumes:

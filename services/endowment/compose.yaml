@@ -162,6 +162,7 @@ services:
     user: "1000:1000"
     environment:
       - TZ={{ ntp_timezone }}
+      - KOMGA_OIDC_EMAIL_VERIFICATION=false
     restart: unless-stopped
   southwest:
     image: jdholtz/auto-southwest-check-in:v8.3
