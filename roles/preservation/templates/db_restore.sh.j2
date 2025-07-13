@@ -24,6 +24,11 @@ cd /home/{{ main_username }}/db_backups/invidious
 LAST_INVIDIOUS=$(ls -t | head -n 1)
 cat /home/{{ main_username }}/db_backups/invidious/$LAST_INVIDIOUS | docker exec -i invidious-db psql -U kemal -d invidious
 
+echo Restoring Linkwarden DB
+cd /home/{{ main_username }}/db_backups/linkwarden
+LAST_LINKWARDEN=$(ls -t | head -n 1)
+cat /home/{{ main_username }}/db_backups/linkwarden/$LAST_LINKWARDEN | docker exec -i linkwarden-db psql -U postgres -d postgres
+
 #echo Restoring InfluxDB
 # Run `docker exec -it influx-db sh` and then run below commands
 # influx setup -t {{ secret_influxdb_token }}

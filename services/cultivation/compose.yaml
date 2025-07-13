@@ -219,20 +219,31 @@ services:
       - SCREEN_DEPTH=16
       - MAX_CONCURRENT_CHROME_PROCESSES=10
       - STATS_REFRESH_SECONDS=120
-  readeck:
-    image: codeberg.org/readeck/readeck:0.19.2
-    container_name: readeck
+  linkwarden:
+    image: ghcr.io/linkwarden/linkwarden:latest
+    container_name: linkwarden
     ports:
-      - 8100:8000
+      - 3000:3000
     environment:
-      - READECK_LOG_LEVEL=info
-      - READECK_SERVER_HOST=0.0.0.0
-      - READECK_SERVER_PORT=8000
-      - READECK_SERVER_PREFIX=/
-      - READECK_ALLOWED_HOSTS=readlater.{{ secret_personal_internal_url }}
+      - DATABASE_URL={{secret_linkwarden_db_url}}
+      - NEXTAUTH_URL=https://linkwarden.{{ secret_personal_url }}
+      - NEXTAUTH_URL_INTERNAL=http://localhost:3000
+      - NEXTAUTH_SECRET={{ secret_linkwarden_nextauth }}
+      - NEXT_PUBLIC_OLLAMA_ENDPOINT_URL=http://192.168.50.25:11434
+      - OLLAMA_MODEL=gemma3:latest
+#      - ANTHROPIC_API_KEY={{ secret_linkwarden_anthropic_api_key }}
+#      - ANTHROPIC_MODEL=claude-3-5-haiku-latest
     volumes:
-      - "{{ appdata_path }}/change:/readeck"
+      - "{{ appdata_path }}/linkwarden/data:/data/data"
     restart: unless-stopped
+  linkwarden-meilisearch:
+    image: getmeili/meilisearch:v1.12.8
+    container_name: linkwarden-meilisearch
+    restart: unless-stopped
+    environment:
+      - MEILI_MASTER_KEY={{ secret_meilisearch_key }}
+    volumes:
+      - "{{ appdata_path }}/linkwarden/meili_data:/meili_data"
   memos:
     image: neosmemo/memos:0.24.4
     container_name: memos

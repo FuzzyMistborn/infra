@@ -469,3 +469,15 @@ id.{{ secret_personal_url }} {
 	import personal_headers
 	import max-geofilter
 }
+
+linkwarden.{{ secret_personal_url }} {
+	crowdsec
+	reverse_proxy https://10.10.10.10:443 {
+		transport http {
+			tls_server_name linkwarden.{{ secret_personal_url }}
+		}
+	}
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	import personal_headers
+	import geofilter
+}

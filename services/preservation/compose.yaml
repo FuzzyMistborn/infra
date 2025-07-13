@@ -90,6 +90,20 @@ services:
       - POSTGRES_PASSWORD={{ secret_invidious_db_pass }}
     mem_limit: 200M
     restart: unless-stopped
+  linkwarden-db:
+    image: postgres:16-alpine
+    container_name: linkwarden-db
+    volumes:
+      - "{{ appdata_path }}/linkwarden/data:/var/lib/postgresql/data"
+    labels:
+      - diun.enable=true
+      - diun.regopt=docker.io
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_PASSWORD={{ secret_linkwarden_db_pass }}
+    mem_limit: 200M
+    restart: unless-stopped
   phpmyadmin:
     image: ghcr.io/linuxserver/phpmyadmin:5.2.2
     container_name: phpmyadmin
