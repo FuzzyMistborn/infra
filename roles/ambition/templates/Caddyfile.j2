@@ -8,11 +8,11 @@
 	}
 	email {{ secret_email }}
 	order crowdsec first
-    order authenticate before respond
-    order authorize before basicauth
+	order authenticate before respond
+	order authorize before basicauth
 
 	# caddy-security
-    security {
+	security {
 		oauth identity provider pocket-id {
 			realm pocket-id
 			driver generic
@@ -48,7 +48,7 @@
 			bypass uri prefix /badge/
 		}
 	}
-	
+
 	# Crowdsec Bouncer
 	crowdsec {
 		api_url http://localhost:8080
@@ -93,6 +93,24 @@
 		authorize with pocket-id
 	}
 }
+(geofilter) {
+	@geofilter {
+		not maxmind_geolocation {
+			db_path "/home/{{ main_username }}/caddy/GeoLite2-Country.mmdb"
+			deny_countries RU CN UNK
+		}
+	}
+	respond @geofilter 403
+}
+(max-geofilter) {
+	@geofilter {
+		not maxmind_geolocation {
+			db_path "/home/{{ main_username }}/caddy/GeoLite2-Country.mmdb"
+			allow_countries US
+		}
+	}
+	respond @geofilter 403
+}
 
 ### FuzzyMistborn.com
 
@@ -135,6 +153,7 @@ hc.fuzzymistborn.com {
 	reverse_proxy localhost:8000
 	tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key
 	import fuzzy_headers
+	import max-geofilter
 }
 
 stats.fuzzymistborn.com {
@@ -149,6 +168,7 @@ gist.fuzzymistborn.com {
 	reverse_proxy localhost:6157
 	tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key
 	import fuzzy_headers
+	import geofilter
 }
 
 drop.fuzzymistborn.com {
@@ -157,6 +177,7 @@ drop.fuzzymistborn.com {
 	reverse_proxy localhost:3200
 	tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key
 	import fuzzy_headers
+	import max-geofilter
 }
 
 git.fuzzymistborn.com {
@@ -164,6 +185,7 @@ git.fuzzymistborn.com {
 	reverse_proxy localhost:3030
 	tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key
 	import fuzzy_headers
+	import max-geofilter
 }
 
 github.ci.fuzzymistborn.com {
@@ -171,6 +193,7 @@ github.ci.fuzzymistborn.com {
 	reverse_proxy localhost:4000
 	tls /home/{{ main_username }}/lego/certificates/_.ci.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.ci.fuzzymistborn.com.key
 	import fuzzy_headers
+	import max-geofilter
 }
 
 gitea.ci.fuzzymistborn.com {
@@ -178,6 +201,7 @@ gitea.ci.fuzzymistborn.com {
 	reverse_proxy localhost:4001
 	tls /home/{{ main_username }}/lego/certificates/_.ci.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.ci.fuzzymistborn.com.key
 	import fuzzy_headers
+	import max-geofilter
 }
 
 giteaagent.ci.fuzzymistborn.com {
@@ -185,6 +209,7 @@ giteaagent.ci.fuzzymistborn.com {
 	reverse_proxy h2c://localhost:9002
 	tls /home/{{ main_username }}/lego/certificates/_.ci.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.ci.fuzzymistborn.com.key
 	import fuzzy_headers
+	import max-geofilter
 }
 
 githubagent.ci.fuzzymistborn.com {
@@ -192,6 +217,7 @@ githubagent.ci.fuzzymistborn.com {
 	reverse_proxy h2c://localhost:9000
 	tls /home/{{ main_username }}/lego/certificates/_.ci.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.ci.fuzzymistborn.com.key
 	import fuzzy_headers
+	import max-geofilter
 }
 
 *.fuzzymistborn.com {
@@ -206,6 +232,7 @@ ntfy.{{ secret_personal_url }} {
 	reverse_proxy localhost:4600
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
+	import max-geofilter
 }
 
 uptime.{{ secret_personal_url }} {
@@ -214,6 +241,7 @@ uptime.{{ secret_personal_url }} {
 	reverse_proxy localhost:3001
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
+	import max-geofilter
 }
 
 smarthome.{{ secret_personal_url }} {
@@ -225,6 +253,7 @@ smarthome.{{ secret_personal_url }} {
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
+	import geofilter
 }
 
 frigate.{{ secret_personal_url }} {
@@ -237,6 +266,7 @@ frigate.{{ secret_personal_url }} {
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
+	import max-geofilter
 }
 
 cloud.{{ secret_personal_url }} {
@@ -249,6 +279,7 @@ cloud.{{ secret_personal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	encode gzip
 	import personal_headers
+	import geofilter
 }
 
 calendar.{{ secret_personal_url }} {
@@ -267,6 +298,7 @@ bitwarden.{{ secret_personal_url }} {
 	header Host {http.reverse_proxy.upstream.hostporti}
 	import personal_headers
 	respond /admin* "The admin panel is disabled, please configure the 'ADMIN_TOKEN' variable to enable it"
+	import max-geofilter
 }
 
 news.{{ secret_personal_url }} {
@@ -279,6 +311,7 @@ news.{{ secret_personal_url }} {
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
+	import max-geofilter
 }
 
 media.{{ secret_personal_url }} {
@@ -294,6 +327,7 @@ media.{{ secret_personal_url }} {
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
+	import geofilter
 }
 
 office.{{ secret_personal_url }} {
@@ -307,6 +341,7 @@ office.{{ secret_personal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
 	respond /loleaflet/dist/admin/* "The admin panel is disabled"
+	import max-geofilter
 }
 
 radarr.{{ secret_personal_url }} {
@@ -318,6 +353,7 @@ radarr.{{ secret_personal_url }} {
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
+	import max-geofilter
 }
 
 sonarr.{{ secret_personal_url }} {
@@ -329,6 +365,7 @@ sonarr.{{ secret_personal_url }} {
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
+	import max-geofilter
 }
 
 ferdium.{{ secret_personal_url }} {
@@ -340,6 +377,7 @@ ferdium.{{ secret_personal_url }} {
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
+	import max-geofilter
 }
 
 change.{{ secret_personal_url }} {
@@ -352,6 +390,7 @@ change.{{ secret_personal_url }} {
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
+	import max-geofilter
 }
 
 video.{{ secret_personal_url }} {
@@ -363,6 +402,7 @@ video.{{ secret_personal_url }} {
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
+	import max-geofilter
 }
 
 music.{{ secret_personal_url }} {
@@ -374,6 +414,7 @@ music.{{ secret_personal_url }} {
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
+	import max-geofilter
 }
 
 photos.{{ secret_personal_url }} {
@@ -385,6 +426,7 @@ photos.{{ secret_personal_url }} {
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
+	import geofilter
 }
 
 books.{{ secret_personal_url }} {
@@ -397,6 +439,7 @@ books.{{ secret_personal_url }} {
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
+	import max-geofilter
 }
 
 read.{{ secret_personal_url }} {
@@ -408,6 +451,7 @@ read.{{ secret_personal_url }} {
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
+	import max-geofilter
 }
 
 id.{{ secret_personal_url }} {
@@ -419,4 +463,5 @@ id.{{ secret_personal_url }} {
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
+	import max-geofilter
 }

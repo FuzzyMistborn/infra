@@ -100,7 +100,7 @@ ufw:
 ### Caddy Config
 caddy_systemd_capabilities_enabled: true
 caddy_systemd_network_dependency: false
-caddy_packages:  ["github.com/hslatman/caddy-crowdsec-bouncer", "github.com/greenpau/caddy-security"]
+caddy_packages:  ["github.com/hslatman/caddy-crowdsec-bouncer", "github.com/greenpau/caddy-security", "github.com/porech/caddy-maxmind-geolocation"]
 caddy_conf_dir: /home/{{ main_username }}/caddy
 caddy_config: "{{ lookup('template', 'roles/ambition/templates/Caddyfile.j2') }}"
 
