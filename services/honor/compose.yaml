@@ -46,11 +46,11 @@ services:
     container_name: pocket-id
     restart: unless-stopped
     environment:
-     - APP_URL=https://id.{{ secret_personal_url }}
-     - TRUST_PROXY=false
-     - MAXMIND_LICENSE_KEY={{ secret_pocket_id_maxmind_api }}
-     - PUID=1000
-     - PGID=1000
+      - APP_URL=https://id.{{ secret_personal_url }}
+      - TRUST_PROXY=false
+      - MAXMIND_LICENSE_KEY={{ secret_pocket_id_maxmind_api }}
+      - PUID=1000
+      - PGID=1000
     ports:
       - 1411:1411
     volumes:
