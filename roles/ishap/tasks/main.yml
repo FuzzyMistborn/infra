@@ -69,7 +69,6 @@
     mode: +x
   loop:
     - {src: "trim.sh", dest: "/home/{{ main_username }}/trim.sh"}
-    - {src: "usb-docker.sh", dest: "/home/{{ main_username }}/usb-docker.sh"}
 
 # Source: https://www.reddit.com/r/Proxmox/comments/118i6ct/tutorialguide_how_to_make_the_prelogin_banner/
 - name: Copy issue file to adjust displayer IP address
@@ -98,34 +97,6 @@
   service:
     name: smbd
     state: restarted
-
-### udev Rules
-- name: Add udev rules
-  copy:
-    dest: /etc/udev/rules.d/99-tpu-coral.rules
-    owner: root
-    group: root
-    mode: 0644
-    content: |
-      ACTION=="add", SUBSYSTEM=="usb", ATTRS{idVendor}=="1a6e", ATTRS{idProduct}=="089a", RUN+="/home/{{main_username}}/usb-docker-trigger.sh"
-
-- name: Update udev
-  shell: "sudo udevadm control --reload-rules && sudo udevadm trigger"
-
-- name: Copy systemd service file for USB TPU fix
-  template:
-    src: ../templates/usb-docker.service.j2
-    dest: /etc/systemd/system/usb-docker.service
-    owner: root
-    group: root
-    mode: 0644
-
-- name: Enable systemd service for USB TPU fix
-  systemd:
-    enabled: true
-    daemon-reload: true
-    state: enable
-    name: usb-docker.service
 
 ### Backup Restore
 - name: Create restore script
