@@ -92,5 +92,6 @@ autorestic_config_yaml:
 ### Caddy Config
 caddy_systemd_capabilities_enabled: true
 caddy_systemd_network_dependency: false
+caddy_packages:  ["github.com/greenpau/caddy-security"]
 caddy_conf_dir: /home/{{ main_username }}/caddy
 caddy_config: "{{ lookup('template', 'roles/honor/templates/Caddyfile.j2') }}"

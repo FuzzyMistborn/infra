@@ -8,6 +8,47 @@
 	}
 	email {{ secret_email }}
 	order crowdsec first
+    order authenticate before respond
+    order authorize before basicauth
+
+	# caddy-security
+    security {
+		oauth identity provider pocket-id {
+			realm pocket-id
+			driver generic
+			client_id {{ secret_caddy_pocket_id_user }}
+			client_secret {{ secret_caddy_pocket_id_key }}
+			scopes openid email profile groups
+			base_auth_url https://id.{{ secret_personal_url }}
+			metadata_url https://id.{{ secret_personal_url }}/.well-known/openid-configuration
+			delay_start 3
+		}
+
+		authentication portal pocket-id {
+			crypto default token lifetime 86400
+			enable identity provider pocket-id
+			transform user {
+				match realm pocket-id
+				action add role user
+			}
+		}
+
+		authorization policy pocket-id {
+			set auth url /caddy-security/oauth2/pocket-id
+			allow roles user
+			inject headers with claims
+		}
+
+		authorization policy hc-pocket-id {
+			set auth url /caddy-security/oauth2/pocket-id
+			allow roles user
+			inject headers with claims
+			bypass uri prefix /ping/
+			bypass uri prefix /api/
+			bypass uri prefix /badge/
+		}
+	}
+	
 	# Crowdsec Bouncer
 	crowdsec {
 		api_url http://localhost:8080
@@ -41,6 +82,17 @@
 		Permissions-Policy "geolocation=(self {{ secret_personal_url }} *.{{ secret_personal_url }}), microphone=()"
 	}
 }
+(pocket-id) {
+	@auth {
+		path /caddy-security/*
+	}
+	route @auth {
+		authenticate with pocket-id
+	}
+	route /* {
+		authorize with pocket-id
+	}
+}
 
 ### FuzzyMistborn.com
 
@@ -62,6 +114,7 @@ blog.fuzzymistborn.com {
 
 blog.ci.fuzzymistborn.com {
 	crowdsec
+	import pocket-id
 	file_server
 	root * /var/www/staging/public
 	tls /home/{{ main_username }}/lego/certificates/_.ci.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.ci.fuzzymistborn.com.key
@@ -70,6 +123,15 @@ blog.ci.fuzzymistborn.com {
 
 hc.fuzzymistborn.com {
 	crowdsec
+	@auth {
+		path /caddy-security/*
+	}
+	route @auth {
+		authenticate with pocket-id
+	}
+	route /* {
+		authorize with hc-pocket-id
+	}
 	reverse_proxy localhost:8000
 	tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key
 	import fuzzy_headers
@@ -91,6 +153,7 @@ gist.fuzzymistborn.com {
 
 drop.fuzzymistborn.com {
 	crowdsec
+	import pocket-id
 	reverse_proxy localhost:3200
 	tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key
 	import fuzzy_headers
@@ -147,6 +210,7 @@ ntfy.{{ secret_personal_url }} {
 
 uptime.{{ secret_personal_url }} {
 	crowdsec
+	import pocket-id
 	reverse_proxy localhost:3001
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
@@ -165,6 +229,7 @@ smarthome.{{ secret_personal_url }} {
 
 frigate.{{ secret_personal_url }} {
 	crowdsec
+	import pocket-id
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name frigate.{{ secret_personal_url }}
@@ -206,6 +271,7 @@ bitwarden.{{ secret_personal_url }} {
 
 news.{{ secret_personal_url }} {
 	crowdsec
+	import pocket-id
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name news.{{ secret_personal_url }}
@@ -278,6 +344,7 @@ ferdium.{{ secret_personal_url }} {
 
 change.{{ secret_personal_url }} {
 	crowdsec
+	import pocket-id
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name change.{{ secret_personal_url }}
@@ -334,7 +401,6 @@ books.{{ secret_personal_url }} {
 
 read.{{ secret_personal_url }} {
 	crowdsec
-	encode gzip zstd
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name read.{{ secret_personal_url }}
@@ -343,9 +409,9 @@ read.{{ secret_personal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
 }
+
 id.{{ secret_personal_url }} {
 	crowdsec
-	encode gzip zstd
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name id.{{ secret_personal_url }}
