@@ -90,7 +90,7 @@ services:
     environment:
       - PAPERLESS_REDIS=redis://paperless-redis:6379
       - PAPERLESS_TIME_ZONE={{ ntp_timezone }}
-      - PAPERLESS_URL=https://paperless.{{ secret_personal_internal_url }}
+      - PAPERLESS_URL=https://paperless.{{ secret_personal_url }}
       - PAPERLESS_SECRET_KEY={{ secret_paperless_key }}
       - PAPERLESS_FILENAME_FORMAT={added_year}/{document_type}/{title}
       - USERMAP_UID={{ main_uid }}
@@ -226,9 +226,15 @@ services:
       - 3000:3000
     environment:
       - DATABASE_URL={{secret_linkwarden_db_url}}
-      - NEXTAUTH_URL=https://linkwarden.{{ secret_personal_url }}
-      - NEXTAUTH_URL_INTERNAL=http://localhost:3000
+      - NEXTAUTH_URL=https://linkwarden.{{ secret_personal_url }}/api/v1/auth
+      - NEXTAUTH_URL_INTERNAL=http://localhost:3000/api/v1/auth
       - NEXTAUTH_SECRET={{ secret_linkwarden_nextauth }}
+      - NEXT_PUBLIC_DISABLE_REGISTRATION=true
+      - NEXT_PUBLIC_KEYCLOAK_ENABLED=true
+      - KEYCLOAK_CUSTOM_NAME=PocketID
+      - KEYCLOAK_ISSUER=https://id.{{ secret_personal_url }}
+      - KEYCLOAK_CLIENT_ID={{ secret_linkwarden_pocket_id_user }}
+      - KEYCLOAK_CLIENT_SECRET={{ secret_linkwarden_pocket_id_key }}
       - NEXT_PUBLIC_OLLAMA_ENDPOINT_URL=http://192.168.50.25:11434
       - OLLAMA_MODEL=gemma3:latest
 #      - ANTHROPIC_API_KEY={{ secret_linkwarden_anthropic_api_key }}
