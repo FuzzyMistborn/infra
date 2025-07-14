@@ -24,6 +24,9 @@ update:
 docker:
 	ansible-playbook docker.yml
 
+caddy +HOST:
+    ansible-playbook -b caddy.yml --limit {{ HOST }}
+
 test:
 	ansible-playbook -b test.yml
 

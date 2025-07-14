@@ -1,0 +1,19 @@
+---
+
+- hosts: ambition
+  vars_files:
+    - 'vars/vault.yaml'
+    - 'group_vars/all.yaml'
+    - 'galaxy_roles/caddy_ansible.caddy_ansible/defaults/main.yml'
+    - 'group_vars/ambition.yml'
+  roles:
+    - role: caddy_ansible.caddy_ansible
+
+- hosts: honor
+  vars_files:
+    - 'vars/vault.yaml'
+    - 'group_vars/all.yaml'
+    - 'galaxy_roles/caddy_ansible.caddy_ansible/defaults/main.yml'
+    - 'group_vars/honor.yml'
+  roles:
+    - role: caddy_ansible.caddy_ansible
