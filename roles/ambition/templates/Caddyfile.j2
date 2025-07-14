@@ -98,9 +98,8 @@
 		not maxmind_geolocation {
 			db_path "/home/{{ main_username }}/caddy/GeoLite2-Country.mmdb"
 			deny_countries RU CN UNK
-			not remote_ip 10.0.0.0/24
-			not remote_ip 172.17.0.0/16
 		}
+		not remote_ip 172.18.0.0/16 172.16.0.0/12 10.0.0.0/8 192.168.0.0/16
 	}
 	respond @geofilter 403
 }
@@ -109,9 +108,8 @@
 		not maxmind_geolocation {
 			db_path "/home/{{ main_username }}/caddy/GeoLite2-Country.mmdb"
 			allow_countries US
-			not remote_ip 10.0.0.0/24
-			not remote_ip 172.17.0.0/16
 		}
+		not remote_ip 172.18.0.0/16 172.16.0.0/12 10.0.0.0/8 192.168.0.0/16
 	}
 	respond @geofilter 403
 }
@@ -236,16 +234,16 @@ ntfy.{{ secret_personal_url }} {
 	reverse_proxy localhost:4600
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
-	import max-geofilter
+	import geofilter
 }
 
 uptime.{{ secret_personal_url }} {
 	crowdsec
-	import pocket-id
 	reverse_proxy localhost:3001
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
-#	import max-geofilter
+	import pocket-id
+	import max-geofilter
 }
 
 smarthome.{{ secret_personal_url }} {
@@ -262,7 +260,6 @@ smarthome.{{ secret_personal_url }} {
 
 frigate.{{ secret_personal_url }} {
 	crowdsec
-	import pocket-id
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name frigate.{{ secret_personal_url }}
@@ -270,6 +267,7 @@ frigate.{{ secret_personal_url }} {
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
+	import pocket-id
 	import max-geofilter
 }
 
@@ -307,7 +305,6 @@ bitwarden.{{ secret_personal_url }} {
 
 news.{{ secret_personal_url }} {
 	crowdsec
-	import pocket-id
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name news.{{ secret_personal_url }}
@@ -315,6 +312,7 @@ news.{{ secret_personal_url }} {
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
+	import pocket-id
 	import max-geofilter
 }
 
@@ -386,7 +384,6 @@ ferdium.{{ secret_personal_url }} {
 
 change.{{ secret_personal_url }} {
 	crowdsec
-	import pocket-id
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
 			tls_server_name change.{{ secret_personal_url }}
@@ -394,6 +391,7 @@ change.{{ secret_personal_url }} {
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
+	import pocket-id
 	import max-geofilter
 }
 
@@ -407,6 +405,7 @@ video.{{ secret_personal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
 	import max-geofilter
+	import pocket-id
 }
 
 music.{{ secret_personal_url }} {
@@ -456,6 +455,7 @@ read.{{ secret_personal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
 	import max-geofilter
+	import pocket-id
 }
 
 id.{{ secret_personal_url }} {
@@ -480,4 +480,43 @@ linkwarden.{{ secret_personal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
 	import geofilter
+}
+
+notes.{{ secret_personal_url }} {
+	crowdsec
+	reverse_proxy https://10.10.10.10:443 {
+		transport http {
+			tls_server_name notes.{{ secret_personal_url }}
+		}
+	}
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	import personal_headers
+	import max-geofilter
+	import pocket-id
+}
+
+pdf.{{ secret_personal_url }} {
+	crowdsec
+	reverse_proxy https://10.10.10.10:443 {
+		transport http {
+			tls_server_name pdf.{{ secret_personal_url }}
+		}
+	}
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	import pocket-id
+	import personal_headers
+	import max-geofilter
+}
+
+paperless.{{ secret_personal_url }} {
+	crowdsec
+	reverse_proxy https://10.10.10.10:443 {
+		transport http {
+			tls_server_name paperless.{{ secret_personal_url }}
+		}
+	}
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	import personal_headers
+	import max-geofilter
+	import pocket-id
 }
