@@ -251,7 +251,7 @@ services:
     volumes:
       - "{{ appdata_path }}/linkwarden/meili_data:/meili_data"
   memos:
-    image: neosmemo/memos:0.24.4
+    image: neosmemo/memos:0.25.0
     container_name: memos
     volumes:
       - "{{ appdata_path }}/memos/data:/var/opt/memos"
