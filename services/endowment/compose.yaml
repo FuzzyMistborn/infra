@@ -83,7 +83,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: unless-stopped
   watcharr:
-    image: ghcr.io/sbondco/watcharr:v2.1.0
+    image: ghcr.io/sbondco/watcharr:v2.1.1
     container_name: watcharr
     ports:
       - 3080:3080
