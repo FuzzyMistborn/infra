@@ -95,8 +95,8 @@ settings:
       command: /home/{{main_username}}/scripts/cast_frontdoor.sh
     - name: Cast Weather
       command: /home/{{main_username}}/scripts/cast_weather.sh
-    - name: Update HASS
-      command: /home/{{main_username}}/scripts/update_hass.sh
+    - name: Update HA
+      command: /home/{{main_username}}/scripts/update_ha.sh
 {% else %}
   bash:
     expose: []

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd /home/{{ main_username }}
+docker compose pull homeassistant
+docker compose up -d homeassistant
+docker image prune -a -f

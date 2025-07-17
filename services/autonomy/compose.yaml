@@ -1,7 +1,7 @@
 services:
-  hass:
+  homeassistant:
     image: ghcr.io/home-assistant/home-assistant:stable
-    container_name: hass
+    container_name: homeassistant
     network_mode: host
     volumes:
       - /home/{{ main_username }}/hass:/config
@@ -11,9 +11,9 @@ services:
     depends_on:
       - mqtt
     restart: unless-stopped
-  hass-beta:
+  homeassistant-beta:
     image: ghcr.io/home-assistant/home-assistant:beta
-    container_name: HASS-Beta
+    container_name: homeassistant-beta
     network_mode: host
     volumes:
       - /home/{{ main_username }}/hass_docker_beta:/config
@@ -86,7 +86,7 @@ services:
     environment:
       - TZ={{ ntp_timezone }}
     depends_on:
-      - hass
+      - homeassistant
     restart: unless-stopped
   tasmota:
     image: ghcr.io/tasmoadmin/tasmoadmin:v4.3.0

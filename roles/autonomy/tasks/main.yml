@@ -47,26 +47,18 @@
   loop:
     - {src: 'cast_frontdoor.sh.j2', dest: 'cast_frontdoor.sh'}
     - {src: 'docker.sh.j2', dest: 'docker.sh'}
-    - {src: 'update_hass.sh.j2', dest: 'update_hass.sh'}
+    - {src: 'update_ha.sh.j2', dest: 'update_ha.sh'}
     - {src: 'google_traffic.py.j2', dest: 'google_traffic.py'}
     - {src: 'waze_daycare.py.j2', dest: 'waze_daycare.py'}
     - {src: 'waze_home.py.j2', dest: 'waze_home.py'}
     - {src: 'waze_live.py.j2', dest: 'waze_live.py'}
 
-#### HASS Git
+#### HA Git
 
-- name: Clone HASS GitHub Repo
+- name: Clone HA GitHub Repo
   git:
     repo: git@github.com:FuzzyMistborn/hass-docker.git
     dest: /home/{{ main_username }}/hass_docker
-    accept_hostkey: true
-    key_file: /home/{{ main_username }}/.ssh/github
-  when: clone_git == true
-
-- name: Clone NodeRed GitHub Repo
-  git:
-    repo: git@github.com:FuzzyMistborn/hass-nodered.git
-    dest: /home/{{ main_username }}/docker/nodered
     accept_hostkey: true
     key_file: /home/{{ main_username }}/.ssh/github
   when: clone_git == true

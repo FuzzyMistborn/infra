@@ -152,28 +152,3 @@
   debug:
     msg: "{{ item.stdout }}"
   loop: "{{ add_pcie_result.results }}"
-
-# Add USB Passthrough to VMs
-- name: Add USB passthrough devices
-  shell: |
-    VMID="{{ item.0.vmid }}"
-    USB_VENDOR="{{ item.1.vendor_id }}"
-    USB_PRODUCT="{{ item.1.product_id }}"
-    # Find next available USB slot
-    LAST_USB=$(qm config $VMID | grep -E "^usb[0-9]:" | sed 's/usb\([0-9]\+\):.*/\1/' | sort -n | tail -1)
-    NEXT_USB=$((${LAST_USB:-0} + 1))
-    # Add the USB device
-    qm set $VMID -usb${NEXT_USB} host=${USB_VENDOR}:${USB_PRODUCT}
-    echo "USB device ${USB_VENDOR}:${USB_PRODUCT} added to VM {{ item.0.name }} ($VMID) as usb${NEXT_USB}"
-  register: add_usb_results
-  with_subelements:
-    - "{{ vm_uefi }}"
-    - usb_devices
-    - flags:
-        skip_missing: true
-
-- name: Display USB addition results
-  debug:
-    msg: "{{ item.stdout }}"
-  loop: "{{ add_usb_results.results }}"
-  when: add_usb_results.results is defined

@@ -67,16 +67,9 @@ vm_uefi:
     tag: 50
     cores: 6
     memory: 6144
-    balloon: 1024
+    balloon: 2048
     onboot: true
     pcie: '0000:03:00.0'
-    usb_devices:
-      - vendor_id: "18d1"
-        product_id: "9302"
-        description: "Google USB Device Initialized"
-      - vendor_id: "1a6e"
-        product_id: "089a"
-        description: "Google USB Device Uninitialized"
 
 lxc_main:
   - name: Omada

@@ -10,8 +10,8 @@ echo Backing up Bitwarden DB
 today=$(date +"%Y_%m_%d")
 docker exec bitwarden-db sh -c 'exec mariadb-dump --single-transaction -h localhost -u bitwarden -p{{ secret_bitwarden_db_pass }} bitwarden_rs' > /home/{{ main_username }}/db_backups/bitwarden/bitwardenDB_$today.sql
 
-#### Hass DB Backup
-echo Backing up Hass DB
+#### HA DB Backup
+echo Backing up HA DB
 today=$(date +"%Y_%m_%d")
 docker exec hass-db sh -c 'exec mariadb-dump --single-transaction -h localhost -u hass -p{{ secret_hass_db_pass }} homeassistant' > /home/{{ main_username }}/db_backups/hass/hassDB_$today.sql
 

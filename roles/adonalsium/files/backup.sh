@@ -10,6 +10,8 @@ sleep 10s
 rsync -Aavx --info=progress2 --delete --delete-excluded --exclude '.*' --exclude '.trickplay' --exclude 'TV Shows' --exclude 'Parents *' --exclude 'UHD' --exclude 'Frigate' --exclude 'Immich' /mnt/Media/ /media/external_hdd/Media
 rsync -Aavx --info=progress2 --delete --delete-excluded --exclude '.*' --exclude '.snapraid.content' /mnt/local_backup/ /media/external_hdd/Backup
 
+df -h | tee disk_usage.txt
+
 # Wait for dismount
 sleep 10s
 
