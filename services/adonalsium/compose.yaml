@@ -67,7 +67,7 @@ services:
       - 3001:3001
     restart: unless-stopped
   calibre:
-    image: lscr.io/linuxserver/calibre:8.5.0
+    image: lscr.io/linuxserver/calibre:8.7.0
     container_name: calibre
     volumes:
       - "{{ appdata_path }}/calibre:/config"
