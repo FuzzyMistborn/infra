@@ -259,7 +259,7 @@ services:
       - 5230:5230
     restart: unless-stopped
   crowdsec:
-    image: ghcr.io/crowdsecurity/crowdsec:v1.6.9
+    image: ghcr.io/crowdsecurity/crowdsec:v1.6.10
     container_name: crowdsec
     volumes:
       - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"
