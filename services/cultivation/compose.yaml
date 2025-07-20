@@ -129,7 +129,6 @@ services:
       - /var/tmp/youtubei.js:/var/tmp/youtubei.js:rw
     security_opt:
       - no-new-privileges:true
-
   inv-sig-helper:
     image: quay.io/invidious/inv-sig-helper:latest
     container_name: inv-sig-helper
@@ -220,7 +219,7 @@ services:
       - MAX_CONCURRENT_CHROME_PROCESSES=10
       - STATS_REFRESH_SECONDS=120
   linkwarden:
-    image: ghcr.io/linkwarden/linkwarden:latest
+    image: ghcr.io/linkwarden/linkwarden:v2.11.5
     container_name: linkwarden
     ports:
       - 3000:3000

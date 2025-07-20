@@ -97,7 +97,7 @@ services:
       - 5555:80
     restart: unless-stopped
   anylist:
-    image: kevdliu/anylist:latest
+    image: kevdliu/anylist:v1.7.3
     container_name: anylist
     volumes:
       - "{{ appdata_path }}/anylist:/data"
