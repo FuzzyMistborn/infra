@@ -51,6 +51,14 @@ services:
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
     restart: unless-stopped
+  recyclarr:
+    image: ghcr.io/recyclarr/recyclarr:7.4.1
+    container_name: recyclarr
+    user: 1000:1000
+    volumes:
+      - "{{ appdata_path }}/recyclarr/config:/config"
+    environment:
+      - TZ=America/New_York
   prowlarr:
     image: ghcr.io/linuxserver/prowlarr:1.37.0
     container_name: prowlarr
@@ -140,6 +148,41 @@ services:
       - ND_SCANSCHEDULE=12h
       - ND_BASEURL=https://music.{{ secret_personal_internal_url }}
     restart: unless-stopped
+  caldav-frontend:
+    image: ghcr.io/fuzzymistborn/caldav-frontend:latest
+    container_name: caldav-frontend
+    ports:
+      - "5000:5000"
+    environment:
+#      - CALDAV_SERVER_URL=https://cloud.{{ secret_personal_url }}
+      - CALDAV_SERVER_TYPE=nextcloud  # Options: nextcloud, baikal, radicale, generic
+      - SECRET_KEY={{ secret_caldav_frontend_key }}
+      - FLASK_ENV=production
+      - LOG_LEVEL=info
+      - PORT=5000
+      - DATABASE_URL=sqlite:///data/caldav_client.db
+      - SESSION_LIFETIME_DAYS=60
+    user: "1000:1000"
+    volumes:
+      - "{{ appdata_path }}/docker/caldav:/app/data"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+  baikal:
+    image: ckulka/baikal:nginx
+    container_name: baikal
+    restart: unless-stopped
+    ports:
+      - "2000:80"
+    environment:
+      - APPLY_HOME_ASSISTANT_FIX=true
+    volumes:
+      - "{{ appdata_path }}/baikal/config:/var/www/baikal/config"
+      - "{{ appdata_path }}/baikal/data:/var/www/baikal/Specific"
   pinchflat:
     image: ghcr.io/kieraneglin/pinchflat:v2025.6.6
     container_name: pinchflat
