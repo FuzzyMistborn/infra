@@ -137,7 +137,7 @@ services:
     hostname: preservation
     restart: unless-stopped
   portainer_agent:
-    image: portainer/agent:2.31.3
+    image: portainer/agent:2.32.0
     container_name: portainer_agent
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
