@@ -3,7 +3,7 @@
 # Nextcloud DB Backup
 echo Backing up Nextcloud DB
 today=$(date +"%Y_%m_%d")
-docker exec nextcloud-db sh -c 'exec mariadb-dump --single-transaction -h localhost -u {{ main_username }} -p{{ secret_nextcloud_db_pass }} nextcloud' > /home/{{ main_username }}/db_backups/nextcloud/nextcloudDB_$today.sql
+docker exec nextcloud-db sh -c 'exec mariadb-dump --single-transaction --skip-ssl -h localhost -u {{ main_username }} -p{{ secret_nextcloud_db_pass }} nextcloud' > /home/{{ main_username }}/db_backups/nextcloud/nextcloudDB_$today.sql
 
 #### Bitwarden DB Backup
 echo Backing up Bitwarden DB
@@ -14,6 +14,11 @@ docker exec bitwarden-db sh -c 'exec mariadb-dump --single-transaction -h localh
 echo Backing up HA DB
 today=$(date +"%Y_%m_%d")
 docker exec hass-db sh -c 'exec mariadb-dump --single-transaction -h localhost -u hass -p{{ secret_hass_db_pass }} homeassistant' > /home/{{ main_username }}/db_backups/hass/hassDB_$today.sql
+
+#### ROMM DB Backup
+echo Backing up ROMM DB
+today=$(date +"%Y_%m_%d")
+docker exec romm-db sh -c 'exec mariadb-dump --single-transaction -h localhost -u romm-user -p{{ secret_romm_db_pass }} romm' > /home/{{ main_username }}/db_backups/romm/rommDB_$today.sql
 
 #### Invidious DB Backup
 echo Backing up Invidious DB

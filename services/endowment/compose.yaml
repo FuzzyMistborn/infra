@@ -207,6 +207,36 @@ services:
       - TZ={{ ntp_timezone }}
       - KOMGA_OIDC_EMAIL_VERIFICATION=false
     restart: unless-stopped
+  romm:
+    image: rommapp/romm:4.0.1
+    container_name: romm
+    restart: unless-stopped
+    environment:
+      - DB_HOST=192.168.50.22
+      - DB_PORT=3309
+      - DB_NAME=romm
+      - DB_USER=romm-user
+      - DB_PASSWD={{ secret_romm_db_pass }}
+      - TZ={{ ntp_timezone }}
+      - ROMM_AUTH_SECRET_KEY={{ secret_romm_auth_key }}
+      - SCREENSCRAPER_USER=fuzzymistborn
+      - SCREENSCRAPER_PASSWORD={{ secret_screenscraper_pass }}
+      - STEAMGRIDDB_API_KEY={{ secret_steamgrid_api_key }}
+      - HASHEOUS_API_ENABLED=true
+      - OIDC_ENABLED=true
+      - OIDC_PROVIDER=pocketid
+      - OIDC_CLIENT_ID={{ secret_romm_pocket_id_user }}
+      - OIDC_CLIENT_SECRET={{ secret_romm_pocket_id_key }}
+      - OIDC_REDIRECT_URI=https://roms.{{ secret_personal_url }}/api/oauth/openid
+      - OIDC_SERVER_APPLICATION_URL=https://id.{{ secret_personal_url }}/
+    volumes:
+      - "{{ appdata_path }}/ROMM/config:/romm/config"
+      - "{{ appdata_path }}/ROMM/redis:/redis-data"
+      - /mnt/Media/Files/Roms/ROMM/resources:/romm/resources
+      - /mnt/Media/Files/Roms/ROMM/library:/romm/library
+      - /mnt/Media/Files/Roms/ROMM/assets:/romm/assets
+    ports:
+      - 2500:8080
   southwest:
     image: jdholtz/auto-southwest-check-in:v8.3
     container_name: southwest

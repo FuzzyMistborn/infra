@@ -70,6 +70,20 @@ services:
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER={{ main_username }}
       - MYSQL_PASSWORD={{ secret_nextcloud_db_pass }}
+    mem_limit: 500M
+    restart: unless-stopped
+  romm-db:
+    image: mariadb:11.7.2
+    container_name: romm-db
+    volumes:
+      - "{{ appdata_path }}/docker/romm_db:/var/lib/mysql"
+    ports:
+      - 3309:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD={{ secret_db_root_pass }}
+      - MYSQL_DATABASE=romm
+      - MYSQL_USER=romm-user
+      - MYSQL_PASSWORD={{ secret_romm_db_pass }}
     mem_limit: 300M
     restart: unless-stopped
   invidious-db:

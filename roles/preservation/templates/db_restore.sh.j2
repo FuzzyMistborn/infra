@@ -14,10 +14,15 @@ cd /home/{{ main_username }}/db_backups/bitwarden
 LAST_BITWARDEN=$(ls -t | head -n 1)
 docker exec -i bitwarden-db mariadb -u bitwarden -p{{ secret_bitwarden_db_pass }} bitwarden_rs < /home/{{ main_username }}/db_backups/bitwarden/$LAST_BITWARDEN
 
-echo Restoring HASS DB
+echo Restoring HA DB
 cd /home/{{ main_username }}/db_backups/hass
-LAST_HASS=$(ls -t | head -n 1)
-docker exec -i hass-db mariadb -u hass -p{{ secret_hass_db_pass }} homeassistant < /home/{{ main_username }}/db_backups/hass/$LAST_HASS
+LAST_HA=$(ls -t | head -n 1)
+docker exec -i hass-db mariadb -u hass -p{{ secret_hass_db_pass }} homeassistant < /home/{{ main_username }}/db_backups/hass/$LAST_HA
+
+echo Restoring ROMM DB
+cd /home/{{ main_username }}/db_backups/romm
+LAST_ROMM=$(ls -t | head -n 1)
+docker exec -i romm-db mariadb -u romm -p{{ secret_romm_db_pass }} romm < /home/{{ main_username }}/db_backups/romm/$LAST_ROMM
 
 echo Restoring Invidious DB
 cd /home/{{ main_username }}/db_backups/invidious
