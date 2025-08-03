@@ -37,7 +37,7 @@ services:
       - TS_USERSPACE=true
     restart: unless-stopped
   imap-backup:
-    image: ghcr.io/joeyates/imap-backup:v16.0.0
+    image: ghcr.io/joeyates/imap-backup:v16.1.0
     container_name: imap-backup
     volumes:
       - /mnt/Backup/config/Email:/data
