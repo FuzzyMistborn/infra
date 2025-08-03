@@ -56,7 +56,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: unless-stopped
   collabora:
-    image: collabora/code:25.04.4.1.1
+    image: collabora/code:25.04.4.2.1
     container_name: collabora
     privileged: true
     cap_add:
