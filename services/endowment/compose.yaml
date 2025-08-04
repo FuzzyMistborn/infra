@@ -99,7 +99,7 @@ services:
       - "{{ appdata_path }}//watcharr:/data"
     restart: unless-stopped
   audiobookshelf:
-    image: ghcr.io/advplyr/audiobookshelf:2.26.2
+    image: ghcr.io/advplyr/audiobookshelf:2.27.0
     container_name: audiobookshelf
     volumes:
       - "{{ appdata_path }}/audiobookshelf/config:/config"
