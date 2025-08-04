@@ -195,7 +195,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: unless-stopped
   komga:
-    image: gotson/komga:1.22.1
+    image: gotson/komga:1.23.1
     container_name: komga
     volumes:
       - "{{ appdata_path }}/komga/config:/config"
