@@ -154,7 +154,7 @@ services:
       - 8444:8443
     restart: unless-stopped
   stirling-pdf:
-    image: ghcr.io/stirling-tools/s-pdf:1.1.1
+    image: ghcr.io/stirling-tools/s-pdf:1.2.0
     container_name: stirling-pdf
     volumes:
       - "{{ appdata_path }}/stirlingpdf/extraConfigs:/configs"
