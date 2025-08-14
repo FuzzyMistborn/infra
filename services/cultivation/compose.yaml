@@ -219,7 +219,7 @@ services:
       - MAX_CONCURRENT_CHROME_PROCESSES=10
       - STATS_REFRESH_SECONDS=120
   linkwarden:
-    image: ghcr.io/linkwarden/linkwarden:v2.11.5
+    image: ghcr.io/linkwarden/linkwarden:v2.11.7
     container_name: linkwarden
     ports:
       - 3000:3000
