@@ -65,6 +65,13 @@ services:
       - GOVEE_MQTT_USER=homeassistant
       - GOVEE_MQTT_PASSWORD={{ secret_mqtt_pass }}
     restart: unless-stopped
+  matter-server:
+    image: ghcr.io/home-assistant-libs/python-matter-server:8.0.0
+    container_name: matter-server
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - "{{ appdata_path }}/matter-server/data:/data/"
   signal-api:
     image: bbernhard/signal-cli-rest-api:0.94
     container_name: signal-api
