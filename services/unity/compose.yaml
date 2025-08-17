@@ -71,5 +71,5 @@ services:
       - 123:123/udp
     environment:
       - NTP_SERVERS="north-america.pool.ntp.org,time.nist.gov,0.fedora.pool.ntp.org,0.debian.pool.ntp.org"
-      - LOG_LEVEL=0 
+      - LOG_LEVEL=0
       - TZ={{ ntp_timezone }}
