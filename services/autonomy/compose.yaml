@@ -124,7 +124,7 @@ services:
       - "{{ appdata_path }}/music-assistant:/data"
     restart: unless-stopped
   piper:
-    image: rhasspy/wyoming-piper:1.6.2
+    image: rhasspy/wyoming-piper:1.6.3
     container_name: piper
     volumes:
       - "{{ appdata_path }}/piper:/data"
