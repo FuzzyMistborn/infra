@@ -87,7 +87,7 @@ services:
     mem_limit: 300M
     restart: unless-stopped
   invidious-db:
-    image: postgres:15.13-alpine
+    image: postgres:15.14-alpine
     container_name: invidious-db
     volumes:
       - "{{ appdata_path }}/invidious/data:/var/lib/postgresql/data"
