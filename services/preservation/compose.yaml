@@ -105,7 +105,7 @@ services:
     mem_limit: 200M
     restart: unless-stopped
   linkwarden-db:
-    image: postgres:16-alpine
+    image: postgres:16.10-alpine
     container_name: linkwarden-db
     volumes:
       - "{{ appdata_path }}/linkwarden/data:/var/lib/postgresql/data"

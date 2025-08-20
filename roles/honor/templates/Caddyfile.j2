@@ -56,6 +56,18 @@
 		Permissions-Policy "geolocation=(self {{ secret_personal_url }} *.{{ secret_personal_url }}), microphone=()"
 	}
 }
+(rss_headers) {
+	header {
+		Permissions-Policy interest-cohort=()
+		Strict-Transport-Security "max-age=31536000; includeSubdomains"
+		X-XSS-Protection "1; mode=block"
+		X-Content-Type-Options "nosniff"
+		X-Robots-Tag noindex,nofollow
+		Referrer-Policy "same-origin"
+		-Server
+		Permissions-Policy "geolocation=(self {{ secret_personal_url }} *.{{ secret_personal_url }}), microphone=()"
+	}
+}
 (pocket-id) {
 	@auth {
 		path /caddy-security/*
@@ -114,7 +126,7 @@ bitwarden.{{ secret_personal_url }} {
 news.{{ secret_personal_url }} {
 	reverse_proxy http://192.168.50.21:8010
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
-	import headers
+	import rss_headers
 }
 # Jellyfin
 media.{{ secret_personal_url }} {
@@ -350,7 +362,7 @@ esphome.{{ secret_personal_internal_url }} {
 }
 # Calibre
 calibre.{{ secret_personal_internal_url }} {
-	reverse_proxy http://192.168.1.10:8085
+	reverse_proxy 192.168.1.10:8085
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
