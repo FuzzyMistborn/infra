@@ -78,7 +78,7 @@ services:
     container_name: paperless-redis
     restart: unless-stopped
   paperless:
-    image: ghcr.io/paperless-ngx/paperless-ngx:2.18.1
+    image: ghcr.io/paperless-ngx/paperless-ngx:2.18.2
     container_name: paperless
     volumes:
       - "{{ appdata_path }}/paperless/data:/usr/src/paperless/data"
