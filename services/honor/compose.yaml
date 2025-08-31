@@ -42,7 +42,7 @@ services:
       - AGENT_SECRET={{ secret_portainer_key }}
     restart: unless-stopped
   pocket-id:
-    image: ghcr.io/pocket-id/pocket-id:v1.7.0
+    image: ghcr.io/pocket-id/pocket-id:v1.10.0
     container_name: pocket-id
     restart: unless-stopped
     environment:
