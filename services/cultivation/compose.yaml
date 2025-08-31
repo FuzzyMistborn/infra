@@ -42,10 +42,11 @@ services:
       - DOMAIN={{ secret_bitwarden_url }}
     restart: unless-stopped
   freshrss:
-    image: ghcr.io/linuxserver/freshrss:1.27.0
+    image: freshrss/freshrss:1.27.0
     container_name: freshrss
     volumes:
-      - "{{ appdata_path }}/freshrss:/config"
+      - "{{ appdata_path }}/freshrss/data:/var/www/FreshRSS/data"
+      - "{{ appdata_path }}/freshrss/extensions:/var/www/FreshRSS/extensions"
     ports:
       - 8010:80
     environment:
@@ -54,6 +55,14 @@ services:
       - PUID={{ main_uid }}
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
+      - CRON_MIN=*/20
+      - OIDC_ENABLED=1
+      - OIDC_CLIENT_ID={{ secret_freshrss_pocket_id_user }}
+      - OIDC_CLIENT_SECRET={{ secret_freshrss_pocket_id_key }}
+      - OIDC_PROVIDER_METADATA_URL=https://id.{{ secret_personal_url }}/.well-known/openid-configuration
+      - OIDC_SCOPES=openid email profile
+      - OIDC_X_FORWARDED_HEADERS=X-Forwarded-Proto X-Forwarded-Host
+      - OIDC_REMOTE_USER_CLAIM=preferred_username
     restart: unless-stopped
   collabora:
     image: collabora/code:25.04.4.2.1
@@ -249,23 +258,24 @@ services:
       - MEILI_MASTER_KEY={{ secret_meilisearch_key }}
     volumes:
       - "{{ appdata_path }}/linkwarden/meili_data:/meili_data"
-  memos:
-    image: neosmemo/memos:0.25.0
-    container_name: memos
-    volumes:
-      - "{{ appdata_path }}/memos/data:/var/opt/memos"
-    ports:
-      - 5230:5230
+  trilium:
+    image: triliumnext/trilium:v0.98.0
+    container_name: trilium
     restart: unless-stopped
-  mortis:
-    image: ghcr.io/mudkipme/mortis:0.25.0
-    container_name: mortis
+    environment:
+      - TRILIUM_DATA_DIR=/home/node/trilium-data
+      - TRILIUM_OAUTH_BASE_URL=https://notes.{{ secret_personal_url }}
+      - TRILIUM_OAUTH_CLIENT_ID={{ secret_trilium_pocket_id_user }}
+      - TRILIUM_OAUTH_CLIENT_SECRET={{ secret_trilium_pocket_id_key }}
+      - TRILIUM_OAUTH_ISSUER_BASE_URL=https://id.{{ secret_personal_url }}
+      - TRILIUM_OAUTH_ISSUER_NAME=PocketID
+      - TRILIUM_OAUTH_ISSUER_ICON=https://github.com/pocket-id/website/blob/main/static/img/logo.png?raw=true
     ports:
-      - 5231:5231
-    entrypoint: ["/app/mortis"]
-    command: ["-grpc-addr=memos:5230"]
-    depends_on:
-      - memos
+      - 8015:8080
+    volumes:
+      - "{{ appdata_path }}/trilium:/home/node/trilium-data"
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
   crowdsec:
     image: ghcr.io/crowdsecurity/crowdsec:v1.6.11
     container_name: crowdsec
