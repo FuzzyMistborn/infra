@@ -229,8 +229,7 @@ linkwarden.{{ secret_personal_url }} {
 }
 # Memos
 notes.{{ secret_personal_url }} {
-	reverse_proxy /* http://192.168.50.21:5230
-	reverse_proxy /api/v1/* http://192.168.50.21:5231
+	reverse_proxy http://192.168.50.21:8015
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import headers
 }
