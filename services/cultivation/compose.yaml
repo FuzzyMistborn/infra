@@ -216,7 +216,7 @@ services:
       - HIDE_REFERER=true
     restart: unless-stopped
   sockpuppetbrowser:
-    image: dgtlmoon/sockpuppetbrowser:0.0.2
+    image: dgtlmoon/sockpuppetbrowser:0.0.3
     container_name: sockpuppetbrowser
     restart: unless-stopped
     tmpfs:
