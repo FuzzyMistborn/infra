@@ -24,7 +24,7 @@ services:
       - mqtt
     restart: unless-stopped
   selenium:
-    image: selenium/standalone-firefox:141.0
+    image: selenium/standalone-firefox:142.0
     container_name: selenium
     ports:
       - 4444:4444
