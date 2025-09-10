@@ -27,7 +27,7 @@ services:
                 - gpu
     restart: unless-stopped
   open-webui:
-    image: ghcr.io/open-webui/open-webui:v0.6.26
+    image: ghcr.io/open-webui/open-webui:0.6.28
     container_name: open-webui
     extra_hosts:
       - host.docker.internal:host-gateway
