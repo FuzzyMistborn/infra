@@ -251,7 +251,7 @@ services:
       - "{{ appdata_path }}/linkwarden/data:/data/data"
     restart: unless-stopped
   linkwarden-meilisearch:
-    image: getmeili/meilisearch:v1.19.1
+    image: getmeili/meilisearch:v1.21.0
     container_name: linkwarden-meilisearch
     restart: unless-stopped
     environment:
