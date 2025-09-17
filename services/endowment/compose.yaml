@@ -208,7 +208,7 @@ services:
       - KOMGA_OIDC_EMAIL_VERIFICATION=false
     restart: unless-stopped
   romm:
-    image: rommapp/romm:4.1.6
+    image: rommapp/romm:4.2.0
     container_name: romm
     restart: unless-stopped
     environment:
