@@ -45,6 +45,12 @@ cronjobs:
     user: root
     minute: 20
     hour: 0
+  - name: Restart Crowdsec
+    job: docker container restart crowdsec > /dev/null 2>&1
+    user: "{{ main_username }}"
+    hour: 1
+    minute: 5
+    workday: 0
 
 ### Mountpoints
 mountpoints:

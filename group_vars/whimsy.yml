@@ -57,6 +57,12 @@ cronjobs:
     user: root
     minute: 30
     hour: 0
+  - name: Restart Crowdsec
+    job: docker container restart crowdsec > /dev/null 2>&1
+    user: "{{ main_username }}"
+    hour: 1
+    minute: 6
+    workday: 0
 
 ### Docker Compose
 docker_compose_generator_uid: 1001

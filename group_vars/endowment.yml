@@ -61,6 +61,12 @@ cronjobs:
     user: root
     minute: 30
     hour: 0
+  - name: Restart Crowdsec
+    job: docker container restart crowdsec > /dev/null 2>&1
+    user: "{{ main_username }}"
+    hour: 1
+    minute: 3
+    workday: 0
 
 ### Autorestic Config
 autorestic_config_user: "{{ main_username}}"

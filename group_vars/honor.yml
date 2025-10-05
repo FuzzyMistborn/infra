@@ -55,6 +55,12 @@ cronjobs:
     job: /usr/local/bin/runitor -uuid {{ secret_hc_ambition_dyndns_check }} -- /home/{{ main_username }}/ddns_vps.sh
     user: "{{ main_username }}"
     minute: '*/10'
+  - name: Restart Crowdsec
+    job: docker container restart crowdsec > /dev/null 2>&1
+    user: "{{ main_username }}"
+    hour: 1
+    minute: 4
+    workday: 0
 
 ### Autorestic Config
 autorestic_config_user: "{{ main_username}}"
