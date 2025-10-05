@@ -90,14 +90,26 @@ services:
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
     restart: unless-stopped
-  watcharr:
-    image: ghcr.io/sbondco/watcharr:v2.1.1
-    container_name: watcharr
+  yamtrack:
+    image: ghcr.io/fuzzygrim/yamtrack:0.24.7
+    container_name: yamtrack
     ports:
-      - 3080:3080
+      - 8000:8000
+    depends_on:
+      - yamtrack-redis
     volumes:
-      - "{{ appdata_path }}//watcharr:/data"
+      - "{{ appdata_path }}/yamtrack/db:/yamtrack/db"
+    environment:
+      - TZ={{ ntp_timezone }}
+      - SECRET=lztZqfM2Ac5MFoZ86hn7mw+pGretDlfb9A==
+      - REDIS_URL=redis://yamtrack-redis:6379
     restart: unless-stopped
+  yamtrack-redis:
+    container_name: yamtrack-redis
+    image: redis:8.2.1-alpine
+    restart: unless-stopped
+    volumes:
+      - "{{ appdata_path }}/yamtrack/redis:/data"
   audiobookshelf:
     image: ghcr.io/advplyr/audiobookshelf:2.29.0
     container_name: audiobookshelf

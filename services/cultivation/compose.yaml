@@ -138,23 +138,6 @@ services:
       - /var/tmp/youtubei.js:/var/tmp/youtubei.js:rw
     security_opt:
       - no-new-privileges:true
-  inv-sig-helper:
-    image: quay.io/invidious/inv-sig-helper:latest
-    container_name: inv-sig-helper
-    cap_drop:
-      - ALL
-    labels:
-      - diun.enable=true
-      - diun.regopt=docker.io
-    environment:
-      - RUST_LOG=info
-    command:
-      - --tcp
-      - 0.0.0.0:12999
-    read_only: true
-    security_opt:
-      - no-new-privileges:true
-    restart: unless-stopped
   diagrams:
     image: jgraph/drawio:28.2.3
     container_name: diagrams
