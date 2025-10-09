@@ -220,7 +220,7 @@ services:
       - KOMGA_OIDC_EMAIL_VERIFICATION=false
     restart: unless-stopped
   romm:
-    image: rommapp/romm:4.2.0
+    image: rommapp/romm:4.3.1
     container_name: romm
     restart: unless-stopped
     environment:
