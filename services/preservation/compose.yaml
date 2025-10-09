@@ -119,7 +119,7 @@ services:
     mem_limit: 200M
     restart: unless-stopped
   phpmyadmin:
-    image: ghcr.io/linuxserver/phpmyadmin:5.2.2
+    image: ghcr.io/linuxserver/phpmyadmin:5.2.3
     container_name: phpmyadmin
     volumes:
       - "{{ appdata_path }}/phpmyadmin:/config"
