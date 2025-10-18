@@ -1,6 +1,6 @@
 services:
   radarr:
-    image: ghcr.io/linuxserver/radarr:5.27.5
+    image: ghcr.io/linuxserver/radarr:5.28.0
     container_name: radarr
     volumes:
       - "{{ appdata_path }}/radarr:/config"
@@ -18,7 +18,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: unless-stopped
   radarr_uhd:
-    image: ghcr.io/linuxserver/radarr:5.27.5
+    image: ghcr.io/linuxserver/radarr:5.28.0
     container_name: radarr_uhd
     volumes:
       - "{{ appdata_path }}/radarr_uhd:/config"
