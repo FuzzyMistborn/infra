@@ -96,7 +96,7 @@ services:
       - homeassistant
     restart: unless-stopped
   tasmota:
-    image: ghcr.io/tasmoadmin/tasmoadmin:v4.3.1
+    image: ghcr.io/tasmoadmin/tasmoadmin:v4.3.2
     container_name: tasmota
     volumes:
       - "{{ appdata_path }}/tasmota:/data"
