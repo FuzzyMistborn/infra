@@ -17,7 +17,7 @@ services:
     hostname: "{{ hostname }}"
     restart: unless-stopped
   uptime:
-    image: louislam/uptime-kuma:1.23.16
+    image: louislam/uptime-kuma:1.23.17
     container_name: uptime
     volumes:
       - "{{ appdata_path }}/uptime:/app/data"
