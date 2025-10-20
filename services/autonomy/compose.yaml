@@ -34,7 +34,7 @@ services:
     shm_size: 2g
     restart: unless-stopped
   esphome:
-    image: ghcr.io/esphome/esphome:2025.9.3
+    image: ghcr.io/esphome/esphome:2025.10.2
     container_name: esphome
     network_mode: host
     volumes:
