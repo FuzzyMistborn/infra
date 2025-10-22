@@ -13,7 +13,7 @@ services:
     mem_limit: 200M
     restart: unless-stopped
   frigate:
-    image: ghcr.io/blakeblackshear/frigate:0.16.1
+    image: ghcr.io/blakeblackshear/frigate:0.16.2
     container_name: frigate
     privileged: true
     devices:
