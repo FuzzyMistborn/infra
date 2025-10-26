@@ -60,7 +60,7 @@ services:
     environment:
       - TZ=America/New_York
   prowlarr:
-    image: ghcr.io/linuxserver/prowlarr:2.0.5
+    image: ghcr.io/linuxserver/prowlarr:2.1.5
     container_name: prowlarr
     volumes:
       - "{{ appdata_path }}/prowlarr:/config"
