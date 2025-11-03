@@ -59,7 +59,7 @@ services:
       - 8080:8080
     restart: unless-stopped
   uptime:
-    image: louislam/uptime-kuma:2.0.1
+    image: louislam/uptime-kuma:2.0.2
     container_name: uptime
     volumes:
       - "{{ appdata_path }}/uptime:/app/data"
