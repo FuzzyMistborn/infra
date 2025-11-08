@@ -60,8 +60,6 @@ package_list:
 
 flatpak_list:
   - name: us.zoom.Zoom
-  - name: com.github.IsmaelMartinez.teams_for_linux
-  - name: com.github.iwalton3.jellyfin-media-player
   - name: com.mojang.Minecraft
   - name: md.obsidian.Obsidian
   - name: com.bambulab.BambuStudio
@@ -73,6 +71,9 @@ flatpak_list:
   - name: io.github.janbar.noson
   - name: io.github.dweymouth.supersonic
   - name: org.bunkus.mkvtoolnix-gui
+  - name: org.localsend.localsend_app
+  - name: org.signal.Signal
+  - name: io.gitlab.adhami3310.Converter
 
 ### Mounts
 mountpoints:
