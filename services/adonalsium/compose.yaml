@@ -94,3 +94,13 @@ services:
       - API_USER=homeassistant
       - API_PASSWORD={{ secret_nut_api_pw }}
     restart: unless-stopped
+  termix:
+    image: ghcr.io/lukegus/termix:release-1.8.0
+    container_name: termix
+    restart: unless-stopped
+    ports:
+      - "8050:8080"
+    volumes:
+      - "{{ appdata_path }}/termix:/app/data"
+    environment:
+      - PORT=8080
