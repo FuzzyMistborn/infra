@@ -65,7 +65,7 @@ services:
       - OIDC_REMOTE_USER_CLAIM=preferred_username
     restart: unless-stopped
   collabora:
-    image: collabora/code:25.04.6.2.1
+    image: collabora/code:25.04.7.2.1
     container_name: collabora
     privileged: true
     cap_add:
