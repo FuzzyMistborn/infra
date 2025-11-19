@@ -146,7 +146,7 @@ services:
       - 8444:8443
     restart: unless-stopped
   bentopdf:
-    image: ghcr.io/alam00000/bentopdf:1.4.0
+    image: ghcr.io/alam00000/bentopdf:v1.7.5
     container_name: bentopdf
     ports:
       - 8081:8080
