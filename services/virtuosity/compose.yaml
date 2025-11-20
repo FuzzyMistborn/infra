@@ -11,7 +11,7 @@ services:
       - AGENT_SECRET={{ secret_portainer_key }}
     restart: unless-stopped
   ollama-server:
-    image: ollama/ollama:0.12.9
+    image: ollama/ollama:0.13.0
     container_name: ollama-server
     volumes:
       - /mnt/llms/ollama:/root/.ollama
