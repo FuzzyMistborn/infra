@@ -2,6 +2,7 @@ services:
   portainer:
     image: portainer/portainer-ce:2.35.0
     container_name: portainer
+    privileged: true
     volumes:
       - /srv/docker/portainer:/data
       - /var/run/docker.sock:/var/run/docker.sock
@@ -86,6 +87,7 @@ services:
   nut-ups:
     image: fuzzymistborn/nut-upsd:2.8.2
     container_name: nut-ups
+    privileged: true
     devices:
       - /dev/bus/usb:/dev/bus/usb
     ports:
