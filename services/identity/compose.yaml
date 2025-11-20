@@ -10,7 +10,7 @@ services:
     ports:
       - 3000:3000
     environment:
-      - RAILS_ENV=development
+      - RAILS_ENV=production
       - REDIS_URL=redis://dawarich-redis:6379
       - DATABASE_HOST=dawarich-db
       - DATABASE_USERNAME=dawarich
@@ -25,6 +25,7 @@ services:
       - PHOTON_API_HOST=192.168.50.23:2322
       - PHOTON_API_USE_HTTPS=false
       - SELF_HOSTED=true
+      - SECRET_KEY_BASE={{ secret_dawarich_key_base }}
     stdin_open: true
     tty: true
     entrypoint: web-entrypoint.sh
@@ -66,7 +67,7 @@ services:
       - "{{ appdata_path }}/dawarich/storage:/var/app/storage"
       - "{{ appdata_path }}/dawarich/db17:/dawarich_db_data"
     environment:
-      - RAILS_ENV=development
+      - RAILS_ENV=production
       - REDIS_URL=redis://dawarich-redis:6379
       - DATABASE_HOST=dawarich-db
       - DATABASE_USERNAME=dawarich
@@ -80,6 +81,7 @@ services:
       - PHOTON_API_HOST=192.168.50.23:2322
       - PHOTON_API_USE_HTTPS=false
       - SELF_HOSTED=true
+      - SECRET_KEY_BASE={{ secret_dawarich_key_base }}
     stdin_open: true
     tty: true
     entrypoint: sidekiq-entrypoint.sh

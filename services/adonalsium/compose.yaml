@@ -70,6 +70,7 @@ services:
   calibre:
     image: lscr.io/linuxserver/calibre:8.14.0
     container_name: calibre
+    privileged: true
     volumes:
       - "{{ appdata_path }}/calibre:/config"
       - /mnt/Media/Ebooks:/books
