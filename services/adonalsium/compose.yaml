@@ -68,7 +68,7 @@ services:
       - 3001:3001
     restart: unless-stopped
   calibre:
-    image: lscr.io/linuxserver/calibre:8.14.0
+    image: lscr.io/linuxserver/calibre:8.15.0
     container_name: calibre
     privileged: true
     volumes:
