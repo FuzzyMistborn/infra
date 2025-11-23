@@ -52,7 +52,7 @@ services:
     mem_limit: 200M
     restart: unless-stopped
   gitea:
-    image: gitea/gitea:1.25.1
+    image: gitea/gitea:1.25.2
     container_name: gitea
     volumes:
       - "{{ appdata_path }}/gitea/data:/data"
