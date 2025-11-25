@@ -101,6 +101,7 @@ services:
     image: ghcr.io/lukegus/termix:release-1.9.0
     container_name: termix
     restart: unless-stopped
+    privileged: true
     ports:
       - "8050:8080"
     volumes:
