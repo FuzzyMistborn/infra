@@ -17,8 +17,8 @@ services:
       - DATABASE_PASSWORD={{ secret_dawarich_db_pass }}
       - DATABASE_NAME=dawarich
       - MIN_MINUTES_SPENT_IN_CITY=60
-      - APPLICATION_HOST=localhost
-      - APPLICATION_HOSTS=localhost,track.{{ secret_personal_internal_url }}
+      - APPLICATION_HOST=192.168.50.23
+      - APPLICATION_HOSTS=192.168.50.23,track.{{ secret_personal_internal_url }}
       - TIME_ZONE={{ ntp_timezone }}
       - APPLICATION_PROTOCOL=http
       - REVERSE_GEOCODING_ENABLED=true
@@ -73,8 +73,8 @@ services:
       - DATABASE_USERNAME=dawarich
       - DATABASE_PASSWORD={{ secret_dawarich_db_pass }}
       - DATABASE_NAME=dawarich
-      - APPLICATION_HOST=localhost
-      - APPLICATION_HOSTS=localhost
+      - APPLICATION_HOST=192.168.50.23
+      - APPLICATION_HOSTS=192.168.50.23,track.{{ secret_personal_internal_url }}
       - BACKGROUND_PROCESSING_CONCURRENCY=10
       - APPLICATION_PROTOCOL=http
       - REVERSE_GEOCODING_ENABLED=true
