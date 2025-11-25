@@ -98,7 +98,7 @@ services:
       - API_PASSWORD={{ secret_nut_api_pw }}
     restart: unless-stopped
   termix:
-    image: ghcr.io/lukegus/termix:release-1.8.0
+    image: ghcr.io/lukegus/termix:release-1.9.0
     container_name: termix
     restart: unless-stopped
     ports:
