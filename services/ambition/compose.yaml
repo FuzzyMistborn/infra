@@ -39,7 +39,7 @@ services:
       - umami-db
     restart: unless-stopped
   umami-db:
-    image: postgres:18.1-alpine
+    image: pgautoupgrade/pgautoupgrade:18.1-alpine
     container_name: umami-db
     volumes:
       - "{{ appdata_path }}/umami/mariadb:/var/lib/postgresql/data"

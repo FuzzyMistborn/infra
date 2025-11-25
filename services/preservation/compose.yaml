@@ -87,7 +87,7 @@ services:
     mem_limit: 300M
     restart: unless-stopped
   invidious-db:
-    image: postgres:15.15-alpine
+    image: pgautoupgrade/pgautoupgrade:18.1-alpine
     container_name: invidious-db
     volumes:
       - "{{ appdata_path }}/invidious/data:/var/lib/postgresql/data"
@@ -105,7 +105,7 @@ services:
     mem_limit: 200M
     restart: unless-stopped
   linkwarden-db:
-    image: postgres:16.11-alpine
+    image: pgautoupgrade/pgautoupgrade:18.1-alpine
     container_name: linkwarden-db
     volumes:
       - "{{ appdata_path }}/linkwarden/data:/var/lib/postgresql/data"
