@@ -62,8 +62,8 @@ services:
     environment:
       - USER_UID=1000
       - USER_GID=1000
-      - DB_TYPE=mysql
-      - DB_HOST=gitea-db:3306
+      - DB_TYPE=postgres
+      - DB_HOST=gitea-db:5432
       - DB_NAME=gitea
       - DB_USER=gitea
       - DB_PASSWD={{ secret_gitea_db_pass }}
@@ -71,15 +71,14 @@ services:
       - gitea-db
     restart: unless-stopped
   gitea-db:
-    image: mariadb:11.7
+    image: pgautoupgrade/pgautoupgrade:18.1-alpine
     container_name: gitea-db
     volumes:
-      - "{{ appdata_path }}/gitea/mariadb:/var/lib/mysql"
+      - "{{ appdata_path }}/gitea/postgres:/var/lib/postgresql/data"
     environment:
-      - MYSQL_ROOT_PASSWORD={{ secret_db_root_pass }}
-      - MYSQL_USER=gitea
-      - MYSQL_PASSWORD={{ secret_gitea_db_pass }}
-      - MYSQL_DATABASE=gitea
+      - POSTGRES_USER=gitea
+      - POSTGRES_PASSWORD={{ secret_gitea_db_pass }}
+      - POSTGRES_DB=gitea
     mem_limit: 200M
     restart: unless-stopped
   woodpecker-github:
