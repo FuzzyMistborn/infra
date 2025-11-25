@@ -12,4 +12,4 @@ docker exec -i gitea-db mariadb -u gitea -p{{ secret_gitea_db_pass }} gitea < /h
 echo Restoring Umami DB
 cd /home/{{ main_username }}/db_backups/umami
 LAST_UMAMI=$(ls -t | head -n 1)
-docker exec -i umami-db mariadb -u umami -p{{ secret_umami_db_pass }} umami < /home/{{ main_username }}/db_backups/umami/$LAST_UMAMI
+cat /home/{{ main_username }}/db_backups/umami/$LAST_UMAMI | docker exec -i umami-db psql -U umami -d umami

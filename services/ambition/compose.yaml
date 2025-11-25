@@ -25,7 +25,7 @@ services:
       - 127.0.0.1:3001:3001
     restart: unless-stopped
   umami:
-    image: ghcr.io/umami-software/umami:mysql-v2.19.0
+    image: ghcr.io/umami-software/umami:3.0.1
     container_name: umami
     labels:
       - diun.enable=true
@@ -34,21 +34,19 @@ services:
       - 127.0.0.1:3500:3000
     environment:
       - DATABASE_URL={{ secret_umami_db_url }}
-      - DATABASE_TYPE=mysql
       - HASH_SALT={{ secret_umami_hash }}
     depends_on:
       - umami-db
     restart: unless-stopped
   umami-db:
-    image: mariadb:11.7
+    image: postgres:18.1-alpine
     container_name: umami-db
     volumes:
-      - "{{ appdata_path }}/umami/mariadb:/var/lib/mysql"
+      - "{{ appdata_path }}/umami/mariadb:/var/lib/postgresql/data"
     environment:
-      - MYSQL_ROOT_PASSWORD={{ secret_db_root_pass }}
-      - MYSQL_USER=umami
-      - MYSQL_PASSWORD={{ secret_umami_db_pass }}
-      - MYSQL_DATABASE=umami
+      - POSTGRES_USER=umami
+      - POSTGRES_PASSWORD={{ secret_umami_db_pass }}
+      - POSTGRES_DB=umami
     mem_limit: 200M
     restart: unless-stopped
   gitea:
