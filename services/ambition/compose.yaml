@@ -220,7 +220,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: unless-stopped
   portainer_agent:
-    image: portainer/agent:2.35.0
+    image: portainer/agent:2.36.0
     container_name: portainer_agent
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
