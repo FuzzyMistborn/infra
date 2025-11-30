@@ -1,21 +1,4 @@
 services:
-  diun:
-    image: ghcr.io/crazy-max/diun:4.30.0
-    container_name: diun
-    volumes:
-      - "{{ appdata_path }}/diun/data:/data"
-      - "{{ appdata_path }}/diun/config.yml:/diun.yml:ro"
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - UID={{ main_uid }}
-      - GID={{ main_gid }}
-      - PUID={{ main_uid }}
-      - PGID={{ main_gid }}
-      - TZ={{ ntp_timezone }}
-      - LOG_LEVEL=info
-      - LOG_JSON=false
-    hostname: "{{ hostname }}"
-    restart: unless-stopped
   uptime:
     image: louislam/uptime-kuma:2.0.2
     container_name: uptime
@@ -27,9 +10,6 @@ services:
   umami:
     image: ghcr.io/umami-software/umami:3.0.1
     container_name: umami
-    labels:
-      - diun.enable=true
-      - diun.regopt=ghcr.io
     ports:
       - 127.0.0.1:3500:3000
     environment:

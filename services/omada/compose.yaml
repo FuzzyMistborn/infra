@@ -1,21 +1,4 @@
 services:
-  diun:
-    image: ghcr.io/crazy-max/diun:4.30.0
-    container_name: diun
-    volumes:
-      - "{{ appdata_path }}/diun/data:/data"
-      - "{{ appdata_path }}/diun/config.yml:/diun.yml:ro"
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - UID={{ main_uid }}
-      - GID={{ main_gid }}
-      - PUID={{ main_uid }}
-      - PGID={{ main_gid }}
-      - TZ={{ ntp_timezone }}
-      - LOG_LEVEL=info
-      - LOG_JSON=false
-    hostname: omada
-    restart: unless-stopped
   portainer_agent:
     image: portainer/agent:2.35.0
     container_name: portainer_agent
@@ -35,9 +18,6 @@ services:
       - "{{ appdata_path }}/omada/data:/opt/tplink/EAPController/data"
       - "{{ appdata_path }}/omada/work:/opt/tplink/EAPController/work"
       - "{{ appdata_path }}/omada/logs:/opt/tplink/EAPController/logs"
-    labels:
-      - diun.enable=true
-      - diun.regopt=docker.io
     environment:
       - UID={{ main_uid }}
       - GID={{ main_gid }}

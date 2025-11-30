@@ -4,9 +4,6 @@ services:
     container_name: hass-db
     volumes:
       - "{{ appdata_path }}/hass_db:/var/lib/mysql"
-    labels:
-      - diun.enable=true
-      - diun.regopt=docker.io
     ports:
       - 3307:3306
     environment:
@@ -46,9 +43,6 @@ services:
     container_name: bitwarden-db
     volumes:
       - "{{ appdata_path }}/bitwarden_db:/var/lib/mysql"
-    labels:
-      - diun.enable=true
-      - diun.regopt=docker.io
     ports:
       - 3308:3306
     environment:
@@ -93,9 +87,6 @@ services:
       - "{{ appdata_path }}/invidious/data:/var/lib/postgresql/data"
       - "{{ appdata_path }}/invidious/config/sql:/config/sql"
       - "{{ appdata_path }}/invidious/init-invidious-db.sh:/docker-entrypoint-initdb.d/init-invidious-db.sh"
-    labels:
-      - diun.enable=true
-      - diun.regopt=docker.io
     ports:
       - 5432:5432
     environment:
@@ -109,9 +100,6 @@ services:
     container_name: linkwarden-db
     volumes:
       - "{{ appdata_path }}/linkwarden/data:/var/lib/postgresql/data"
-    labels:
-      - diun.enable=true
-      - diun.regopt=docker.io
     ports:
       - 5433:5432
     environment:
@@ -132,23 +120,6 @@ services:
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
       - PMA_ARBITRARY=1
-    restart: unless-stopped
-  diun:
-    image: ghcr.io/crazy-max/diun:4.30.0
-    container_name: diun
-    volumes:
-      - "{{ appdata_path }}/diun/data:/data"
-      - "{{ appdata_path }}/diun/config.yml:/diun.yml:ro"
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - UID={{ main_uid }}
-      - GID={{ main_gid }}
-      - PUID={{ main_uid }}
-      - PGID={{ main_gid }}
-      - TZ={{ ntp_timezone }}
-      - LOG_LEVEL=info
-      - LOG_JSON=false
-    hostname: preservation
     restart: unless-stopped
   portainer_agent:
     image: portainer/agent:2.35.0

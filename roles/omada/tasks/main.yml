@@ -12,16 +12,7 @@
     group: "{{ main_groupname }}"
   loop:
     - docker
-    - docker/diun
     - docker/omada
-
-#### DIUN
-- name: Copy DIUN Config Template
-  template:
-    src: diun_config.yml.j2
-    dest: /home/{{ main_username }}/docker/diun/config.yml
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
 
 ### Backup Restore
 - name: Create restore script

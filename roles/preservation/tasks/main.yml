@@ -9,21 +9,12 @@
   loop:
     - docker
     - docker/bitwarden_db
-    - docker/diun
     - docker/nextcloud_db
     - docker/hass_db
     - docker/influx_db
     - docker/invidious
     - db_backups
     - scripts
-
-#### DIUN
-- name: Copy DIUN Config Template
-  template:
-    src: diun_config.yml.j2
-    dest: /home/{{ main_username }}/docker/diun/config.yml
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
 
 - name: Copy db backup script template
   template:
