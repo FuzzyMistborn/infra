@@ -91,7 +91,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: unless-stopped
   yamtrack:
-    image: ghcr.io/fuzzygrim/yamtrack:0.24.7
+    image: ghcr.io/fuzzygrim/yamtrack:0.24.8
     container_name: yamtrack
     ports:
       - 8000:8000
