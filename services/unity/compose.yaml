@@ -26,7 +26,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: unless-stopped
   adguard:
-    image: adguard/adguardhome:v0.107.69
+    image: adguard/adguardhome:v0.107.71
     container_name: adguard
     cap_add:
       - NET_ADMIN
