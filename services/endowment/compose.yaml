@@ -250,7 +250,7 @@ services:
     ports:
       - 2500:8080
   southwest:
-    image: jdholtz/auto-southwest-check-in:v9.0
+    image: jdholtz/auto-southwest-check-in:v10.0
     container_name: southwest
     privileged: true
     volumes:
