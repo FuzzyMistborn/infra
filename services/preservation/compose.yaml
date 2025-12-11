@@ -13,7 +13,7 @@ services:
       - MYSQL_PASSWORD={{ secret_hass_db_pass }}
     restart: unless-stopped
   influx-db:
-    image: influxdb:2.7.12
+    image: influxdb:2.8.0
     container_name: influx-db
     volumes:
       - /home/{{ main_username }}/db_backups/influxdb:/media/backup
