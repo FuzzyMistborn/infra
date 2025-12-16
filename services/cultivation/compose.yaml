@@ -254,7 +254,7 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
   crowdsec:
-    image: ghcr.io/crowdsecurity/crowdsec:v1.7.3
+    image: ghcr.io/crowdsecurity/crowdsec:v1.7.4
     container_name: crowdsec
     volumes:
       - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"
