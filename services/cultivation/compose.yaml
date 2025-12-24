@@ -1,6 +1,6 @@
 services:
   diun:
-    image: ghcr.io/crazy-max/diun:4.30.0
+    image: ghcr.io/crazy-max/diun:4.31.0
     container_name: diun
     volumes:
       - "{{ appdata_path }}/diun/data:/data"
