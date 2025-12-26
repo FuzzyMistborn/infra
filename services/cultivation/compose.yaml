@@ -236,7 +236,7 @@ services:
     volumes:
       - "{{ appdata_path }}/linkwarden/meili_data:/meili_data"
   trilium:
-    image: triliumnext/trilium:v0.100.0
+    image: triliumnext/trilium:v0.101.1
     container_name: trilium
     restart: unless-stopped
     environment:
