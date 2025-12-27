@@ -138,8 +138,8 @@
   lineinfile:
     dest: "/etc/environment"
     state: present
-    regexp: "^HETZNER_API_KEY="
-    line: "HETZNER_API_KEY={{ secret_hetzner_token }}"
+    regexp: "^HETZNER_API_TOKEN="
+    line: "HETZNER_API_TOKEN={{ secret_hetzner_token }}"
 
 ### Wireguard/Tailscale
 - name: Enable IPv4 forwarding

@@ -6,6 +6,7 @@ hostname: honor
 package_list:
   - name: curl
   - name: htop
+  - name: jq
   - name: net-tools
   - name: sudo
   - name: restic

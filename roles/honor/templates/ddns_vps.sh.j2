@@ -3,19 +3,65 @@
 ### Get the IP address from anywhere that will echo it
 ip=`curl -s http://ipecho.net/plain`
 
-### Set Hetzner Items
-# Obtain a Hetzner API key
-token={{ secret_hetzner_dyndns_api }}
-# Obtain zone_id via https://dns.hetzner.com/api-docs/#operation/GetZones
-zone_id={{ secret_hetzner_dyndns_zone_id }}
-# Obtain record_id via https://dns.hetzner.com/api-docs/#operation/GetRecords
-record_id={{ secret_hetzner_dyndns_record_id }}
-# The record you're trying to update
-dns_name=@
-# Workaround for bash variable expansion inside quotes, do not change
-json_string='{"type":"A","zone_id":"'"$zone_id"'","name":"'"$dns_name"'","value":"'"$ip"'"}'
+### Set Hetzner Cloud API Items
+# Obtain a Hetzner Cloud API token from https://console.hetzner.cloud/
+token={{ secret_hetzner_cloud_api }}
+# Obtain zone_id via API: GET https://api.hetzner.cloud/v1/zones
+zone_id={{ secret_hetzner_cloud_zone_id }}
+# The record name you're trying to update (use @ for root domain)
+record_name={{ secret_hetzner_cloud_record_name }}
+# Record type (A for IPv4, AAAA for IPv6)
+record_type=A
+# TTL in seconds (default 60)
+ttl=60
 
-curl -X PUT "https://dns.hetzner.com/api/v1/records/$record_id" \
-     -H 'Content-Type: application/json' \
-     -H "Auth-API-Token: $token" \
-     -d $json_string
+# Construct the API endpoint for updating records via RRSet
+# The Cloud API uses RRSets (Resource Record Sets) instead of individual records
+zone_endpoint="https://api.hetzner.cloud/v1/zones/${zone_id}/rrsets"
+
+# First, get the current RRSet to see if it exists
+echo "Checking for existing RRSet..."
+current_rrset=$(curl -s -X GET "${zone_endpoint}" \
+     -H "Authorization: Bearer ${token}" \
+     -H "Content-Type: application/json" \
+     | jq -r ".rrsets[] | select(.name==\"${record_name}\" and .type==\"${record_type}\")")
+
+if [ -z "$current_rrset" ]; then
+    echo "RRSet does not exist, creating new one..."
+    # Create new RRSet
+    json_payload=$(jq -n \
+        --arg name "${record_name}" \
+        --arg type "${record_type}" \
+        --arg ip "${ip}" \
+        --argjson ttl ${ttl} \
+        '{
+            name: $name,
+            type: $type,
+            ttl: $ttl,
+            records: [{value: $ip}]
+        }')
+
+    curl -X POST "${zone_endpoint}" \
+         -H "Authorization: Bearer ${token}" \
+         -H "Content-Type: application/json" \
+         -d "${json_payload}"
+else
+    echo "RRSet exists, updating..."
+    # Get the RRSet ID
+    rrset_id=$(echo "$current_rrset" | jq -r '.id')
+
+    # Use the set_records action to update the IP
+    json_payload=$(jq -n \
+        --arg ip "${ip}" \
+        '{
+            records: [{value: $ip}]
+        }')
+
+    # Use the actions endpoint to set records
+    curl -X POST "${zone_endpoint}/${rrset_id}/actions/set_records" \
+         -H "Authorization: Bearer ${token}" \
+         -H "Content-Type: application/json" \
+         -d "${json_payload}"
+fi
+
+echo -e "\nDNS update completed for ${record_name} with IP ${ip}"
