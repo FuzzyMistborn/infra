@@ -3,7 +3,7 @@
 # Nextcloud DB Backup
 echo Backing up Nextcloud DB
 today=$(date +"%Y_%m_%d")
-docker exec ha-db sh -c 'pg_dumpall -U nextcloud' > /home/{{ main_username }}/db_backups/nextcloud/nextcloudDB_$today.sql
+docker exec nextcloud-db sh -c 'pg_dumpall -U nextcloud' > /home/{{ main_username }}/db_backups/nextcloud/nextcloudDB_$today.sql
 
 #### Vaultwarden DB Backup
 echo Backing up Vaultwarden DB
