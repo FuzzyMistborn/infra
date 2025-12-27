@@ -208,9 +208,9 @@ books.{{ secret_personal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import headers
 }
-# Komga
+# Booklore
 read.{{ secret_personal_url }} {
-	reverse_proxy http://192.168.50.20:25600
+	reverse_proxy http://192.168.50.20:6060
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import headers
 }
@@ -311,7 +311,7 @@ sabnzb.{{ secret_personal_internal_url }} {
 }
 # Prowlarr
 prowlarr.{{ secret_personal_internal_url }} {
-	reverse_proxy http://192.168.50.22:9696
+	reverse_proxy http://192.168.50.20:9696
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
@@ -391,6 +391,12 @@ mass.{{ secret_personal_internal_url }} {
 # Yamtrack
 yamtrack.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.20:8000
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	import headers
+}
+# Jellyseerr
+requests.{{ secret_personal_internal_url }} {
+	reverse_proxy http://192.168.50.20:5055
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }

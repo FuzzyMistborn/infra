@@ -122,7 +122,7 @@ lxc_vlans:
     gw: 192.168.50.1
     ip: 192.168.50.22
     tag: 50
-    disk: 'local-lvm:45'
+    disk: 'local-lvm:50'
     cores: 4
     memory: 3072
     nesting: 1
