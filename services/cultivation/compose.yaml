@@ -16,30 +16,28 @@ services:
       - LOG_JSON=false
     hostname: cultivation
     restart: unless-stopped
-  bitwarden:
+  vaultwarden:
     image: ghcr.io/dani-garcia/vaultwarden:1.34.3
-    container_name: bitwarden
+    container_name: vaultwarden
     volumes:
-      - "{{ appdata_path }}/bitwarden/data:/data"
+      - "{{ appdata_path }}/vaultwarden/data:/data"
     ports:
       - 6482:80
     environment:
       - SMTP_HOST={{ secret_snapraid_smtp_host }}
-      - SMTP_FROM={{ secret_bitwarden_email }}
+      - SMTP_FROM={{ secret_vaultwarden_email }}
       - SMTP_PORT=465
-      - SMTP_SSL=true
-      - SMTP_EXPLICIT_TLS=true
+      - SMTP_SECURITY=force_tls
       - SMTP_USERNAME={{ secret_snapraid_email_address }}
       - SMTP_PASSWORD={{ secret_snapraid_email_pass }}
-      - ADMIN_TOKEN={{ secret_bitwarden_token }}
+      - ADMIN_TOKEN={{ secret_vaultwarden_token }}
       - WEBSOCKET_ENABLED=false  # Required to use websockets
       - SIGNUPS_ALLOWED=false  # set to false to disable signups
-      - LOG_FILE=/data/bitwarden.log
+      - LOG_FILE=/data/log/vaultwarden.log
       - LOG_LEVEL=warn
       - EXTENDED_LOGGING=true
-      - DATABASE_URL={{ secret_bitwarden_db_url }}
-      - ENABLE_DB_WAL=false
-      - DOMAIN={{ secret_bitwarden_url }}
+      - DATABASE_URL={{ secret_vaultwarden_db_url }}
+      - DOMAIN={{ secret_vaultwarden_url }}
     restart: unless-stopped
   freshrss:
     image: freshrss/freshrss:1.27.1
@@ -174,7 +172,7 @@ services:
       - MAIL_SSL=true
       - MAIL_USERNAME={{ secret_snapraid_email_address }}
       - MAIL_PASSWORD={{ secret_snapraid_email_pass }}
-      - MAIL_SENDER={{ secret_bitwarden_email }}
+      - MAIL_SENDER={{ secret_vaultwarden_email }}
       - IS_CREATION_ENABLED=true
       - IS_DASHBOARD_ENABLED=true
       - IS_REGISTRATION_ENABLED=false
@@ -258,7 +256,7 @@ services:
     container_name: crowdsec
     volumes:
       - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"
-      - "{{ appdata_path }}/bitwarden/data:/var/log/vaultwarden:ro"
+      - "{{ appdata_path }}/vaultwarden/data/log:/var/log/vaultwarden:ro"
       - "{{ appdata_path }}/crowdsec/db:/var/lib/crowdsec/data/"
     environment:
       - COLLECTIONS=Dominic-Wagner/vaultwarden

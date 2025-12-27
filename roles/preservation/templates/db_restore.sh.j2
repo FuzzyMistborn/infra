@@ -1,23 +1,23 @@
 #!/bin/bash
 
 cd /home/{{ main_username }}
-docker compose up -d nextcloud-db bitwarden-db hass-db influx-db
+docker compose up -d nextcloud-db vaultwarden-db ha-db romm-db invidious-db linkwarden-db booklore-db influx-db
 
 sleep 30s
 echo Restoring Nextcloud DB
 cd /home/{{ main_username }}/db_backups/nextcloud
 LAST_NEXTCLOUD=$(ls -t | head -n 1)
-docker exec -i nextcloud-db mariadb -u {{ main_username }} -p{{ secret_nextcloud_db_pass }} nextcloud < /home/{{ main_username }}/db_backups/nextcloud/$LAST_NEXTCLOUD
+cat /home/{{ main_username }}/db_backups/nextcloud/$LAST_NEXTCLOUD | docker exec -i nextcloud-db psql -U nextcloud -d nextcloud
 
-echo Restoring Bitwarden DB
-cd /home/{{ main_username }}/db_backups/bitwarden
-LAST_BITWARDEN=$(ls -t | head -n 1)
-docker exec -i bitwarden-db mariadb -u bitwarden -p{{ secret_bitwarden_db_pass }} bitwarden_rs < /home/{{ main_username }}/db_backups/bitwarden/$LAST_BITWARDEN
+echo Restoring Vaultwarden DB
+cd /home/{{ main_username }}/db_backups/vaultwarden
+LAST_VAULTWARDEN=$(ls -t | head -n 1)
+cat /home/{{ main_username }}/db_backups/vaultwarden/$LAST_VAULTWARDEN | docker exec -i vaultwarden-db psql -U vaultwarden -d vaultwarden
 
 echo Restoring HA DB
 cd /home/{{ main_username }}/db_backups/hass
 LAST_HA=$(ls -t | head -n 1)
-docker exec -i hass-db mariadb -u hass -p{{ secret_hass_db_pass }} homeassistant < /home/{{ main_username }}/db_backups/hass/$LAST_HA
+cat /home/{{ main_username }}/db_backups/ha/$LAST_HA | docker exec -i ha-db psql -U homeassistant -d homeassistant
 
 echo Restoring ROMM DB
 cd /home/{{ main_username }}/db_backups/romm
@@ -33,6 +33,11 @@ echo Restoring Linkwarden DB
 cd /home/{{ main_username }}/db_backups/linkwarden
 LAST_LINKWARDEN=$(ls -t | head -n 1)
 cat /home/{{ main_username }}/db_backups/linkwarden/$LAST_LINKWARDEN | docker exec -i linkwarden-db psql -U postgres -d postgres
+
+echo Restoring Booklore DB
+cd /home/{{ main_username }}/db_backups/booklore
+LAST_BOOKLORE=$(ls -t | head -n 1)
+docker exec -i booklore-db mariadb -u booklore -p{{ secret_booklore_db_pass }} booklore < /home/{{ main_username }}/db_backups/booklore/$LAST_BOOKLORE
 
 #echo Restoring InfluxDB
 # Run `docker exec -it influx-db sh` and then run below commands

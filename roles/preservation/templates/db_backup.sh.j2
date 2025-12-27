@@ -3,17 +3,17 @@
 # Nextcloud DB Backup
 echo Backing up Nextcloud DB
 today=$(date +"%Y_%m_%d")
-docker exec nextcloud-db sh -c 'exec mariadb-dump --single-transaction --skip-ssl -h localhost -u {{ main_username }} -p{{ secret_nextcloud_db_pass }} nextcloud' > /home/{{ main_username }}/db_backups/nextcloud/nextcloudDB_$today.sql
+docker exec ha-db sh -c 'pg_dumpall -U nextcloud' > /home/{{ main_username }}/db_backups/nextcloud/nextcloudDB_$today.sql
 
-#### Bitwarden DB Backup
-echo Backing up Bitwarden DB
+#### Vaultwarden DB Backup
+echo Backing up Vaultwarden DB
 today=$(date +"%Y_%m_%d")
-docker exec bitwarden-db sh -c 'exec mariadb-dump --single-transaction -h localhost -u bitwarden -p{{ secret_bitwarden_db_pass }} bitwarden_rs' > /home/{{ main_username }}/db_backups/bitwarden/bitwardenDB_$today.sql
+docker exec vaultwarden-db sh -c 'pg_dumpall -U vaultwarden' > /home/{{ main_username }}/db_backups/vaultwarden/vaultwardenDB_$today.sql
 
 #### HA DB Backup
 echo Backing up HA DB
 today=$(date +"%Y_%m_%d")
-docker exec hass-db sh -c 'exec mariadb-dump --single-transaction -h localhost -u hass -p{{ secret_hass_db_pass }} homeassistant' > /home/{{ main_username }}/db_backups/hass/hassDB_$today.sql
+docker exec ha-db sh -c 'pg_dumpall -U homeassistant' > /home/{{ main_username }}/db_backups/ha/haDB_$today.sql
 
 #### ROMM DB Backup
 echo Backing up ROMM DB
@@ -29,6 +29,11 @@ docker exec invidious-db sh -c 'pg_dumpall -U kemal' > /home/{{ main_username }}
 echo Backing up Linkwarden DB
 today=$(date +"%Y_%m_%d")
 docker exec linkwarden-db sh -c 'pg_dumpall -U postgres' > /home/{{ main_username }}/db_backups/linkwarden/linkwardenDB_$today.sql
+
+#### Booklore DB Backup
+echo Backing up Booklore DB
+today=$(date +"%Y_%m_%d")
+docker exec booklore-db sh -c 'exec mariadb-dump --single-transaction --skip-ssl -h localhost -u booklore -p{{ secret_booklore_db_pass }} booklore' > /home/{{ main_username }}/db_backups/booklore/bookloreDB_$today.sql
 
 #### InfluxDB Backup
 echo Backing up InfluxDB
