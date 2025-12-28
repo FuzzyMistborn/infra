@@ -122,7 +122,7 @@ services:
     volumes:
       - "{{ appdata_path }}/yamtrack/redis:/data"
   audiobookshelf:
-    image: ghcr.io/advplyr/audiobookshelf:2.31.0
+    image: ghcr.io/advplyr/audiobookshelf:2.32.1
     container_name: audiobookshelf
     volumes:
       - "{{ appdata_path }}/audiobookshelf/config:/config"
