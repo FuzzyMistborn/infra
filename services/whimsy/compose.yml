@@ -27,7 +27,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: unless-stopped
   handbrake:
-    image: ghcr.io/jlesage/handbrake:v25.12.1
+    image: ghcr.io/jlesage/handbrake:v25.12.4
     container_name: handbrake
     devices:
       - /dev/dri/renderD128:/dev/dri/renderD128
