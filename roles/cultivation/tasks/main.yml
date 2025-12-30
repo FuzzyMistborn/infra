@@ -11,6 +11,16 @@
     - docker/diun
     - scripts
 
+- name: Copy script templates
+  template:
+    src: "{{ item.src }}"
+    dest: /home/{{ main_username }}/scripts/{{ item.dest }}
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: +x
+  loop:
+    - {src: 'monitor_homebox.sh.j2', dest: 'monitor_homebox.sh'}
+
 #### DIUN
 - name: Copy DIUN Config Template
   template:

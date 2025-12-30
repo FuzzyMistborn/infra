@@ -251,6 +251,29 @@ services:
       - "{{ appdata_path }}/trilium:/home/node/trilium-data"
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+  homebox:
+    image: ghcr.io/sysadminsmedia/homebox:0.22.3
+    container_name: homebox
+    restart: unless-stopped
+    environment:
+    - HBOX_LOG_LEVEL=info
+    - HBOX_LOG_FORMAT=text
+    - HBOX_WEB_MAX_UPLOAD_SIZE=10
+#    - HBOX_OPTIONS_ALLOW_REGISTRATION=false
+    - HBOX_LABEL_MAKER_PRINT_COMMAND=cp {{'{{'}}.FileName}} /label/label.png
+    - HBOX_LABEL_MAKER_PADDING=5
+    - HBOX_LABEL_MAKER_WIDTH=350
+    - HBOX_LABEL_MAKER_HEIGHT=120
+    - HBOX_MAILER_PORT=587
+    - HBOX_MAILER_USERNAME={{ secret_snapraid_email_address }}
+    - HBOX_MAILER_PASSWORD={{ secret_snapraid_email_pass }}
+    - HBOX_MAILER_FROM=homebox@{{ secret_personal_url }}
+    - HBOX_OPTIONS_ALLOW_ANALYTICS=false
+    volumes:
+      - "{{ appdata_path }}/homebox/data:/data/"
+      - "{{ appdata_path }}/homebox/labels:/labels/"
+    ports:
+      - 7745:7745
   crowdsec:
     image: ghcr.io/crowdsecurity/crowdsec:v1.7.4
     container_name: crowdsec

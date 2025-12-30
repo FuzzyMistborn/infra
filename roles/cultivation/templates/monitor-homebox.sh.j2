@@ -1,0 +1,17 @@
+#!/bin/bash
+
+WATCH_DIR="{{ appdata_path }}/homebox/labels"
+MQTT_BROKER="192.168.30.5"
+MQTT_USERNAME="homeassistant"
+MQTT_PASSWORD="{{ secret_mqtt_pass }}"
+MQTT_TOPIC="homebox/labels"
+
+inotifywait -m -e close_write,moved_to "$WATCH_DIR" --format '%w%f' |
+while read FILE
+do
+    if [[ "$FILE" == *.png ]]; then
+        echo "Detected new PNG: $FILE"
+        # Publish file via MQTT
+        mosquitto_pub -h "$MQTT_BROKER" -u "$MQTT_USERNAME" -P "$MQTT_PASSWORD" -t "$MQTT_TOPIC" -f "$FILE"
+    fi
+done
