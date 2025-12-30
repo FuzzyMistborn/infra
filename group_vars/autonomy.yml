@@ -157,8 +157,8 @@ autorestic_config_yaml:
         - b2_docker
       options:
         backup:
-            exclude:
-              - 'docker/esphome/.esphome/*'
+          exclude:
+            - 'docker/esphome/.esphome/*'
         forget:
           keep-daily: 1
           keep-weekly: 8
