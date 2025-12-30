@@ -12,6 +12,6 @@ do
     if [[ "$FILE" == *.png ]]; then
         echo "Detected new PNG: $FILE"
         # Publish file via MQTT
-        mosquitto_pub -h "$MQTT_BROKER" -u "$MQTT_USERNAME" -P "$MQTT_PASSWORD" -t "$MQTT_TOPIC" -f "$FILE"
+        mosquitto_pub -h "$MQTT_BROKER" -u "$MQTT_USERNAME" -P "$MQTT_PASSWORD" -t "$MQTT_TOPIC" --retain -f "$FILE"
     fi
 done
