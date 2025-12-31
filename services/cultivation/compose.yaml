@@ -259,7 +259,7 @@ services:
       - HBOX_LOG_LEVEL=info
       - HBOX_LOG_FORMAT=text
       - HBOX_WEB_MAX_UPLOAD_SIZE=10
-  #    - HBOX_OPTIONS_ALLOW_REGISTRATION=false
+      - HBOX_OPTIONS_ALLOW_REGISTRATION=false
       - HBOX_LABEL_MAKER_PRINT_COMMAND=cp {{'{{'}}.FileName}} /label/label.png
       - HBOX_LABEL_MAKER_PADDING=5
       - HBOX_LABEL_MAKER_WIDTH=350
@@ -268,6 +268,12 @@ services:
       - HBOX_MAILER_USERNAME={{ secret_snapraid_email_address }}
       - HBOX_MAILER_PASSWORD={{ secret_snapraid_email_pass }}
       - HBOX_MAILER_FROM=homebox@{{ secret_personal_url }}
+      - HBOX_OPTIONS_TRUST_PROXY=true
+      - HBOX_OIDC_ENABLED=true
+      - HBOX_OIDC_ISSUER_URL=https://id.{{ secret_personal_url }}
+      - HBOX_OIDC_CLIENT_ID={{ secret_homebox_pocket_id_user }}
+      - HBOX_OIDC_CLIENT_SECRET={{ secret_homebox_pocket_id_key }}
+      - HBOX_OIDC_BUTTON_TEXT=Sign in with PocketID
       - HBOX_OPTIONS_ALLOW_ANALYTICS=false
     volumes:
       - "{{ appdata_path }}/homebox/data:/data/"
