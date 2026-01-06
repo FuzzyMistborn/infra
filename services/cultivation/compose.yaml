@@ -202,6 +202,10 @@ services:
       - SCREEN_DEPTH=16
       - MAX_CONCURRENT_CHROME_PROCESSES=10
       - STATS_REFRESH_SECONDS=120
+      - CONNECTION_TIMEOUT=300000
+      - DEFAULT_BLOCK_ADS=true
+      - DEFAULT_STEALTH=true
+      - DEFAULT_IGNORE_HTTPS_ERRORS=true
   linkwarden:
     image: ghcr.io/linkwarden/linkwarden:v2.13.5
     container_name: linkwarden
@@ -260,7 +264,7 @@ services:
       - HBOX_LOG_FORMAT=text
       - HBOX_WEB_MAX_UPLOAD_SIZE=10
       - HBOX_OPTIONS_ALLOW_REGISTRATION=false
-      - HBOX_LABEL_MAKER_PRINT_COMMAND=cp {{'{{'}}.FileName}} /label/label.png
+      - HBOX_LABEL_MAKER_PRINT_COMMAND=cp {{'{{'}}.FileName}} /labels/label.png
       - HBOX_LABEL_MAKER_PADDING=5
       - HBOX_LABEL_MAKER_WIDTH=350
       - HBOX_LABEL_MAKER_HEIGHT=120

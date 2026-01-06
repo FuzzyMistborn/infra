@@ -2,7 +2,6 @@ services:
   portainer:
     image: portainer/portainer-ce:2.37.0
     container_name: portainer
-    privileged: true
     volumes:
       - /srv/docker/portainer:/data
       - /var/run/docker.sock:/var/run/docker.sock
@@ -16,7 +15,6 @@ services:
   frigate:
     image: ghcr.io/blakeblackshear/frigate:0.16.3
     container_name: frigate
-    privileged: true
     devices:
       - /dev/bus/usb:/dev/bus/usb
       - /dev/dri/renderD128:/dev/dri/renderD128
@@ -42,7 +40,6 @@ services:
   scrutiny:
     image: ghcr.io/analogj/scrutiny:v0.8.1-omnibus
     container_name: scrutiny
-    privileged: true
     cap_add:
       - SYS_RAWIO
       - SYS_ADMIN
@@ -70,7 +67,6 @@ services:
   calibre:
     image: lscr.io/linuxserver/calibre:8.16.2
     container_name: calibre
-    privileged: true
     volumes:
       - "{{ appdata_path }}/calibre:/config"
       - /mnt/Media/Ebooks:/books
@@ -88,7 +84,6 @@ services:
   nut-ups:
     image: fuzzymistborn/nut-upsd:2.8.2
     container_name: nut-ups
-    privileged: true
     devices:
       - /dev/bus/usb:/dev/bus/usb
     ports:
@@ -101,7 +96,6 @@ services:
     image: ghcr.io/lukegus/termix:release-1.10.0
     container_name: termix
     restart: unless-stopped
-    privileged: true
     ports:
       - "8050:8080"
     volumes:

@@ -22,7 +22,6 @@ services:
     image: ghcr.io/tailscale/tailscale:v1.92.4
     container_name: tailscale
 #    network_mode: service:gluetun
-    privileged: true
     cap_add:
       - net_admin
       - sys_module
@@ -51,7 +50,6 @@ services:
   portainer_agent:
     image: portainer/agent:2.37.0
     container_name: portainer_agent
-    privileged: true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/lib/docker/volumes:/var/lib/docker/volumes
@@ -63,7 +61,6 @@ services:
   scrutiny:
     image: ghcr.io/analogj/scrutiny:v0.8.1-omnibus
     container_name: scrutiny
-    privileged: true
     cap_add:
       - SYS_RAWIO
       - SYS_ADMIN
