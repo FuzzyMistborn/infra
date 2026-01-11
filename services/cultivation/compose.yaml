@@ -262,12 +262,15 @@ services:
     environment:
       - HBOX_LOG_LEVEL=info
       - HBOX_LOG_FORMAT=text
-      - HBOX_WEB_MAX_UPLOAD_SIZE=10
+      - HBOX_WEB_MAX_UPLOAD_SIZE=20
       - HBOX_OPTIONS_ALLOW_REGISTRATION=false
       - HBOX_LABEL_MAKER_PRINT_COMMAND=cp {{'{{'}}.FileName}} /labels/label.png
       - HBOX_LABEL_MAKER_PADDING=5
-      - HBOX_LABEL_MAKER_WIDTH=350
-      - HBOX_LABEL_MAKER_HEIGHT=120
+      - HBOX_LABEL_MAKER_MARGIN=5
+      - HBOX_LABEL_MAKER_WIDTH=320
+      - HBOX_LABEL_MAKER_HEIGHT=96
+      - HBOX_LABEL_MAKER_FONT_SIZE=24
+      - HBOX_LABEL_MAKER_DYNAMIC_LENGTH=false
       - HBOX_MAILER_PORT=587
       - HBOX_MAILER_USERNAME={{ secret_snapraid_email_address }}
       - HBOX_MAILER_PASSWORD={{ secret_snapraid_email_pass }}
