@@ -133,7 +133,7 @@ services:
     command: --voice en_US-hfc_female-medium
     restart: unless-stopped
   crowdsec:
-    image: ghcr.io/crowdsecurity/crowdsec:v1.7.4
+    image: ghcr.io/crowdsecurity/crowdsec:v1.7.6
     container_name: crowdsec
     volumes:
       - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"

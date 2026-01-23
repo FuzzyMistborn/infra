@@ -288,7 +288,7 @@ services:
     ports:
       - 7745:7745
   crowdsec:
-    image: ghcr.io/crowdsecurity/crowdsec:v1.7.4
+    image: ghcr.io/crowdsecurity/crowdsec:v1.7.6
     container_name: crowdsec
     volumes:
       - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"
