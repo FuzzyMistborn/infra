@@ -61,6 +61,34 @@ services:
       - POSTGRES_DB=gitea
     mem_limit: 200M
     restart: unless-stopped
+  hedgedoc:
+    image: quay.io/hedgedoc/hedgedoc:1.10.5
+    container_name: hedgedoc
+    environment:
+      - CMD_DB_URL=postgres://hedgedoc:{{ secret_hedgedoc_db_pass }}@hedgedoc-db:5432/hedgedoc
+      - CMD_DOMAIN=docs.fuzzymistborn.com
+      - CMD_URL_ADDPORT=false
+      - CMD_PROTOCOL_USESSL=true
+      - CMD_ALLOW_EMAIL_REGISTER=true
+      - CMD_TZ={{ ntp_timezone }}
+      - CMD_ALLOW_ANONYMOUS=false
+      - CMD_ALLOW_ANONYMOUS_EDITS=false
+    volumes:
+      - "{{ appdata_path }}/hedgedoc/uploads:/hedgedoc/public/uploads"
+    ports:
+      - 127.0.0.1:3400:3000
+    restart: unless-stopped
+  hedgedoc-db:
+    image: pgautoupgrade/pgautoupgrade:18.1-alpine
+    container_name: hedgedoc-db
+    volumes:
+      - "{{ appdata_path }}/hedgedoc/postgres:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_USER=hedgedoc
+      - POSTGRES_PASSWORD={{ secret_hedgedoc_db_pass }}
+      - POSTGRES_DB=hedgedoc
+    mem_limit: 200M
+    restart: unless-stopped
   woodpecker-github:
     image: quay.io/woodpeckerci/woodpecker-server:v3.12.0
     container_name: woodpecker-github

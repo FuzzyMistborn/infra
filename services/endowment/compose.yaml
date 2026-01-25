@@ -100,7 +100,7 @@ services:
       - 5055:5055
     volumes:
       - "{{ appdata_path }}/jellyseerr:/app/config"
-    restart: unless-stopped
+    restart: always
   yamtrack:
     image: ghcr.io/fuzzygrim/yamtrack:0.24.11
     container_name: yamtrack
@@ -230,13 +230,6 @@ services:
       - /mnt/Media/Files/Roms/ROMM/assets:/romm/assets
     ports:
       - 2500:8080
-  southwest:
-    image: jdholtz/auto-southwest-check-in:v10.0
-    container_name: southwest
-    privileged: true
-    volumes:
-      - "{{ appdata_path }}/southwest/config.json:/app/config.json"
-    restart: unless-stopped
   crowdsec:
     image: ghcr.io/crowdsecurity/crowdsec:v1.7.4
     container_name: crowdsec
