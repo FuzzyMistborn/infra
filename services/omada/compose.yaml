@@ -11,7 +11,7 @@ services:
       - AGENT_SECRET={{ secret_portainer_key }}
     restart: unless-stopped
   omada-controller:
-    image: mbentley/omada-controller:6.0
+    image: mbentley/omada-controller:6.1
     container_name: omada-controller
     network_mode: host
     volumes:
