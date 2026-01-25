@@ -135,7 +135,7 @@ services:
       - WOODPECKER_PLUGINS_PRIVILEGED=woodpeckerci/plugin-docker-buildx:5.0.0
     restart: unless-stopped
   ntfy:
-    image: binwiederhier/ntfy:v2.15.0
+    image: binwiederhier/ntfy:v2.16.0
     container_name: ntfy
     volumes:
       - "{{ appdata_path }}/ntfy/cache:/var/cache/ntfy"
