@@ -105,8 +105,6 @@ bash_aliases:
     command: ssh-keygen -f /home/{{ main_username }}/.ssh/known_hosts -R $c
   - alias: logi-restart
     command: sudo systemctl restart logid
-  - alias: konsave-install
-    command: wget -qO - https://ansible.{{ secret_personal_internal_url }} | bash"
 bash_autorestic: true
 bash_systemctl: true
 bash_git: true

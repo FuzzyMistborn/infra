@@ -37,13 +37,13 @@ lnxlink_mounts: true
 ### Cronjobs
 cronjobs:
   - name: Restic Prune
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_unity }} -- /usr/local/bin/autorestic forget -a -- prune
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_unity }} -- /usr/local/bin/autorestic forget -a --prune
     user: "{{ main_username }}"
     minute: 0
     hour: 22
     weekday: 1
   - name: Restic Check
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_check_unity }} -- /usr/local/bin/autorestic exec -a -- check
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_check_unity }} -- /usr/local/bin/autorestic exec -a --check
     user: "{{ main_username }}"
     minute: 0
     hour: 2
@@ -86,3 +86,8 @@ autorestic_config_yaml:
           keep-daily: 1
           keep-weekly: 8
           keep-monthly: 3
+        backup:
+          exclude:
+            - 'querylog.json*'
+            - '*.log'
+

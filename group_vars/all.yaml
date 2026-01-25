@@ -32,7 +32,7 @@ bash_autorestic_aliases:
   - alias: arbackup
     command: autorestic backup -a
   - alias: arprune
-    command: autorestic forget -a -- prune
+    command: autorestic forget -a --prune
 
 bash_apt_aliases:
   - alias: agi

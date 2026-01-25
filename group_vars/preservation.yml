@@ -31,13 +31,13 @@ cronjobs:
     minute: 45
     hour: 0
   - name: Restic Prune
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_preservation }} -- /usr/local/bin/autorestic forget -a -- prune
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_preservation }} -- /usr/local/bin/autorestic forget -a --prune
     user: "{{ main_username }}"
     minute: 45
     hour: 22
     weekday: 1
   - name: Restic Check
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_check_preservation }} -- /usr/local/bin/autorestic exec -a -- check
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_check_preservation }} -- /usr/local/bin/autorestic exec -a --check
     user: "{{ main_username }}"
     minute: 45
     hour: 2

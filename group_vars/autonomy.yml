@@ -72,13 +72,13 @@ cronjobs:
     user: "{{ main_username }}"
     minute: '*/20'
   - name: Restic Prune
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_autonomy }} -- /usr/local/bin/autorestic forget -a -- prune
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_autonomy }} -- /usr/local/bin/autorestic forget -a --prune
     user: "{{ main_username }}"
     minute: 0
     hour: 22
     weekday: 1
   - name: Restic Check
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_check_autonomy }} -- /usr/local/bin/autorestic exec -a -- check
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_check_autonomy }} -- /usr/local/bin/autorestic exec -a --check
     user: "{{ main_username }}"
     minute: 0
     hour: 2
@@ -171,7 +171,8 @@ autorestic_config_yaml:
       options:
         backup:
           exclude:
-            - '*.tar'
+            - 'backups'
+            - 'core'
         forget:
           keep-daily: 1
           keep-weekly: 4

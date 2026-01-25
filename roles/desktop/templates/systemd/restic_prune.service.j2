@@ -5,7 +5,7 @@ Wants= restic_prune.timer
 Type=oneshot
 WorkingDirectory=/home/{{ main_username }}
 ExecStartPre=/bin/sleep 300
-ExecStart= /usr/local/bin/runitor -uuid {{ desktop_hc_prune_id }} -- /usr/local/bin/autorestic forget -a -- prune
+ExecStart= /usr/local/bin/runitor -uuid {{ desktop_hc_prune_id }} -- /usr/local/bin/autorestic forget -a --prune
 EnvironmentFile=/etc/environment
 [Install]
 WantedBy=multi-user.target
