@@ -91,11 +91,6 @@ ufw:
     port: '222'
     proto: 'tcp'
     route: 'no'
-  - comment: 'portainer'
-    rule: 'allow'
-    port: '9001'
-    proto: 'tcp'
-    route: 'no'
   - comment: 'tailscale adapter'
     rule: 'allow'
     interface: tailscale0
