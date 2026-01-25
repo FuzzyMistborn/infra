@@ -137,7 +137,7 @@ services:
     security_opt:
       - no-new-privileges:true
   diagrams:
-    image: jgraph/drawio:29.3.0
+    image: jgraph/drawio:29.3.5
     container_name: diagrams
     ports:
       - 8080:8080
