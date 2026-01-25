@@ -1,6 +1,6 @@
 services:
   jellyfin:
-    image: ghcr.io/linuxserver/jellyfin:10.11.5
+    image: ghcr.io/linuxserver/jellyfin:10.11.6
     container_name: jellyfin
     devices:
       - /dev/dri/renderD128:/dev/dri/renderD128
