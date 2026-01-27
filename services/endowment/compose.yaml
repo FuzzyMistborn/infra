@@ -201,7 +201,7 @@ services:
       - /mnt/Media/Ebooks/Booklore-Import:/bookdrop
     restart: unless-stopped
   romm:
-    image: rommapp/romm:4.5.0
+    image: rommapp/romm:4.6.1
     container_name: romm
     restart: unless-stopped
     environment:
