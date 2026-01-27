@@ -154,7 +154,7 @@ services:
       - serve
     restart: unless-stopped
   opengist:
-    image: ghcr.io/thomiceli/opengist:1.11
+    image: ghcr.io/thomiceli/opengist:1.12
     container_name: opengist
     volumes:
       - "{{ appdata_path }}/opengist:/opengist"
