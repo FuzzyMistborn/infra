@@ -9,7 +9,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /home/geoff/docker/dockhand:/app/data
   frigate:
-    image: ghcr.io/blakeblackshear/frigate:0.16.3
+    image: ghcr.io/blakeblackshear/frigate:0.16.4
     container_name: frigate
     devices:
       - /dev/bus/usb:/dev/bus/usb
