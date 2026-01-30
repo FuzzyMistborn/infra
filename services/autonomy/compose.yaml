@@ -116,7 +116,7 @@ services:
       - PASSWORD={{ secret_anylist_pw }}
     restart: unless-stopped
   music-assistant:
-    image: ghcr.io/music-assistant/server:2.7.5
+    image: ghcr.io/music-assistant/server:2.7.6
     container_name: music-assistant
     network_mode: host
     privileged: true
