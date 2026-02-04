@@ -62,7 +62,7 @@ services:
     mem_limit: 200M
     restart: unless-stopped
   hedgedoc:
-    image: quay.io/hedgedoc/hedgedoc:1.10.5
+    image: quay.io/hedgedoc/hedgedoc:1.10.6
     container_name: hedgedoc
     environment:
       - CMD_DB_URL=postgres://hedgedoc:{{ secret_hedgedoc_db_pass }}@hedgedoc-db:5432/hedgedoc
