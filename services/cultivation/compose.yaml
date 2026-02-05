@@ -61,6 +61,8 @@ services:
       - OIDC_SCOPES=openid email profile
       - OIDC_X_FORWARDED_HEADERS=X-Forwarded-Proto X-Forwarded-Host
       - OIDC_REMOTE_USER_CLAIM=preferred_username
+      - OIDC_SESSION_INACTIVITY_TIMEOUT=43200
+      - OIDC_SESSION_MAX_DURATION=0
     restart: unless-stopped
   collabora:
     image: collabora/code:25.04.8.1.1

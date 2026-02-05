@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd /home/{{ main_username }}
-docker compose up -d gitea-db umami-db hedgedoc-db
+docker compose up -d gitea-db umami-db
 
 sleep 30s
 echo Restoring Gitea DB
@@ -13,8 +13,3 @@ echo Restoring Umami DB
 cd /home/{{ main_username }}/db_backups/umami
 LAST_UMAMI=$(ls -t | head -n 1)
 cat /home/{{ main_username }}/db_backups/umami/$LAST_UMAMI | docker exec -i umami-db psql -U umami -d umami
-
-echo Restoring Hedgedoc DB
-cd /home/{{ main_username }}/db_backups/hedgedoc
-LAST_HEDGEDOC=$(ls -t | head -n 1)
-cat /home/{{ main_username }}/db_backups/hedgedoc/$LAST_HEDGEDOC | docker exec -i hedgedoc-db psql -U hedgedoc -d hedgedoc

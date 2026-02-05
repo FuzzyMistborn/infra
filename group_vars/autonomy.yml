@@ -78,7 +78,7 @@ cronjobs:
     hour: 22
     weekday: 1
   - name: Restic Check
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_check_autonomy }} -- /usr/local/bin/autorestic exec -a --check
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_check_autonomy }} -- /usr/local/bin/autorestic check
     user: "{{ main_username }}"
     minute: 0
     hour: 2

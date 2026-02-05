@@ -10,9 +10,4 @@ echo Backing up Umami DB
 today=$(date +"%Y_%m_%d")
 docker exec umami-db sh -c 'pg_dumpall -U umami' > /home/{{ main_username }}/db_backups/umami/umamiDB_$today.sql
 
-#### Hedgedoc DB Backup
-echo Backing up Hedgedoc DB
-today=$(date +"%Y_%m_%d")
-docker exec hedgedoc-db sh -c 'pg_dumpall -U hedgedoc' > /home/{{ main_username }}/db_backups/hedgedoc/hedgedocDB_$today.sql
-
 find /home/{{ main_username }}/db_backups/* -mtime +6 -type f -delete
