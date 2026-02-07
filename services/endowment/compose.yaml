@@ -102,7 +102,7 @@ services:
       - "{{ appdata_path }}/jellyseerr:/app/config"
     restart: always
   yamtrack:
-    image: ghcr.io/fuzzygrim/yamtrack:0.24.11
+    image: ghcr.io/fuzzygrim/yamtrack:0.25.0
     container_name: yamtrack
     ports:
       - 8000:8000
