@@ -90,4 +90,3 @@ autorestic_config_yaml:
           exclude:
             - 'querylog.json*'
             - '*.log'
-
