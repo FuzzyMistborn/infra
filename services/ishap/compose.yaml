@@ -77,7 +77,7 @@ services:
       - 8500:8000
     restart: unless-stopped
   hawser:
-    image: ghcr.io/finsys/hawser:0.2.25
+    image: ghcr.io/finsys/hawser:0.2.27
     container_name: hawser
     volumes:
       - "{{ appdata_path }}/hawser:/data/stacks"
