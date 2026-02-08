@@ -151,7 +151,7 @@ services:
       - RTC_CONFIG=/opt/pairdrop/rtc.json
     restart: unless-stopped
   healthchecks:
-    image: ghcr.io/linuxserver/healthchecks:4.0.20260122
+    image: ghcr.io/linuxserver/healthchecks:4.0.20260202
     container_name: healthchecks
     volumes:
       - "{{ appdata_path }}/healthchecks/config:/config"
