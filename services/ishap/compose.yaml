@@ -59,8 +59,6 @@ services:
       - /dev/sdb:/dev/sdb
       - /dev/sdc:/dev/sdc
       - /dev/sdd:/dev/sdd
-      - /dev/sde:/dev/sde
-      - /dev/sdf:/dev/sdf
       - /dev/nvme0:/dev/nvme0
     volumes:
       - "{{ appdata_path }}/scrutiny:/opt/scrutiny/config"

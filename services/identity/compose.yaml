@@ -6,7 +6,7 @@ services:
       - "{{ appdata_path }}/dawarich/public:/var/app/public"
       - "{{ appdata_path }}/dawarich/imports:/var/app/tmp/imports/watched"
       - "{{ appdata_path }}/dawarich/storage:/var/app/storage"
-      - "{{ appdata_path }}/dawarich/db17:/dawarich_db_data"
+      - "{{ appdata_path }}/dawarich/db:/dawarich_db_data"
     ports:
       - 3000:3000
     environment:
@@ -29,7 +29,7 @@ services:
       - OIDC_CLIENT_ID={{ secret_dawarich_pocket_client_id }}
       - OIDC_CLIENT_SECRET={{ secret_dawarich_pocket_secret }}
       - OIDC_ISSUER=https://id.{{ secret_personal_url }}
-      - OIDC_REDIRECT_URI=https://ttrack.{{ secret_personal_internal_url }}/users/auth/openid_connect/callback
+      - OIDC_REDIRECT_URI=https://track.{{ secret_personal_internal_url }}/users/auth/openid_connect/callback
       - OIDC_PROVIDER_NAME=PocketID
       - ALLOW_EMAIL_PASSWORD_REGISTRATION=false
     stdin_open: true
@@ -46,7 +46,7 @@ services:
     image: postgis/postgis:17-3.5-alpine
     container_name: dawarich-db
     volumes:
-      - "{{ appdata_path }}/dawarich/db17:/var/lib/postgresql/data"
+      - "{{ appdata_path }}/dawarich/db:/var/lib/postgresql/data"
       - "{{ appdata_path }}/dawarich/shared:/var/shared"
       - "{{ appdata_path }}/dawarich/postgresql.conf:/etc/postgresql/postgresql.conf"
     environment:
@@ -71,7 +71,6 @@ services:
       - "{{ appdata_path }}/dawarich/public:/var/app/public"
       - "{{ appdata_path }}/dawarich/imports:/var/app/tmp/imports/watched"
       - "{{ appdata_path }}/dawarich/storage:/var/app/storage"
-      - "{{ appdata_path }}/dawarich/db17:/dawarich_db_data"
     environment:
       - RAILS_ENV=production
       - REDIS_URL=redis://dawarich-redis:6379

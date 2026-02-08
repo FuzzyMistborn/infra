@@ -8,7 +8,6 @@ package_list:
   - name: curl
   - name: git
   - name: htop
-  - name: inotify-tools
   - name: lm-sensors
   - name: mosquitto-clients
   - name: net-tools
