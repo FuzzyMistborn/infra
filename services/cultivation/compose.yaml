@@ -40,7 +40,7 @@ services:
       - DOMAIN={{ secret_vaultwarden_url }}
     restart: unless-stopped
   freshrss:
-    image: freshrss/freshrss:1.28.0
+    image: freshrss/freshrss:1.28.1
     container_name: freshrss
     volumes:
       - "{{ appdata_path }}/freshrss/data:/var/www/FreshRSS/data"
