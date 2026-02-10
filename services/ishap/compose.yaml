@@ -49,7 +49,7 @@ services:
     command: imap-backup backup --config /config/personal.json
     restart: unless-stopped
   scrutiny:
-    image: ghcr.io/analogj/scrutiny:v0.8.2-omnibus
+    image: ghcr.io/analogj/scrutiny:v0.8.6-omnibus
     container_name: scrutiny
     cap_add:
       - SYS_RAWIO

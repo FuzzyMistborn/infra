@@ -1,6 +1,6 @@
 services:
   dockhand:
-    image: fnsys/dockhand:v1.0.15
+    image: fnsys/dockhand:v1.0.17
     container_name: dockhand
     restart: unless-stopped
     ports:
@@ -34,7 +34,7 @@ services:
       - /tmp/cache
     restart: unless-stopped
   scrutiny:
-    image: ghcr.io/analogj/scrutiny:v0.8.2-omnibus
+    image: ghcr.io/analogj/scrutiny:v0.8.6-omnibus
     container_name: scrutiny
     cap_add:
       - SYS_RAWIO
