@@ -21,14 +21,35 @@ build +HOST:
 update:
 	ansible-playbook update.yml
 
-docker:
-	ansible-playbook docker.yml
-
 caddy +HOST:
     ansible-playbook -b caddy.yml --limit {{ HOST }}
 
 test:
 	ansible-playbook -b test.yml
+
+### Docker
+docker:
+	ansible-playbook docker.yml
+
+docker-changes HOST:
+    @./container-changes.sh {{ HOST }}
+
+docker-changes-all:
+    #!/usr/bin/env bash
+    echo "Checking all docker hosts..."
+    for host in adonalsium endowment autonomy cultivation preservation omada honor unity ambition investiture invention identity virtuosity whimsy; do
+        echo ""
+        echo "========================================"
+        echo "HOST: $host"
+        echo "========================================"
+        ./container-changes.sh "$host" || true
+    done
+
+docker-auto:
+    ansible-playbook docker-auto.yml
+
+docker-auto-host HOST:
+    ansible-playbook docker-auto.yml -e "host={{ HOST }}" -e "auto_detect=yes"
 
 ### Vault
 decrypt:

@@ -1,0 +1,129 @@
+---
+
+- hosts: "{{ host | default('docker') }}"
+  become: true
+  vars_files:
+    - 'vars/vault.yaml'
+  gather_facts: false
+  vars_prompt:
+    - name: host
+      prompt: Which host? (leave empty for all docker hosts)
+      private: no
+      default: "docker"
+    - name: auto_detect
+      prompt: Auto-detect changes from git? (yes/no)
+      private: no
+      default: "yes"
+    - name: containers_to_update
+      prompt: Containers to update (leave empty for auto-detect)
+      private: no
+      default: ""
+  
+  tasks:
+    - name: Create temp script for parsing changed containers
+      delegate_to: localhost
+      become: false
+      copy:
+        content: |
+          #!/bin/bash
+          set -e
+          
+          PLAYBOOK_DIR="{{ playbook_dir }}"
+          HOST="${1}"
+          
+          # Get changed images from git diff
+          changed_images=$(cd "$PLAYBOOK_DIR" && \
+            git diff HEAD@{1} HEAD -- services/*/compose.yaml services/*/compose.yml 2>/dev/null | \
+            grep -E '^\+.*image:' | \
+            sed 's/^+.*image: //' | \
+            sed 's/\"//g' | \
+            awk -F: '{print $1}' | \
+            sort -u)
+          
+          if [ -z "$changed_images" ]; then
+            echo "No image changes detected"
+            exit 0
+          fi
+          
+          # Find containers using those images in the specific host's compose file
+          compose_file="$PLAYBOOK_DIR/services/$HOST/compose.yaml"
+          if [ ! -f "$compose_file" ]; then
+            compose_file="$PLAYBOOK_DIR/services/$HOST/compose.yml"
+          fi
+          
+          if [ ! -f "$compose_file" ]; then
+            echo "No compose file found for $HOST"
+            exit 0
+          fi
+          
+          containers=""
+          while IFS= read -r image; do
+            # Find services using this image
+            service_names=$(grep -B 10 "image: $image" "$compose_file" 2>/dev/null | \
+              grep -E "^  [a-z0-9_-]+:" | \
+              sed 's/://g' | \
+              tr -d ' ')
+            
+            if [ -n "$service_names" ]; then
+              containers="$containers $service_names"
+            fi
+          done <<< "$changed_images"
+          
+          # Remove duplicates and trim
+          echo "$containers" | tr ' ' '\n' | sort -u | tr '\n' ' ' | sed 's/ $//'
+        dest: /tmp/get_changed_containers.sh
+        mode: '0755'
+      when: auto_detect == "yes" and containers_to_update == ""
+
+    - name: Get changed containers for this host
+      delegate_to: localhost
+      become: false
+      command: /tmp/get_changed_containers.sh {{ inventory_hostname }}
+      register: auto_containers
+      changed_when: false
+      failed_when: false
+      when: auto_detect == "yes" and containers_to_update == ""
+
+    - name: Set final containers list
+      set_fact:
+        final_containers: "{{ containers_to_update if containers_to_update != '' else (auto_containers.stdout | default('') | trim) }}"
+
+    - name: Display update plan
+      debug:
+        msg: 
+          - "Host: {{ inventory_hostname }}"
+          - "Containers to update: {{ final_containers if final_containers else 'NONE' }}"
+
+    - name: Confirm before proceeding
+      pause:
+        prompt: "Press ENTER to continue with updates, or Ctrl+C to abort"
+      when: final_containers | length > 0
+
+    - name: Docker Pull
+      command: "docker compose pull {{ final_containers }}"
+      args:
+        chdir: /home/{{ main_username }}/
+      when: final_containers | length > 0
+      register: pull_result
+
+    - name: Docker Update
+      command: "docker compose up -d {{ final_containers }}"
+      args:
+        chdir: /home/{{ main_username }}/
+      when: final_containers | length > 0
+      register: update_result
+
+    - name: Docker prune
+      command: "docker image prune -af"
+      when: final_containers | length > 0
+
+    - name: Cleanup temp script
+      delegate_to: localhost
+      become: false
+      file:
+        path: /tmp/get_changed_containers.sh
+        state: absent
+      when: auto_detect == "yes"
+
+  roles:
+    - role: docker-compose-generator
