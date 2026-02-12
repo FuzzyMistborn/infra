@@ -26,7 +26,7 @@ services:
   # rm -r influxdb2-client-2.2.0-linux-amd64
   # rm influxdb2-client-2.2.0-linux-amd64.tar.gz
   romm-db:
-    image: mariadb:11.7.2
+    image: mariadb:11.8.6
     container_name: romm-db
     volumes:
       - "{{ appdata_path }}/romm_db:/var/lib/mysql"
@@ -40,7 +40,7 @@ services:
     mem_limit: 300M
     restart: unless-stopped
   booklore-db:
-    image: mariadb:11.7.2
+    image: mariadb:11.8.6
     container_name: booklore-db
     volumes:
       - "{{ appdata_path }}/booklore_db:/var/lib/mysql"
