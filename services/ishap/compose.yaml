@@ -19,7 +19,7 @@ services:
       - UPDATER_PERIOD=24h
     restart: unless-stopped
   tailscale:
-    image: ghcr.io/tailscale/tailscale:v1.94.1
+    image: ghcr.io/tailscale/tailscale:v1.94.2
     container_name: tailscale
 #    network_mode: service:gluetun
     privileged: true
