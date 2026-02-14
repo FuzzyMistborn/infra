@@ -62,7 +62,41 @@ services:
       - AGENT_PASSWORD={{ secret_crowdsec_whimsy_pw }}
       - LOCAL_API_URL=http://{{ secret_ambition_ip }}:8080
     restart: unless-stopped
-  hawser:
+  firefox:
+    image: lscr.io/linuxserver/firefox:1147.0.3
+    container_name: firefox
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ={{ ntp_timezone }}
+    volumes:
+      - "{{ appdata_path }}/firefox/config:/config"
+    ports:
+      - 3000:3000
+      - 3001:3001
+    shm_size: "1gb"
+    restart: unless-stopped
+  tailscale:
+    image: ghcr.io/tailscale/tailscale:v1.94.1
+    container_name: tailscale
+    network_mode: service:firefox
+    privileged: true
+    cap_add:
+      - net_admin
+      - sys_module
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    volumes:
+      - "{{ appdata_path }}/tailscale/config:/config"
+      - "{{ appdata_path }}/tailscale/state:/var/lib/tailscale"
+    environment:
+      - TS_HOSTNAME=whimsy
+      - TS_EXTRA_ARGS= --accept-routes
+      - TS_ACCEPT_DNS=true
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_USERSPACE=false
+    restart: unless-stopped
+hawser:
     image: ghcr.io/finsys/hawser:0.2.27
     container_name: hawser
     volumes:

@@ -428,3 +428,13 @@ proxmox.{{ secret_personal_internal_url }} {
 		}
 	}
 }
+# Firefox
+firefox.{{ secret_personal_internal_url }} {
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	import headers
+	reverse_proxy 192.168.50.24:3001 {
+		transport http {
+			tls_insecure_skip_verify
+		}
+	}
+}
