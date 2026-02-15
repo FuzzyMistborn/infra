@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# Set variables
+USERNAME="{{ secret_maxmind_user }}"
+PASSWORD="{{ secret_maxmind_pw }}"
+DOWNLOAD_URL="https://download.maxmind.com/geoip/databases/GeoLite2-Country/download?suffix=tar.gz"
+TEMP_DIR="/tmp"
+DEST_DIR="/home/{{ main_username }}/caddy"
+
+# Download the file
+echo "Downloading GeoIP database..."
+wget --content-disposition \
+     --user="$USERNAME" \
+     --password="$PASSWORD" \
+     -P "$TEMP_DIR" \
+     "$DOWNLOAD_URL"
+
+# Find the downloaded tar.gz file (matches the date pattern)
+TARFILE=$(find "$TEMP_DIR" -name "GeoLite2-Country_*.tar.gz" -type f -printf "%T@ %p\n" | sort -n | tail -1 | cut -d' ' -f2-)
+
+if [ -z "$TARFILE" ]; then
+    echo "Error: Could not find downloaded tar.gz file"
+    exit 1
+fi
+
+echo "Found archive: $TARFILE"
+
+# Extract the tar.gz file to /tmp
+echo "Extracting archive..."
+tar xzf "$TARFILE" -C "$TEMP_DIR"
+
+# Find the extracted directory (matches the date pattern)
+EXTRACT_DIR=$(find "$TEMP_DIR" -maxdepth 1 -name "GeoLite2-Country_*" -type d | head -1)
+
+if [ -z "$EXTRACT_DIR" ]; then
+    echo "Error: Could not find extracted directory"
+    exit 1
+fi
+
+echo "Extracted to: $EXTRACT_DIR"
+
+# Copy the .mmdb file to destination
+echo "Copying GeoLite2-Country.mmdb to $DEST_DIR..."
+cp "$EXTRACT_DIR/GeoLite2-Country.mmdb" "$DEST_DIR/"
+
+# Verify the copy
+if [ -f "$DEST_DIR/GeoLite2-Country.mmdb" ]; then
+    echo "Success! Database copied to $DEST_DIR/GeoLite2-Country.mmdb"
+    
+    # Optional: Clean up temporary files
+    echo "Cleaning up temporary files..."
+    rm -rf "$EXTRACT_DIR"
+    rm -f "$TARFILE"
+else
+    echo "Error: Failed to copy database file"
+    exit 1
+fi
