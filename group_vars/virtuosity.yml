@@ -50,7 +50,7 @@ cronjobs:
     user: "{{ main_username }}"
     hour: 1
     minute: 5
-    workday: 0
+    weekday: 0
 
 ### Mountpoints
 mountpoints:

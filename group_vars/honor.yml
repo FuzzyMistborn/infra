@@ -61,7 +61,7 @@ cronjobs:
     user: "{{ main_username }}"
     hour: 1
     minute: 4
-    workday: 0
+    weekday: 0
 
 ### Autorestic Config
 autorestic_config_user: "{{ main_username}}"
