@@ -19,7 +19,7 @@ services:
       - umami-db
     restart: unless-stopped
   umami-db:
-    image: pgautoupgrade/pgautoupgrade:18.1-alpine
+    image: pgautoupgrade/pgautoupgrade:18.2-alpine
     container_name: umami-db
     volumes:
       - "{{ appdata_path }}/umami/postgres:/var/lib/postgresql/data"
@@ -51,7 +51,7 @@ services:
       - gitea-db
     restart: unless-stopped
   gitea-db:
-    image: pgautoupgrade/pgautoupgrade:18.1-alpine
+    image: pgautoupgrade/pgautoupgrade:18.2-alpine
     container_name: gitea-db
     volumes:
       - "{{ appdata_path }}/gitea/postgres:/var/lib/postgresql/data"
