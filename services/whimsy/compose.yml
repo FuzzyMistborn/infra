@@ -63,7 +63,7 @@ services:
       - LOCAL_API_URL=http://{{ secret_ambition_ip }}:8080
     restart: unless-stopped
   firefox:
-    image: lscr.io/linuxserver/firefox:1147.0.3
+    image: lscr.io/linuxserver/firefox:1147.0.4
     container_name: firefox
     environment:
       - PUID=1000
