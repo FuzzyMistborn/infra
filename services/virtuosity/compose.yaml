@@ -1,6 +1,6 @@
 services:
   ollama-server:
-    image: ollama/ollama:0.15.6
+    image: ollama/ollama:0.16.3
     container_name: ollama-server
     volumes:
       - /mnt/llms/ollama:/root/.ollama
