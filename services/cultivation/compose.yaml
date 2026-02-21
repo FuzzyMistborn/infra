@@ -181,7 +181,7 @@ services:
       - CONNECT_WITH_FRANZ=false
     restart: unless-stopped
   changedetection:
-    image: ghcr.io/dgtlmoon/changedetection.io:0.52.9
+    image: ghcr.io/dgtlmoon/changedetection.io:0.53.6
     container_name: changedetection
     volumes:
       - "{{ appdata_path }}/change:/datastore"
