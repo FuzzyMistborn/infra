@@ -52,7 +52,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: unless-stopped
   recyclarr:
-    image: ghcr.io/recyclarr/recyclarr:7.5.2
+    image: ghcr.io/recyclarr/recyclarr:8.2.0
     container_name: recyclarr
     user: 1000:1000
     volumes:
