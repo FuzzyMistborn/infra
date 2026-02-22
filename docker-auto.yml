@@ -31,9 +31,13 @@
       meta: end_play
       when: changed_images.stdout_lines | length == 0
 
+    - name: Get list of all docker hosts from inventory
+      set_fact:
+        all_docker_hosts: "{{ groups['docker'] | map('extract', hostvars, 'group_names') | map('reject', 'search', 'children') | map('reject', 'in', ['docker', 'lxc', 'vms', 'desktop', 'ubuntu', 'fedora', 'arch', 'shards']) | map('first') | unique | list }}"
+  
     - name: Get list of hosts to check
       set_fact:
-        hosts_to_check: "{{ target_hosts.split() if target_hosts != 'all' else ['adonalsium', 'endowment', 'autonomy', 'cultivation', 'preservation', 'omada', 'honor', 'unity', 'ambition', 'investiture', 'invention', 'identity', 'virtuosity', 'whimsy'] }}"
+        hosts_to_check: "{{ target_hosts.split() if target_hosts != 'all' else all_docker_hosts }}"
 
     - name: Find affected containers per host
       shell: |
@@ -84,21 +88,35 @@
       when: item.stdout | trim | length > 0
       no_log: true
 
+    - name: Sort update plan alphabetically
+      set_fact:
+        update_plan: "{{ update_plan | sort(attribute='host') }}"
+      when: update_plan is defined and update_plan | length > 0
+
+    - name: Build update plan display
+      set_fact:
+        plan_header:
+          - ""
+          - "═══════════════════════════════════════════════════════════"
+          - "            DOCKER UPDATE PLAN"
+          - "═══════════════════════════════════════════════════════════"
+        plan_lines: "{{ plan_lines | default([]) + [('  %-20s' | format(item.host + ':')) + item.containers] }}"
+      loop: "{{ update_plan | default([]) }}"
+      when: update_plan is defined and update_plan | length > 0
+
     - name: Display update plan
       debug:
-        msg: |
+        msg: "{{ plan_header + plan_lines + ['═══════════════════════════════════════════════════════════'] }}"
+      when: update_plan is defined and update_plan | length > 0
 
-          ═══════════════════════════════════════════
-               DOCKER UPDATE PLAN
-          ═══════════════════════════════════════════
-          {% if update_plan is defined and update_plan | length > 0 %}
-          {% for plan in update_plan %}
-          {{ "%-20s" | format(plan.host + ":") }} {{ plan.containers }}
-          {% endfor %}
-          {% else %}
-          No containers need updating
-          {% endif %}
-          ═══════════════════════════════════════════
+    - name: No updates needed
+      debug:
+        msg:
+          - ""
+          - "═══════════════════════════════════════════════════════════"
+          - "No containers need updating"
+          - "═══════════════════════════════════════════════════════════"
+      when: update_plan is not defined or update_plan | length == 0
 
     - name: Confirm before proceeding
       pause:
@@ -117,6 +135,9 @@
     - 'vars/vault.yaml'
   gather_facts: false
   ignore_unreachable: true
+
+  roles:
+    - role: docker-compose-generator
 
   tasks:
     - name: Check connectivity
@@ -189,53 +210,69 @@
 
     - name: Collect update results for successful hosts
       set_fact:
-        update_summary: "{{ update_summary | default([]) + [{'host': actual_hostname, 'containers': my_containers, 'updated': update_result.changed | default(false), 'status': 'success'}] }}"
+        my_update_result:
+          host: "{{ actual_hostname }}"
+          containers: "{{ my_containers }}"
+          updated: "{{ update_result.changed | default(false) }}"
+          status: "success"
       when:
         - connectivity_check is succeeded
         - my_containers | length > 0
-      delegate_to: localhost
-      delegate_facts: true
-      run_once: false
 
-    - name: Record unreachable hosts
+    - name: Collect unreachable host info
       set_fact:
-        update_summary: "{{ update_summary | default([]) + [{'host': actual_hostname | default(inventory_hostname), 'containers': 'N/A', 'updated': false, 'status': 'unreachable'}] }}"
+        my_update_result:
+          host: "{{ actual_hostname | default(inventory_hostname) }}"
+          containers: "N/A"
+          updated: false
+          status: "unreachable"
       when: connectivity_check is failed or connectivity_check is unreachable
+      ignore_errors: true
+
+    - name: Send results to localhost
       delegate_to: localhost
       delegate_facts: true
-      run_once: false
-      ignore_errors: true
+      set_fact:
+        all_results: "{{ all_results | default([]) + [hostvars[item]['my_update_result']] }}"
+      loop: "{{ ansible_play_hosts_all }}"
+      run_once: true
+      when: hostvars[item].my_update_result is defined
 
     - name: Clear host errors to continue playbook
       meta: clear_host_errors
 
-  roles:
-    - role: docker-compose-generator
-      when: connectivity_check is succeeded
-
 - hosts: localhost
   gather_facts: false
   tasks:
+    - name: Sort summary alphabetically
+      set_fact:
+        update_summary: "{{ all_results | sort(attribute='host') }}"
+      when: all_results is defined and all_results | length > 0
+
+    - name: Build summary display
+      set_fact:
+        summary_header:
+          - ""
+          - "═══════════════════════════════════════════════════════════"
+          - "            UPDATE SUMMARY"
+          - "═══════════════════════════════════════════════════════════"
+        summary_lines: "{{ summary_lines | default([]) + [('  %-20s' | format(item.host + ':')) + (item.containers if item.status != 'unreachable' else 'OFFLINE (skipped)') + (' ✓' if item.updated else '')] }}"
+      loop: "{{ update_summary | default([]) }}"
+      when: update_summary is defined and update_summary | length > 0
+
     - name: Display final summary
       debug:
-        msg: |
+        msg: "{{ summary_header + summary_lines + ['═══════════════════════════════════════════════════════════'] }}"
+      when: update_summary is defined and update_summary | length > 0
 
-          ═══════════════════════════════════════════
-               UPDATE SUMMARY
-          ═══════════════════════════════════════════
-          {% if update_summary is defined and update_summary | length > 0 %}
-          {% for result in update_summary %}
-          {% if result.status == 'unreachable' %}
-          {{ "%-20s" | format(result.host + ":") }} OFFLINE (skipped)
-          {% else %}
-          {{ "%-20s" | format(result.host + ":") }} {{ result.containers }} {{ "✓" if result.updated else "→" }}
-          {% endif %}
-          {% endfor %}
-          {% else %}
-          No containers were updated
-          {% endif %}
-          ═══════════════════════════════════════════
-      when: update_summary is defined
+    - name: No updates message
+      debug:
+        msg:
+          - ""
+          - "═══════════════════════════════════════════════════════════"
+          - "No containers were updated"
+          - "═══════════════════════════════════════════════════════════"
+      when: update_summary is not defined or update_summary | length == 0
 
     - name: Cleanup temp file
       file:
