@@ -49,7 +49,7 @@
         if [ ! -f "$compose_file" ]; then
           exit 0
         fi
-        
+
         containers=""
         {% for image in changed_images.stdout_lines %}
         # Find services using this image
