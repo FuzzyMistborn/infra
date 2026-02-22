@@ -26,12 +26,12 @@ services:
       - PHOTON_API_USE_HTTPS=false
       - SELF_HOSTED=true
       - SECRET_KEY_BASE={{ secret_dawarich_key_base }}
-      - OIDC_CLIENT_ID={{ secret_dawarich_pocket_client_id }}
-      - OIDC_CLIENT_SECRET={{ secret_dawarich_pocket_secret }}
-      - OIDC_ISSUER=https://id.{{ secret_personal_url }}
-      - OIDC_REDIRECT_URI=https://track.{{ secret_personal_internal_url }}/users/auth/openid_connect/callback
-      - OIDC_PROVIDER_NAME=PocketID
-      - ALLOW_EMAIL_PASSWORD_REGISTRATION=false
+#      - OIDC_CLIENT_ID={{ secret_dawarich_pocket_client_id }}
+#      - OIDC_CLIENT_SECRET={{ secret_dawarich_pocket_secret }}
+#      - OIDC_ISSUER=https://id.{{ secret_personal_url }}
+#      - OIDC_REDIRECT_URI=https://track.{{ secret_personal_internal_url }}/users/auth/openid_connect/callback
+#      - OIDC_PROVIDER_NAME=PocketID
+#      - ALLOW_EMAIL_PASSWORD_REGISTRATION=false
     stdin_open: true
     tty: true
     entrypoint: web-entrypoint.sh
@@ -87,6 +87,12 @@ services:
       - PHOTON_API_USE_HTTPS=false
       - SELF_HOSTED=true
       - SECRET_KEY_BASE={{ secret_dawarich_key_base }}
+#      - OIDC_CLIENT_ID={{ secret_dawarich_pocket_client_id }}
+#      - OIDC_CLIENT_SECRET={{ secret_dawarich_pocket_secret }}
+#      - OIDC_ISSUER=https://id.{{ secret_personal_url }}
+#      - OIDC_REDIRECT_URI=https://track.{{ secret_personal_internal_url }}/users/auth/openid_connect/callback
+#      - OIDC_PROVIDER_NAME=PocketID
+#      - ALLOW_EMAIL_PASSWORD_REGISTRATION=false
     stdin_open: true
     tty: true
     entrypoint: sidekiq-entrypoint.sh
