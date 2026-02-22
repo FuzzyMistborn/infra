@@ -15,7 +15,7 @@ steps:
     when:
       - event: push
 
-  - name: Send TG Notification
+  - name: Notify Success
     image: appleboy/drone-telegram
     settings:
       token:
@@ -23,9 +23,20 @@ steps:
       to:
         from_secret: tg_id
       format: markdown
-      message: "{{#success build.status}}✅  Build for `{{repo.name}}` was *successful*!{{else}}❌  Build for `{{repo.name}}` has *FAILED*!{{/success}} \n🌐  [Output]({{build.link}})\n👤 Author: {{ commit.author }}\n📝  Commit: {{ commit.message }}"
+      message: "✅  Build for `${CI_REPO_NAME}` was *successful*!\n🌐  [Output](${CI_PIPELINE_URL})\n👤 Author: ${CI_COMMIT_AUTHOR}\n📝  Commit: ${CI_COMMIT_MESSAGE}"
     when:
       - event: push
-        status:
-          - success
-          - failure
+        status: [success]
+
+  - name: Notify Failure
+    image: appleboy/drone-telegram
+    settings:
+      token:
+        from_secret: tg_token
+      to:
+        from_secret: tg_id
+      format: markdown
+      message: "❌  Build for `${CI_REPO_NAME}` has *FAILED*!\n🌐  [Output](${CI_PIPELINE_URL})\n👤 Author: ${CI_COMMIT_AUTHOR}\n📝  Commit: ${CI_COMMIT_MESSAGE}"
+    when:
+      - event: push
+        status: [failure]
