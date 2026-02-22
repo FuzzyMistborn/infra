@@ -87,3 +87,38 @@
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
     mode: +x
+
+### Caddy UDP Buffer Size
+- name: Set UDP buffer sizes for Caddy QUIC
+  sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    state: present
+    sysctl_file: /etc/sysctl.d/99-caddy.conf
+    reload: yes
+  loop:
+    - { name: net.core.rmem_max, value: 7500000 }
+    - { name: net.core.wmem_max, value: 7500000 }
+
+### Caddy systemd Override to speed up restart
+- name: Create caddy systemd drop-in directory
+  file:
+    path: /etc/systemd/system/caddy.service.d
+    state: directory
+    mode: '0755'
+
+- name: Configure caddy systemd drop-in
+  copy:
+    dest: /etc/systemd/system/caddy.service.d/override.conf
+    content: |
+      [Service]
+      TimeoutStopSec=10s
+      KillMode=mixed
+
+- name: Reload systemd service
+  systemd:
+    enabled: true
+    daemon-reload: true
+    state: started
+    name: caddy.service
+    no_block: true

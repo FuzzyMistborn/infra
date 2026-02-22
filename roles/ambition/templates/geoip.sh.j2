@@ -7,6 +7,8 @@ DOWNLOAD_URL="https://download.maxmind.com/geoip/databases/GeoLite2-Country/down
 TEMP_DIR="/tmp"
 DEST_DIR="/home/{{ main_username }}/caddy"
 
+trap 'echo "Waiting 15 seconds before exit..."; sleep 15' EXIT
+
 # Download the file
 echo "Downloading GeoIP database..."
 wget --content-disposition \
@@ -46,7 +48,16 @@ cp "$EXTRACT_DIR/GeoLite2-Country.mmdb" "$DEST_DIR/"
 # Verify the copy
 if [ -f "$DEST_DIR/GeoLite2-Country.mmdb" ]; then
     echo "Success! Database copied to $DEST_DIR/GeoLite2-Country.mmdb"
-    
+
+    # Restart Caddy to reload the updated GeoIP database
+    echo "Restarting Caddy..."
+    if systemctl restart caddy; then
+        echo "Caddy restarted successfully."
+    else
+        echo "Warning: Caddy restart failed. Please check 'systemctl status caddy' for details."
+        exit 1
+    fi
+
     # Optional: Clean up temporary files
     echo "Cleaning up temporary files..."
     rm -rf "$EXTRACT_DIR"

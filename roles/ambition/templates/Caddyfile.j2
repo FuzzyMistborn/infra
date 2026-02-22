@@ -21,11 +21,12 @@
 			scopes openid email profile groups
 			base_auth_url https://id.{{ secret_personal_url }}
 			metadata_url https://id.{{ secret_personal_url }}/.well-known/openid-configuration
-			delay_start 3
+			delay_start 10
 		}
 
 		authentication portal pocket-id {
 			crypto default token lifetime 86400
+			crypto key sign-verify {env.JWT_SHARED_KEY}
 			enable identity provider pocket-id
 			transform user {
 				match realm pocket-id
@@ -35,12 +36,14 @@
 
 		authorization policy pocket-id {
 			set auth url /caddy-security/oauth2/pocket-id
+			crypto key verify {env.JWT_SHARED_KEY}
 			allow roles user
 			inject headers with claims
 		}
 
 		authorization policy hc-pocket-id {
 			set auth url /caddy-security/oauth2/pocket-id
+			crypto key verify {env.JWT_SHARED_KEY}
 			allow roles user
 			inject headers with claims
 			bypass uri prefix /ping/
@@ -167,7 +170,6 @@ hc.fuzzymistborn.com {
 	reverse_proxy localhost:8000
 	tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key
 	import fuzzy_headers
-	import max-geofilter
 }
 
 stats.fuzzymistborn.com {
