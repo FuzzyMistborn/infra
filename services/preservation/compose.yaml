@@ -54,7 +54,7 @@ services:
     mem_limit: 300M
     restart: unless-stopped
   invidious-db:
-    image: pgautoupgrade/pgautoupgrade:18.1-alpine
+    image: pgautoupgrade/pgautoupgrade:18.2-alpine
     container_name: invidious-db
     volumes:
       - "{{ appdata_path }}/invidious/data:/var/lib/postgresql/data"
@@ -69,7 +69,7 @@ services:
     mem_limit: 200M
     restart: unless-stopped
   linkwarden-db:
-    image: pgautoupgrade/pgautoupgrade:18.1-alpine
+    image: pgautoupgrade/pgautoupgrade:18.2-alpine
     container_name: linkwarden-db
     volumes:
       - "{{ appdata_path }}/linkwarden/data:/var/lib/postgresql/data"
@@ -80,7 +80,7 @@ services:
     mem_limit: 200M
     restart: unless-stopped
   ha-db:
-    image: pgautoupgrade/pgautoupgrade:18.1-alpine
+    image: pgautoupgrade/pgautoupgrade:18.2-alpine
     container_name: ha-db
     volumes:
       - "{{ appdata_path }}/ha-db/data:/var/lib/postgresql/data"
@@ -94,7 +94,7 @@ services:
     mem_limit: 200M
     restart: unless-stopped
   vaultwarden-db:
-    image: pgautoupgrade/pgautoupgrade:18.1-alpine
+    image: pgautoupgrade/pgautoupgrade:18.2-alpine
     container_name: vaultwarden-db
     volumes:
       - "{{ appdata_path }}/vaultwarden-db/data:/var/lib/postgresql/data"
@@ -107,7 +107,7 @@ services:
     mem_limit: 200M
     restart: unless-stopped
   nextcloud-db:
-    image: pgautoupgrade/pgautoupgrade:18.1-alpine
+    image: pgautoupgrade/pgautoupgrade:18.2-alpine
     container_name: nextcloud-db
     volumes:
       - "{{ appdata_path }}/nextcloud-db/data:/var/lib/postgresql/data"
