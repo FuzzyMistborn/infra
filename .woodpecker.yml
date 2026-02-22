@@ -25,7 +25,7 @@ steps:
       format: markdown
       message: "{{#success build.status}}✅  Build for `{{repo.name}}` was *successful*!{{else}}❌  Build for `{{repo.name}}` has *FAILED*!{{/success}} \n🌐  [Output]({{build.link}})\n👤 Author: {{ commit.author }}\n📝  Commit: {{ commit.message }}"
     when:
-      event: push 
-      status:
-        - success
-        - failure
+      - event: push
+        status:
+          - success
+          - failure
