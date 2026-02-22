@@ -9,8 +9,8 @@ steps:
       - ansible-galaxy collection install -r requirements.yaml
       - sed -i '8d' ansible.cfg
       - echo $ansible_vault_password > .vault-password
-      - ansible-lint .
-      - yamllint .
+      - ansible-lint --strict .
+      - yamllint -s .
       - find . -maxdepth 1 -name '*.yml' | grep -v '.woodpecker.yml' | grep -v 'FUNDING.yml' | xargs ansible-playbook --syntax-check --list-tasks --vault-password-file .vault-password
     when:
       - event: push
