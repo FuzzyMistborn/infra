@@ -114,7 +114,7 @@ services:
     ports:
       - 2322:2322
   hawser:
-    image: ghcr.io/finsys/hawser:0.2.27
+    image: ghcr.io/finsys/hawser:0.2.29
     container_name: hawser
     volumes:
       - "{{ appdata_path }}/hawser:/data/stacks"
