@@ -7,7 +7,7 @@
       prompt: Which hosts to update? (space-separated, or 'all' for all docker hosts)
       private: no
       default: "all"
-  
+
   tasks:
     - name: Get changed images from git
       shell: |
@@ -39,13 +39,13 @@
       shell: |
         cd {{ playbook_dir }}
         HOST="{{ item }}"
-        
+
         # Find compose file
         compose_file="services/$HOST/compose.yaml"
         if [ ! -f "$compose_file" ]; then
           compose_file="services/$HOST/compose.yml"
         fi
-        
+
         if [ ! -f "$compose_file" ]; then
           exit 0
         fi
@@ -54,7 +54,7 @@
         {% for image in changed_images.stdout_lines %}
         # Find services using this image
         service_names=$(awk -v img="{{ image }}" '
-          /^  [a-z0-9_-]+:$/ { 
+          /^  [a-z0-9_-]+:$/ {
             service = $1
             gsub(/:/, "", service)
           }
@@ -64,12 +64,12 @@
             }
           }
         ' "$compose_file")
-        
+
         if [ -n "$service_names" ]; then
           containers="$containers $service_names"
         fi
         {% endfor %}
-        
+
         # Remove duplicates
         echo "$containers" | tr ' ' '\n' | grep -v '^$' | sort -u | tr '\n' ' ' | sed 's/ $//'
       register: host_containers
@@ -87,7 +87,7 @@
     - name: Display update plan
       debug:
         msg: |
-          
+
           ═══════════════════════════════════════════
                DOCKER UPDATE PLAN
           ═══════════════════════════════════════════
@@ -117,7 +117,7 @@
     - 'vars/vault.yaml'
   gather_facts: false
   ignore_unreachable: true
-  
+
   tasks:
     - name: Check connectivity
       ping:
@@ -159,7 +159,7 @@
       command: "docker compose pull {{ my_containers }}"
       args:
         chdir: /home/{{ main_username }}/
-      when: 
+      when:
         - connectivity_check is succeeded
         - my_containers | length > 0
       register: pull_result
@@ -168,7 +168,7 @@
       command: "docker compose up -d {{ my_containers }}"
       args:
         chdir: /home/{{ main_username }}/
-      when: 
+      when:
         - connectivity_check is succeeded
         - my_containers | length > 0
       register: update_result
@@ -176,21 +176,21 @@
     - name: Show pull output
       debug:
         var: pull_result.stdout_lines
-      when: 
+      when:
         - connectivity_check is succeeded
-        - my_containers | length > 0 
+        - my_containers | length > 0
         - pull_result is defined
 
     - name: Docker prune
       command: "docker image prune -af"
-      when: 
+      when:
         - connectivity_check is succeeded
         - my_containers | length > 0
 
     - name: Collect update results for successful hosts
       set_fact:
         update_summary: "{{ update_summary | default([]) + [{'host': actual_hostname, 'containers': my_containers, 'updated': update_result.changed | default(false), 'status': 'success'}] }}"
-      when: 
+      when:
         - connectivity_check is succeeded
         - my_containers | length > 0
       delegate_to: localhost
@@ -219,7 +219,7 @@
     - name: Display final summary
       debug:
         msg: |
-          
+
           ═══════════════════════════════════════════
                UPDATE SUMMARY
           ═══════════════════════════════════════════

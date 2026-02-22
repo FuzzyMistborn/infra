@@ -178,7 +178,6 @@ services:
       - SECRET_KEY={{ secret_healthchecks_key }}
       - TELEGRAM_BOT_NAME=Cosmere HealthChecks
       - TELEGRAM_TOKEN={{ secret_healthchecks_tg_token }}
-      - DOCKER_MODS=linuxserver/mods:healthchecks-apprise
     restart: unless-stopped
   crowdsec:
     image: ghcr.io/crowdsecurity/crowdsec:v1.7.6

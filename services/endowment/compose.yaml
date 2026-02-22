@@ -90,16 +90,16 @@ services:
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
     restart: unless-stopped
-  jellyseerr:
-    image: ghcr.io/fallenbagel/jellyseerr:2.7.3
+  seerr:
+    image: ghcr.io/seerr-team/seerr:v3.0.1
     init: true
-    container_name: jellyseerr
+    container_name: seerr
     environment:
       - TZ={{ ntp_timezone }}
     ports:
       - 5055:5055
     volumes:
-      - "{{ appdata_path }}/jellyseerr:/app/config"
+      - "{{ appdata_path }}/seerr:/app/config"
     restart: always
   yamtrack:
     image: ghcr.io/fuzzygrim/yamtrack:0.25.0

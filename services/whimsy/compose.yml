@@ -96,7 +96,7 @@ services:
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_USERSPACE=false
     restart: unless-stopped
-hawser:
+  hawser:
     image: ghcr.io/finsys/hawser:0.2.27
     container_name: hawser
     volumes:
