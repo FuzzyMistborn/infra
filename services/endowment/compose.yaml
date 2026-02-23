@@ -117,7 +117,7 @@ services:
     restart: unless-stopped
   yamtrack-redis:
     container_name: yamtrack-redis
-    image: redis:8.6.0-alpine
+    image: redis:8.6.1-alpine
     restart: unless-stopped
     volumes:
       - "{{ appdata_path }}/yamtrack/redis:/data"
@@ -154,7 +154,7 @@ services:
     mem_limit: 1000M
     restart: unless-stopped
   nextcloud-redis:
-    image: redis:8.6.0
+    image: redis:8.6.1
     container_name: nextcloud-redis
     restart: unless-stopped
   navidrome:
