@@ -17,6 +17,9 @@ bash_docker: true
 bash_autorestic: true
 bash_systemctl: true
 bash_apt: true
+bash_aliases:
+  - alias: fix-caddy
+    command: sudo systemctl reset-failed caddy.service && sudo systemctl restart caddy.service
 
 pull_backup: true
 # hugo_ver: 0.88.1

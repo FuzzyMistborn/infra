@@ -17,11 +17,13 @@ pull_backup: false
 # lego_ver: 4.4.0
 
 ### Bash Aliases
-
 bash_docker: true
 bash_autorestic: true
 bash_systemctl: true
 bash_apt: true
+bash_aliases:
+  - alias: fix-caddy
+    command: sudo systemctl reset-failed caddy.service && sudo systemctl restart caddy.service
 
 ### Cronjobs
 cronjobs:
