@@ -179,13 +179,6 @@
   community.general.ufw:
     state: enabled
 
-### Fix PocketID DNS
-- name: Add PocketID to hosts file
-  lineinfile:
-    path: /etc/hosts
-    line: "10.10.10.10 id.{{ secret_personal_url }}"
-    state: present
-
 ### Caddy UDP Buffer Size
 - name: Set UDP buffer sizes for Caddy QUIC
   sysctl:

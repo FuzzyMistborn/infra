@@ -110,8 +110,6 @@ ufw:
 ### Caddy Config
 caddy_systemd_capabilities_enabled: true
 caddy_systemd_network_dependency: false
-caddy_environment_variables:
-  JWT_SHARED_KEY: "{{ secret_caddy_jwt_key }}"
 caddy_packages:  ["github.com/hslatman/caddy-crowdsec-bouncer", "github.com/greenpau/caddy-security", "github.com/porech/caddy-maxmind-geolocation"]
 caddy_conf_dir: /home/{{ main_username }}/caddy
 caddy_config: "{{ lookup('template', 'roles/ambition/templates/Caddyfile.j2') }}"

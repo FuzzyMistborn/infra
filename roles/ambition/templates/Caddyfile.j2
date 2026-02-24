@@ -21,12 +21,11 @@
 			scopes openid email profile groups
 			base_auth_url https://id.{{ secret_personal_url }}
 			metadata_url https://id.{{ secret_personal_url }}/.well-known/openid-configuration
-			delay_start 10
+			delay_start 3
 		}
 
 		authentication portal pocket-id {
 			crypto default token lifetime 86400
-			crypto key sign-verify {env.JWT_SHARED_KEY}
 			enable identity provider pocket-id
 			transform user {
 				match realm pocket-id
@@ -36,14 +35,12 @@
 
 		authorization policy pocket-id {
 			set auth url /caddy-security/oauth2/pocket-id
-			crypto key verify {env.JWT_SHARED_KEY}
 			allow roles user
 			inject headers with claims
 		}
 
 		authorization policy hc-pocket-id {
 			set auth url /caddy-security/oauth2/pocket-id
-			crypto key verify {env.JWT_SHARED_KEY}
 			allow roles user
 			inject headers with claims
 			bypass uri prefix /ping/
@@ -170,6 +167,7 @@ hc.fuzzymistborn.com {
 	reverse_proxy localhost:8000
 	tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key
 	import fuzzy_headers
+	import max-geofilter
 }
 
 stats.fuzzymistborn.com {
@@ -266,6 +264,7 @@ smarthome.{{ secret_personal_url }} {
 		transport http {
 			tls_server_name smarthome.{{ secret_personal_url }}
 		}
+		header_up Host smarthome.{{ secret_personal_url }}
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
@@ -278,6 +277,7 @@ frigate.{{ secret_personal_url }} {
 		transport http {
 			tls_server_name frigate.{{ secret_personal_url }}
 		}
+		header_up Host frigate.{{ secret_personal_url }}
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
@@ -291,9 +291,9 @@ cloud.{{ secret_personal_url }} {
 		transport http {
 			tls_server_name cloud.{{ secret_personal_url }}
 		}
+		header_up Host cloud.{{ secret_personal_url }}
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
-	encode gzip
 	import personal_headers
 	import geofilter
 }
@@ -309,6 +309,7 @@ bitwarden.{{ secret_personal_url }} {
 		transport http {
 			tls_server_name bitwarden.{{ secret_personal_url }}
 		}
+		header_up Host bitwarden.{{ secret_personal_url }}
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	header Host {http.reverse_proxy.upstream.hostporti}
@@ -323,6 +324,7 @@ news.{{ secret_personal_url }} {
 		transport http {
 			tls_server_name news.{{ secret_personal_url }}
 		}
+		header_up Host news.{{ secret_personal_url }}
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_rss_headers
@@ -335,6 +337,7 @@ media.{{ secret_personal_url }} {
 		transport http {
 			tls_server_name media.{{ secret_personal_url }}
 		}
+		header_up Host media.{{ secret_personal_url }}
 	}
 	header {
 		X-Frame-Options "SAMEORIGIN"
@@ -351,6 +354,7 @@ office.{{ secret_personal_url }} {
 		transport http {
 			tls_server_name office.{{ secret_personal_url }}
 		}
+		header_up Host office.{{ secret_personal_url }}
 	}
 	encode gzip
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
@@ -365,6 +369,7 @@ radarr.{{ secret_personal_url }} {
 		transport http {
 			tls_server_name radarr.{{ secret_personal_url }}
 		}
+		header_up Host radarr.{{ secret_personal_url }}
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
@@ -377,6 +382,7 @@ sonarr.{{ secret_personal_url }} {
 		transport http {
 			tls_server_name sonarr.{{ secret_personal_url }}
 		}
+		header_up Host sonarr.{{ secret_personal_url }}
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
@@ -389,6 +395,7 @@ ferdium.{{ secret_personal_url }} {
 		transport http {
 			tls_server_name ferdium.{{ secret_personal_url }}
 		}
+		header_up Host ferdium.{{ secret_personal_url }}
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
@@ -401,6 +408,7 @@ change.{{ secret_personal_url }} {
 		transport http {
 			tls_server_name change.{{ secret_personal_url }}
 		}
+		header_up Host change.{{ secret_personal_url }}
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
@@ -414,6 +422,7 @@ video.{{ secret_personal_url }} {
 		transport http {
 			tls_server_name video.{{ secret_personal_url }}
 		}
+		header_up Host video.{{ secret_personal_url }}
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
@@ -427,6 +436,7 @@ music.{{ secret_personal_url }} {
 		transport http {
 			tls_server_name music.{{ secret_personal_url }}
 		}
+		header_up Host music.{{ secret_personal_url }}
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
@@ -439,6 +449,7 @@ photos.{{ secret_personal_url }} {
 		transport http {
 			tls_server_name photos.{{ secret_personal_url }}
 		}
+		header_up Host photos.{{ secret_personal_url }}
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
@@ -452,6 +463,7 @@ books.{{ secret_personal_url }} {
 		transport http {
 			tls_server_name books.{{ secret_personal_url }}
 		}
+		header_up Host books.{{ secret_personal_url }}
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
@@ -464,6 +476,7 @@ read.{{ secret_personal_url }} {
 		transport http {
 			tls_server_name read.{{ secret_personal_url }}
 		}
+		header_up Host read.{{ secret_personal_url }}
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
@@ -476,6 +489,7 @@ id.{{ secret_personal_url }} {
 		transport http {
 			tls_server_name id.{{ secret_personal_url }}
 		}
+		header_up Host id.{{ secret_personal_url }}
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
@@ -488,6 +502,7 @@ linkwarden.{{ secret_personal_url }} {
 		transport http {
 			tls_server_name linkwarden.{{ secret_personal_url }}
 		}
+		header_up Host linkwarden.{{ secret_personal_url }}
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
@@ -500,6 +515,7 @@ notes.{{ secret_personal_url }} {
 		transport http {
 			tls_server_name notes.{{ secret_personal_url }}
 		}
+		header_up Host notes.{{ secret_personal_url }}
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
@@ -512,6 +528,7 @@ pdf.{{ secret_personal_url }} {
 		transport http {
 			tls_server_name pdf.{{ secret_personal_url }}
 		}
+		header_up Host pdf.{{ secret_personal_url }}
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import pocket-id
@@ -525,6 +542,7 @@ paperless.{{ secret_personal_url }} {
 		transport http {
 			tls_server_name paperless.{{ secret_personal_url }}
 		}
+		header_up Host paperless.{{ secret_personal_url }}
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
