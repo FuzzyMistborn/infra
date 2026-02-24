@@ -31,7 +31,7 @@ services:
       - LOCAL_API_URL=http://{{ secret_ambition_ip }}:8080
     restart: unless-stopped
   pocket-id:
-    image: ghcr.io/pocket-id/pocket-id:v2.2.0
+    image: ghcr.io/pocket-id/pocket-id:v2.3.0
     container_name: pocket-id
     restart: unless-stopped
     environment:
