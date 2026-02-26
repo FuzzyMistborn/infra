@@ -120,7 +120,7 @@ services:
     mem_limit: 200M
     restart: unless-stopped
   hawser:
-    image: ghcr.io/finsys/hawser:0.2.29
+    image: ghcr.io/finsys/hawser:0.2.31
     container_name: hawser
     volumes:
       - "{{ appdata_path }}/hawser:/data/stacks"
