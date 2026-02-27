@@ -57,7 +57,7 @@ services:
     volumes:
       - "{{ appdata_path }}/pocketid/data:/app/data"
   adguard-sync:
-    image: ghcr.io/linuxserver/adguardhome-sync:0.8.2
+    image: ghcr.io/linuxserver/adguardhome-sync:0.9.0
     container_name: adguard-sync
     volumes:
       - "{{ appdata_path }}/adguardsync/config:/config"
