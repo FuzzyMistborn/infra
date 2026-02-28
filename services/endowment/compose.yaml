@@ -183,7 +183,7 @@ services:
       - TZ={{ ntp_timezone }}
     restart: unless-stopped
   booklore:
-    image: booklore/booklore:v2.0.3
+    image: booklore/booklore:v2.0.4
     container_name: booklore
     environment:
       - USER_ID={{ main_uid }}
