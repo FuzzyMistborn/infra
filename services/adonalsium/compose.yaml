@@ -7,7 +7,7 @@ services:
       - 3500:3000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /home/geoff/docker/dockhand:/app/data
+      - "{{ app_data }}/dockhand:/app/data"
   frigate:
     image: ghcr.io/blakeblackshear/frigate:0.16.4
     container_name: frigate

@@ -1,0 +1,42 @@
+  adventurelog-db:
+    image: postgis/postgis:latest
+    container_name: adventurelog-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=adventurelog
+      - POSTGRES_USER=adventure
+      - POSTGRES_PASSWORD=CHANGEME
+    volumes:
+      - "{{ app_data }}/adventurelog/db:/var/lib/postgresql/data/"
+  adventurelog-backend:
+    image: ghcr.io/seanmorley15/adventurelog-backend:latest
+    container_name: adventurelog-backend
+    restart: unless-stopped
+    ports:
+      - "8016:80"
+    volumes:
+      - "{{ app_data }}/adventurelog/media:/code/media/"
+    environment:
+      - PGHOST=adventurelog-db
+      - POSTGRES_DB=adventurelog
+      - POSTGRES_USER=adventure
+      - POSTGRES_PASSWORD=CHANGEME
+      - SECRET_KEY=CHANGEME
+      - DJANGO_ADMIN_USERNAME=admin
+      - DJANGO_ADMIN_PASSWORD=CHANGEME
+      - DJANGO_ADMIN_EMAIL=admin@example.com
+      - PUBLIC_URL=http://192.168.50.21:8016
+      - FRONTEND_URL=http://192.168.50.21:8020
+      - CSRF_TRUSTED_ORIGINS=http://192.168.50.21:8020,http://192.168.50.21:8016
+      - DEBUG=false
+      - DISABLE_REGISTRATION=false
+  adventurelog-frontend:
+    image: ghcr.io/seanmorley15/adventurelog-frontend:latest
+    container_name: adventurelog-frontend
+    restart: unless-stopped
+    ports:
+      - "8020:3000"
+    environment:
+      - PUBLIC_SERVER_URL=http://adventurelog-backend:8000
+      - ORIGIN=http://192.168.50.21:8020
+      - BODY_SIZE_LIMIT=Infinity

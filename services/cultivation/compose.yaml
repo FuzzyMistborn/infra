@@ -70,16 +70,14 @@ services:
     privileged: true
     cap_add:
       - MKNOD
-    labels:
-      - diun.enable=true
-      - diun.regopt=docker.io
     ports:
       - 9980:9980
     environment:
       - username=admin
       - password={{ secret_collabora_pw }}
       - domain={{ secret_collabora_url }}
-      - dictionaries=en
+      - server_name=office.{{ secret_personal_url }}
+      - dictionaries=en_US
     mem_limit: 1000M
     restart: unless-stopped
   paperless-redis:
@@ -196,15 +194,18 @@ services:
     image: dgtlmoon/sockpuppetbrowser:0.0.3
     container_name: sockpuppetbrowser
     restart: unless-stopped
+    cap_add:
+      - SYS_ADMIN
     tmpfs:
       - /tmp
+    shm_size: 1gb
     environment:
-      - SCREEN_WIDTH=1920
-      - SCREEN_HEIGHT=1024
+      - SCREEN_WIDTH=1280
+      - SCREEN_HEIGHT=720
       - SCREEN_DEPTH=16
-      - MAX_CONCURRENT_CHROME_PROCESSES=10
+      - MAX_CONCURRENT_CHROME_PROCESSES=3
       - STATS_REFRESH_SECONDS=120
-      - CONNECTION_TIMEOUT=300000
+      - CONNECTION_TIMEOUT=600000
       - DEFAULT_BLOCK_ADS=true
       - DEFAULT_STEALTH=true
       - DEFAULT_IGNORE_HTTPS_ERRORS=true

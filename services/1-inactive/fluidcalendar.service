@@ -1,0 +1,26 @@
+  fluidcalendar:
+    image: eibrahim/fluid-calendar:latest
+    container_name: fluidcalendar
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://fluid:fluid@fluidcalendar-db:5432/fluid_calendar
+      - NEXTAUTH_URL=http://localhost:3000
+      - NEXT_PUBLIC_APP_URL=http://localhost:3000
+      - NEXTAUTH_SECRET=WUFj686A+QvD340OWtvhyuXsKvQ/J0nzGjj+4qUSHXlibLrxoaukCg==
+      - NEXT_PUBLIC_SITE_URL=http://localhost:3000
+      - NEXT_PUBLIC_ENABLE_SAAS_FEATURES=false
+    restart: unless-stopped
+
+  fluidcalendar-db:
+    image: postgres:latest
+    container_name: fluidcalendar-db
+    environment:
+      - POSTGRES_USER=fluid
+      - POSTGRES_PASSWORD=fluid
+      - POSTGRES_DB=fluid_calendar
+    ports:
+      - "5432:5432"
+    volumes:
+      - "{{ app_data }}/fluidcalendar/db:/var/lib/postgresql/data"
+    restart: unless-stopped

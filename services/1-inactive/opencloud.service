@@ -1,0 +1,57 @@
+  opencloud:
+    image: opencloudeu/opencloud:latest
+    container_name: opencloud
+    restart: unless-stopped
+    entrypoint:
+      - /bin/sh
+    command: ["-c", "opencloud init || true && opencloud server"]
+    environment:
+      - OC_INSECURE=false
+      - OC_LOG_LEVEL=warn
+      - OC_DOMAIN=cloud.{{ secret_personal_internal_url }}
+      - OC_URL=https://cloud.{{ secret_personal_internal_url }}
+      - PROXY_HTTP_ADDR=0.0.0.0:9200
+      - PROXY_TLS=false
+      - IDM_ADMIN_PASSWORD=CHANGEME
+      - COLLABORA_DOMAIN=https://office.{{ secret_personal_internal_url }}
+      - NATS_NATS_HOST=0.0.0.0
+      - NATS_NATS_PORT=9233
+      - GATEWAY_GRPC_ADDR=0.0.0.0:9142
+      - APP_REGISTRY_GRPC_ADDR=0.0.0.0:9242
+    volumes:
+      - "{{ app_data }}/opencloud/config:/etc/opencloud"
+      - "{{ app_data }}/opencloud/data:/var/lib/opencloud"
+    ports:
+      - "9200:9200"
+  collaboration:
+    image: opencloudeu/opencloud:latest
+    container_name: collaboration
+    restart: unless-stopped
+    entrypoint: ["/bin/sh"]
+    command: ["-c", "opencloud collaboration server"]
+    environment:
+      - COLLABORATION_WOPI_SRC=https://office.{{ secret_personal_internal_url }}
+      - COLLABORATION_APP_NAME=Collabora
+      - COLLABORATION_APP_PRODUCT=Collabora
+      - COLLABORATION_APP_ADDR=https://office.{{ secret_personal_internal_url }}
+      - COLLABORATION_APP_ICON=https://office.{{ secret_personal_internal_url }}/favicon.ico
+      - COLLABORATION_APP_INSECURE=false
+      - COLLABORATION_GRPC_ADDR=0.0.0.0:9301
+      - COLLABORATION_CS3API_DATAGATEWAY_INSECURE=false
+      - COLLABORATION_LOG_LEVEL=warn
+      - OC_URL=https://cloud.{{ secret_personal_internal_url }}
+      - MICRO_REGISTRY_ADDRESS=opencloud:9233
+      - OC_GRPC_ADDR=collaboration:9301
+    volumes:
+      - "{{ app_data }}/opencloud/config:/etc/opencloud"
+    ports:
+      - "9300:9300"
+  radicale:
+    image: opencloudeu/radicale:latest
+    container_name: radicale
+    restart: unless-stopped
+    environment:
+      - RADICALE_LOG_LEVEL=warning
+      - RADICALE_STORAGE_FILESYSTEM_FOLDER=/data
+    volumes:
+      - "{{ app_data }}/opencloud/radicale:/data"
