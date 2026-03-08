@@ -22,5 +22,5 @@
     ports:
       - "5432:5432"
     volumes:
-      - "{{ app_data }}/fluidcalendar/db:/var/lib/postgresql/data"
+      - "{{ appdata_path }}/fluidcalendar/db:/var/lib/postgresql/data"
     restart: unless-stopped

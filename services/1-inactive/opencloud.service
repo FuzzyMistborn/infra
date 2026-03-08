@@ -19,8 +19,8 @@
       - GATEWAY_GRPC_ADDR=0.0.0.0:9142
       - APP_REGISTRY_GRPC_ADDR=0.0.0.0:9242
     volumes:
-      - "{{ app_data }}/opencloud/config:/etc/opencloud"
-      - "{{ app_data }}/opencloud/data:/var/lib/opencloud"
+      - "{{ appdata_path }}/opencloud/config:/etc/opencloud"
+      - "{{ appdata_path }}/opencloud/data:/var/lib/opencloud"
     ports:
       - "9200:9200"
   collaboration:
@@ -43,7 +43,7 @@
       - MICRO_REGISTRY_ADDRESS=opencloud:9233
       - OC_GRPC_ADDR=collaboration:9301
     volumes:
-      - "{{ app_data }}/opencloud/config:/etc/opencloud"
+      - "{{ appdata_path }}/opencloud/config:/etc/opencloud"
     ports:
       - "9300:9300"
   radicale:
@@ -54,4 +54,4 @@
       - RADICALE_LOG_LEVEL=warning
       - RADICALE_STORAGE_FILESYSTEM_FOLDER=/data
     volumes:
-      - "{{ app_data }}/opencloud/radicale:/data"
+      - "{{ appdata_path }}/opencloud/radicale:/data"

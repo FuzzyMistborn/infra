@@ -7,7 +7,7 @@
       - POSTGRES_USER=adventure
       - POSTGRES_PASSWORD=CHANGEME
     volumes:
-      - "{{ app_data }}/adventurelog/db:/var/lib/postgresql/data/"
+      - "{{ appdata_path }}/adventurelog/db:/var/lib/postgresql/data/"
   adventurelog-backend:
     image: ghcr.io/seanmorley15/adventurelog-backend:latest
     container_name: adventurelog-backend
@@ -15,7 +15,7 @@
     ports:
       - "8016:80"
     volumes:
-      - "{{ app_data }}/adventurelog/media:/code/media/"
+      - "{{ appdata_path }}/adventurelog/media:/code/media/"
     environment:
       - PGHOST=adventurelog-db
       - POSTGRES_DB=adventurelog

@@ -7,7 +7,7 @@ services:
       - 3500:3000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - "{{ app_data }}/dockhand:/app/data"
+      - "{{ appdata_path }}/dockhand:/app/data"
   frigate:
     image: ghcr.io/blakeblackshear/frigate:0.17.0
     container_name: frigate
@@ -29,7 +29,7 @@ services:
       - FRIGATE_RTSP_PASSWORD='password'
       - PLUS_API_KEY={{ secret_frigate_plus_api }}
       - FRIGATE_JWT_SECRET={{ secret_frigate_jwt }}
-    shm_size: 200mb
+    shm_size: 250mb
     tmpfs:
       - /tmp/cache
     restart: unless-stopped
