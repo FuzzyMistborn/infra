@@ -186,7 +186,7 @@ services:
     ports:
       - 5000:5000
     environment:
-      - BASE_URL=https://change.{{ secret_personal_url }}
+      - BASE_URL=https://change.{{ secret_personal_internal_url }}
       - PLAYWRIGHT_DRIVER_URL=ws://sockpuppetbrowser:3000
       - HIDE_REFERER=true
     restart: unless-stopped
@@ -247,7 +247,7 @@ services:
     restart: unless-stopped
     environment:
       - TRILIUM_DATA_DIR=/home/node/trilium-data
-      - TRILIUM_OAUTH_BASE_URL=https://notes.{{ secret_personal_url }}
+      - TRILIUM_OAUTH_BASE_URL=https://notes.{{ secret_personal_internal_url }}
       - TRILIUM_OAUTH_CLIENT_ID={{ secret_trilium_pocket_id_user }}
       - TRILIUM_OAUTH_CLIENT_SECRET={{ secret_trilium_pocket_id_key }}
       - TRILIUM_OAUTH_ISSUER_BASE_URL=https://id.{{ secret_personal_url }}
