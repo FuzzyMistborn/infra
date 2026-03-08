@@ -64,8 +64,8 @@ cronjobs:
   - name: Pull MaxMind GeoIP
     job: /usr/local/bin/runitor -uuid {{ secret_hc_geoip }} -- /home/{{ main_username }}/scripts/geoip.sh
     user: root
-    hour: 0
-    minute: 0
+    hour: 1
+    minute: 45
     weekday: 0
 
 ### UFW Rules
