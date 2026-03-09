@@ -102,6 +102,8 @@ services:
       - PAPERLESS_FILENAME_FORMAT={added_year}/{document_type}/{title}
       - USERMAP_UID={{ main_uid }}
       - USERMAP_GID={{ main_gid }}
+      - PAPERLESS_APPS=allauth.socialaccount.providers.openid_connect
+      - PAPERLESS_SOCIALACCOUNT_PROVIDERS={"openid_connect":{"SCOPE":["openid","profile","email"],"OAUTH_PKCE_ENABLED":true,"APPS":[{"provider_id":"pocket-id","name":"Pocket-ID","client_id":"{{ secret_paperless_pocket_id_user }}","secret":"{{ secret_paperless_pocket_id_key }}","settings":{"server_url":"https://id.{{ secret_personal_url }}"}}]}}
     restart: unless-stopped
   invidious:
     image: quay.io/invidious/invidious:latest

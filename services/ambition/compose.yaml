@@ -132,6 +132,13 @@ services:
       - "{{ appdata_path }}/opengist:/opengist"
     ports:
       - 127.0.0.1:6157:6157
+    environment:
+      - OG_OIDC_PROVIDER_NAME=PocketID
+      - OG_OIDC_CLIENT_KEY={{ secret_opengist_pocket_id_user }}
+      - OG_OIDC_SECRET={{ secret_opengist_pocket_id_key }}
+      - OG_OIDC_DISCOVERY_URL=https://id.{{ secret_personal_url }}/.well-known/openid-configuration
+      - OG_OIDC_GROUP_CLAIM_NAME=opengist
+      - OG_OIDC_ADMIN_GROUP=opengist-admins
     restart: unless-stopped
   pairdrop:
     image: lscr.io/linuxserver/pairdrop:1.11.2

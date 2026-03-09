@@ -6,14 +6,10 @@ services:
       - /mnt/llms/ollama:/root/.ollama
     ports:
       - 11434:11434
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities:
-                - gpu
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
     restart: unless-stopped
   open-webui:
     image: ghcr.io/open-webui/open-webui:v0.8.9
