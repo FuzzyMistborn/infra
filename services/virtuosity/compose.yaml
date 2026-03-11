@@ -122,7 +122,7 @@ services:
               capabilities: [gpu]
     restart: unless-stopped
   hawser:
-    image: ghcr.io/finsys/hawser:0.2.36
+    image: ghcr.io/finsys/hawser:0.2.37
     container_name: hawser
     volumes:
       - "{{ appdata_path }}/hawser:/data/stacks"
