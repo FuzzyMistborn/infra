@@ -32,7 +32,7 @@ services:
       - "{{ appdata_path }}/tailscale:/var/lib/tailscale"
     environment:
       - TS_HOSTNAME=ishap
-      - TS_AUTHKEY={{ secret_ishap_tailscale_key }}
+#      - TS_AUTHKEY={{ secret_ishap_tailscale_key }}
       - TS_EXTRA_ARGS= --advertise-exit-node --accept-routes
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_USERSPACE=true

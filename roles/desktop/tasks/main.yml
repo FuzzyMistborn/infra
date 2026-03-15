@@ -250,6 +250,7 @@
     - matthewpi.caddyfile-support
     - keesschollaart.vscode-home-assistant
     - wholroyd.jinja
+    - anthropic.claude-code
 
 ### CUPS
 - name: Add printer and set as default

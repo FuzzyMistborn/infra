@@ -68,12 +68,13 @@ flatpak_list:
   - name: com.jgraph.drawio.desktop
   - name: org.raspberrypi.rpi-imager
   - name: com.moonlight_stream.Moonlight
-  - name: io.github.janbar.noson
   - name: io.github.dweymouth.supersonic
   - name: org.bunkus.mkvtoolnix-gui
   - name: org.localsend.localsend_app
   - name: org.signal.Signal
   - name: io.gitlab.adhami3310.Converter
+  - name: com.github.wwmm.easyeffects
+  - name: io.github.lullabyX.sone
 
 ### Mounts
 mountpoints:
