@@ -172,7 +172,7 @@ services:
       - ND_BASEURL=https://music.{{ secret_personal_internal_url }}
     restart: unless-stopped
   booklore:
-    image: booklore/booklore:v2.0.6
+    image: booklore/booklore:v2.2.1
     container_name: booklore
     environment:
       - USER_ID={{ main_uid }}
