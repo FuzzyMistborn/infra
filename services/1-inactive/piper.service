@@ -1,0 +1,9 @@
+  piper:
+    image: rhasspy/wyoming-piper:2.2.2
+    container_name: piper
+    volumes:
+      - "{{ appdata_path }}/piper:/data"
+    ports:
+      - 10200:10200
+    command: --voice en_US-hfc_female-medium
+    restart: unless-stopped
