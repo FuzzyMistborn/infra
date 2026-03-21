@@ -47,7 +47,7 @@ cronjobs:
     minute: 15
     hour: 0
   - name: Invidious Reboot
-    job: docker container restart invidious > /dev/null 2>&1
+    job: docker container restart invidious invidious-companion > /dev/null 2>&1
     user: "{{ main_username }}"
     minute: 0
     hour: "*/12"

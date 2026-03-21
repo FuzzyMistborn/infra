@@ -43,4 +43,4 @@ cronjobs:
     user: "{{ main_username }}"
     minute: 0
     hour: 20
-    weekday: 3
+    weekday: 2

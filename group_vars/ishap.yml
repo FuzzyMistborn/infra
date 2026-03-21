@@ -35,7 +35,7 @@ lxc_vlans:
     gw: 192.168.10.1
     ip: 192.168.10.50
     tag: 10
-    disk: 'local-lvm:10'
+    disk: 'local-lvm:15'
     cores: 2
     memory: 512
   - name: Drone
