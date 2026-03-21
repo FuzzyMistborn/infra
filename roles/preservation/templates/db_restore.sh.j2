@@ -34,6 +34,11 @@ cd /home/{{ main_username }}/db_backups/linkwarden
 LAST_LINKWARDEN=$(ls -t | head -n 1)
 cat /home/{{ main_username }}/db_backups/linkwarden/$LAST_LINKWARDEN | docker exec -i linkwarden-db psql -U postgres -d postgres
 
+echo Restoring Outline DB
+cd /home/{{ main_username }}/db_backups/outline
+LAST_OUTLINE=$(ls -t | head -n 1)
+cat /home/{{ main_username }}/db_backups/outline/$LAST_OUTLINE | docker exec -i outline-db psql -U outline -d outline
+
 echo Restoring Booklore DB
 cd /home/{{ main_username }}/db_backups/booklore
 LAST_BOOKLORE=$(ls -t | head -n 1)

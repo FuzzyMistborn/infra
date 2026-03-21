@@ -151,12 +151,6 @@ services:
     ports:
       - 8081:8080
     restart: unless-stopped
-  it-tools:
-    image: corentinth/it-tools:2024.10.22-7ca5933
-    container_name: it-tools
-    ports:
-      - '8800:80'
-    restart: unless-stopped
   ferdium-server:
     image: ghcr.io/ferdium/ferdium-server:2.0.10
     container_name: ferdium-server
@@ -261,6 +255,47 @@ services:
       - "{{ appdata_path }}/trilium:/home/node/trilium-data"
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+  outline:
+    image: outlinewiki/outline:1.6.1
+    container_name: outline
+    ports:
+      - "3600:3000"
+    volumes:
+      - /home/geoff/docker/outline/data:/var/lib/outline/data
+    environment:
+      - NODE_ENV=production
+      - SECRET_KEY={{ secret_outline_secret_key }}
+      - UTILS_SECRET={{ secret_outline_utils_key }}
+      - URL=https://outline.{{ secret_personal_internal_url }}
+      - PORT=3000
+      - DATABASE_URL=postgres://outline:{{secret_outline_db_pass}}@192.168.50.22:5437/outline
+      - PGSSLMODE=disable
+      - REDIS_URL=redis://outline-redis:6379
+      - FILE_STORAGE=local
+      - FILE_STORAGE_LOCAL_ROOT_DIR=/var/lib/outline/data
+      - FILE_STORAGE_UPLOAD_MAX_SIZE=26214400
+      - OIDC_CLIENT_ID={{ secret_outline_oidc_client_id }}
+      - OIDC_CLIENT_SECRET={{ secret_outline_oidc_secret }}
+      - OIDC_AUTH_URI=https://id.{{ secret_personal_url }}/authorize
+      - OIDC_TOKEN_URI=https://id.{{ secret_personal_url }}/api/oidc/token
+      - OIDC_USERINFO_URI=https://id.{{ secret_personal_url }}/api/oidc/userinfo
+      - OIDC_LOGOUT_URI=https://id.{{ secret_personal_url }}/api/oidc/end-session
+      - OIDC_USERNAME_CLAIM=preferred_username
+      - OIDC_DISPLAY_NAME=Pocket-ID
+      - OIDC_SCOPES=openid profile email groups
+      - FORCE_HTTPS=false
+      - DEFAULT_LANGUAGE=en_US
+      - ENABLE_UPDATES=true
+      - SMTP_HOST={{ secret_snapraid_smtp_host }}
+      - SMTP_PORT=465
+      - SMTP_USERNAME={{ secret_snapraid_email_from }}
+      - SMTP_PASSWORD={{ secret_snapraid_email_pass }}
+      - SMTP_FROM_EMAIL={{ secret_snapraid_email_from }}
+      - SMTP_REPLY_EMAIL={{ secret_snapraid_email_from }}
+  outline-redis:
+    image: redis:8.6.1
+    container_name: outline-redis
+    restart: unless-stopped
   homebox:
     image: ghcr.io/sysadminsmedia/homebox:0.24.1
     container_name: homebox

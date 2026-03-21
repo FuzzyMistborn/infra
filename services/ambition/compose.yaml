@@ -186,6 +186,29 @@ services:
       - TELEGRAM_BOT_NAME=Cosmere HealthChecks
       - TELEGRAM_TOKEN={{ secret_healthchecks_tg_token }}
     restart: unless-stopped
+  bitbot:
+    image: fuzzymistborn/bitbot:latest
+    container_name: bitbot
+    restart: unless-stopped
+    build:
+      context: ./bitbot
+      dockerfile: Dockerfile
+    volumes:
+      - "{{ appdata_path }}/bitbot:/app/data"
+    environment:
+      - DISCORD_TOKEN={{ secret_bitbot_discord_token }}
+      - GUILD_ID={{ secret_bitbot_discord_server_id }}
+      - ANNOUNCEMENT_CHANNEL_ID={{ secret_bitbot_discord_channel_id }}
+      - HOST_ROLE_IDS={{ secret_bitbot_discord_host_id }}
+      - HOST_CHANNEL_ID={{ secret_bitbot_discord_host_channel }}
+      - RSS_FEED_URL=https://bitflip.show/rss.xml
+      - POLL_INTERVAL_MINUTES=15
+      - ANNOUNCEMENT_MESSAGE=🎙 **New episode of BitFlip just dropped!**
+      - NOTIFICATION_ROLE_ID={{ secret_bitbot_discord_notification_id }}
+      - NOTIFICATION_SIGNUP_CHANNEL_ID={{ secret_bitbot_discord_notification_channel }}
+      - SHOW_TOPICS_CHANNEL_ID={{ secret_bibot_discord_topic_channel }}
+      - TZ={{ ntp_timezone }}
+      - REMINDER_CRON=30 19 * * 3
   crowdsec:
     image: ghcr.io/crowdsecurity/crowdsec:v1.7.6
     container_name: crowdsec

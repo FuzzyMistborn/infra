@@ -30,6 +30,11 @@ echo Backing up Linkwarden DB
 today=$(date +"%Y_%m_%d")
 docker exec linkwarden-db sh -c 'pg_dumpall -U postgres' > /home/{{ main_username }}/db_backups/linkwarden/linkwardenDB_$today.sql
 
+#### Outline DB Backup
+echo Backing up Outline DB
+today=$(date +"%Y_%m_%d")
+docker exec outline-db sh -c 'pg_dumpall -U outline' > /home/{{ main_username }}/db_backups/outline/outlineDB_$today.sql
+
 #### Booklore DB Backup
 echo Backing up Booklore DB
 today=$(date +"%Y_%m_%d")

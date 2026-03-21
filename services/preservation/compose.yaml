@@ -91,7 +91,7 @@ services:
       - POSTGRES_USER=homeassistant
       - POSTGRES_PASSWORD={{ secret_ha_db_pass }}
       - POSTGRES_INITDB_ARGS='--encoding=UTF-8'
-    mem_limit: 200M
+    mem_limit: 300M
     restart: unless-stopped
   vaultwarden-db:
     image: pgautoupgrade/pgautoupgrade:18.2-alpine
@@ -117,6 +117,19 @@ services:
       - POSTGRES_DB=nextcloud
       - POSTGRES_USER=nextcloud
       - POSTGRES_PASSWORD={{ secret_nextcloud_db_pass }}
+    mem_limit: 300M
+    restart: unless-stopped
+  outline-db:
+    image: pgautoupgrade/pgautoupgrade:18.3-alpine
+    container_name: outline-db
+    volumes:
+      - "{{ appdata_path }}/outline-db/data:/var/lib/postgresql/data"
+    ports:
+      - 5437:5432
+    environment:
+      - POSTGRES_DB=outline
+      - POSTGRES_USER=outline
+      - POSTGRES_PASSWORD={{ secret_outline_db_pass }}
     mem_limit: 200M
     restart: unless-stopped
   hawser:
