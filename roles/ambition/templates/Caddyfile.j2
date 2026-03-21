@@ -27,6 +27,8 @@
 		authentication portal pocket-id {
 			crypto default token lifetime 86400
 			enable identity provider pocket-id
+			trust login redirect uri domain suffix fuzzymistborn.com path prefix /
+			trust login redirect uri domain suffix {{ secret_personal_url }} path prefix /
 			transform user {
 				match realm pocket-id
 				action add role user
@@ -310,6 +312,23 @@ media.{{ secret_personal_url }} {
 			tls_server_name media.{{ secret_personal_url }}
 		}
 		header_up Host media.{{ secret_personal_url }}
+	}
+	header {
+		X-Frame-Options "SAMEORIGIN"
+		X-Forwarded-Host {host}
+	}
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	import personal_headers
+	import geofilter
+}
+
+mcp.{{ secret_personal_url }} {
+	crowdsec
+	reverse_proxy https://10.10.10.10:443 {
+		transport http {
+			tls_server_name mcp.{{ secret_personal_url }}
+		}
+		header_up Host mcp.{{ secret_personal_url }}
 	}
 	header {
 		X-Frame-Options "SAMEORIGIN"

@@ -133,6 +133,12 @@ media.{{ secret_personal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import headers
 }
+# MCP
+mcp.{{ secret_personal_url }} {
+	reverse_proxy http://192.168.50.10:8086
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	import headers
+}
 # Navidrome
 music.{{ secret_personal_url }} {
 	reverse_proxy http://192.168.50.20:4533
@@ -307,6 +313,12 @@ notes.{{ secret_personal_internal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
+# Outline
+outline.{{ secret_personal_internal_url }} {
+	reverse_proxy http://192.168.50.21:3600
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	import headers
+}
 # PDF
 pdf.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.21:8081
@@ -368,12 +380,6 @@ tasmota.{{ secret_personal_internal_url }} {
 # Termix
 termix.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.1.10:8050
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
-	import headers
-}
-# IT-Tools
-tools.{{ secret_personal_internal_url }} {
-	reverse_proxy http://192.168.50.21:8800
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
