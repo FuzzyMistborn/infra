@@ -9,7 +9,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - "{{ appdata_path }}/dockhand:/app/data"
   frigate:
-    image: ghcr.io/blakeblackshear/frigate:0.17.0
+    image: ghcr.io/blakeblackshear/frigate:0.17.1
     container_name: frigate
     devices:
       - /dev/bus/usb:/dev/bus/usb
