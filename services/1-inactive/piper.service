@@ -1,5 +1,5 @@
   piper:
-    image: rhasspy/wyoming-piper:2.2.2
+    image: rhasspy/wyoming-piper:latest
     container_name: piper
     volumes:
       - "{{ appdata_path }}/piper:/data"

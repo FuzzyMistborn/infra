@@ -1,5 +1,5 @@
   whisper:
-    image: lscr.io/linuxserver/faster-whisper:3.1.0-gpu
+    image: lscr.io/linuxserver/faster-whisper:latest
     container_name: whisper
     environment:
       - UID={{ main_uid }}
