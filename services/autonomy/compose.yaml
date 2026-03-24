@@ -83,7 +83,7 @@ services:
       - MODE=native
     restart: unless-stopped
   nodered:
-    image: nodered/node-red:4.1.7
+    image: nodered/node-red:4.1.8
     container_name: nodered
     volumes:
       - "{{ appdata_path }}/nodered:/data"
