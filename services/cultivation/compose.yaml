@@ -206,7 +206,7 @@ services:
       - DEFAULT_STEALTH=true
       - DEFAULT_IGNORE_HTTPS_ERRORS=true
   linkwarden:
-    image: ghcr.io/linkwarden/linkwarden:v2.13.5
+    image: ghcr.io/linkwarden/linkwarden:v2.14.0
     container_name: linkwarden
     ports:
       - 3000:3000
