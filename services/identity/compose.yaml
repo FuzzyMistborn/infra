@@ -63,7 +63,11 @@ services:
     container_name: dawarich-redis
     volumes:
       - "{{ appdata_path }}/dawarich/shared:/var/shared/redis"
-    command: redis-server
+    command: >
+      redis-server
+      --save 900 1
+      --save 300 10
+      --appendonly no
     restart: unless-stopped
   dawarich-sidekiq:
     image: freikin/dawarich:1.4.0
