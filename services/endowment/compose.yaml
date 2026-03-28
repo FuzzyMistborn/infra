@@ -171,9 +171,9 @@ services:
       - ND_SCANSCHEDULE=12h
       - ND_BASEURL=https://music.{{ secret_personal_internal_url }}
     restart: unless-stopped
-  booklore:
-    image: booklore/booklore:v2.2.1
-    container_name: booklore
+  grimmory:
+    image: ghcr.io/grimmory-tools/grimmory:v2.3.0
+    container_name: grimmory
     environment:
       - USER_ID={{ main_uid }}
       - GROUP_ID={{ main_gid }}
@@ -185,9 +185,9 @@ services:
     ports:
       - 6060:6060
     volumes:
-      - "{{ appdata_path }}/booklore/data:/app/data"
-      - /mnt/Media/Ebooks/Booklore:/books
-      - /mnt/Media/Ebooks/Booklore-Import:/bookdrop
+      - "{{ appdata_path }}/grimmory/data:/app/data"
+      - /mnt/Media/Ebooks/Grimmory:/books
+      - /mnt/Media/Ebooks/Grimmory-Import:/bookdrop
     restart: unless-stopped
   romm:
     image: rommapp/romm:4.7.0
