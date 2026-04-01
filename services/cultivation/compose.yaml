@@ -364,7 +364,7 @@ services:
     depends_on:
       - bitwarden-mxroute-server
   crowdsec:
-    image: ghcr.io/crowdsecurity/crowdsec:v1.7.6
+    image: ghcr.io/crowdsecurity/crowdsec:v1.7.7
     container_name: crowdsec
     volumes:
       - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"
