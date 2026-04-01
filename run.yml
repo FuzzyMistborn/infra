@@ -213,6 +213,7 @@
     - role: geerlingguy.pip
     - role: install/autorestic
     - role: install/runitor
+    - role: install/tailscale
     - role: install/zsh
     - role: virtuosity
     - role: bash_alias

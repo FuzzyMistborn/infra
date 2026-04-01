@@ -27,6 +27,7 @@
 		authentication portal pocket-id {
 			crypto default token lifetime 86400
 			enable identity provider pocket-id
+			cookie domain {{ secret_personal_url }}
 			trust login redirect uri domain suffix fuzzymistborn.com path prefix /
 			trust login redirect uri domain suffix {{ secret_personal_url }} path prefix /
 			transform user {
