@@ -210,7 +210,7 @@ services:
       - TZ={{ ntp_timezone }}
       - REMINDER_CRON=30 19 * * 3
   crowdsec:
-    image: ghcr.io/crowdsecurity/crowdsec:v1.7.6
+    image: ghcr.io/crowdsecurity/crowdsec:v1.7.7
     container_name: crowdsec
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
