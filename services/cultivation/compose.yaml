@@ -152,7 +152,7 @@ services:
       - 8081:8080
     restart: unless-stopped
   ferdium-server:
-    image: ghcr.io/ferdium/ferdium-server:2.0.10
+    image: ghcr.io/ferdium/ferdium-server:2.0.13
     container_name: ferdium-server
     volumes:
       - "{{ appdata_path }}/ferdium/data:/data"
