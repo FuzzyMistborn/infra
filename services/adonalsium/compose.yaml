@@ -1,6 +1,6 @@
 services:
   dockhand:
-    image: fnsys/dockhand:v1.0.22
+    image: fnsys/dockhand:v1.0.24
     container_name: dockhand
     restart: unless-stopped
     ports:
