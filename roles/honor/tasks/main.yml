@@ -100,6 +100,10 @@
     - { name: net.core.rmem_max, value: 7500000 }
     - { name: net.core.wmem_max, value: 7500000 }
 
+### Crowdsec Log Fix
+- name: Fix Crowdsec SSH Log Rotate Issue
+  include_tasks: crowdsec-logrotate.yml
+
 ### Caddy systemd Override to speed up restart
 - name: Create caddy systemd drop-in directory
   file:
