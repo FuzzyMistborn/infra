@@ -190,7 +190,7 @@ services:
       - /mnt/Media/Ebooks/Grimmory-Import:/bookdrop
     restart: unless-stopped
   romm:
-    image: rommapp/romm:4.7.0
+    image: rommapp/romm:4.8.1
     container_name: romm
     restart: unless-stopped
     environment:
