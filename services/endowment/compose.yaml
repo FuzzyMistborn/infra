@@ -127,7 +127,6 @@ services:
     volumes:
       - "{{ appdata_path }}/audiobookshelf/config:/config"
       - "{{ appdata_path }}/audiobookshelf/metadata:/metadata"
-      - "{{ appdata_path }}/audiobookshelf/podcasts:/podcasts"
       - /mnt/Media/Audiobooks:/audiobooks
     ports:
       - 13378:80
