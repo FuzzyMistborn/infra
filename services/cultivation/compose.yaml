@@ -81,7 +81,7 @@ services:
     mem_limit: 1000M
     restart: unless-stopped
   paperless-redis:
-    image: redis:8.6.1
+    image: redis:8.6.2
     container_name: paperless-redis
     restart: unless-stopped
   paperless:
@@ -293,7 +293,7 @@ services:
       - SMTP_FROM_EMAIL={{ secret_snapraid_email_from }}
       - SMTP_REPLY_EMAIL={{ secret_snapraid_email_from }}
   outline-redis:
-    image: redis:8.6.1
+    image: redis:8.6.2
     container_name: outline-redis
     restart: unless-stopped
   homebox:
