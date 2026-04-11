@@ -1,0 +1,3 @@
+---
+docker_address_pool_base: "10.200.0.0/16"
+docker_address_pool_size: 24

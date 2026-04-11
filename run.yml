@@ -92,6 +92,7 @@
     - role: geerlingguy.docker
     - role: geerlingguy.ntp
     - role: install/lnxlink
+    - role: install/docker-patch
     - role: docker-compose-generator
     - role: ironicbadger.snapraid
 
@@ -129,6 +130,7 @@
     - role: cronjobs
     - role: geerlingguy.docker
     - role: geerlingguy.ntp
+    - role: install/docker-patch
     - role: docker-compose-generator
 
 ### LXCs/VMs/VPS
@@ -164,6 +166,7 @@
     - role: endowment
     - role: bash_alias
     - role: cronjobs
+    - role: install/docker-patch
     - role: docker-compose-generator
 
 - hosts: autonomy
@@ -183,6 +186,7 @@
     - role: bash_alias
     - role: cronjobs
     - role: install/lnxlink
+    - role: install/docker-patch
     - role: docker-compose-generator
 
 - hosts: unity
@@ -201,6 +205,7 @@
     - role: install/tailscale
     - role: install/lnxlink
     - role: cronjobs
+    - role: install/docker-patch
     - role: docker-compose-generator
 
 - hosts: virtuosity
@@ -220,6 +225,7 @@
     - role: cronjobs
     - role: github
     - role: install/lnxlink
+    - role: install/docker-patch
     - role: docker-compose-generator
 
 - hosts: whimsy
@@ -237,6 +243,7 @@
     - role: whimsy
     - role: bash_alias
     - role: cronjobs
+    - role: install/docker-patch
     - role: docker-compose-generator
 
 - hosts: cultivation
@@ -254,6 +261,7 @@
     - role: cultivation
     - role: bash_alias
     - role: cronjobs
+    - role: install/docker-patch
     - role: docker-compose-generator
 
 - hosts: preservation
@@ -268,6 +276,7 @@
     - role: install/lnxlink
     - role: install/runitor
     - role: install/zsh
+    - role: install/docker-patch
     - role: docker-compose-generator
     - role: preservation
     - role: bash_alias
@@ -289,6 +298,7 @@
     - role: honor
     - role: bash_alias
     - role: cronjobs
+    - role: install/docker-patch
     - role: docker-compose-generator
     - role: install/crowdsec_bouncer
 
@@ -306,6 +316,7 @@
     - role: omada
     - role: bash_alias
     - role: cronjobs
+    - role: install/docker-patch
     - role: docker-compose-generator
 
 - hosts: invention
@@ -321,6 +332,7 @@
     - role: install/autorestic
     - role: install/runitor
     - role: bash_alias
+    - role: install/docker-patch
     - role: docker-compose-generator
 
 - hosts: identity
@@ -337,6 +349,7 @@
     - role: install/runitor
     - role: install/lnxlink
     - role: bash_alias
+    - role: install/docker-patch
     - role: docker-compose-generator
 
 - hosts: investiture
@@ -350,6 +363,7 @@
     - role: install/runitor
     - role: install/zsh
     - role: bash_alias
+    - role: install/docker-patch
     - role: docker-compose-generator
     - role: cronjobs
 
@@ -366,6 +380,7 @@
     - role: install/zsh
     - role: install/autorestic
     - role: install/runitor
+    - role: install/docker-patch
     - role: docker-compose-generator
     - role: ambition
     - role: caddy_ansible.caddy_ansible
