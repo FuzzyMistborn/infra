@@ -16,8 +16,6 @@ services:
       - 3000:3000/tcp
     networks:
       - adguard-net
-    security_opt:
-      - no-new-privileges:true
     restart: unless-stopped
   crowdsec:
     image: ghcr.io/crowdsecurity/crowdsec:v1.7.7
@@ -86,6 +84,19 @@ services:
     security_opt:
       - no-new-privileges:true
     restart: unless-stopped
+  beszel-agent:
+    image: ghcr.io/henrygd/beszel/beszel-agent:0.18.7-alpine
+    container_name: beszel-agent
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - "{{ appdata_path }}/beszel/data:/var/lib/beszel-agent"
+    environment:
+      - LISTEN=45876
+      - HUB_URL=http://192.168.1.10:8090
+      - KEY={{ secret_beszel_ssh_key_honor }}
+      - TOKEN={{ secret_beszel_token_honor }}
   hawser:
     image: ghcr.io/finsys/hawser:0.2.39
     container_name: hawser
