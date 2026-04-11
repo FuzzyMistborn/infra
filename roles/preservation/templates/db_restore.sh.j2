@@ -15,7 +15,7 @@ LAST_VAULTWARDEN=$(ls -t | head -n 1)
 cat /home/{{ main_username }}/db_backups/vaultwarden/$LAST_VAULTWARDEN | docker exec -i vaultwarden-db psql -U vaultwarden -d vaultwarden
 
 echo Restoring HA DB
-cd /home/{{ main_username }}/db_backups/hass
+cd /home/{{ main_username }}/db_backups/ha
 LAST_HA=$(ls -t | head -n 1)
 cat /home/{{ main_username }}/db_backups/ha/$LAST_HA | docker exec -i ha-db psql -U homeassistant -d homeassistant
 
