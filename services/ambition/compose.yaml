@@ -6,6 +6,10 @@ services:
       - "{{ appdata_path }}/uptime:/app/data"
     ports:
       - 127.0.0.1:3001:3001
+    networks:
+      - uptime-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   umami:
     image: ghcr.io/umami-software/umami:3.0.3
@@ -17,6 +21,10 @@ services:
       - HASH_SALT={{ secret_umami_hash }}
     depends_on:
       - umami-db
+    networks:
+      - umami-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   umami-db:
     image: pgautoupgrade/pgautoupgrade:18.3-alpine
@@ -27,7 +35,12 @@ services:
       - POSTGRES_USER=umami
       - POSTGRES_PASSWORD={{ secret_umami_db_pass }}
       - POSTGRES_DB=umami
+    networks:
+      - umami-net
     mem_limit: 200M
+    memswap_limit: 200M
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   gitea:
     image: gitea/gitea:1.25.5
@@ -49,6 +62,10 @@ services:
       - DB_PASSWD={{ secret_gitea_db_pass }}
     depends_on:
       - gitea-db
+    networks:
+      - gitea-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   gitea-db:
     image: pgautoupgrade/pgautoupgrade:18.3-alpine
@@ -59,7 +76,12 @@ services:
       - POSTGRES_USER=gitea
       - POSTGRES_PASSWORD={{ secret_gitea_db_pass }}
       - POSTGRES_DB=gitea
+    networks:
+      - gitea-net
     mem_limit: 200M
+    memswap_limit: 200M
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   woodpecker-github:
     image: quay.io/woodpeckerci/woodpecker-server:v3.13.0
@@ -82,6 +104,10 @@ services:
       - WOODPECKER_ADMIN=FuzzyMistborn
       - WOODPECKER_GRPC_ADDR=:9000
       - WOODPECKER_PLUGINS_PRIVILEGED=woodpeckerci/plugin-docker-buildx:5.0.0
+    networks:
+      - woodpecker-github-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   woodpecker-gitea:
     image: quay.io/woodpeckerci/woodpecker-server:v3.13.0
@@ -105,6 +131,10 @@ services:
       - WOODPECKER_ADMIN=FuzzyMistborn
       - WOODPECKER_GRPC_ADDR=:9002
       - WOODPECKER_PLUGINS_PRIVILEGED=woodpeckerci/plugin-docker-buildx:5.0.0
+    networks:
+      - woodpecker-gitea-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   ntfy:
     image: binwiederhier/ntfy:v2.21.0
@@ -124,6 +154,10 @@ services:
       - NTFY_ENABLE_LOGIN=true
     command:
       - serve
+    networks:
+      - ntfy-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   opengist:
     image: ghcr.io/thomiceli/opengist:1.12
@@ -139,6 +173,10 @@ services:
       - OG_OIDC_DISCOVERY_URL=https://id.{{ secret_personal_url }}/.well-known/openid-configuration
       - OG_OIDC_GROUP_CLAIM_NAME=opengist
       - OG_OIDC_ADMIN_GROUP=opengist-admins
+    networks:
+      - opengist-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   pairdrop:
     image: lscr.io/linuxserver/pairdrop:1.11.2
@@ -156,6 +194,10 @@ services:
       - RATE_LIMIT=false
       - WS_FALLBACK=true
       - RTC_CONFIG=/opt/pairdrop/rtc.json
+    networks:
+      - pairdrop-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   healthchecks:
     image: ghcr.io/linuxserver/healthchecks:4.1.20260323
@@ -185,6 +227,10 @@ services:
       - SECRET_KEY={{ secret_healthchecks_key }}
       - TELEGRAM_BOT_NAME=Cosmere HealthChecks
       - TELEGRAM_TOKEN={{ secret_healthchecks_tg_token }}
+    networks:
+      - healthchecks-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   bitbot:
     image: fuzzymistborn/bitbot:latest
@@ -209,6 +255,10 @@ services:
       - SHOW_TOPICS_CHANNEL_ID={{ secret_bibot_discord_topic_channel }}
       - TZ={{ ntp_timezone }}
       - REMINDER_CRON=30 19 * * 3
+    networks:
+      - bitbot-net
+    security_opt:
+      - no-new-privileges:true
   bitflip-mastodon:
     image: fuzzymistborn/rss2mastodon:latest
     container_name: bitflip-mastodon
@@ -219,6 +269,10 @@ services:
     volumes:
       - "{{ appdata_path }}/bitflip-mastodon/posted.txt:/app/posted.txt"
       - "{{ appdata_path }}/bitflip-mastodon/config.py:/app/config.py"
+    networks:
+      - bitflip-mastodon-net
+    security_opt:
+      - no-new-privileges:true
   crowdsec:
     image: ghcr.io/crowdsecurity/crowdsec:v1.7.7
     container_name: crowdsec
@@ -237,6 +291,10 @@ services:
       - GID=1000
       - USE_WAL=true
       - TZ={{ ntp_timezone }}
+    networks:
+      - crowdsec-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   hawser:
     image: ghcr.io/finsys/hawser:0.2.39
@@ -248,4 +306,22 @@ services:
       - 2376:2376
     environment:
       - TOKEN={{ secret_hawser_key }}
+    networks:
+      - hawser-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
+networks:
+  uptime-net:
+  umami-net:
+  gitea-net:
+  woodpecker-github-net:
+  woodpecker-gitea-net:
+  ntfy-net:
+  opengist-net:
+  pairdrop-net:
+  healthchecks-net:
+  bitbot-net:
+  bitflip-mastodon-net:
+  crowdsec-net:
+  hawser-net:

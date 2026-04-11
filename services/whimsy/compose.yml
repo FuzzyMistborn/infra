@@ -25,6 +25,10 @@ services:
       - PUID=1001
       - PGID=1001
       - TZ={{ ntp_timezone }}
+    networks:
+      - jellyfin-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   handbrake:
     image: ghcr.io/jlesage/handbrake:v26.03.3
@@ -46,6 +50,10 @@ services:
       - TZ={{ ntp_timezone }}
       - USER_ID=1001
       - GROUP_ID=1001
+    networks:
+      - handbrake-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   crowdsec:
     image: ghcr.io/crowdsecurity/crowdsec:v1.7.7
@@ -61,6 +69,10 @@ services:
       - AGENT_USERNAME={{ hostname }}
       - AGENT_PASSWORD={{ secret_crowdsec_whimsy_pw }}
       - LOCAL_API_URL=http://{{ secret_ambition_ip }}:8080
+    networks:
+      - crowdsec-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   firefox:
     image: lscr.io/linuxserver/firefox:1148.0.2
@@ -72,9 +84,11 @@ services:
     volumes:
       - "{{ appdata_path }}/firefox/config:/config"
     ports:
-      - 3000:3000
-      - 3001:3001
+      - 192.168.50.24:3000:3000
+      - 192.168.50.24:3001:3001
     shm_size: "1gb"
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   tailscale:
     image: ghcr.io/tailscale/tailscale:v1.94.2
@@ -106,4 +120,13 @@ services:
       - 2376:2376
     environment:
       - TOKEN={{ secret_hawser_key }}
+    networks:
+      - hawser-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
+networks:
+  jellyfin-net:
+  handbrake-net:
+  crowdsec-net:
+  hawser-net:

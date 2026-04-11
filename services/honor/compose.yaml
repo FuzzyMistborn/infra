@@ -14,6 +14,10 @@ services:
       - 81:80/tcp
       - 444:443/tcp
       - 3000:3000/tcp
+    networks:
+      - adguard-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   crowdsec:
     image: ghcr.io/crowdsecurity/crowdsec:v1.7.7
@@ -29,6 +33,10 @@ services:
       - AGENT_USERNAME={{ hostname }}
       - AGENT_PASSWORD={{ secret_crowdsec_honor_pw }}
       - LOCAL_API_URL=http://{{ secret_ambition_ip }}:8080
+    networks:
+      - crowdsec-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   pocket-id:
     image: ghcr.io/pocket-id/pocket-id:v2.5.0
@@ -56,6 +64,10 @@ services:
       - 1411:1411
     volumes:
       - "{{ appdata_path }}/pocketid/data:/app/data"
+    networks:
+      - pocket-id-net
+    security_opt:
+      - no-new-privileges:true
   adguard-sync:
     image: ghcr.io/linuxserver/adguardhome-sync:0.9.0
     container_name: adguard-sync
@@ -69,6 +81,10 @@ services:
       - PUID={{ main_uid }}
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
+    networks:
+      - adguard-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   hawser:
     image: ghcr.io/finsys/hawser:0.2.39
@@ -80,4 +96,13 @@ services:
       - 2376:2376
     environment:
       - TOKEN={{ secret_hawser_key }}
+    networks:
+      - hawser-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
+networks:
+  adguard-net:
+  pocket-id-net:
+  crowdsec-net:
+  hawser-net:

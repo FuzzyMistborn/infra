@@ -15,6 +15,10 @@ services:
       - LOG_LEVEL=info
       - LOG_JSON=false
     hostname: cultivation
+    networks:
+      - diun-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   vaultwarden:
     image: ghcr.io/dani-garcia/vaultwarden:1.35.4
@@ -38,6 +42,10 @@ services:
       - EXTENDED_LOGGING=true
       - DATABASE_URL={{ secret_vaultwarden_db_url }}
       - DOMAIN={{ secret_vaultwarden_url }}
+    networks:
+      - vaultwarden-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   freshrss:
     image: freshrss/freshrss:1.28.1
@@ -63,6 +71,10 @@ services:
       - OIDC_REMOTE_USER_CLAIM=preferred_username
       - OIDC_SESSION_INACTIVITY_TIMEOUT=43200
       - OIDC_SESSION_MAX_DURATION=0
+    networks:
+      - freshrss-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   collabora:
     image: collabora/code:25.04.9.4.1
@@ -78,11 +90,18 @@ services:
       - domain={{ secret_collabora_url }}
       - server_name=office.{{ secret_personal_url }}
       - dictionaries=en_US
+    networks:
+      - collabora-net
     mem_limit: 1000M
+    memswap_limit: 1000M
     restart: unless-stopped
   paperless-redis:
     image: redis:8.6.2
     container_name: paperless-redis
+    networks:
+      - paperless-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   paperless:
     image: ghcr.io/paperless-ngx/paperless-ngx:2.20.13
@@ -104,6 +123,10 @@ services:
       - USERMAP_GID={{ main_gid }}
       - PAPERLESS_APPS=allauth.socialaccount.providers.openid_connect
       - PAPERLESS_SOCIALACCOUNT_PROVIDERS={"openid_connect":{"SCOPE":["openid","profile","email"],"OAUTH_PKCE_ENABLED":true,"APPS":[{"provider_id":"pocket-id","name":"Pocket-ID","client_id":"{{ secret_paperless_pocket_id_user }}","secret":"{{ secret_paperless_pocket_id_key }}","settings":{"server_url":"https://id.{{ secret_personal_url }}"}}]}}
+    networks:
+      - paperless-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   invidious:
     image: quay.io/invidious/invidious:latest
@@ -115,6 +138,10 @@ services:
       - diun.regopt=docker.io
     ports:
       - 3500:3000
+    networks:
+      - invidious-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   invidious-companion:
     container_name: invidious-companion
@@ -136,6 +163,8 @@ services:
     read_only: true
     volumes:
       - /var/tmp/youtubei.js:/var/tmp/youtubei.js:rw
+    networks:
+      - invidious-net
     security_opt:
       - no-new-privileges:true
   diagrams:
@@ -144,12 +173,20 @@ services:
     ports:
       - 8080:8080
       - 8444:8443
+    networks:
+      - diagrams-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   bentopdf:
     image: ghcr.io/alam00000/bentopdf:2.8.2
     container_name: bentopdf
     ports:
       - 8081:8080
+    networks:
+      - bentopdf-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   ferdium-server:
     image: ghcr.io/ferdium/ferdium-server:2.0.13
@@ -173,6 +210,10 @@ services:
       - IS_DASHBOARD_ENABLED=true
       - IS_REGISTRATION_ENABLED=false
       - CONNECT_WITH_FRANZ=false
+    networks:
+      - ferdium-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   changedetection:
     image: ghcr.io/dgtlmoon/changedetection.io:0.54.8
@@ -185,6 +226,10 @@ services:
       - BASE_URL=https://change.{{ secret_personal_internal_url }}
       - PLAYWRIGHT_DRIVER_URL=ws://sockpuppetbrowser:3000
       - HIDE_REFERER=true
+    networks:
+      - changedetection-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   sockpuppetbrowser:
     image: dgtlmoon/sockpuppetbrowser:0.0.3
@@ -205,6 +250,8 @@ services:
       - DEFAULT_BLOCK_ADS=true
       - DEFAULT_STEALTH=true
       - DEFAULT_IGNORE_HTTPS_ERRORS=true
+    networks:
+      - changedetection-net
   linkwarden:
     image: ghcr.io/linkwarden/linkwarden:v2.14.0
     container_name: linkwarden
@@ -227,6 +274,10 @@ services:
 #      - ANTHROPIC_MODEL=claude-3-5-haiku-latest
     volumes:
       - "{{ appdata_path }}/linkwarden/data:/data/data"
+    networks:
+      - linkwarden-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   linkwarden-meilisearch:
     image: getmeili/meilisearch:v1.41.0
@@ -237,6 +288,10 @@ services:
       - MEILI_EXPERIMENTAL_DUMPLESS_UPGRADE=true
     volumes:
       - "{{ appdata_path }}/linkwarden/meili_data:/meili_data"
+    networks:
+      - linkwarden-net
+    security_opt:
+      - no-new-privileges:true
   trilium:
     image: triliumnext/trilium:v0.102.2
     container_name: trilium
@@ -255,6 +310,10 @@ services:
       - "{{ appdata_path }}/trilium:/home/node/trilium-data"
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+    networks:
+      - trilium-net
+    security_opt:
+      - no-new-privileges:true
   outline:
     image: outlinewiki/outline:1.6.1
     container_name: outline
@@ -292,9 +351,17 @@ services:
       - SMTP_PASSWORD={{ secret_snapraid_email_pass }}
       - SMTP_FROM_EMAIL={{ secret_snapraid_email_from }}
       - SMTP_REPLY_EMAIL={{ secret_snapraid_email_from }}
+    networks:
+      - outline-net
+    security_opt:
+      - no-new-privileges:true
   outline-redis:
     image: redis:8.6.2
     container_name: outline-redis
+    networks:
+      - outline-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   homebox:
     image: ghcr.io/sysadminsmedia/homebox:0.24.2
@@ -328,6 +395,10 @@ services:
       - "{{ appdata_path }}/homebox/labels:/labels/"
     ports:
       - 7745:7745
+    networks:
+      - homebox-net
+    security_opt:
+      - no-new-privileges:true
   mxroute:
     image: registry.gitlab.com/tomhello56/mxroute-alias-manager:latest
     container_name: mxroute
@@ -348,6 +419,10 @@ services:
       - MXALIAS_SECRET_KEY={{ secret_mxroute_secret_key }}
       - ALLOWED_DOMAINS={{ secret_personal_internal_url }},sl.{{ secret_personal_internal_url }},fuzzymistborn.com,sl.fuzzymistborn.com
       - INITIAL_SETUP_TOKEN={{ secret_mxroute_setup_token }}
+    networks:
+      - mxroute-net
+    security_opt:
+      - no-new-privileges:true
   bitwarden-mxroute-server:
     container_name: bitwarden-mxroute-server
     image: ghcr.io/bfpimentel/bitwarden-mxroute-server:v1.3.0
@@ -359,6 +434,10 @@ services:
       - MXROUTE_USERNAME={{ secret_mxroute_login }}
       - MXROUTE_API_KEY={{ secret_mxroute_bitwarden_api_key }}
       - DEBUG=false
+    networks:
+      - bitwarden-mxroute-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   crowdsec:
     image: ghcr.io/crowdsecurity/crowdsec:v1.7.7
@@ -374,6 +453,10 @@ services:
       - AGENT_USERNAME={{ hostname }}
       - AGENT_PASSWORD={{ secret_crowdsec_cultivation_pw }}
       - LOCAL_API_URL=http://{{ secret_ambition_ip }}:8080
+    networks:
+      - crowdsec-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   hawser:
     image: ghcr.io/finsys/hawser:0.2.39
@@ -385,4 +468,27 @@ services:
       - 2376:2376
     environment:
       - TOKEN={{ secret_hawser_key }}
+    networks:
+      - hawser-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
+networks:
+  diun-net:
+  vaultwarden-net:
+  freshrss-net:
+  collabora-net:
+  paperless-net:
+  invidious-net:
+  diagrams-net:
+  bentopdf-net:
+  ferdium-net:
+  changedetection-net:
+  linkwarden-net:
+  trilium-net:
+  outline-net:
+  homebox-net:
+  mxroute-net:
+  bitwarden-mxroute-net:
+  crowdsec-net:
+  hawser-net:

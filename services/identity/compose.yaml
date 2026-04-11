@@ -42,6 +42,10 @@ services:
       options:
         max-size: 100m
         max-file: 5
+    networks:
+      - dawarich-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   dawarich-db:
     image: postgis/postgis:17-3.5-alpine
@@ -55,7 +59,12 @@ services:
       - POSTGRES_USER=dawarich
       - POSTGRES_PASSWORD={{ secret_dawarich_db_pass }}
     command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    networks:
+      - dawarich-net
+    security_opt:
+      - no-new-privileges:true
     mem_limit: 400M
+    memswap_limit: 400M
     shm_size: 1G
     restart: unless-stopped
   dawarich-redis:
@@ -68,6 +77,10 @@ services:
       --save 900 1
       --save 300 10
       --appendonly no
+    networks:
+      - dawarich-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   dawarich-sidekiq:
     image: freikin/dawarich:1.6.1
@@ -108,6 +121,10 @@ services:
       options:
         max-size: 100m
         max-file: 5
+    networks:
+      - dawarich-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   photon:
     image: ghcr.io/rtuszik/photon-docker:0.7.0-rev.3
@@ -119,6 +136,10 @@ services:
     restart: unless-stopped
     ports:
       - 2322:2322
+    networks:
+      - dawarich-net
+    security_opt:
+      - no-new-privileges:true
   hawser:
     image: ghcr.io/finsys/hawser:0.2.39
     container_name: hawser
@@ -129,4 +150,11 @@ services:
       - 2376:2376
     environment:
       - TOKEN={{ secret_hawser_key }}
+    networks:
+      - hawser-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
+networks:
+  dawarich-net:
+  hawser-net:

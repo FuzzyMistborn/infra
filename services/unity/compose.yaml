@@ -11,6 +11,10 @@ services:
       - 3500:3000
     environment:
       - TZ={{ ntp_timezone }}
+    networks:
+      - zwavejs-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   zigbee2mqtt:
     image: ghcr.io/koenkk/zigbee2mqtt:2.9.2
@@ -24,6 +28,10 @@ services:
       - 8080:8080
     environment:
       - TZ={{ ntp_timezone }}
+    networks:
+      - zigbee2mqtt-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   adguard:
     image: adguard/adguardhome:v0.107.73
@@ -40,6 +48,10 @@ services:
       - 81:80/tcp
       - 444:443/tcp
       - 3000:3000/tcp
+    networks:
+      - adguard-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   nut-ups:
     image: fuzzymistborn/nut-upsd:2.8.2
@@ -51,6 +63,10 @@ services:
     environment:
       - API_USER=homeassistant
       - API_PASSWORD={{ secret_nut_api_pw }}
+    networks:
+      - nut-ups-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   ntp:
     image: cturra/ntp:latest
@@ -62,6 +78,10 @@ services:
       - NTP_SERVERS="north-america.pool.ntp.org,time.nist.gov,0.fedora.pool.ntp.org,0.debian.pool.ntp.org"
       - LOG_LEVEL=0
       - TZ={{ ntp_timezone }}
+    networks:
+      - ntp-net
+    security_opt:
+      - no-new-privileges:true
   hawser:
     image: ghcr.io/finsys/hawser:0.2.39
     container_name: hawser
@@ -72,4 +92,15 @@ services:
       - 2376:2376
     environment:
       - TOKEN={{ secret_hawser_key }}
+    networks:
+      - hawser-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
+networks:
+  zwavejs-net:
+  zigbee2mqtt-net:
+  adguard-net:
+  nut-ups-net:
+  ntp-net:
+  hawser-net:

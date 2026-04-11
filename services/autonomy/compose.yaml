@@ -22,6 +22,8 @@ services:
       - 5316:5316
     depends_on:
       - mqtt
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   selenium:
     image: selenium/standalone-firefox:147.0
@@ -32,6 +34,10 @@ services:
       - SE_NODE_MAX_SESSIONS=2
       - TZ={{ ntp_timezone }}
     shm_size: 2g
+    networks:
+      - selenium-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   esphome:
     image: ghcr.io/esphome/esphome:2026.3.2
@@ -39,6 +45,8 @@ services:
     network_mode: host
     volumes:
       - "{{ appdata_path }}/esphome:/config"
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   mqtt:
     image: eclipse-mosquitto:2.0.22
@@ -49,6 +57,10 @@ services:
       - "{{ appdata_path }}/mqtt/log:/mosquitto/log/"
     ports:
       - 1883:1883
+    networks:
+      - mqtt-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   govee2mqtt:
     image: ghcr.io/wez/govee2mqtt:2026.03.25-ab9deb66
@@ -57,13 +69,15 @@ services:
     environment:
       - TZ={{ ntp_timezone }}
       - RUST_LOG_STYLE=always
-      - GOVEE_EMAIL={{ secret_govee_user }}
-      - GOVEE_PASSWORD={{ secret_govee_pass }}
+#      - GOVEE_EMAIL={{ secret_govee_user }}
+#      - GOVEE_PASSWORD={{ secret_govee_pass }}
       - GOVEE_API_KEY={{ secret_govee_api }}
       - GOVEE_MQTT_HOST=192.168.30.5
       - GOVEE_MQTT_PORT=1883
       - GOVEE_MQTT_USER=homeassistant
       - GOVEE_MQTT_PASSWORD={{ secret_mqtt_pass }}
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   matter-server:
     image: ghcr.io/home-assistant-libs/python-matter-server:8.1.0
@@ -72,6 +86,8 @@ services:
     network_mode: host
     volumes:
       - "{{ appdata_path }}/matter-server/data:/data/"
+    security_opt:
+      - no-new-privileges:true
   signal-api:
     image: bbernhard/signal-cli-rest-api:0.98
     container_name: signal-api
@@ -81,6 +97,10 @@ services:
       - 8080:8080
     environment:
       - MODE=native
+    networks:
+      - signal-api-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   nodered:
     image: nodered/node-red:4.1.8
@@ -94,6 +114,10 @@ services:
       - TZ={{ ntp_timezone }}
     depends_on:
       - homeassistant
+    networks:
+      - nodered-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   tasmota:
     image: ghcr.io/tasmoadmin/tasmoadmin:v5.0.0
@@ -102,6 +126,10 @@ services:
       - "{{ appdata_path }}/tasmota:/data"
     ports:
       - 5555:80
+    networks:
+      - tasmota-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   anylist:
     image: kevdliu/anylist:v1.7.3
@@ -114,6 +142,10 @@ services:
       - PORT=9000
       - EMAIL={{ secret_email }}
       - PASSWORD={{ secret_anylist_pw }}
+    networks:
+      - anylist-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   music-assistant:
     image: ghcr.io/music-assistant/server:2.8.2
@@ -137,6 +169,10 @@ services:
       - AGENT_USERNAME={{ hostname }}
       - AGENT_PASSWORD={{ secret_crowdsec_autonomy_pw }}
       - LOCAL_API_URL=http://{{ secret_ambition_ip }}:8080
+    networks:
+      - crowdsec-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   hawser:
     image: ghcr.io/finsys/hawser:0.2.39
@@ -148,4 +184,17 @@ services:
       - 2376:2376
     environment:
       - TOKEN={{ secret_hawser_key }}
+    networks:
+      - hawser-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
+networks:
+  selenium-net:
+  mqtt-net:
+  signal-api-net:
+  nodered-net:
+  tasmota-net:
+  anylist-net:
+  crowdsec-net:
+  hawser-net:

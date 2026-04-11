@@ -10,6 +10,10 @@ services:
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    networks:
+      - ollama-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   open-webui:
     image: ghcr.io/open-webui/open-webui:v0.8.12
@@ -20,6 +24,10 @@ services:
       - "{{ appdata_path }}/ollama-webui:/app/backend/data"
     ports:
       - 3010:8080
+    networks:
+      - ollama-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   crowdsec:
     image: ghcr.io/crowdsecurity/crowdsec:v1.7.7
@@ -35,6 +43,10 @@ services:
       - AGENT_USERNAME={{ hostname }}
       - AGENT_PASSWORD={{ secret_crowdsec_virtuosity_pw }}
       - LOCAL_API_URL=http://{{ secret_ambition_ip }}:8080
+    networks:
+      - crowdsec-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   immich-server:
     image: ghcr.io/immich-app/immich-server:v2.6.3
@@ -64,6 +76,10 @@ services:
                 - gpu
                 - compute
                 - video
+    networks:
+      - immich-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   immich-machine-learning:
     image: ghcr.io/immich-app/immich-machine-learning:v2.6.3-cuda
@@ -81,10 +97,18 @@ services:
               count: 1
               capabilities:
                 - gpu
+    networks:
+      - immich-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   immich-redis:
     image: docker.io/valkey/valkey:9@sha256:3eeb09785cd61ec8e3be35f8804c8892080f3ca21934d628abc24ee4ed1698f6
     container_name: immich_redis
+    networks:
+      - immich-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   immich-database:
     image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:bcf63357191b76a916ae5eb93464d65c07511da41e3bf7a8416db519b40b1c23
@@ -96,6 +120,10 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_DB=immich
       - POSTGRES_INITDB_ARGS='--data-checksums'
+    networks:
+      - immich-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   hawser:
     image: ghcr.io/finsys/hawser:0.2.39
@@ -107,4 +135,13 @@ services:
       - 2376:2376
     environment:
       - TOKEN={{ secret_hawser_key }}
+    networks:
+      - hawser-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
+networks:
+  ollama-net:
+  immich-net:
+  crowdsec-net:
+  hawser-net:

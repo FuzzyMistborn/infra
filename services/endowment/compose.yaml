@@ -16,6 +16,10 @@ services:
       - PUID={{ main_uid }}
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
+    networks:
+      - arr-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   radarr_uhd:
     image: ghcr.io/linuxserver/radarr:6.1.1
@@ -32,6 +36,10 @@ services:
       - PUID={{ main_uid }}
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
+    networks:
+      - arr-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   sonarr:
     image: ghcr.io/linuxserver/sonarr:4.0.17
@@ -50,6 +58,10 @@ services:
       - PUID={{ main_uid }}
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
+    networks:
+      - arr-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   recyclarr:
     image: ghcr.io/recyclarr/recyclarr:8.5.1
@@ -59,6 +71,10 @@ services:
       - "{{ appdata_path }}/recyclarr/config:/config"
     environment:
       - TZ=America/New_York
+    networks:
+      - arr-net
+    security_opt:
+      - no-new-privileges:true
   prowlarr:
     image: ghcr.io/linuxserver/prowlarr:2.3.5
     container_name: prowlarr
@@ -72,6 +88,10 @@ services:
       - PUID={{ main_uid }}
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
+    networks:
+      - arr-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   sabnzbd:
     image: ghcr.io/linuxserver/sabnzbd:4.5.5
@@ -89,6 +109,10 @@ services:
       - PUID={{ main_uid }}
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
+    networks:
+      - arr-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   seerr:
     image: ghcr.io/seerr-team/seerr:v3.1.0
@@ -100,6 +124,10 @@ services:
       - 5055:5055
     volumes:
       - "{{ appdata_path }}/seerr:/app/config"
+    networks:
+      - seerr-net
+    security_opt:
+      - no-new-privileges:true
     restart: always
   yamtrack:
     image: ghcr.io/fuzzygrim/yamtrack:0.25.0
@@ -114,6 +142,10 @@ services:
       - TZ={{ ntp_timezone }}
       - SECRET=lztZqfM2Ac5MFoZ86hn7mw+pGretDlfb9A==
       - REDIS_URL=redis://yamtrack-redis:6379
+    networks:
+      - yamtrack-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   yamtrack-redis:
     container_name: yamtrack-redis
@@ -121,6 +153,10 @@ services:
     restart: unless-stopped
     volumes:
       - "{{ appdata_path }}/yamtrack/redis:/data"
+    networks:
+      - yamtrack-net
+    security_opt:
+      - no-new-privileges:true
   audiobookshelf:
     image: ghcr.io/advplyr/audiobookshelf:2.33.1
     container_name: audiobookshelf
@@ -136,6 +172,10 @@ services:
       - PUID={{ main_uid }}
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
+    networks:
+      - audiobookshelf-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   nextcloud:
     image: ghcr.io/fuzzymistborn/nextcloud-docker:33.0.2
@@ -151,11 +191,20 @@ services:
       - PUID={{ main_uid }}
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
+    networks:
+      - nextcloud-net
+    security_opt:
+      - no-new-privileges:true
     mem_limit: 1000M
+    memswap_limit: 1000M
     restart: unless-stopped
   nextcloud-redis:
     image: redis:8.6.2
     container_name: nextcloud-redis
+    networks:
+      - nextcloud-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   navidrome:
     image: ghcr.io/navidrome/navidrome:0.61.1
@@ -170,6 +219,10 @@ services:
       - ND_ENABLEINSIGHTSCOLLECTOR=false
       - ND_SCANSCHEDULE=12h
       - ND_BASEURL=https://music.{{ secret_personal_internal_url }}
+    networks:
+      - navidrome-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   grimmory:
     image: ghcr.io/grimmory-tools/grimmory:v2.3.0
@@ -188,6 +241,10 @@ services:
       - "{{ appdata_path }}/grimmory/data:/app/data"
       - /mnt/Media/Ebooks/Grimmory:/books
       - /mnt/Media/Ebooks/Grimmory-Import:/bookdrop
+    networks:
+      - grimmory-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   romm:
     image: rommapp/romm:4.8.1
@@ -219,6 +276,10 @@ services:
       - /mnt/Media/Files/Roms/ROMM/assets:/romm/assets
     ports:
       - 2500:8080
+    networks:
+      - romm-net
+    security_opt:
+      - no-new-privileges:true
   crowdsec:
     image: ghcr.io/crowdsecurity/crowdsec:v1.7.7
     container_name: crowdsec
@@ -235,6 +296,10 @@ services:
       - AGENT_USERNAME={{ hostname }}
       - AGENT_PASSWORD={{ secret_crowdsec_endowment_pw }}
       - LOCAL_API_URL=http://{{ secret_ambition_ip }}:8080
+    networks:
+      - crowdsec-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   hawser:
     image: ghcr.io/finsys/hawser:0.2.39
@@ -246,4 +311,20 @@ services:
       - 2376:2376
     environment:
       - TOKEN={{ secret_hawser_key }}
+    networks:
+      - hawser-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
+
+networks:
+  arr-net:
+  yamtrack-net:
+  audiobookshelf-net:
+  nextcloud-net:
+  navidrome-net:
+  grimmory-net:
+  romm-net:
+  seerr-net:
+  crowdsec-net:
+  hawser-net:

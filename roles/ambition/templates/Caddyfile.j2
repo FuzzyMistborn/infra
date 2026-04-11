@@ -262,6 +262,21 @@ uptime.{{ secret_personal_url }} {
 	import max-geofilter
 }
 #### Home
+bitwarden.{{ secret_personal_url }} {
+	crowdsec
+	reverse_proxy https://10.10.10.10:443 {
+		transport http {
+			tls_server_name bitwarden.{{ secret_personal_url }}
+		}
+		header_up Host bitwarden.{{ secret_personal_url }}
+	}
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	header Host {http.reverse_proxy.upstream.hostporti}
+	import personal_headers
+	respond /admin* "The admin panel is disabled, please configure the 'ADMIN_TOKEN' variable to enable it"
+	import max-geofilter
+}
+
 calendar.{{ secret_personal_url }} {
 	redir /* https://cloud.{{ secret_personal_url }}/apps/calendar/ 301
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key

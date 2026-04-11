@@ -14,6 +14,10 @@ services:
       - WOODPECKER_HOSTNAME=Ishap-Github
       - WOODPECKER_MAX_WORKFLOWS=2
       - WOODPECKER_PLUGINS_PRIVILEGED=woodpeckerci/plugin-docker-buildx:5.0.0
+    networks:
+      - woodpecker-github-agent-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   woodpecker-agent-gitea:
     image: quay.io/woodpeckerci/woodpecker-agent:v3.13.0
@@ -30,6 +34,10 @@ services:
       - WOODPECKER_HOSTNAME=Ishap-Gitea
       - WOODPECKER_MAX_WORKFLOWS=2
       - WOODPECKER_PLUGINS_PRIVILEGED=woodpeckerci/plugin-docker-buildx:5.0.0
+    networks:
+      - woodpecker-gitea-agent-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
   hawser:
     image: ghcr.io/finsys/hawser:0.2.39
@@ -41,4 +49,12 @@ services:
       - 2376:2376
     environment:
       - TOKEN={{ secret_hawser_key }}
+    networks:
+      - hawser-net
+    security_opt:
+      - no-new-privileges:true
     restart: unless-stopped
+networks:
+  woodpecker-github-agent-net:
+  woodpecker-gitea-agent-net:
+  hawser-net:
