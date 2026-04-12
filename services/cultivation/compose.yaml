@@ -21,7 +21,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   vaultwarden:
-    image: ghcr.io/dani-garcia/vaultwarden:1.35.4
+    image: ghcr.io/dani-garcia/vaultwarden:1.35.6
     container_name: vaultwarden
     volumes:
       - "{{ appdata_path }}/vaultwarden/data:/data"
