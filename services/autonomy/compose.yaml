@@ -26,7 +26,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   selenium:
-    image: selenium/standalone-firefox:147.0
+    image: selenium/standalone-firefox:149.0
     container_name: selenium
     ports:
       - 4444:4444
