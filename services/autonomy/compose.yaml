@@ -148,7 +148,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   music-assistant:
-    image: ghcr.io/music-assistant/server:2.8.2
+    image: ghcr.io/music-assistant/server:2.8.4
     container_name: music-assistant
     network_mode: host
     privileged: true
