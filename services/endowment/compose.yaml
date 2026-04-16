@@ -115,7 +115,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   seerr:
-    image: ghcr.io/seerr-team/seerr:v3.1.0
+    image: ghcr.io/seerr-team/seerr:v3.2.0
     init: true
     container_name: seerr
     environment:
