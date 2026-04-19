@@ -280,7 +280,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   linkwarden-meilisearch:
-    image: getmeili/meilisearch:v1.41.0
+    image: getmeili/meilisearch:v1.42.1
     container_name: linkwarden-meilisearch
     restart: unless-stopped
     environment:
