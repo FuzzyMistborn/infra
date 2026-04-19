@@ -364,7 +364,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   homebox:
-    image: ghcr.io/sysadminsmedia/homebox:0.24.2
+    image: ghcr.io/sysadminsmedia/homebox:0.25.0
     container_name: homebox
     restart: unless-stopped
     environment:
