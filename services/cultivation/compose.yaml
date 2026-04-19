@@ -472,7 +472,7 @@ services:
       - KEY={{ secret_beszel_ssh_key_cultivation }}
       - TOKEN={{ secret_beszel_token_cultivation }}
   hawser:
-    image: ghcr.io/finsys/hawser:0.2.39
+    image: ghcr.io/finsys/hawser:0.2.40
     container_name: hawser
     volumes:
       - "{{ appdata_path }}/hawser:/data/stacks"
