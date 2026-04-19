@@ -49,7 +49,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   immich-server:
-    image: ghcr.io/immich-app/immich-server:v2.6.3
+    image: ghcr.io/immich-app/immich-server:v2.7.5
     container_name: immich-server
     volumes:
       - /mnt/immich-uploads:/usr/src/app/upload
@@ -82,7 +82,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   immich-machine-learning:
-    image: ghcr.io/immich-app/immich-machine-learning:v2.6.3-cuda
+    image: ghcr.io/immich-app/immich-machine-learning:v2.7.5-cuda
     container_name: immich_machine_learning
     volumes:
       - "{{ appdata_path }}/immich/model-cache:/cache"
