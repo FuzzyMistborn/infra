@@ -66,6 +66,8 @@ services:
     image: ghcr.io/wez/govee2mqtt:2026.03.25-ab9deb66
     container_name: govee2mqtt
     network_mode: host
+    volumes:
+      - "{{ appdata_path }}/govee2mqtt:/data"
     environment:
       - TZ={{ ntp_timezone }}
       - RUST_LOG_STYLE=always

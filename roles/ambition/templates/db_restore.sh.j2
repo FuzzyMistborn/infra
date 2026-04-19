@@ -13,3 +13,8 @@ echo Restoring Umami DB
 cd /home/{{ main_username }}/db_backups/umami
 LAST_UMAMI=$(ls -t | head -n 1)
 cat /home/{{ main_username }}/db_backups/umami/$LAST_UMAMI | docker exec -i umami-db psql -U umami -d umami
+
+echo Restoring Traccar DB
+cd /home/{{ main_username }}/db_backups/traccar
+LAST_TRACCAR=$(ls -t | head -n 1)
+cat /home/{{ main_username }}/db_backups/traccar/$LAST_TRACCAR | docker exec -i traccar-db psql -U traccar -d traccar

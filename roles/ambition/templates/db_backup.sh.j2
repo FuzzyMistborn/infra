@@ -10,4 +10,9 @@ echo Backing up Umami DB
 today=$(date +"%Y_%m_%d")
 docker exec umami-db sh -c 'pg_dumpall -U umami' > /home/{{ main_username }}/db_backups/umami/umamiDB_$today.sql
 
+#### Traccar DB Backup
+echo Backing up Traccar DB
+today=$(date +"%Y_%m_%d")
+docker exec traccar-db sh -c 'pg_dumpall -U traccar' > /home/{{ main_username }}/db_backups/traccar/traccarDB_$today.sql
+
 find /home/{{ main_username }}/db_backups/* -mtime +6 -type f -delete

@@ -77,7 +77,10 @@ services:
   firefox:
     image: lscr.io/linuxserver/firefox:1149.0.2
     container_name: firefox
+    devices:
+      - /dev/dri:/dev/dri
     environment:
+      - AUTO_GPU=true
       - PUID=1000
       - PGID=1000
       - TZ={{ ntp_timezone }}

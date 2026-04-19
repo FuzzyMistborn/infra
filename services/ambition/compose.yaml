@@ -30,7 +30,7 @@ services:
     image: pgautoupgrade/pgautoupgrade:18.3-alpine
     container_name: umami-db
     volumes:
-      - "{{ appdata_path }}/umami/postgres:/var/lib/postgresql/data"
+      - "{{ appdata_path }}/umami/postgres:/var/lib/postgresql"
     environment:
       - POSTGRES_USER=umami
       - POSTGRES_PASSWORD={{ secret_umami_db_pass }}
@@ -71,7 +71,7 @@ services:
     image: pgautoupgrade/pgautoupgrade:18.3-alpine
     container_name: gitea-db
     volumes:
-      - "{{ appdata_path }}/gitea/postgres:/var/lib/postgresql/data"
+      - "{{ appdata_path }}/gitea/postgres:/var/lib/postgresql"
     environment:
       - POSTGRES_USER=gitea
       - POSTGRES_PASSWORD={{ secret_gitea_db_pass }}
@@ -273,6 +273,48 @@ services:
       - bitflip-mastodon-net
     security_opt:
       - no-new-privileges:true
+  traccar:
+    image: traccar/traccar:6.12.2
+    container_name: traccar
+    ports:
+      - 127.0.0.1:8082:8082
+      - 5030:5030
+    environment:
+      - CONFIG_USE_ENVIRONMENT_VARIABLES=true
+      - DATABASE_DRIVER=org.postgresql.Driver
+      - DATABASE_URL=jdbc:postgresql://traccar-db:5432/traccar
+      - DATABASE_USER=traccar
+      - DATABASE_PASSWORD={{ secret_traccar_db_pass }}
+      - STORAGE_TIME=14
+      - REGISTRATION_ENABLE=false
+      - WEB_URL=https://traccar.fuzzymistborn.com
+      - OPENID_CLIENT_ID={{ secret_traccar_oidc_client_id }}
+      - OPENID_CLIENT_SECRET={{ secret_traccar_oidc_client_secret }}
+      - OPENID_ISSUER_URL=https://id.{{ secret_personal_url }}
+      - OPENID_FORCE=true
+    depends_on:
+      - traccar-db
+    networks:
+      - traccar-net
+    volumes:
+      - "{{ appdata_path }}/traccar/logs:/opt/traccar/logs"
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+  traccar-db:
+    image: pgautoupgrade/pgautoupgrade:18.3-alpine
+    container_name: traccar-db
+    environment:
+      - POSTGRES_DB=traccar
+      - POSTGRES_USER=traccar
+      - POSTGRES_PASSWORD={{ secret_traccar_db_pass }}
+    volumes:
+      - "{{ appdata_path }}/traccar/postgres/data:/var/lib/postgresql"
+    networks:
+      - traccar-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
   crowdsec:
     image: ghcr.io/crowdsecurity/crowdsec:v1.7.7
     container_name: crowdsec
@@ -323,5 +365,6 @@ networks:
   healthchecks-net:
   bitbot-net:
   bitflip-mastodon-net:
+  traccar-net:
   crowdsec-net:
   hawser-net:

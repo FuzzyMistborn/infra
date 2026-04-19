@@ -71,7 +71,7 @@ services:
     image: pgautoupgrade/pgautoupgrade:18.3-alpine
     container_name: invidious-db
     volumes:
-      - "{{ appdata_path }}/invidious/data:/var/lib/postgresql/data"
+      - "{{ appdata_path }}/invidious/data:/var/lib/postgresql"
       - "{{ appdata_path }}/invidious/config/sql:/config/sql"
       - "{{ appdata_path }}/invidious/init-invidious-db.sh:/docker-entrypoint-initdb.d/init-invidious-db.sh"
     ports:
@@ -91,7 +91,7 @@ services:
     image: pgautoupgrade/pgautoupgrade:18.3-alpine
     container_name: linkwarden-db
     volumes:
-      - "{{ appdata_path }}/linkwarden/data:/var/lib/postgresql/data"
+      - "{{ appdata_path }}/linkwarden/data:/var/lib/postgresql"
     ports:
       - 5433:5432
     environment:
@@ -107,7 +107,7 @@ services:
     image: pgautoupgrade/pgautoupgrade:18.3-alpine
     container_name: ha-db
     volumes:
-      - "{{ appdata_path }}/ha-db/data:/var/lib/postgresql/data"
+      - "{{ appdata_path }}/ha-db/data:/var/lib/postgresql"
     ports:
       - 5434:5432
     environment:
@@ -126,7 +126,7 @@ services:
     image: pgautoupgrade/pgautoupgrade:18.3-alpine
     container_name: vaultwarden-db
     volumes:
-      - "{{ appdata_path }}/vaultwarden-db/data:/var/lib/postgresql/data"
+      - "{{ appdata_path }}/vaultwarden-db/data:/var/lib/postgresql"
     ports:
       - 5435:5432
     environment:
@@ -144,7 +144,7 @@ services:
     image: pgautoupgrade/pgautoupgrade:18.3-alpine
     container_name: nextcloud-db
     volumes:
-      - "{{ appdata_path }}/nextcloud-db/data:/var/lib/postgresql/data"
+      - "{{ appdata_path }}/nextcloud-db/data:/var/lib/postgresql"
     ports:
       - 5436:5432
     environment:
@@ -162,7 +162,7 @@ services:
     image: pgautoupgrade/pgautoupgrade:18.3-alpine
     container_name: outline-db
     volumes:
-      - "{{ appdata_path }}/outline-db/data:/var/lib/postgresql/data"
+      - "{{ appdata_path }}/outline-db/data:/var/lib/postgresql"
     ports:
       - 5437:5432
     environment:
