@@ -12,7 +12,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   umami:
-    image: ghcr.io/umami-software/umami:3.0.3
+    image: ghcr.io/umami-software/umami:3.1.0
     container_name: umami
     ports:
       - 127.0.0.1:3500:3000
