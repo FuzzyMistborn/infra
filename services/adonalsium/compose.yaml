@@ -108,7 +108,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   calibre:
-    image: lscr.io/linuxserver/calibre:9.6.0
+    image: lscr.io/linuxserver/calibre:9.7.0
     container_name: calibre
     volumes:
       - "{{ appdata_path }}/calibre:/config"
