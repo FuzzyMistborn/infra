@@ -75,7 +75,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   firefox:
-    image: lscr.io/linuxserver/firefox:1148.0.2
+    image: lscr.io/linuxserver/firefox:1149.0.2
     container_name: firefox
     environment:
       - PUID=1000
