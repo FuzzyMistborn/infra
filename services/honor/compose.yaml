@@ -98,7 +98,7 @@ services:
       - KEY={{ secret_beszel_ssh_key_honor }}
       - TOKEN={{ secret_beszel_token_honor }}
   ha-mcp:
-    image: ghcr.io/homeassistant-ai/ha-mcp:7.2.0
+    image: ghcr.io/homeassistant-ai/ha-mcp:7.3.0
     container_name: ha-mcp
     ports:
       - 8086:8086
