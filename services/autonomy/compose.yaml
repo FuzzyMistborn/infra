@@ -40,7 +40,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   esphome:
-    image: ghcr.io/esphome/esphome:2026.3.2
+    image: ghcr.io/esphome/esphome:2026.4.0
     container_name: esphome
     network_mode: host
     volumes:
