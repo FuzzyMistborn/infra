@@ -237,6 +237,14 @@ githubagent.ci.fuzzymistborn.com {
 	import max-geofilter
 }
 
+traccar.fuzzymistborn.com {
+	crowdsec
+	reverse_proxy localhost:8082
+	tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key
+	import fuzzy_headers
+	import max-geofilter
+}
+
 *.fuzzymistborn.com {
 	redir {{ secret_redirect }}
 	tls /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.crt /home/{{ main_username }}/lego/certificates/_.fuzzymistborn.com.key
@@ -321,6 +329,23 @@ id.{{ secret_personal_url }} {
 	import max-geofilter
 }
 
+mcp.{{ secret_personal_url }} {
+	crowdsec
+	reverse_proxy https://10.10.10.10:443 {
+		transport http {
+			tls_server_name mcp.{{ secret_personal_url }}
+		}
+		header_up Host mcp.{{ secret_personal_url }}
+	}
+	header {
+		X-Frame-Options "SAMEORIGIN"
+		X-Forwarded-Host {host}
+	}
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	import personal_headers
+	import geofilter
+}
+
 media.{{ secret_personal_url }} {
 	crowdsec
 	reverse_proxy https://10.10.10.10:443 {
@@ -338,21 +363,17 @@ media.{{ secret_personal_url }} {
 	import geofilter
 }
 
-mcp.{{ secret_personal_url }} {
+music.{{ secret_personal_url }} {
 	crowdsec
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
-			tls_server_name mcp.{{ secret_personal_url }}
+			tls_server_name music.{{ secret_personal_url }}
 		}
-		header_up Host mcp.{{ secret_personal_url }}
-	}
-	header {
-		X-Frame-Options "SAMEORIGIN"
-		X-Forwarded-Host {host}
+		header_up Host music.{{ secret_personal_url }}
 	}
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import personal_headers
-	import geofilter
+	import max-geofilter
 }
 
 office.{{ secret_personal_url }} {
