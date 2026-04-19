@@ -43,7 +43,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   gitea:
-    image: gitea/gitea:1.25.5
+    image: gitea/gitea:1.26.0
     container_name: gitea
     volumes:
       - "{{ appdata_path }}/gitea/data:/data"
