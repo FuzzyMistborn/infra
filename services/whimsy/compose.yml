@@ -75,7 +75,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   firefox:
-    image: lscr.io/linuxserver/firefox:1148.0.2
+    image: lscr.io/linuxserver/firefox:1149.0.2
     container_name: firefox
     environment:
       - PUID=1000
@@ -124,7 +124,7 @@ services:
       - KEY={{ secret_beszel_ssh_key_whimsy }}
       - TOKEN={{ secret_beszel_token_whimsy }}
   hawser:
-    image: ghcr.io/finsys/hawser:0.2.39
+    image: ghcr.io/finsys/hawser:0.2.40
     container_name: hawser
     volumes:
       - "{{ appdata_path }}/hawser:/data/stacks"

@@ -115,7 +115,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   seerr:
-    image: ghcr.io/seerr-team/seerr:v3.1.0
+    image: ghcr.io/seerr-team/seerr:v3.2.0
     init: true
     container_name: seerr
     environment:
@@ -130,7 +130,7 @@ services:
       - no-new-privileges:true
     restart: always
   yamtrack:
-    image: ghcr.io/fuzzygrim/yamtrack:0.25.0
+    image: ghcr.io/fuzzygrim/yamtrack:0.25.2
     container_name: yamtrack
     ports:
       - 8000:8000
@@ -207,7 +207,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   navidrome:
-    image: ghcr.io/navidrome/navidrome:0.61.1
+    image: ghcr.io/navidrome/navidrome:0.61.2
     container_name: navidrome
     volumes:
       - "{{ appdata_path }}/navidrome/data:/data"
@@ -315,7 +315,7 @@ services:
       - KEY={{ secret_beszel_ssh_key_endowment }}
       - TOKEN={{ secret_beszel_token_endowment }}
   hawser:
-    image: ghcr.io/finsys/hawser:0.2.39
+    image: ghcr.io/finsys/hawser:0.2.40
     container_name: hawser
     volumes:
       - "{{ appdata_path }}/hawser:/data/stacks"

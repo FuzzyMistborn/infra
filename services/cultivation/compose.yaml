@@ -21,7 +21,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   vaultwarden:
-    image: ghcr.io/dani-garcia/vaultwarden:1.35.6
+    image: ghcr.io/dani-garcia/vaultwarden:1.35.7
     container_name: vaultwarden
     volumes:
       - "{{ appdata_path }}/vaultwarden/data:/data"
@@ -104,7 +104,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   paperless:
-    image: ghcr.io/paperless-ngx/paperless-ngx:2.20.13
+    image: ghcr.io/paperless-ngx/paperless-ngx:2.20.14
     container_name: paperless
     volumes:
       - "{{ appdata_path }}/paperless/data:/usr/src/paperless/data"
@@ -179,7 +179,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   bentopdf:
-    image: ghcr.io/alam00000/bentopdf:2.8.2
+    image: ghcr.io/alam00000/bentopdf:2.8.3
     container_name: bentopdf
     ports:
       - 8081:8080
@@ -216,7 +216,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   changedetection:
-    image: ghcr.io/dgtlmoon/changedetection.io:0.54.8
+    image: ghcr.io/dgtlmoon/changedetection.io:0.54.9
     container_name: changedetection
     volumes:
       - "{{ appdata_path }}/change:/datastore"
@@ -280,7 +280,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   linkwarden-meilisearch:
-    image: getmeili/meilisearch:v1.41.0
+    image: getmeili/meilisearch:v1.42.1
     container_name: linkwarden-meilisearch
     restart: unless-stopped
     environment:
@@ -364,7 +364,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   homebox:
-    image: ghcr.io/sysadminsmedia/homebox:0.24.2
+    image: ghcr.io/sysadminsmedia/homebox:0.25.0
     container_name: homebox
     restart: unless-stopped
     environment:
@@ -472,7 +472,7 @@ services:
       - KEY={{ secret_beszel_ssh_key_cultivation }}
       - TOKEN={{ secret_beszel_token_cultivation }}
   hawser:
-    image: ghcr.io/finsys/hawser:0.2.39
+    image: ghcr.io/finsys/hawser:0.2.40
     container_name: hawser
     volumes:
       - "{{ appdata_path }}/hawser:/data/stacks"

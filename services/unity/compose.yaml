@@ -1,6 +1,6 @@
 services:
   zwavejs:
-    image: ghcr.io/zwave-js/zwave-js-ui:11.15.1
+    image: ghcr.io/zwave-js/zwave-js-ui:11.16.0
     container_name: zwavejs
     devices:
       - /dev/zwave:/dev/zwave
@@ -34,7 +34,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   adguard:
-    image: adguard/adguardhome:v0.107.73
+    image: adguard/adguardhome:v0.107.74
     container_name: adguard
     cap_add:
       - NET_ADMIN
@@ -94,7 +94,7 @@ services:
       - KEY={{ secret_beszel_ssh_key_unity }}
       - TOKEN={{ secret_beszel_token_unity }}
   hawser:
-    image: ghcr.io/finsys/hawser:0.2.39
+    image: ghcr.io/finsys/hawser:0.2.40
     container_name: hawser
     volumes:
       - "{{ appdata_path }}/hawser:/data/stacks"
