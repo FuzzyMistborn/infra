@@ -130,7 +130,7 @@ services:
       - no-new-privileges:true
     restart: always
   yamtrack:
-    image: ghcr.io/fuzzygrim/yamtrack:0.25.0
+    image: ghcr.io/fuzzygrim/yamtrack:0.25.2
     container_name: yamtrack
     ports:
       - 8000:8000
