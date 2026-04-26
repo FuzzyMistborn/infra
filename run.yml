@@ -92,7 +92,7 @@
     - role: install/lnxlink
     - role: install/docker-patch
     - role: docker-compose-generator
-    - role: hussainweb.chezmoi
+    - role: install/chezmoi
     - role: ironicbadger.snapraid
 
 - hosts: ishap
@@ -129,7 +129,7 @@
     - role: geerlingguy.ntp
     - role: install/docker-patch
     - role: docker-compose-generator
-    - role: hussainweb.chezmoi
+    - role: install/chezmoi
 
 ### LXCs/VMs/VPS
 - hosts: dominion
@@ -145,7 +145,7 @@
     - role: install/runitor
     - role: dominion
     - role: cronjobs
-    - role: hussainweb.chezmoi
+    - role: install/chezmoi
 
 - hosts: endowment
   become: true
@@ -163,7 +163,7 @@
     - role: cronjobs
     - role: install/docker-patch
     - role: docker-compose-generator
-    - role: hussainweb.chezmoi
+    - role: install/chezmoi
 
 - hosts: autonomy
   become: true
@@ -182,7 +182,7 @@
     - role: install/lnxlink
     - role: install/docker-patch
     - role: docker-compose-generator
-    - role: hussainweb.chezmoi
+    - role: install/chezmoi
 
 - hosts: unity
   become: true
@@ -200,7 +200,7 @@
     - role: cronjobs
     - role: install/docker-patch
     - role: docker-compose-generator
-    - role: hussainweb.chezmoi
+    - role: install/chezmoi
 
 - hosts: virtuosity
   become: true
@@ -219,7 +219,7 @@
     - role: install/lnxlink
     - role: install/docker-patch
     - role: docker-compose-generator
-    - role: hussainweb.chezmoi
+    - role: install/chezmoi
 
 - hosts: whimsy
   become: true
@@ -236,7 +236,7 @@
     - role: cronjobs
     - role: install/docker-patch
     - role: docker-compose-generator
-    - role: hussainweb.chezmoi
+    - role: install/chezmoi
 
 - hosts: cultivation
   become: true
@@ -253,7 +253,7 @@
     - role: cronjobs
     - role: install/docker-patch
     - role: docker-compose-generator
-    - role: hussainweb.chezmoi
+    - role: install/chezmoi
 
 - hosts: preservation
   become: true
@@ -270,7 +270,7 @@
     - role: docker-compose-generator
     - role: preservation
     - role: cronjobs
-    - role: hussainweb.chezmoi
+    - role: install/chezmoi
 
 - hosts: honor
   become: true
@@ -289,7 +289,7 @@
     - role: install/docker-patch
     - role: docker-compose-generator
     - role: install/crowdsec_bouncer
-    - role: hussainweb.chezmoi
+    - role: install/chezmoi
 
 - hosts: omada
   become: true
@@ -305,7 +305,7 @@
     - role: cronjobs
     - role: install/docker-patch
     - role: docker-compose-generator
-    - role: hussainweb.chezmoi
+    - role: install/chezmoi
 
 - hosts: invention
   become: true
@@ -320,7 +320,7 @@
     - role: install/runitor
     - role: install/docker-patch
     - role: docker-compose-generator
-    - role: hussainweb.chezmoi
+    - role: install/chezmoi
 
 - hosts: identity
   become: true
@@ -336,7 +336,7 @@
     - role: install/lnxlink
     - role: install/docker-patch
     - role: docker-compose-generator
-    - role: hussainweb.chezmoi
+    - role: install/chezmoi
 
 - hosts: investiture
   become: true
@@ -350,7 +350,7 @@
     - role: install/docker-patch
     - role: docker-compose-generator
     - role: cronjobs
-    - role: hussainweb.chezmoi
+    - role: install/chezmoi
 
 - hosts: ambition
   become: true
@@ -370,7 +370,7 @@
     - role: caddy_ansible.caddy_ansible
     - role: install/crowdsec_bouncer
     - role: cronjobs
-    - role: hussainweb.chezmoi
+    - role: install/chezmoi
 
 - hosts: hoid
   become: true
@@ -386,4 +386,4 @@
     - role: install/runitor
     - role: desktop
     - role: cronjobs
-    - role: hussainweb.chezmoi
+    - role: install/chezmoi
