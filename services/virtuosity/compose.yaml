@@ -24,6 +24,8 @@ services:
       - "{{ appdata_path }}/ollama-webui:/app/backend/data"
     ports:
       - 3010:8080
+    environment:
+      - WEBUI_SECRET_KEY={{ secret_webui_secret_key }}
     networks:
       - ollama-net
     security_opt:

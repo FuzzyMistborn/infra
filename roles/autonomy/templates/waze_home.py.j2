@@ -8,9 +8,20 @@ browser = Browser(driver_name='remote',
 browser.visit("{{ secret_waze_home }}")
 
 browser.is_text_present("Arrive")
-browser.find_by_text('Got it').click()
-browser.find_by_text('Got it').click()
-browser.find_by_xpath("/html/body/div[1]/div[2]/button").click()
+
+for text in ['Got it', 'Got it']:
+    elements = browser.find_by_text(text)
+    if elements:
+        browser.execute_script("arguments[0].click();", elements.first._element)
+
+xpath = "/html/body/div[1]/div[2]/button"
+if browser.is_element_present_by_xpath(xpath, wait_time=2):
+    el = browser.find_by_xpath(xpath).first._element
+    browser.execute_script("arguments[0].click();", el)
+
+close_btn = browser.find_by_css("button.wz-downloadbar__close-button")
+if close_btn:
+    browser.execute_script("arguments[0].click();", close_btn.first._element)
 
 browser.screenshot("/home/{{ main_username }}/hass/tmp/waze_home", full=True, unique_file=False)
 

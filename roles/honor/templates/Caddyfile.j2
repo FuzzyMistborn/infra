@@ -311,6 +311,23 @@ influx.{{ secret_personal_internal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
 	import headers
 }
+# Imports
+import.{{ secret_personal_internal_url }} {
+    handle /hoid.knsv {
+        root * /home/{{ main_username }}/import
+        file_server
+    }
+    handle /firefox.tar.gz {
+        root * /home/{{ main_username }}/import
+        file_server
+    }
+    handle /thunderbird.tar.gz {
+        root * /home/{{ main_username }}/import
+        file_server
+    }
+	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	import headers
+}
 # MusicAssistant
 mass.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.30.5:8095
