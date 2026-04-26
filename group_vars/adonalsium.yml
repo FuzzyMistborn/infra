@@ -163,12 +163,6 @@ lnxlink_temperature: true
 lnxlink_diskuse: true
 lnxlink_mounts: true
 
-### Bash Aliases
-bash_docker: true
-bash_autorestic: true
-bash_systemctl: true
-bash_apt: true
-
 ### Variables
 pull_backup: false
 infrastructure: false

@@ -23,12 +23,6 @@ package_list:
 ### Variables
 pull_backup: false
 
-### Bash Aliases
-bash_docker: true
-bash_autorestic: true
-bash_systemctl: true
-bash_apt: true
-
 ### LNXLink
 lnxlink_temperature: true
 lnxlink_diskuse: true

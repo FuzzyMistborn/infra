@@ -95,18 +95,3 @@ mountpoints:
 pip_package: python-pip
 pip_packages:
   - konsave
-
-### Bash Aliases
-bash_aliases:
-  - alias: c
-    command: clear
-  - alias: e
-    command: exit
-  - alias: ssh-remove
-    command: ssh-keygen -f /home/{{ main_username }}/.ssh/known_hosts -R $c
-  - alias: logi-restart
-    command: sudo systemctl restart logid
-bash_autorestic: true
-bash_systemctl: true
-bash_git: true
-bash_dnf: true

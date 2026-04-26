@@ -12,13 +12,6 @@ package_list:
 
 pull_backup: false
 
-### Bash Aliases
-
-bash_docker: true
-bash_autorestic: true
-bash_systemctl: true
-bash_apt: true
-
 desktop_hc_prune_id: "{{ secret_hc_restic_prune_invention }}"
 desktop_hc_backup_id: "{{ secret_hc_restic_backup_invention }}"
 

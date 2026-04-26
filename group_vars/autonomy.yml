@@ -29,12 +29,6 @@ pull_backup: false
 lnxlink_bash: true
 lnxlink_diskuse: true
 
-### Bash Aliases
-bash_docker: true
-bash_autorestic: true
-bash_systemctl: true
-bash_apt: true
-
 ### Cronjobs
 cronjobs:
   - name: Traffic Commute

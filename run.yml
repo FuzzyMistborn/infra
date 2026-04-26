@@ -86,7 +86,6 @@
     - role: install/autorestic
     - role: install/runitor
     - role: adonalsium
-    - role: bash_alias
     - role: cronjobs
     - role: geerlingguy.docker
     - role: geerlingguy.ntp
@@ -125,7 +124,6 @@
     - role: install/autorestic
     - role: install/runitor
     - role: ishap
-    - role: bash_alias
     - role: cronjobs
     - role: geerlingguy.docker
     - role: geerlingguy.ntp
@@ -146,7 +144,6 @@
     - role: install/bitwarden_cli
     - role: install/runitor
     - role: dominion
-    - role: bash_alias
     - role: cronjobs
     - role: hussainweb.chezmoi
 
@@ -163,7 +160,6 @@
     - role: install/lnxlink
     - role: install/runitor
     - role: endowment
-    - role: bash_alias
     - role: cronjobs
     - role: install/docker-patch
     - role: docker-compose-generator
@@ -182,7 +178,6 @@
     - role: install/autorestic
     - role: install/runitor
     - role: autonomy
-    - role: bash_alias
     - role: cronjobs
     - role: install/lnxlink
     - role: install/docker-patch
@@ -200,7 +195,6 @@
     - role: install/autorestic
     - role: install/runitor
     - role: unity
-    - role: bash_alias
     - role: install/tailscale
     - role: install/lnxlink
     - role: cronjobs
@@ -220,7 +214,6 @@
     - role: install/runitor
     - role: install/tailscale
     - role: virtuosity
-    - role: bash_alias
     - role: cronjobs
     - role: github
     - role: install/lnxlink
@@ -240,7 +233,6 @@
     - role: install/lnxlink
     - role: install/runitor
     - role: whimsy
-    - role: bash_alias
     - role: cronjobs
     - role: install/docker-patch
     - role: docker-compose-generator
@@ -258,7 +250,6 @@
     - role: install/lnxlink
     - role: install/runitor
     - role: cultivation
-    - role: bash_alias
     - role: cronjobs
     - role: install/docker-patch
     - role: docker-compose-generator
@@ -278,7 +269,6 @@
     - role: install/docker-patch
     - role: docker-compose-generator
     - role: preservation
-    - role: bash_alias
     - role: cronjobs
     - role: hussainweb.chezmoi
 
@@ -295,7 +285,6 @@
     - role: install/runitor
     - role: caddy_ansible.caddy_ansible
     - role: honor
-    - role: bash_alias
     - role: cronjobs
     - role: install/docker-patch
     - role: docker-compose-generator
@@ -313,7 +302,6 @@
     - role: install/autorestic
     - role: install/runitor
     - role: omada
-    - role: bash_alias
     - role: cronjobs
     - role: install/docker-patch
     - role: docker-compose-generator
@@ -330,7 +318,6 @@
     - role: invention
     - role: install/autorestic
     - role: install/runitor
-    - role: bash_alias
     - role: install/docker-patch
     - role: docker-compose-generator
     - role: hussainweb.chezmoi
@@ -347,7 +334,6 @@
     - role: install/autorestic
     - role: install/runitor
     - role: install/lnxlink
-    - role: bash_alias
     - role: install/docker-patch
     - role: docker-compose-generator
     - role: hussainweb.chezmoi
@@ -361,7 +347,6 @@
     - role: geerlingguy.pip
     - role: geerlingguy.docker
     - role: install/runitor
-    - role: bash_alias
     - role: install/docker-patch
     - role: docker-compose-generator
     - role: cronjobs
@@ -384,7 +369,6 @@
     - role: ambition
     - role: caddy_ansible.caddy_ansible
     - role: install/crowdsec_bouncer
-    - role: bash_alias
     - role: cronjobs
     - role: hussainweb.chezmoi
 
@@ -401,6 +385,5 @@
     - role: install/autorestic
     - role: install/runitor
     - role: desktop
-    - role: bash_alias
     - role: cronjobs
     - role: hussainweb.chezmoi

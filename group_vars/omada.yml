@@ -12,13 +12,6 @@ package_list:
 
 pull_backup: false
 
-### Bash Aliases
-
-bash_docker: true
-bash_autorestic: true
-bash_systemctl: true
-bash_apt: true
-
 ### Cronjobs
 cronjobs:
   - name: Restic Prune

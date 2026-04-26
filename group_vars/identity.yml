@@ -13,13 +13,6 @@ package_list:
 pull_backup: false
 lnxlink_diskuse: true
 
-### Bash Aliases
-
-bash_docker: true
-bash_autorestic: true
-bash_systemctl: true
-bash_apt: true
-
 ### Autorestic Config
 autorestic_config_user: "{{ main_username}}"
 autorestic_config_directory: "/home/{{ main_username}}"
