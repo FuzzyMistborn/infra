@@ -85,7 +85,6 @@
     - role: install/mergerfs
     - role: install/autorestic
     - role: install/runitor
-    - role: install/zsh
     - role: adonalsium
     - role: bash_alias
     - role: cronjobs
@@ -124,7 +123,6 @@
     - role: install/mergerfs
     - role: install/autorestic
     - role: install/runitor
-    - role: install/zsh
     - role: ishap
     - role: bash_alias
     - role: cronjobs
@@ -145,7 +143,6 @@
     - role: github
     - role: install/bitwarden_cli
     - role: install/runitor
-    - role: install/zsh
     - role: dominion
     - role: bash_alias
     - role: cronjobs
@@ -162,7 +159,6 @@
     - role: install/autorestic
     - role: install/lnxlink
     - role: install/runitor
-    - role: install/zsh
     - role: endowment
     - role: bash_alias
     - role: cronjobs
@@ -181,7 +177,6 @@
     - role: install/pip_packages
     - role: install/autorestic
     - role: install/runitor
-    - role: install/zsh
     - role: autonomy
     - role: bash_alias
     - role: cronjobs
@@ -199,7 +194,6 @@
     - role: geerlingguy.pip
     - role: install/autorestic
     - role: install/runitor
-    - role: install/zsh
     - role: unity
     - role: bash_alias
     - role: install/tailscale
@@ -219,7 +213,6 @@
     - role: install/autorestic
     - role: install/runitor
     - role: install/tailscale
-    - role: install/zsh
     - role: virtuosity
     - role: bash_alias
     - role: cronjobs
@@ -239,7 +232,6 @@
     - role: install/autorestic
     - role: install/lnxlink
     - role: install/runitor
-    - role: install/zsh
     - role: whimsy
     - role: bash_alias
     - role: cronjobs
@@ -257,7 +249,6 @@
     - role: install/autorestic
     - role: install/lnxlink
     - role: install/runitor
-    - role: install/zsh
     - role: cultivation
     - role: bash_alias
     - role: cronjobs
@@ -275,7 +266,6 @@
     - role: install/autorestic
     - role: install/lnxlink
     - role: install/runitor
-    - role: install/zsh
     - role: install/docker-patch
     - role: docker-compose-generator
     - role: preservation
@@ -294,7 +284,6 @@
     - role: install/autorestic
     - role: install/runitor
     - role: caddy_ansible.caddy_ansible
-    - role: install/zsh
     - role: honor
     - role: bash_alias
     - role: cronjobs
@@ -312,7 +301,6 @@
     - role: geerlingguy.docker
     - role: install/autorestic
     - role: install/runitor
-    - role: install/zsh
     - role: omada
     - role: bash_alias
     - role: cronjobs
@@ -327,7 +315,6 @@
     - role: grog.package
     - role: geerlingguy.pip
     - role: geerlingguy.docker
-    - role: install/zsh
     - role: invention
     - role: install/autorestic
     - role: install/runitor
@@ -343,7 +330,6 @@
     - role: grog.package
     - role: geerlingguy.pip
     - role: geerlingguy.docker
-    - role: install/zsh
     - role: identity
     - role: install/autorestic
     - role: install/runitor
@@ -361,7 +347,6 @@
     - role: geerlingguy.pip
     - role: geerlingguy.docker
     - role: install/runitor
-    - role: install/zsh
     - role: bash_alias
     - role: install/docker-patch
     - role: docker-compose-generator
@@ -377,7 +362,6 @@
     - role: geerlingguy.docker
     - role: install/lego
     - role: install/tailscale
-    - role: install/zsh
     - role: install/autorestic
     - role: install/runitor
     - role: install/docker-patch
@@ -401,6 +385,5 @@
     - role: install/autorestic
     - role: install/runitor
     - role: desktop
-    - role: install/zsh
     - role: bash_alias
     - role: cronjobs
