@@ -10,15 +10,6 @@
     - docker
     - scripts
 
-### SSH
-- name: SSH Keys
-  authorized_key:
-    user: "{{ item.user }}"
-    state: present
-    key: "{{ item.ssh }}"
-  loop:
-    - {user: "{{ main_username }}", ssh: "{{ secret_main_user_code_server_ssh }}"}
-
 #### Scripts
 
 - name: Generate weather cast bash file
