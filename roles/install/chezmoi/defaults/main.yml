@@ -1,0 +1,7 @@
+---
+# Install a specific version, which must be a tag name on Github (e.g. v2.0.12). If blank, latest version
+# is installed.
+chezmoi_version: ""
+
+# Run chezmoi init with a given URL. You can also specify a Github username.
+chezmoi_init_url: ""

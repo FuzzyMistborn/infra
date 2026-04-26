@@ -15,6 +15,10 @@ package_list:
   - name: ncdu
   - name: sudo
   - name: wget
+  - name: zoxide
+
+# chezmoi
+chezmoi_init_url: "{{ secret_chezmoi_repo }}"
 
 # geerlingguy.docker
 docker_packages_state: latest

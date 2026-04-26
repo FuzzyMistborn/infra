@@ -1,0 +1,40 @@
+---
+- name: Install chezmoi using a package
+  ansible.builtin.import_tasks: download-chezmoi.yml
+
+- name: Add Chezmoi Gitea SSH Key
+  copy:
+    dest: /home/{{ main_username }}/.ssh/chezmoi
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0600
+    content: "{{ secret_chezmoi_key }}"
+
+- name: Add ssh config
+  copy:
+    dest: /home/{{ main_username }}/.ssh/config
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: 0664
+    content: |
+      Host git.fuzzymistborn.com
+        user git
+        HostName remote.fuzzymistborn.com
+        Port 222
+        IdentityFile ~/.ssh/chezmoi
+
+- name: Add Gitea to known_hosts
+  ansible.builtin.lineinfile:
+    path: "/home/{{ main_username }}/.ssh/known_hosts"
+    line: "{{ secret_gitea_known_key }}"
+    create: yes
+    owner: "{{ main_username }}"
+    mode: 0600
+
+- name: Initialize chezmoi
+  ansible.builtin.command: "chezmoi init --apply --force {{ chezmoi_init_url }}"
+  become: true
+  become_user: "{{ main_username }}"
+  when: chezmoi_init_url | length > 0
+  args:
+    creates: "/home/{{ main_username }}/.local/share/chezmoi/.git"

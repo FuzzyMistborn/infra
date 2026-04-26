@@ -1,0 +1,12 @@
+---
+# vars file for ansible-role-chezmoi
+chezmoi_debian_architectures:
+  x86_64: amd64
+  arm: arm
+  arm64: arm64
+  aarch64: arm64
+
+chezmoi_redhat_architectures:
+  x86_64: x86_64
+  arm64: aarch64
+  aarch64: aarch64

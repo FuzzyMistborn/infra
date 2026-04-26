@@ -1,0 +1,42 @@
+---
+- name: Find the latest chezmoi version
+  when: chezmoi_version == ""
+  block:
+    - name: Find latest releases
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/twpayne/chezmoi/releases/latest
+        return_content: true
+      register: chezmoi_release_output
+    - name: Set version
+      ansible.builtin.set_fact:
+        _chezmoi_version: "{{ chezmoi_release_output.json.tag_name }}"
+
+- name: Set the chezmoi version
+  when: chezmoi_version != ""
+  ansible.builtin.set_fact:
+    _chezmoi_version: "{{ chezmoi_version }}"
+
+- name: Check if chezmoi is already installed
+  ansible.builtin.command: chezmoi --version
+  register: chezmoi_version_output
+  failed_when: chezmoi_version_output.rc not in [0, 2]
+  changed_when: false
+
+- name: Determine chezmoi version and other variables
+  ansible.builtin.set_fact:
+    chezmoi_install: "{{ chezmoi_version_output.rc == 2 or not (_chezmoi_version in chezmoi_version_output.stdout) }}"
+    chezmoi_version_filtered: "{{ _chezmoi_version | regex_replace('^v', '') }}"
+
+- name: "Install (deb) chezmoi v{{ chezmoi_version_filtered }}"
+  ansible.builtin.apt:
+    deb: "https://github.com/twpayne/chezmoi/releases/download/v{{ chezmoi_version_filtered }}/chezmoi_{{ chezmoi_version_filtered }}_linux_{{ chezmoi_debian_architectures[ansible_facts['architecture']] }}.deb"
+  when: chezmoi_install and ansible_facts['os_family'] == 'Debian'
+  become: true
+
+- name: "Install (rpm) chezmoi v{{ chezmoi_version_filtered }}"
+  ansible.builtin.dnf:
+    name: "https://github.com/twpayne/chezmoi/releases/download/v{{ chezmoi_version_filtered }}/chezmoi-{{ chezmoi_version_filtered }}-{{ chezmoi_redhat_architectures[ansible_facts['architecture']] }}.rpm"
+    state: present
+    disable_gpg_check: yes  # GPG check fails for some reason.
+  when: chezmoi_install and ansible_facts['os_family'] == 'RedHat'
+  become: true
