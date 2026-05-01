@@ -21,6 +21,7 @@
     - {user: "{{ main_username }}", pass: "{{ secret_main_user_pass }}"}
     - {user: ansible, pass: "{{ secret_ansible_pass }}"}
 
+##### Samba
 - name: Add samba users
   user:
     name: samba
@@ -44,6 +45,23 @@
       user=samba
       password={{ secret_samba_pass }}
       domain=cosmere
+
+#### FTP
+- name: Ensure ftpscanner system user exists
+  ansible.builtin.user:
+    name: ftpscanner
+    shell: /bin/bash
+    create_home: true
+    system: false
+    password: "{{ secret_ftp_password | password_hash('sha512') }}"
+
+- name: Add ftpscanner to main user group
+  ansible.builtin.user:
+    name: ftpscanner
+    groups: "{{ main_username }}"
+    append: true
+
+#### Remaining
 
 - name: Add sudoers file for ansible
   copy:
@@ -109,6 +127,33 @@
 - name: Restart samba
   service:
     name: smbd
+    state: restarted
+
+- name: Ensure scan directory exists with correct ownership
+  ansible.builtin.file:
+    path: /mnt/Media/Files/scans
+    state: directory
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: "0755"
+
+- name: Install vsftpd config
+  copy:
+    src: etc/vsftpd.conf
+    dest: /etc/vsftpd.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Ensure vsftpd is enabled and running
+  ansible.builtin.service:
+    name: vsftpd
+    state: started
+    enabled: true
+
+- name: Restart vsftpd
+  ansible.builtin.service:
+    name: vsftpd
     state: restarted
 
 ### Backup Restore
