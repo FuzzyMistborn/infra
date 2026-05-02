@@ -8,7 +8,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   paperless:
-    image: ghcr.io/paperless-ngx/paperless-ngx:2.20.14
+    image: ghcr.io/paperless-ngx/paperless-ngx:2.20.15
     container_name: paperless
     volumes:
       - "{{ appdata_path }}/paperless/data:/usr/src/paperless/data"
