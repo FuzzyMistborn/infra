@@ -1,0 +1,24 @@
+services:
+  invidious-db:
+    image: pgautoupgrade/pgautoupgrade:18.3-alpine
+    container_name: invidious-db
+    volumes:
+      - "{{ appdata_path }}/invidious/data:/var/lib/postgresql"
+      - "{{ appdata_path }}/invidious/config/sql:/config/sql"
+      - "{{ appdata_path }}/invidious/init-invidious-db.sh:/docker-entrypoint-initdb.d/init-invidious-db.sh"
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=invidious
+      - POSTGRES_USER=kemal
+      - POSTGRES_PASSWORD={{ secret_invidious_db_pass }}
+    networks:
+      - invidious-db-net
+    mem_limit: 200M
+    memswap_limit: 200M
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  invidious-db-net:

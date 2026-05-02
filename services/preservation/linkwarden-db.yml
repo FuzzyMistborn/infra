@@ -1,0 +1,20 @@
+services:
+  linkwarden-db:
+    image: pgautoupgrade/pgautoupgrade:18.3-alpine
+    container_name: linkwarden-db
+    volumes:
+      - "{{ appdata_path }}/linkwarden/data:/var/lib/postgresql"
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_PASSWORD={{ secret_linkwarden_db_pass }}
+    networks:
+      - linkwarden-db-net
+    mem_limit: 200M
+    memswap_limit: 200M
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  linkwarden-db-net:

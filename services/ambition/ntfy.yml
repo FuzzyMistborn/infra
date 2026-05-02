@@ -1,0 +1,27 @@
+services:
+  ntfy:
+    image: binwiederhier/ntfy:v2.21.0
+    container_name: ntfy
+    volumes:
+      - "{{ appdata_path }}/ntfy/cache:/var/cache/ntfy"
+    ports:
+      - 127.0.0.1:4600:80
+    environment:
+      - TZ={{ ntp_timezone }}
+      - NTFY_BASE_URL=http://ntfy.{{ secret_personal_url }}
+      - NTFY_CACHE_FILE=/var/cache/ntfy/cache.db
+      - NTFY_AUTH_FILE=/var/cache/ntfy/auth.db
+      - NTFY_AUTH_DEFAULT_ACCESS=deny-all
+      - NTFY_BEHIND_PROXY=true
+      - NTFY_ATTACHMENT_CACHE_DIR=/var/cache/ntfy/attachments
+      - NTFY_ENABLE_LOGIN=true
+    command:
+      - serve
+    networks:
+      - ntfy-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  ntfy-net:

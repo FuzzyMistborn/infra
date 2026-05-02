@@ -1,0 +1,33 @@
+services:
+  freshrss:
+    image: freshrss/freshrss:1.28.1
+    container_name: freshrss
+    volumes:
+      - "{{ appdata_path }}/freshrss/data:/var/www/FreshRSS/data"
+      - "{{ appdata_path }}/freshrss/extensions:/var/www/FreshRSS/extensions"
+    ports:
+      - 8010:80
+    environment:
+      - UID={{ main_uid }}
+      - GID={{ main_gid }}
+      - PUID={{ main_uid }}
+      - PGID={{ main_gid }}
+      - TZ={{ ntp_timezone }}
+      - CRON_MIN=*/20
+      - OIDC_ENABLED=1
+      - OIDC_CLIENT_ID={{ secret_freshrss_pocket_id_user }}
+      - OIDC_CLIENT_SECRET={{ secret_freshrss_pocket_id_key }}
+      - OIDC_PROVIDER_METADATA_URL=https://id.{{ secret_personal_url }}/.well-known/openid-configuration
+      - OIDC_SCOPES=openid email profile
+      - OIDC_X_FORWARDED_HEADERS=X-Forwarded-Proto X-Forwarded-Host
+      - OIDC_REMOTE_USER_CLAIM=preferred_username
+      - OIDC_SESSION_INACTIVITY_TIMEOUT=43200
+      - OIDC_SESSION_MAX_DURATION=0
+    networks:
+      - freshrss-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  freshrss-net:

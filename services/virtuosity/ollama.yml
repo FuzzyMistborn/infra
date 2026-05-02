@@ -1,0 +1,36 @@
+services:
+  ollama-server:
+    image: ollama/ollama:0.21.0
+    container_name: ollama-server
+    volumes:
+      - /mnt/llms/ollama:/root/.ollama
+    ports:
+      - 11434:11434
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    networks:
+      - ollama-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:v0.8.12
+    container_name: open-webui
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    volumes:
+      - "{{ appdata_path }}/ollama-webui:/app/backend/data"
+    ports:
+      - 3010:8080
+    environment:
+      - WEBUI_SECRET_KEY={{ secret_webui_secret_key }}
+    networks:
+      - ollama-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  ollama-net:

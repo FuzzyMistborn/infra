@@ -1,0 +1,22 @@
+services:
+  outline-db:
+    image: pgautoupgrade/pgautoupgrade:18.3-alpine
+    container_name: outline-db
+    volumes:
+      - "{{ appdata_path }}/outline-db/data:/var/lib/postgresql"
+    ports:
+      - 5437:5432
+    environment:
+      - POSTGRES_DB=outline
+      - POSTGRES_USER=outline
+      - POSTGRES_PASSWORD={{ secret_outline_db_pass }}
+    networks:
+      - outline-db-net
+    mem_limit: 200M
+    memswap_limit: 200M
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  outline-db-net:

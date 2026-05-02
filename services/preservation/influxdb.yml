@@ -1,0 +1,34 @@
+services:
+  influx-db:
+    image: influxdb:2.8.0
+    container_name: influx-db
+    volumes:
+      - /home/{{ main_username }}/db_backups/influxdb:/media/backup
+      - "{{ appdata_path }}/influx_db/data:/var/lib/influxdb2"
+      - "{{ appdata_path }}/influx_db/config:/etc/influxdb2"
+    ports:
+      - 8086:8086
+    environment:
+      #  - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME={{ main_username }}
+      - DOCKER_INFLUXDB_INIT_PASSWORD={{ secret_influxdb_pass }}
+      - DOCKER_INFLUXDB_INIT_ORG=cosmere
+      - DOCKER_INFLUXDB_INIT_BUCKET=Default
+      - DOCKER_INFLUXDB_INIT_RETENTION=168h
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN={{ secret_influxdb_token }}
+    networks:
+      - influx-db-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+  #  image: quay.io/influxdb/influxdb:2.1-nightly
+  # NOTE: quay.io image does not include influx client.  To install, run following:
+  # apt install wget -y
+  # wget https://dl.influxdata.com/influxdb/releases/influxdb2-client-2.2.0-linux-amd64.tar.gz
+  # tar xvzf influxdb2-client-2.2.0-linux-amd64.tar.gz
+  # cp influxdb2-client-2.2.0-linux-amd64/influx /usr/local/bin/
+  # rm -r influxdb2-client-2.2.0-linux-amd64
+  # rm influxdb2-client-2.2.0-linux-amd64.tar.gz
+
+networks:
+  influx-db-net:

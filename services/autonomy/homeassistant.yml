@@ -1,0 +1,27 @@
+services:
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:stable
+    container_name: homeassistant
+    network_mode: host
+    volumes:
+      - /home/{{ main_username }}/hass:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /mnt/Media:/media:ro
+    depends_on:
+      - mqtt
+    restart: unless-stopped
+  homeassistant-beta:
+    image: ghcr.io/home-assistant/home-assistant:beta
+    container_name: homeassistant-beta
+    network_mode: host
+    volumes:
+      - /home/{{ main_username }}/hass_docker_beta:/config
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 5316:5316
+    depends_on:
+      - mqtt
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped

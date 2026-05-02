@@ -1,0 +1,18 @@
+services:
+  termix:
+    image: ghcr.io/lukegus/termix:release-2.0.0
+    container_name: termix
+    restart: unless-stopped
+    ports:
+      - "8050:8080"
+    volumes:
+      - "{{ appdata_path }}/termix:/app/data"
+    environment:
+      - PORT=8080
+    networks:
+      - termix-net
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  termix-net:

@@ -1,0 +1,15 @@
+services:
+  diagrams:
+    image: jgraph/drawio:29.6.10
+    container_name: diagrams
+    ports:
+      - 8080:8080
+      - 8444:8443
+    networks:
+      - diagrams-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  diagrams-net:

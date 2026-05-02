@@ -1,0 +1,22 @@
+services:
+  vaultwarden-db:
+    image: pgautoupgrade/pgautoupgrade:18.3-alpine
+    container_name: vaultwarden-db
+    volumes:
+      - "{{ appdata_path }}/vaultwarden-db/data:/var/lib/postgresql"
+    ports:
+      - 5435:5432
+    environment:
+      - POSTGRES_DB=vaultwarden
+      - POSTGRES_USER=vaultwarden
+      - POSTGRES_PASSWORD={{ secret_vaultwarden_db_pass }}
+    networks:
+      - vaultwarden-db-net
+    mem_limit: 200M
+    memswap_limit: 200M
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  vaultwarden-db-net:

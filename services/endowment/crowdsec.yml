@@ -1,0 +1,25 @@
+services:
+  crowdsec:
+    image: ghcr.io/crowdsecurity/crowdsec:v1.7.7
+    container_name: crowdsec
+    volumes:
+      - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"
+      - "{{ appdata_path }}/nextcloud_docker/html/data:/var/log/nextcloud:ro"
+      - "{{ appdata_path }}/sonarr/logs:/var/log/sonarr:ro"
+      - "{{ appdata_path }}/radarr/logs:/var/log/radarr:ro"
+      - "{{ appdata_path }}/crowdsec/db:/var/lib/crowdsec/data/"
+    environment:
+      - COLLECTIONS=schiz0phr3ne/sonarr schiz0phr3ne/radarr crowdsecurity/nextcloud
+      - GID=1000
+      - DISABLE_LOCAL_API=true
+      - AGENT_USERNAME={{ hostname }}
+      - AGENT_PASSWORD={{ secret_crowdsec_endowment_pw }}
+      - LOCAL_API_URL=http://{{ secret_ambition_ip }}:8080
+    networks:
+      - crowdsec-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  crowdsec-net:

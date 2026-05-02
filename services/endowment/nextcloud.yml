@@ -1,0 +1,33 @@
+services:
+  nextcloud:
+    image: ghcr.io/fuzzymistborn/nextcloud-docker:33.0.2
+    container_name: nextcloud
+    volumes:
+      - "{{ appdata_path }}/nextcloud_docker/html:/var/www/html"
+    ports:
+      - 3491:80
+      - 3492:443
+    environment:
+      - UID={{ main_uid }}
+      - GID={{ main_gid }}
+      - PUID={{ main_uid }}
+      - PGID={{ main_gid }}
+      - TZ={{ ntp_timezone }}
+    networks:
+      - nextcloud-net
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 1000M
+    memswap_limit: 1000M
+    restart: unless-stopped
+  nextcloud-redis:
+    image: redis:8.6.2
+    container_name: nextcloud-redis
+    networks:
+      - nextcloud-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  nextcloud-net:

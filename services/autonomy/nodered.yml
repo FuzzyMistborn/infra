@@ -1,0 +1,21 @@
+services:
+  nodered:
+    image: nodered/node-red:4.1.8
+    container_name: nodered
+    volumes:
+      - "{{ appdata_path }}/nodered:/data"
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 1880:1880
+    environment:
+      - TZ={{ ntp_timezone }}
+    depends_on:
+      - homeassistant
+    networks:
+      - nodered-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  nodered-net:

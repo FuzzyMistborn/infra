@@ -1,0 +1,45 @@
+services:
+  mxroute:
+    image: registry.gitlab.com/tomhello56/mxroute-alias-manager:latest
+    container_name: mxroute
+    ports:
+      - 5001:5001
+    volumes:
+      - "{{ appdata_path }}/mxroute:/app/data"
+    restart: unless-stopped
+    labels:
+      - diun.enable=true
+      - diun.regopt=docker.io
+    environment:
+      - TZ={{ ntp_timezone }}
+      - SECURE_COOKIES=true
+      - MXROUTE_SERVER={{ secret_snapraid_smtp_host }}
+      - MXROUTE_USERNAME={{ secret_mxroute_login }}
+      - MXROUTE_API_KEY={{ secret_mxroute_api_key }}
+      - MXALIAS_SECRET_KEY={{ secret_mxroute_secret_key }}
+      - ALLOWED_DOMAINS={{ secret_personal_internal_url }},sl.{{ secret_personal_internal_url }},fuzzymistborn.com,sl.fuzzymistborn.com
+      - INITIAL_SETUP_TOKEN={{ secret_mxroute_setup_token }}
+    networks:
+      - mxroute-net
+    security_opt:
+      - no-new-privileges:true
+  bitwarden-mxroute-server:
+    container_name: bitwarden-mxroute-server
+    image: ghcr.io/bfpimentel/bitwarden-mxroute-server:v1.3.0
+    ports:
+      - 6123:6123
+    environment:
+      - SERVER_API_TOKEN={{ secret_mxroute_bitwarden_token }}
+      - MXROUTE_SERVER={{ secret_snapraid_smtp_host }}
+      - MXROUTE_USERNAME={{ secret_mxroute_login }}
+      - MXROUTE_API_KEY={{ secret_mxroute_bitwarden_api_key }}
+      - DEBUG=false
+    networks:
+      - bitwarden-mxroute-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  mxroute-net:
+  bitwarden-mxroute-net:

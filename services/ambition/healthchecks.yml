@@ -1,0 +1,37 @@
+services:
+  healthchecks:
+    image: ghcr.io/linuxserver/healthchecks:4.1.20260323
+    container_name: healthchecks
+    volumes:
+      - "{{ appdata_path }}/healthchecks/config:/config"
+    ports:
+      - 127.0.0.1:8000:8000
+    environment:
+      - UID={{ main_uid }}
+      - GID={{ main_gid }}
+      - PUID={{ main_uid }}
+      - PGID={{ main_gid }}
+      - TZ={{ ntp_timezone }}
+      - SITE_ROOT=https://hc.fuzzymistborn.com
+      - SITE_NAME=Cosmere Health Checks
+      - DEFAULT_FROM_EMAIL=do_not_reply@fuzzymistborn.com
+      - EMAIL_HOST={{ secret_snapraid_smtp_host }}
+      - EMAIL_PORT=587
+      - EMAIL_HOST_USER={{ secret_snapraid_email_address }}
+      - EMAIL_HOST_PASSWORD={{ secret_snapraid_email_pass }}
+      - EMAIL_USE_TLS=True
+      - SUPERUSER_EMAIL={{ secret_email }}
+      - SUPERUSER_PASSWORD={{ secret_healthchecks_pass }}
+      - REGENERATE_SETTINGS=True
+      - REGISTRATION_OPEN=False
+      - SECRET_KEY={{ secret_healthchecks_key }}
+      - TELEGRAM_BOT_NAME=Cosmere HealthChecks
+      - TELEGRAM_TOKEN={{ secret_healthchecks_tg_token }}
+    networks:
+      - healthchecks-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  healthchecks-net:

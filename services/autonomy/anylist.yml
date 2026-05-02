@@ -1,0 +1,20 @@
+services:
+  anylist:
+    image: kevdliu/anylist:v1.7.3
+    container_name: anylist
+    volumes:
+      - "{{ appdata_path }}/anylist:/data"
+    ports:
+      - 9500:9000
+    environment:
+      - PORT=9000
+      - EMAIL={{ secret_email }}
+      - PASSWORD={{ secret_anylist_pw }}
+    networks:
+      - anylist-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  anylist-net:

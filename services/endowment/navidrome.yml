@@ -1,0 +1,22 @@
+services:
+  navidrome:
+    image: ghcr.io/navidrome/navidrome:0.61.2
+    container_name: navidrome
+    volumes:
+      - "{{ appdata_path }}/navidrome/data:/data"
+      - /mnt/Media/Music:/music:ro
+    ports:
+      - 4533:4533
+    environment:
+      - ND_ENABLECOVERANIMATION=false
+      - ND_ENABLEINSIGHTSCOLLECTOR=false
+      - ND_SCANSCHEDULE=12h
+      - ND_BASEURL=https://music.{{ secret_personal_internal_url }}
+    networks:
+      - navidrome-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  navidrome-net:

@@ -1,0 +1,27 @@
+services:
+  crowdsec:
+    image: ghcr.io/crowdsecurity/crowdsec:v1.7.7
+    container_name: crowdsec
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - "{{ appdata_path }}/crowdsec/data/:/etc/crowdsec"
+      - /home/{{ main_username }}/caddy/:/var/log/caddy
+      - "{{ appdata_path }}/gitea/data/gitea/log:/var/log/gitea:ro"
+      - /var/log/auth.log:/var/log/ssh/auth.log:ro
+      - "{{ appdata_path }}/crowdsec/db:/var/lib/crowdsec/data/"
+    ports:
+      - 8080:8080
+    environment:
+      - COLLECTIONS=crowdsecurity/caddy crowdsecurity/http-cve crowdsecurity/whitelist-good-actors LePresidente/gitea timokoessler/uptime-kuma crowdsecurity/sshd
+      - BOUNCER_KEY_CADDY={{secret_crowdsec_api}}
+      - GID=1000
+      - USE_WAL=true
+      - TZ={{ ntp_timezone }}
+    networks:
+      - crowdsec-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  crowdsec-net:

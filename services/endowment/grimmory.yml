@@ -1,0 +1,26 @@
+services:
+  grimmory:
+    image: ghcr.io/grimmory-tools/grimmory:v2.3.0
+    container_name: grimmory
+    environment:
+      - USER_ID={{ main_uid }}
+      - GROUP_ID={{ main_gid }}
+      - TZ={{ ntp_timezone }}
+      - DATABASE_URL=jdbc:mariadb://192.168.50.22:3310/booklore
+      - DATABASE_USERNAME=booklore
+      - DATABASE_PASSWORD={{ secret_booklore_db_pass }}
+      - BOOKLORE_PORT=6060
+    ports:
+      - 6060:6060
+    volumes:
+      - "{{ appdata_path }}/grimmory/data:/app/data"
+      - /mnt/Media/Ebooks/Grimmory:/books
+      - /mnt/Media/Ebooks/Grimmory-Import:/bookdrop
+    networks:
+      - grimmory-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  grimmory-net:

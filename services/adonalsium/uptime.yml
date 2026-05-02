@@ -1,0 +1,16 @@
+services:
+  uptime:
+    image: louislam/uptime-kuma:2.2.1
+    container_name: uptime
+    volumes:
+      - "{{ appdata_path }}/uptime:/app/data"
+    ports:
+      - 3001:3001
+    networks:
+      - uptime-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  uptime-net:

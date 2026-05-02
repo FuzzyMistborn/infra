@@ -1,0 +1,35 @@
+services:
+  umami:
+    image: ghcr.io/umami-software/umami:3.1.0
+    container_name: umami
+    ports:
+      - 127.0.0.1:3500:3000
+    environment:
+      - DATABASE_URL={{ secret_umami_db_url }}
+      - HASH_SALT={{ secret_umami_hash }}
+    depends_on:
+      - umami-db
+    networks:
+      - umami-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+  umami-db:
+    image: pgautoupgrade/pgautoupgrade:18.3-alpine
+    container_name: umami-db
+    volumes:
+      - "{{ appdata_path }}/umami/postgres:/var/lib/postgresql"
+    environment:
+      - POSTGRES_USER=umami
+      - POSTGRES_PASSWORD={{ secret_umami_db_pass }}
+      - POSTGRES_DB=umami
+    networks:
+      - umami-net
+    mem_limit: 200M
+    memswap_limit: 200M
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  umami-net:

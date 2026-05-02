@@ -1,0 +1,14 @@
+services:
+  imap-backup:
+    image: ghcr.io/joeyates/imap-backup:v16.6.0
+    container_name: imap-backup
+    volumes:
+      - /mnt/Backup/config/Email:/data
+      - "{{ appdata_path }}/imap/config:/config"
+    environment:
+      - UID={{ main_uid }}
+      - GID={{ main_gid }}
+    command: imap-backup backup --config /config/personal.json
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped

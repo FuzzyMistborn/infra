@@ -1,0 +1,25 @@
+services:
+  calibre:
+    image: lscr.io/linuxserver/calibre:9.7.0
+    container_name: calibre
+    volumes:
+      - "{{ appdata_path }}/calibre:/config"
+      - /mnt/Media/Ebooks:/books
+    ports:
+      - 8085:8080
+      - 8181:8181
+      - 8081:8081
+    environment:
+      - UID={{ main_uid }}
+      - GID={{ main_gid }}
+      - PUID={{ main_uid }}
+      - PGID={{ main_gid }}
+      - TZ={{ ntp_timezone }}
+    networks:
+      - calibre-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  calibre-net:

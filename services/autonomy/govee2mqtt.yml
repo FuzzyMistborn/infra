@@ -1,0 +1,20 @@
+services:
+  govee2mqtt:
+    image: ghcr.io/wez/govee2mqtt:2026.03.25-ab9deb66
+    container_name: govee2mqtt
+    network_mode: host
+    volumes:
+      - "{{ appdata_path }}/govee2mqtt:/data"
+    environment:
+      - TZ={{ ntp_timezone }}
+      - RUST_LOG_STYLE=always
+#      - GOVEE_EMAIL={{ secret_govee_user }}
+#      - GOVEE_PASSWORD={{ secret_govee_pass }}
+      - GOVEE_API_KEY={{ secret_govee_api }}
+      - GOVEE_MQTT_HOST=192.168.30.5
+      - GOVEE_MQTT_PORT=1883
+      - GOVEE_MQTT_USER=homeassistant
+      - GOVEE_MQTT_PASSWORD={{ secret_mqtt_pass }}
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped

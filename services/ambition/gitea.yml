@@ -1,0 +1,45 @@
+services:
+  gitea:
+    image: gitea/gitea:1.26.0
+    container_name: gitea
+    volumes:
+      - "{{ appdata_path }}/gitea/data:/data"
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 127.0.0.1:3030:3000
+      - 222:222
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - DB_TYPE=postgres
+      - DB_HOST=gitea-db:5432
+      - DB_NAME=gitea
+      - DB_USER=gitea
+      - DB_PASSWD={{ secret_gitea_db_pass }}
+    depends_on:
+      - gitea-db
+    networks:
+      - gitea-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+  gitea-db:
+    image: pgautoupgrade/pgautoupgrade:18.3-alpine
+    container_name: gitea-db
+    volumes:
+      - "{{ appdata_path }}/gitea/postgres:/var/lib/postgresql"
+    environment:
+      - POSTGRES_USER=gitea
+      - POSTGRES_PASSWORD={{ secret_gitea_db_pass }}
+      - POSTGRES_DB=gitea
+    networks:
+      - gitea-net
+    mem_limit: 200M
+    memswap_limit: 200M
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  gitea-net:

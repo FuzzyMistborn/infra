@@ -1,0 +1,14 @@
+services:
+  bentopdf:
+    image: ghcr.io/alam00000/bentopdf:2.8.3
+    container_name: bentopdf
+    ports:
+      - 8081:8080
+    networks:
+      - bentopdf-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  bentopdf-net:

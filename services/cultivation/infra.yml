@@ -1,0 +1,32 @@
+services:
+  beszel-agent:
+    image: ghcr.io/henrygd/beszel/beszel-agent:0.18.7-alpine
+    container_name: beszel-agent
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - "{{ appdata_path }}/beszel/data:/var/lib/beszel-agent"
+    environment:
+      - LISTEN=45876
+      - HUB_URL=http://192.168.1.10:8090
+      - KEY={{ secret_beszel_ssh_key_cultivation }}
+      - TOKEN={{ secret_beszel_token_cultivation }}
+  hawser:
+    image: ghcr.io/finsys/hawser:0.2.40
+    container_name: hawser
+    volumes:
+      - "{{ appdata_path }}/hawser:/data/stacks"
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 2376:2376
+    environment:
+      - TOKEN={{ secret_hawser_key }}
+    networks:
+      - hawser-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  hawser-net:

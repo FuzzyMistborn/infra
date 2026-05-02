@@ -1,0 +1,41 @@
+services:
+  changedetection:
+    image: ghcr.io/dgtlmoon/changedetection.io:0.54.9
+    container_name: changedetection
+    volumes:
+      - "{{ appdata_path }}/change:/datastore"
+    ports:
+      - 5000:5000
+    environment:
+      - BASE_URL=https://change.{{ secret_personal_internal_url }}
+      - PLAYWRIGHT_DRIVER_URL=ws://sockpuppetbrowser:3000
+      - HIDE_REFERER=true
+    networks:
+      - changedetection-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+  sockpuppetbrowser:
+    image: dgtlmoon/sockpuppetbrowser:0.0.3
+    container_name: sockpuppetbrowser
+    restart: unless-stopped
+    cap_add:
+      - SYS_ADMIN
+    tmpfs:
+      - /tmp
+    shm_size: 1gb
+    environment:
+      - SCREEN_WIDTH=1280
+      - SCREEN_HEIGHT=720
+      - SCREEN_DEPTH=16
+      - MAX_CONCURRENT_CHROME_PROCESSES=3
+      - STATS_REFRESH_SECONDS=120
+      - CONNECTION_TIMEOUT=600000
+      - DEFAULT_BLOCK_ADS=true
+      - DEFAULT_STEALTH=true
+      - DEFAULT_IGNORE_HTTPS_ERRORS=true
+    networks:
+      - changedetection-net
+
+networks:
+  changedetection-net:

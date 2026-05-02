@@ -1,0 +1,22 @@
+services:
+  nextcloud-db:
+    image: pgautoupgrade/pgautoupgrade:18.3-alpine
+    container_name: nextcloud-db
+    volumes:
+      - "{{ appdata_path }}/nextcloud-db/data:/var/lib/postgresql"
+    ports:
+      - 5436:5432
+    environment:
+      - POSTGRES_DB=nextcloud
+      - POSTGRES_USER=nextcloud
+      - POSTGRES_PASSWORD={{ secret_nextcloud_db_pass }}
+    networks:
+      - nextcloud-db-net
+    mem_limit: 300M
+    memswap_limit: 300M
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  nextcloud-db-net:

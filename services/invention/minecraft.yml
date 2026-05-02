@@ -1,0 +1,14 @@
+services:
+  minecraft:
+    image: 05jchambers/legendary-minecraft-geyser-floodgate:latest
+    container_name: minecraft
+    volumes:
+      - "{{ appdata_path }}/minecraft:/minecraft"
+    labels:
+      - diun.enable=true
+      - diun.regopt=docker.io
+    ports:
+      - 25565:25565
+      - 19132:19132/udp
+      - 19132:19132
+    restart: unless-stopped

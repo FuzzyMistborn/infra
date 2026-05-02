@@ -1,0 +1,19 @@
+services:
+  ha-mcp:
+    image: ghcr.io/homeassistant-ai/ha-mcp:7.3.0
+    container_name: ha-mcp
+    ports:
+      - 8086:8086
+    environment:
+      - HOMEASSISTANT_URL=http://192.168.30.5:8123
+      - HOMEASSISTANT_TOKEN={{ secret_ha_mcp_token }}
+      - MCP_SECRET_PATH=/private_{{ secret_ha_mcp_path }}
+    command: ha-mcp-web
+    networks:
+      - ha-mcp-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  ha-mcp-net:

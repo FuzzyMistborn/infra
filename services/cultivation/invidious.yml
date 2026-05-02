@@ -1,0 +1,43 @@
+services:
+  invidious:
+    image: quay.io/invidious/invidious:latest
+    container_name: invidious
+    volumes:
+      - "{{ appdata_path }}/invidious:/invidious/config"
+    labels:
+      - diun.enable=true
+      - diun.regopt=docker.io
+    ports:
+      - 3500:3000
+    networks:
+      - invidious-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+  invidious-companion:
+    container_name: invidious-companion
+    image: quay.io/invidious/invidious-companion:latest
+    environment:
+      - SERVER_SECRET_KEY={{ secret_invidious_companion_key }}
+    restart: unless-stopped
+    labels:
+      - diun.enable=true
+      - diun.regopt=docker.io
+    ports:
+      - 8282:8282
+    logging:
+      options:
+        max-size: "1G"
+        max-file: "4"
+    cap_drop:
+      - ALL
+    read_only: true
+    volumes:
+      - /var/tmp/youtubei.js:/var/tmp/youtubei.js:rw
+    networks:
+      - invidious-net
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  invidious-net:

@@ -1,0 +1,58 @@
+services:
+  woodpecker-github:
+    image: quay.io/woodpeckerci/woodpecker-server:v3.13.0
+    container_name: woodpecker-github
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
+      - "{{ appdata_path }}/woodpecker-github:/data"
+    ports:
+      - 127.0.0.1:4000:8000
+      - 127.0.0.1:9000:9000
+    environment:
+      - WOODPECKER_GITHUB=true
+      - WOODPECKER_GITHUB_CLIENT={{ secret_investiture_github_id }}
+      - WOODPECKER_GITHUB_SECRET={{ secret_investiture_github_secret }}
+      - WOODPECKER_HOST=https://github.ci.fuzzymistborn.com
+      - WOODPECKER_AGENT_SECRET={{ secret_investiture_rpc }}
+      - WOODPECKER_DATABASE_DRIVER=sqlite3
+      - WOODPECKER_DATABASE_DATASOURCE=/data/woodpecker.sqlite
+      - WOODPECKER_ADMIN=FuzzyMistborn
+      - WOODPECKER_GRPC_ADDR=:9000
+      - WOODPECKER_PLUGINS_PRIVILEGED=woodpeckerci/plugin-docker-buildx:5.0.0
+    networks:
+      - woodpecker-github-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+  woodpecker-gitea:
+    image: quay.io/woodpeckerci/woodpecker-server:v3.13.0
+    container_name: woodpecker-gitea
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
+      - "{{ appdata_path }}/woodpecker-gitea:/data"
+    ports:
+      - 127.0.0.1:4001:8000
+      - 127.0.0.1:9002:9002
+    environment:
+      - WOODPECKER_GITEA=true
+      - WOODPECKER_GITEA_URL=https://git.fuzzymistborn.com
+      - WOODPECKER_GITEA_CLIENT={{ secret_investiture_gitea_id }}
+      - WOODPECKER_GITEA_SECRET={{ secret_investiture_gitea_secret }}
+      - WOODPECKER_HOST=https://gitea.ci.fuzzymistborn.com
+      - WOODPECKER_AGENT_SECRET={{ secret_investiture_rpc }}
+      - WOODPECKER_DATABASE_DRIVER=sqlite3
+      - WOODPECKER_DATABASE_DATASOURCE=/data/woodpecker.sqlite
+      - WOODPECKER_ADMIN=FuzzyMistborn
+      - WOODPECKER_GRPC_ADDR=:9002
+      - WOODPECKER_PLUGINS_PRIVILEGED=woodpeckerci/plugin-docker-buildx:5.0.0
+    networks:
+      - woodpecker-gitea-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  woodpecker-github-net:
+  woodpecker-gitea-net:

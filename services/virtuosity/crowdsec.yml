@@ -1,0 +1,23 @@
+services:
+  crowdsec:
+    image: ghcr.io/crowdsecurity/crowdsec:v1.7.7
+    container_name: crowdsec
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"
+      - "{{ appdata_path }}/crowdsec/db:/var/lib/crowdsec/data/"
+    environment:
+      - COLLECTIONS=gauth-fr/immich
+      - GID=1000
+      - DISABLE_LOCAL_API=true
+      - AGENT_USERNAME={{ hostname }}
+      - AGENT_PASSWORD={{ secret_crowdsec_virtuosity_pw }}
+      - LOCAL_API_URL=http://{{ secret_ambition_ip }}:8080
+    networks:
+      - crowdsec-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  crowdsec-net:

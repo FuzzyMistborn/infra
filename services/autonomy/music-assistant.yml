@@ -1,0 +1,9 @@
+services:
+  music-assistant:
+    image: ghcr.io/music-assistant/server:2.8.5
+    container_name: music-assistant
+    network_mode: host
+    privileged: true
+    volumes:
+      - "{{ appdata_path }}/music-assistant:/data"
+    restart: unless-stopped

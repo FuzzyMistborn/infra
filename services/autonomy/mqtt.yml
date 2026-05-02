@@ -1,0 +1,18 @@
+services:
+  mqtt:
+    image: eclipse-mosquitto:2.0.22
+    container_name: MQTT
+    volumes:
+      - "{{ appdata_path }}/mqtt/config:/mosquitto/config/"
+      - "{{ appdata_path }}/mqtt/data:/mosquitto/data/"
+      - "{{ appdata_path }}/mqtt/log:/mosquitto/log/"
+    ports:
+      - 1883:1883
+    networks:
+      - mqtt-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  mqtt-net:

@@ -1,0 +1,135 @@
+services:
+  radarr:
+    image: ghcr.io/linuxserver/radarr:6.1.1
+    container_name: radarr
+    volumes:
+      - "{{ appdata_path }}/radarr:/config"
+      - /mnt/Media/Movies:/movies
+      - /mnt/Media/Kids Movies:/kids_movies
+      - /mnt/Media/Parents Movies:/parents_movies
+      - /mnt/scratch/complete:/downloads
+    ports:
+      - 7878:7878
+    environment:
+      - UID={{ main_uid }}
+      - GID={{ main_gid }}
+      - PUID={{ main_uid }}
+      - PGID={{ main_gid }}
+      - TZ={{ ntp_timezone }}
+    networks:
+      - arr-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+  radarr_uhd:
+    image: ghcr.io/linuxserver/radarr:6.1.1
+    container_name: radarr_uhd
+    volumes:
+      - "{{ appdata_path }}/radarr_uhd:/config"
+      - /mnt/Media/UHD:/uhd
+      - /mnt/scratch/complete:/downloads
+    ports:
+      - 7879:7878
+    environment:
+      - UID={{ main_uid }}
+      - GID={{ main_gid }}
+      - PUID={{ main_uid }}
+      - PGID={{ main_gid }}
+      - TZ={{ ntp_timezone }}
+    networks:
+      - arr-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+  sonarr:
+    image: ghcr.io/linuxserver/sonarr:4.0.17
+    container_name: sonarr
+    volumes:
+      - "{{ appdata_path }}/sonarr:/config"
+      - /mnt/Media/TV Shows:/tv
+      - /mnt/Media/Kids TV:/kids_tv
+      - /mnt/Media/Parents TV:/parents_tv
+      - /mnt/scratch/complete:/downloads
+    ports:
+      - 8989:8989
+    environment:
+      - UID={{ main_uid }}
+      - GID={{ main_gid }}
+      - PUID={{ main_uid }}
+      - PGID={{ main_gid }}
+      - TZ={{ ntp_timezone }}
+    networks:
+      - arr-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+  recyclarr:
+    image: ghcr.io/recyclarr/recyclarr:8.5.1
+    container_name: recyclarr
+    user: 1000:1000
+    volumes:
+      - "{{ appdata_path }}/recyclarr/config:/config"
+    environment:
+      - TZ=America/New_York
+    networks:
+      - arr-net
+    security_opt:
+      - no-new-privileges:true
+  prowlarr:
+    image: ghcr.io/linuxserver/prowlarr:2.3.5
+    container_name: prowlarr
+    volumes:
+      - "{{ appdata_path }}/prowlarr:/config"
+    ports:
+      - 9696:9696
+    environment:
+      - UID={{ main_uid }}
+      - GID={{ main_gid }}
+      - PUID={{ main_uid }}
+      - PGID={{ main_gid }}
+      - TZ={{ ntp_timezone }}
+    networks:
+      - arr-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+  sabnzbd:
+    image: ghcr.io/linuxserver/sabnzbd:4.5.5
+    container_name: sabnzbd
+    volumes:
+      - "{{ appdata_path }}/sabnzb:/config"
+      - /mnt/scratch/complete:/downloads
+      - /mnt/scratch/incomplete:/incomplete-downloads
+    ports:
+      - 8060:8080
+      - 9080:9090
+    environment:
+      - UID={{ main_uid }}
+      - GID={{ main_gid }}
+      - PUID={{ main_uid }}
+      - PGID={{ main_gid }}
+      - TZ={{ ntp_timezone }}
+    networks:
+      - arr-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+  seerr:
+    image: ghcr.io/seerr-team/seerr:v3.2.0
+    init: true
+    container_name: seerr
+    environment:
+      - TZ={{ ntp_timezone }}
+    ports:
+      - 5055:5055
+    volumes:
+      - "{{ appdata_path }}/seerr:/app/config"
+    networks:
+      - seerr-net
+    security_opt:
+      - no-new-privileges:true
+    restart: always
+
+networks:
+  arr-net:
+  seerr-net:

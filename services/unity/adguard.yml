@@ -1,0 +1,22 @@
+services:
+  adguard:
+    image: adguard/adguardhome:v0.107.74
+    container_name: adguard
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - "{{ appdata_path }}/adguard/conf:/opt/adguardhome/conf"
+      - "{{ appdata_path }}/adguard/work:/opt/adguardhome/work"
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+      - 853:853/tcp
+      - 81:80/tcp
+      - 444:443/tcp
+      - 3000:3000/tcp
+    networks:
+      - adguard-net
+    restart: unless-stopped
+
+networks:
+  adguard-net:

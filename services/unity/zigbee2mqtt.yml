@@ -1,0 +1,21 @@
+services:
+  zigbee2mqtt:
+    image: ghcr.io/koenkk/zigbee2mqtt:2.9.2
+    container_name: zigbee2mqtt
+    devices:
+      - /dev/zigbee:/dev/zigbee
+    volumes:
+      - "{{ appdata_path }}/zigbee2mqtt:/app/data"
+      - /run/udev:/run/udev:ro
+    ports:
+      - 8080:8080
+    environment:
+      - TZ={{ ntp_timezone }}
+    networks:
+      - zigbee2mqtt-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  zigbee2mqtt-net:

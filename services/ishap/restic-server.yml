@@ -1,0 +1,16 @@
+services:
+  restic-server:
+    image: restic/rest-server:0.14.0
+    container_name: restic-server
+    volumes:
+      - /mnt/Backup/restic:/data
+    ports:
+      - 8500:8000
+    networks:
+      - restic-server-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  restic-server-net:

@@ -1,0 +1,10 @@
+services:
+  esphome:
+    image: ghcr.io/esphome/esphome:2026.4.0
+    container_name: esphome
+    network_mode: host
+    volumes:
+      - "{{ appdata_path }}/esphome:/config"
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped

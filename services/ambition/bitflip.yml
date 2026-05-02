@@ -1,0 +1,46 @@
+services:
+  bitbot:
+    image: fuzzymistborn/bitbot:latest
+    container_name: bitbot
+    restart: unless-stopped
+    build:
+      context: ./bitbot
+      dockerfile: Dockerfile
+    volumes:
+      - "{{ appdata_path }}/bitbot:/app/data"
+    environment:
+      - DISCORD_TOKEN={{ secret_bitbot_discord_token }}
+      - GUILD_ID={{ secret_bitbot_discord_server_id }}
+      - ANNOUNCEMENT_CHANNEL_ID={{ secret_bitbot_discord_channel_id }}
+      - HOST_ROLE_IDS={{ secret_bitbot_discord_host_id }}
+      - HOSTS_CHANNEL_ID={{ secret_bitbot_discord_host_channel }}
+      - RSS_FEED_URL=https://bitflip.show/rss.xml
+      - POLL_INTERVAL_MINUTES=15
+      - ANNOUNCEMENT_MESSAGE=🎙 **New episode of BitFlip just dropped!**
+      - NOTIFICATION_ROLE_ID={{ secret_bitbot_discord_notification_id }}
+      - NOTIFICATION_SIGNUP_CHANNEL_ID={{ secret_bitbot_discord_notification_channel }}
+      - SHOW_TOPICS_CHANNEL_ID={{ secret_bibot_discord_topic_channel }}
+      - TZ={{ ntp_timezone }}
+      - REMINDER_CRON=30 19 * * 3
+    networks:
+      - bitbot-net
+    security_opt:
+      - no-new-privileges:true
+  bitflip-mastodon:
+    image: fuzzymistborn/rss2mastodon:latest
+    container_name: bitflip-mastodon
+    build:
+      context: ./mastodon
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      - "{{ appdata_path }}/bitflip-mastodon/posted.txt:/app/posted.txt"
+      - "{{ appdata_path }}/bitflip-mastodon/config.py:/app/config.py"
+    networks:
+      - bitflip-mastodon-net
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  bitbot-net:
+  bitflip-mastodon-net:

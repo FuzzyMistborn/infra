@@ -1,0 +1,19 @@
+services:
+  hawser:
+    image: ghcr.io/finsys/hawser:0.2.40
+    container_name: hawser
+    volumes:
+      - "{{ appdata_path }}/hawser:/data/stacks"
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 2376:2376
+    environment:
+      - TOKEN={{ secret_hawser_key }}
+    networks:
+      - hawser-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  hawser-net:

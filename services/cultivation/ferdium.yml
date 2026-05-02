@@ -1,0 +1,31 @@
+services:
+  ferdium-server:
+    image: ghcr.io/ferdium/ferdium-server:2.0.13
+    container_name: ferdium-server
+    volumes:
+      - "{{ appdata_path }}/ferdium/data:/data"
+      - "{{ appdata_path }}/ferdium/app:/app/recipes"
+    ports:
+      - 3333:3333
+    environment:
+      - NODE_ENV=production
+      - APP_URL=https://ferdium.{{ secret_personal_url }}
+      - DB_CONNECTION=sqlite
+      - SMTP_HOST={{ secret_snapraid_smtp_host }}
+      - SMTP_PORT=465
+      - MAIL_SSL=true
+      - MAIL_USERNAME={{ secret_snapraid_email_address }}
+      - MAIL_PASSWORD={{ secret_snapraid_email_pass }}
+      - MAIL_SENDER={{ secret_vaultwarden_email }}
+      - IS_CREATION_ENABLED=true
+      - IS_DASHBOARD_ENABLED=true
+      - IS_REGISTRATION_ENABLED=false
+      - CONNECT_WITH_FRANZ=false
+    networks:
+      - ferdium-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  ferdium-net:

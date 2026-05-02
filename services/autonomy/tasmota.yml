@@ -1,0 +1,16 @@
+services:
+  tasmota:
+    image: ghcr.io/tasmoadmin/tasmoadmin:v5.0.0
+    container_name: tasmota
+    volumes:
+      - "{{ appdata_path }}/tasmota:/data"
+    ports:
+      - 5555:80
+    networks:
+      - tasmota-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  tasmota-net:

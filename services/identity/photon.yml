@@ -1,0 +1,18 @@
+services:
+  photon:
+    image: ghcr.io/rtuszik/photon-docker:0.7.0-rev.3
+    container_name: photon
+    environment:
+      - COUNTRY_CODE=us
+    volumes:
+      - /mnt/external_data/photon:/photon/photon_data
+    restart: unless-stopped
+    ports:
+      - 2322:2322
+    networks:
+      - dawarich-net
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  dawarich-net:

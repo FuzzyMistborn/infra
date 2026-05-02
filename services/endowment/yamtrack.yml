@@ -1,0 +1,32 @@
+services:
+  yamtrack:
+    image: ghcr.io/fuzzygrim/yamtrack:0.25.2
+    container_name: yamtrack
+    ports:
+      - 8000:8000
+    depends_on:
+      - yamtrack-redis
+    volumes:
+      - "{{ appdata_path }}/yamtrack/db:/yamtrack/db"
+    environment:
+      - TZ={{ ntp_timezone }}
+      - SECRET=lztZqfM2Ac5MFoZ86hn7mw+pGretDlfb9A==
+      - REDIS_URL=redis://yamtrack-redis:6379
+    networks:
+      - yamtrack-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+  yamtrack-redis:
+    container_name: yamtrack-redis
+    image: redis:8.6.2-alpine
+    restart: unless-stopped
+    volumes:
+      - "{{ appdata_path }}/yamtrack/redis:/data"
+    networks:
+      - yamtrack-net
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  yamtrack-net:

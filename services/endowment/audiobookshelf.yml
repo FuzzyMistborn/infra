@@ -1,0 +1,24 @@
+services:
+  audiobookshelf:
+    image: ghcr.io/advplyr/audiobookshelf:2.33.1
+    container_name: audiobookshelf
+    volumes:
+      - "{{ appdata_path }}/audiobookshelf/config:/config"
+      - "{{ appdata_path }}/audiobookshelf/metadata:/metadata"
+      - /mnt/Media/Audiobooks:/audiobooks
+    ports:
+      - 13378:80
+    environment:
+      - UID={{ main_uid }}
+      - GID={{ main_gid }}
+      - PUID={{ main_uid }}
+      - PGID={{ main_gid }}
+      - TZ={{ ntp_timezone }}
+    networks:
+      - audiobookshelf-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  audiobookshelf-net:

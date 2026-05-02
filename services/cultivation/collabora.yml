@@ -1,0 +1,23 @@
+services:
+  collabora:
+    image: collabora/code:25.04.9.4.1
+    container_name: collabora
+    privileged: true
+    cap_add:
+      - MKNOD
+    ports:
+      - 9980:9980
+    environment:
+      - username=admin
+      - password={{ secret_collabora_pw }}
+      - domain={{ secret_collabora_url }}
+      - server_name=office.{{ secret_personal_url }}
+      - dictionaries=en_US
+    networks:
+      - collabora-net
+    mem_limit: 1000M
+    memswap_limit: 1000M
+    restart: unless-stopped
+
+networks:
+  collabora-net:

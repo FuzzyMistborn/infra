@@ -1,0 +1,21 @@
+services:
+  zwavejs:
+    image: ghcr.io/zwave-js/zwave-js-ui:11.16.0
+    container_name: zwavejs
+    devices:
+      - /dev/zwave:/dev/zwave
+    volumes:
+      - "{{ appdata_path }}/zwavejs:/usr/src/app/store"
+    ports:
+      - 8091:8091
+      - 3500:3000
+    environment:
+      - TZ={{ ntp_timezone }}
+    networks:
+      - zwavejs-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  zwavejs-net:

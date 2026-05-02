@@ -1,0 +1,23 @@
+services:
+  booklore-db:
+    image: mariadb:12.2.2
+    container_name: booklore-db
+    volumes:
+      - "{{ appdata_path }}/booklore_db:/var/lib/mysql"
+    ports:
+      - 3310:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD={{ secret_db_root_pass }}
+      - MYSQL_DATABASE=booklore
+      - MYSQL_USER=booklore
+      - MYSQL_PASSWORD={{ secret_booklore_db_pass }}
+    networks:
+      - booklore-db-net
+    mem_limit: 300M
+    memswap_limit: 300M
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  booklore-db-net:

@@ -1,0 +1,25 @@
+services:
+  pairdrop:
+    image: lscr.io/linuxserver/pairdrop:1.11.2
+    container_name: pairdrop
+    volumes:
+      - "{{ appdata_path }}/pairdrop:/opt/pairdrop"
+    ports:
+      - 127.0.0.1:3200:3000
+    environment:
+      - UID={{ main_uid }}
+      - GID={{ main_gid }}
+      - PUID={{ main_uid }}
+      - PGID={{ main_gid }}
+      - TZ={{ ntp_timezone }}
+      - RATE_LIMIT=false
+      - WS_FALLBACK=true
+      - RTC_CONFIG=/opt/pairdrop/rtc.json
+    networks:
+      - pairdrop-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  pairdrop-net:

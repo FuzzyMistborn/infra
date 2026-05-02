@@ -1,0 +1,29 @@
+services:
+  handbrake:
+    image: ghcr.io/jlesage/handbrake:v26.03.3
+    container_name: handbrake
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128
+    volumes:
+      - "{{ appdata_path }}/handbrake/config:/config"
+      - "{{ appdata_path }}/handbrake/storage:/storage"
+      - /mnt/Media/Movies/1-Processing/Handbrake/Watch:/watch
+      - /mnt/Media/Movies/1-Processing/Handbrake/Output:/output
+      - "/mnt/Media/Kids Movies:/stuff/kids_movies:ro"
+      - "/mnt/Media/Kids TV:/stuff/kids_tv:ro"
+      - "/mnt/Media/Movies:/stuff/movies:ro"
+      - "/mnt/Media/TV Shows:/stuff/tv:ro"
+    ports:
+      - 5800:5800
+    environment:
+      - TZ={{ ntp_timezone }}
+      - USER_ID=1001
+      - GROUP_ID=1001
+    networks:
+      - handbrake-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  handbrake-net:

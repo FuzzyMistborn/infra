@@ -1,0 +1,40 @@
+services:
+  firefox:
+    image: lscr.io/linuxserver/firefox:1149.0.2
+    container_name: firefox
+    devices:
+      - /dev/dri:/dev/dri
+    environment:
+      - AUTO_GPU=true
+      - PUID=1000
+      - PGID=1000
+      - TZ={{ ntp_timezone }}
+    volumes:
+      - "{{ appdata_path }}/firefox/config:/config"
+    ports:
+      - 192.168.50.24:3000:3000
+      - 192.168.50.24:3001:3001
+    shm_size: "1gb"
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+  tailscale:
+    image: ghcr.io/tailscale/tailscale:v1.96.5
+    container_name: tailscale
+    network_mode: service:firefox
+    privileged: true
+    cap_add:
+      - net_admin
+      - sys_module
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    volumes:
+      - "{{ appdata_path }}/tailscale/config:/config"
+      - "{{ appdata_path }}/tailscale/state:/var/lib/tailscale"
+    environment:
+      - TS_HOSTNAME=whimsy
+      - TS_EXTRA_ARGS= --accept-routes
+      - TS_ACCEPT_DNS=true
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_USERSPACE=false
+    restart: unless-stopped

@@ -1,0 +1,10 @@
+services:
+  matter-server:
+    image: ghcr.io/home-assistant-libs/python-matter-server:8.1.0
+    container_name: matter-server
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - "{{ appdata_path }}/matter-server/data:/data/"
+    security_opt:
+      - no-new-privileges:true

@@ -1,0 +1,23 @@
+services:
+  ha-db:
+    image: pgautoupgrade/pgautoupgrade:18.3-alpine
+    container_name: ha-db
+    volumes:
+      - "{{ appdata_path }}/ha-db/data:/var/lib/postgresql"
+    ports:
+      - 5434:5432
+    environment:
+      - POSTGRES_DB=homeassistant
+      - POSTGRES_USER=homeassistant
+      - POSTGRES_PASSWORD={{ secret_ha_db_pass }}
+      - POSTGRES_INITDB_ARGS='--encoding=UTF-8'
+    networks:
+      - ha-db-net
+    mem_limit: 300M
+    memswap_limit: 300M
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  ha-db-net:

@@ -1,0 +1,31 @@
+services:
+  vaultwarden:
+    image: ghcr.io/dani-garcia/vaultwarden:1.35.7
+    container_name: vaultwarden
+    volumes:
+      - "{{ appdata_path }}/vaultwarden/data:/data"
+    ports:
+      - 6482:80
+    environment:
+      - SMTP_HOST={{ secret_snapraid_smtp_host }}
+      - SMTP_FROM={{ secret_vaultwarden_email }}
+      - SMTP_PORT=465
+      - SMTP_SECURITY=force_tls
+      - SMTP_USERNAME={{ secret_snapraid_email_address }}
+      - SMTP_PASSWORD={{ secret_snapraid_email_pass }}
+      - ADMIN_TOKEN={{ secret_vaultwarden_token }}
+      - WEBSOCKET_ENABLED=false  # Required to use websockets
+      - SIGNUPS_ALLOWED=false  # set to false to disable signups
+      - LOG_FILE=/data/log/vaultwarden.log
+      - LOG_LEVEL=warn
+      - EXTENDED_LOGGING=true
+      - DATABASE_URL={{ secret_vaultwarden_db_url }}
+      - DOMAIN={{ secret_vaultwarden_url }}
+    networks:
+      - vaultwarden-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  vaultwarden-net:
