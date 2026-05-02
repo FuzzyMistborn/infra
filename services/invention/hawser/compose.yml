@@ -1,6 +1,6 @@
 services:
   hawser:
-    image: ghcr.io/finsys/hawser:0.2.40
+    image: ghcr.io/finsys/hawser:0.2.41
     container_name: hawser
     volumes:
       - "{{ appdata_path }}/hawser:/data/stacks"
