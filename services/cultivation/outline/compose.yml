@@ -1,6 +1,6 @@
 services:
   outline:
-    image: outlinewiki/outline:1.6.1
+    image: outlinewiki/outline:1.7.0
     container_name: outline
     ports:
       - "3600:3000"
