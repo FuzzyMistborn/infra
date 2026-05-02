@@ -64,7 +64,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   recyclarr:
-    image: ghcr.io/recyclarr/recyclarr:8.5.1
+    image: ghcr.io/recyclarr/recyclarr:8.6.0
     container_name: recyclarr
     user: 1000:1000
     volumes:
