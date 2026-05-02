@@ -167,7 +167,7 @@ office.{{ secret_personal_url }} {
 }
 # Paperless
 paperless.{{ secret_personal_url }} {
-	reverse_proxy http://192.168.50.21:8000
+	reverse_proxy http://192.168.50.20:8100
 	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
 	import headers
 }

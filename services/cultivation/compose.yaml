@@ -95,39 +95,6 @@ services:
     mem_limit: 1000M
     memswap_limit: 1000M
     restart: unless-stopped
-  paperless-redis:
-    image: redis:8.6.2
-    container_name: paperless-redis
-    networks:
-      - paperless-net
-    security_opt:
-      - no-new-privileges:true
-    restart: unless-stopped
-  paperless:
-    image: ghcr.io/paperless-ngx/paperless-ngx:2.20.14
-    container_name: paperless
-    volumes:
-      - "{{ appdata_path }}/paperless/data:/usr/src/paperless/data"
-      - "{{ appdata_path }}/paperless/media:/usr/src/paperless/media"
-      - "{{ appdata_path }}/paperless/export:/usr/src/paperless/export"
-      - "{{ appdata_path }}/paperless/consume:/usr/src/paperless/consume"
-    ports:
-      - 8000:8000
-    environment:
-      - PAPERLESS_REDIS=redis://paperless-redis:6379
-      - PAPERLESS_TIME_ZONE={{ ntp_timezone }}
-      - PAPERLESS_URL=https://paperless.{{ secret_personal_url }}
-      - PAPERLESS_SECRET_KEY={{ secret_paperless_key }}
-      - PAPERLESS_FILENAME_FORMAT={added_year}/{document_type}/{title}
-      - USERMAP_UID={{ main_uid }}
-      - USERMAP_GID={{ main_gid }}
-      - PAPERLESS_APPS=allauth.socialaccount.providers.openid_connect
-      - PAPERLESS_SOCIALACCOUNT_PROVIDERS={"openid_connect":{"SCOPE":["openid","profile","email"],"OAUTH_PKCE_ENABLED":true,"APPS":[{"provider_id":"pocket-id","name":"Pocket-ID","client_id":"{{ secret_paperless_pocket_id_user }}","secret":"{{ secret_paperless_pocket_id_key }}","settings":{"server_url":"https://id.{{ secret_personal_url }}"}}]}}
-    networks:
-      - paperless-net
-    security_opt:
-      - no-new-privileges:true
-    restart: unless-stopped
   invidious:
     image: quay.io/invidious/invidious:latest
     container_name: invidious
@@ -491,7 +458,6 @@ networks:
   vaultwarden-net:
   freshrss-net:
   collabora-net:
-  paperless-net:
   invidious-net:
   diagrams-net:
   bentopdf-net:
