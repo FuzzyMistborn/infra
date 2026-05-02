@@ -1,6 +1,6 @@
 services:
   linkwarden:
-    image: ghcr.io/linkwarden/linkwarden:v2.14.0
+    image: ghcr.io/linkwarden/linkwarden:v2.14.1
     container_name: linkwarden
     ports:
       - 3000:3000
