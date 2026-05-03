@@ -1,6 +1,6 @@
 services:
   nextcloud:
-    image: ghcr.io/fuzzymistborn/nextcloud-docker:33.0.2
+    image: ghcr.io/fuzzymistborn/nextcloud-docker:33.0.3
     container_name: nextcloud
     volumes:
       - "{{ appdata_path }}/nextcloud_docker/html:/var/www/html"
