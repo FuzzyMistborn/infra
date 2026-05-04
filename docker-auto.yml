@@ -12,7 +12,7 @@
     - name: Get changed images from git
       shell: |
         cd {{ playbook_dir }}
-        git diff HEAD@{1} HEAD -- services/*/compose.yaml services/*/compose.yml 2>/dev/null | \
+        git diff HEAD@{1} HEAD -- services/*/*/compose.yaml services/*/*/compose.yml 2>/dev/null | \
         grep -E '^\+.*image:' | \
         sed 's/^+.*image: //' | \
         sed 's/\"//g' | \
@@ -44,13 +44,10 @@
         cd {{ playbook_dir }}
         HOST="{{ item }}"
 
-        # Find compose file
-        compose_file="services/$HOST/compose.yaml"
-        if [ ! -f "$compose_file" ]; then
-          compose_file="services/$HOST/compose.yml"
-        fi
+        # Find all compose files for this host
+        compose_files=$(find "services/$HOST" \( -name "compose.yml" -o -name "compose.yaml" \) 2>/dev/null | sort | tr '\n' ' ')
 
-        if [ ! -f "$compose_file" ]; then
+        if [ -z "$compose_files" ]; then
           exit 0
         fi
 
@@ -67,7 +64,7 @@
               print service
             }
           }
-        ' "$compose_file")
+        ' $compose_files)
 
         if [ -n "$service_names" ]; then
           containers="$containers $service_names"
