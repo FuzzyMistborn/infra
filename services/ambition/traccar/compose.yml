@@ -1,6 +1,6 @@
 services:
   traccar:
-    image: traccar/traccar:6.13.0
+    image: traccar/traccar:6.13.2
     container_name: traccar
     ports:
       - 127.0.0.1:8082:8082
