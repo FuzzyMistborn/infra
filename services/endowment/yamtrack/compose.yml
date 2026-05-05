@@ -19,7 +19,7 @@ services:
     restart: unless-stopped
   yamtrack-redis:
     container_name: yamtrack-redis
-    image: redis:8.6.2-alpine
+    image: redis:8.6.3-alpine
     restart: unless-stopped
     volumes:
       - "{{ appdata_path }}/yamtrack/redis:/data"

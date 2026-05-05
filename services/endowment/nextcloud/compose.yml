@@ -21,7 +21,7 @@ services:
     memswap_limit: 1000M
     restart: unless-stopped
   nextcloud-redis:
-    image: redis:8.6.2
+    image: redis:8.6.3
     container_name: nextcloud-redis
     networks:
       - nextcloud-net
