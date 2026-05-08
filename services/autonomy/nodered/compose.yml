@@ -1,6 +1,6 @@
 services:
   nodered:
-    image: nodered/node-red:4.1.8
+    image: nodered/node-red:4.1.10
     container_name: nodered
     volumes:
       - "{{ appdata_path }}/nodered:/data"
