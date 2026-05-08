@@ -1,0 +1,39 @@
+  luna-frontend:
+    container_name: luna-frontend
+    image: tiritibambix/lunafrontend:latest
+    ports:
+      - "8180:8080"
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      PORT: 8080
+      PUBLIC_URL: https://cal.{{ secret_internal_url }}
+      API_URL: http://luna-backend:3000
+  luna-backend:
+    container_name: luna-backend
+    image: tiritibambix/lunabackend:latest
+    volumes:
+      - "{{ appdata_path }}/luna/data:/data"
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      PUBLIC_URL: https://cal.{{ secret_internal_url }}
+      DB_HOST: luna-db
+      DB_PORT: 5432
+      DB_USERNAME: luna
+      DB_PASSWORD: luna
+      DB_DATABASE: luna
+    depends_on:
+      - luna-db
+  luna-db:
+    image: pgautoupgrade/pgautoupgrade:18.3-alpine
+    container_name: luna-db
+    volumes:
+      - "{{ appdata_path }}/luna/db:/var/lib/postgresql"
+    ports:
+      - 5434:5432
+    environment:
+      - POSTGRES_DB=luna
+      - POSTGRES_USER=luna
+      - POSTGRES_PASSWORD=luna
