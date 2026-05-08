@@ -146,6 +146,7 @@
     - role: dominion
     - role: cronjobs
     - role: install/chezmoi
+    - role: install/lazygit
 
 - hosts: endowment
   become: true
@@ -183,6 +184,7 @@
     - role: install/docker-patch
     - role: docker-compose-generator
     - role: install/chezmoi
+    - role: install/lazygit
 
 - hosts: unity
   become: true
@@ -220,6 +222,7 @@
     - role: install/docker-patch
     - role: docker-compose-generator
     - role: install/chezmoi
+    - role: install/lazygit
 
 - hosts: whimsy
   become: true
@@ -371,6 +374,7 @@
     - role: install/crowdsec_bouncer
     - role: cronjobs
     - role: install/chezmoi
+    - role: install/lazygit
 
 - hosts: hoid
   become: true
@@ -387,3 +391,4 @@
     - role: desktop
     - role: cronjobs
     - role: install/chezmoi
+    - role: install/lazygit

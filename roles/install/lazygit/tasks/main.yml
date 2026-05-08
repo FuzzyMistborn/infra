@@ -1,0 +1,65 @@
+---
+
+- name: get status of lazygit_install_path
+  stat:
+    path: "{{ lazygit_install_path }}"
+  register: is_installed
+
+- name: set lazygit installed
+  set_fact:
+    lazygit_is_installed: "{{ is_installed.stat.exists }}"
+
+- name: check lazygit version
+  shell: "{{ lazygit_install_path }} --version | grep -oP 'version=\\K[^,]+'"
+  changed_when: false
+  register: installed_version_registered
+  when: lazygit_is_installed == True
+
+- name: get latest release
+  uri:
+    url: https://api.github.com/repos/jesseduffield/lazygit/releases/latest
+    url_username: "{{ github_api_user | default (omit) }}"
+    url_password: "{{ github_api_pass | default (omit) }}"
+    return_content: true
+    force_basic_auth: "{{ github_api_auth | default (omit) }}"
+  register: release_version_registered
+  when: lazygit_download_latest_ver == True
+
+- name: set lazygit version (latest)
+  set_fact:
+    lazygit_ver: "{{ release_version_registered.json.tag_name|regex_replace('v') }}"
+  when: lazygit_download_latest_ver == True
+
+- name: set lazygit version (pinned)
+  set_fact:
+    lazygit_ver: "{{ lazygit_pinned_ver }}"
+  when: lazygit_download_latest_ver == False
+
+- block:
+    - name: ensure lazygit_download_directory does not exist
+      file:
+        path: "{{ lazygit_download_directory }}"
+        state: absent
+
+    - name: create lazygit_download_directory
+      file:
+        path: "{{ lazygit_download_directory }}"
+        state: directory
+        mode: 0755
+
+    - name: download lazygit
+      unarchive:
+        src: "{{ lazygit_gh_url }}v{{ lazygit_ver }}/lazygit_{{ lazygit_ver }}_{{ lazygit_distro }}.tar.gz"
+        dest: "{{ lazygit_download_directory }}"
+        remote_src: yes
+        owner: root
+        group: root
+        mode: +x
+
+    - name: move to lazygit path
+      copy:
+        src: "{{ lazygit_download_directory }}/lazygit"
+        dest: "{{ lazygit_install_directory }}"
+        remote_src: yes
+        mode: +x
+  when: lazygit_is_installed == False or ( lazygit_is_installed == True and lazygit_download_latest_ver == True and installed_version_registered.stdout != lazygit_ver ) or ( lazygit_is_installed == True and lazygit_download_latest_ver == False and installed_version_registered.stdout != lazygit_pinned_ver )

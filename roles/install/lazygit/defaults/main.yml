@@ -1,0 +1,11 @@
+---
+
+lazygit_download_latest_ver: true  # Change to 'false' to pin to a specific version
+lazygit_pinned_ver: 0.61.1  # Overriden by 'lazygit_download_latest_ver' variable
+lazygit_distro: linux_x86_64
+
+lazygit_gh_url: https://github.com/jesseduffield/lazygit/releases/download/
+lazygit_download_directory: "/tmp/lazygit"
+
+lazygit_install_directory: /usr/local/bin
+lazygit_install_path: "{{ lazygit_install_directory }}/lazygit"
