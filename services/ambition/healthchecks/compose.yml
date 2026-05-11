@@ -1,6 +1,6 @@
 services:
   healthchecks:
-    image: ghcr.io/linuxserver/healthchecks:4.2.20260428
+    image: ghcr.io/linuxserver/healthchecks:4.2.20260511
     container_name: healthchecks
     volumes:
       - "{{ appdata_path }}/healthchecks/config:/config"
