@@ -20,7 +20,7 @@ services:
     container_name: llama-swap
     volumes:
       - /mnt/llms/models:/models:ro
-      - "{{ appdata_path }}llama/config.yml:/app/config.yml:ro
+      - "{{ appdata_path }}llama/config.yml:/app/config.yml:ro"
     ports:
       - 8080:8080
     runtime: nvidia
