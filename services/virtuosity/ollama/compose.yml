@@ -15,6 +15,23 @@ services:
     security_opt:
       - no-new-privileges:true
     restart: unless-stopped
+  llama-swap:
+    image: ghcr.io/mostlygeek/llama-swap:unified-cuda
+    container_name: llama-swap
+    volumes:
+      - /mnt/llms/models:/models:ro
+      - "{{ appdata_path }}llama/config.yml:/app/config.yml:ro
+    ports:
+      - 8080:8080
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    networks:
+      - llama-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
   open-webui:
     image: ghcr.io/open-webui/open-webui:v0.9.2
     container_name: open-webui
@@ -26,11 +43,14 @@ services:
       - 3010:8080
     environment:
       - WEBUI_SECRET_KEY={{ secret_webui_secret_key }}
+      - OPENAI_API_BASE_URL=http://llama-swap:8080/v1
+      - OPENAI_API_KEY=none
     networks:
-      - ollama-net
+      - llama-net
     security_opt:
       - no-new-privileges:true
     restart: unless-stopped
 
 networks:
   ollama-net:
+  llama-net:
