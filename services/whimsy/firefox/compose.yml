@@ -1,6 +1,6 @@
 services:
   firefox:
-    image: lscr.io/linuxserver/firefox:1150.0.1
+    image: lscr.io/linuxserver/firefox:1150.0.3
     container_name: firefox
     devices:
       - /dev/dri:/dev/dri
