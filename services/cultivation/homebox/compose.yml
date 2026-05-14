@@ -35,6 +35,21 @@ services:
       - homebox-net
     security_opt:
       - no-new-privileges:true
-
+  homebox-companion:
+    image: ghcr.io/duelion/homebox-companion:latest
+    container_name: homebox-companion
+    restart: unless-stopped
+    environment:
+      - HBC_HOMEBOX_URL=http://homebox:7745
+      - HBC_LLM_API_KEY=bloop
+      - HBC_LLM_API_BASE=http://192.168.50.25:8080/v1
+      - HBC_LLM_MODEL=openai/gemma-4-e4b
+      - HBC_LLM_ALLOW_UNSAFE_MODELS=true
+    ports:
+      - 8200:8000
+    networks:
+      - homebox-net
+    security_opt:
+      - no-new-privileges:true
 networks:
   homebox-net:

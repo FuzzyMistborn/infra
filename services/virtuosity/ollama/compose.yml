@@ -1,26 +1,10 @@
 services:
-  ollama-server:
-    image: ollama/ollama:0.23.0
-    container_name: ollama-server
-    volumes:
-      - /mnt/llms/ollama:/root/.ollama
-    ports:
-      - 11434:11434
-    runtime: nvidia
-    environment:
-      - NVIDIA_VISIBLE_DEVICES=all
-      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
-    networks:
-      - ollama-net
-    security_opt:
-      - no-new-privileges:true
-    restart: unless-stopped
   llama-swap:
-    image: ghcr.io/mostlygeek/llama-swap:unified-cuda
+    image: ghcr.io/mostlygeek/llama-swap:unified-cuda-2026-05-13
     container_name: llama-swap
     volumes:
       - /mnt/llms/models:/models:ro
-      - "{{ appdata_path }}llama/config.yml:/app/config.yml:ro"
+      - "{{ appdata_path }}/llama/config.yml:/etc/llama-swap/config/config.yaml:ro"
     ports:
       - 8080:8080
     runtime: nvidia
@@ -38,7 +22,7 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
     volumes:
-      - "{{ appdata_path }}/ollama-webui:/app/backend/data"
+      - "{{ appdata_path }}/open-webui:/app/backend/data"
     ports:
       - 3010:8080
     environment:
@@ -52,5 +36,4 @@ services:
     restart: unless-stopped
 
 networks:
-  ollama-net:
   llama-net:

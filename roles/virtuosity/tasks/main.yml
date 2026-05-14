@@ -48,7 +48,6 @@
   loop:
     - docker
     - docker/immich
-    - docker/ollama
 
 ### GPU
 - name: Add Nvidia PPA repo

@@ -15,8 +15,9 @@ services:
       - KEYCLOAK_ISSUER=https://id.{{ secret_personal_url }}
       - KEYCLOAK_CLIENT_ID={{ secret_linkwarden_pocket_id_user }}
       - KEYCLOAK_CLIENT_SECRET={{ secret_linkwarden_pocket_id_key }}
-      - NEXT_PUBLIC_OLLAMA_ENDPOINT_URL=http://192.168.50.25:11434
-      - OLLAMA_MODEL=gemma3:latest
+      - CUSTOM_OPENAI_BASE_URL=192.168.50.25:8080/v1
+      - OPENAI_MODEL=emma-4-e4b
+      - OPENAI_API_KEY=
 #      - ANTHROPIC_API_KEY={{ secret_linkwarden_anthropic_api_key }}
 #      - ANTHROPIC_MODEL=claude-3-5-haiku-latest
     volumes:
