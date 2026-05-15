@@ -28,6 +28,33 @@ services:
     security_opt:
       - no-new-privileges:true
     restart: unless-stopped
+  freshrss-digest:
+    image: ghcr.io/fuzzymistborn/freshrss-digest:latest
+    container_name: freshrss-digest
+    environment:
+      - FRESHRSS_URL=http://freshrss:80
+      - FRESHRSS_USER={{ main_username }}
+      - FRESHRSS_API_PASS={{ secret_freshrss_api_pass }}
+      - FEED_ID=user/-/label/BitFlip
+      - LLAMACPP_URL=http://192.168.50.25:8080
+      - LLAMACPP_MODEL=gemma-4-e4b
+      - SUMMARY_MAX_WORDS=100
+      - SMTP_HOST={{ secret_snapraid_smtp_host }}
+      - SMTP_PORT=587
+      - SMTP_USER={{ secret_snapraid_email_from }}
+      - SMTP_PASS=Economy.Pushup.Untold7
+      - SMTP_FROM={{ secret_snapraid_email_from }}
+      - SMTP_TO={{ secret_email }}
+      - SMTP_USE_TLS=false
+      - CRON_SCHEDULE=0 7 * * *
+      - TZ={{ ntp_timezone }}
+      - RUN_ON_START=false
+      - MAX_ARTICLES=40
+    networks:
+      - freshrss-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
 
 networks:
   freshrss-net:
