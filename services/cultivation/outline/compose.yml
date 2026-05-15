@@ -5,7 +5,7 @@ services:
     ports:
       - "3600:3000"
     volumes:
-      - /home/geoff/docker/outline/data:/var/lib/outline/data
+      - "{{ appdata_path }}/outline/data:/var/lib/outline/data"
     environment:
       - NODE_ENV=production
       - SECRET_KEY={{ secret_outline_secret_key }}
