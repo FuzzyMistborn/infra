@@ -94,7 +94,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   sabnzbd:
-    image: ghcr.io/linuxserver/sabnzbd:5.0.1
+    image: ghcr.io/linuxserver/sabnzbd:5.0.3
     container_name: sabnzbd
     volumes:
       - "{{ appdata_path }}/sabnzb:/config"
