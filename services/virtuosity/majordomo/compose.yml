@@ -10,13 +10,14 @@ services:
       - SIGNAL_API_URL=http://192.168.30.5:8080
       - SIGNAL_SENDER_NUMBER={{ secret_majordomo_signal_sender }}
       - SIGNAL_ALLOWED_NUMBERS={{ secret_majordomo_signal_receivers }}
+      - SIGNAL_USER_MAP={{ secret_majordomo_signal_tg_map }}
       - LLAMACPP_HOST=http://192.168.50.25:8080/v1/
       - LLAMACPP_MODEL=gemma-4-e4b
       - HA_URL=https://smarthome.{{ secret_personal_url }}
       - HA_TOKEN={{ secret_majordomo_ha_token }}
       - HA_ALLOWED_DOMAINS=light,switch,input_boolean,climate,cover,fan,media_player
       - HA_WEATHER_ENTITY=weather.combined_weather
-      - CALDAV_URL=https://cloud.{{ secret_personal_url }}a/remote.php/dav
+      - CALDAV_URL=https://cloud.{{ secret_personal_url }}/remote.php/dav
       - CALDAV_USERNAME={{ main_username }}
       - CALDAV_PASSWORD={{ secret_majordomo_caldav_pw }}
       - CALDAV_CALENDARS={{ secret_majordomo_calendars }}

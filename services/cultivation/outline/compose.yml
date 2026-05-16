@@ -6,6 +6,7 @@ services:
       - "3600:3000"
     volumes:
       - "{{ appdata_path }}/outline/data:/var/lib/outline/data"
+    restart: unless-stopped
     environment:
       - NODE_ENV=production
       - SECRET_KEY={{ secret_outline_secret_key }}

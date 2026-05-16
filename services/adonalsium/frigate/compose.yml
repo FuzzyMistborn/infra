@@ -20,7 +20,7 @@ services:
       - FRIGATE_RTSP_PASSWORD='password'
       - PLUS_API_KEY={{ secret_frigate_plus_api }}
       - FRIGATE_JWT_SECRET={{ secret_frigate_jwt }}
-    shm_size: 250mb
+    shm_size: 512mb
     tmpfs:
       - /tmp/cache
     networks:

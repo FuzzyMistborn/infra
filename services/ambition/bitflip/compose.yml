@@ -36,6 +36,7 @@ services:
     volumes:
       - "{{ appdata_path }}/bitflip-mastodon/posted.txt:/app/posted.txt"
       - "{{ appdata_path }}/bitflip-mastodon/config.py:/app/config.py"
+      - "{{ appdata_path }}/bitflip-mastodon/intro_state.json:/app/intro_state.json"
     networks:
       - bitflip-mastodon-net
     security_opt:
