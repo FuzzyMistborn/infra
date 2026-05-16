@@ -1,6 +1,6 @@
 services:
   linkwarden-db:
-    image: pgautoupgrade/pgautoupgrade:18.3-alpine
+    image: pgautoupgrade/pgautoupgrade:18.4-alpine
     container_name: linkwarden-db
     volumes:
       - "{{ appdata_path }}/linkwarden/data:/var/lib/postgresql"

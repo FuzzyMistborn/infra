@@ -1,6 +1,6 @@
 services:
   vaultwarden-db:
-    image: pgautoupgrade/pgautoupgrade:18.3-alpine
+    image: pgautoupgrade/pgautoupgrade:18.4-alpine
     container_name: vaultwarden-db
     volumes:
       - "{{ appdata_path }}/vaultwarden-db/data:/var/lib/postgresql"
