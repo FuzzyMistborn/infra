@@ -5,7 +5,7 @@ services:
     ports:
       - "7912:8000"
     volumes:
-        - "{{ appdata_path}}/spoolman/data:/home/app/.local/share/spoolman"
+      - "{{ appdata_path}}/spoolman/data:/home/app/.local/share/spoolman"
     restart: unless-stopped
     environment:
       - TZ={{ ntp_timezone }}
