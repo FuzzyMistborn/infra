@@ -1,0 +1,35 @@
+storage: /home/{{ main_username }}/lego
+
+accounts:
+  default:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: "{{ secret_new_email }}"
+    keyType: EC256
+    acceptsTermsOfService: true
+
+challenges:
+  hetzner-dns:
+    dns:
+      provider: hetzner
+      resolvers:
+        - "9.9.9.9:53"
+
+certificates:
+  internal:
+    challenge: hetzner-dns
+    account: default
+    domains:
+      - "*.{{ secret_personal_internal_url }}"
+    renew:
+      days: 45
+  external:
+    challenge: hetzner-dns
+    account: default
+    domains:
+      - "*.{{ secret_personal_url }}"
+    renew:
+      days: 45
+
+hooks:
+  deploy:
+    command: '/home/{{ main_username }}/lego-deploy-hook.sh'

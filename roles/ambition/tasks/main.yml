@@ -96,7 +96,15 @@
   loop:
     - {src: 'db_backup.sh.j2', dest: 'db_backup.sh'}
     - {src: 'db_restore.sh.j2', dest: 'db_restore.sh'}
-    - {src: 'certs.sh.j2', dest: 'certs.sh'}
+    - {src: 'lego-deploy-hook.sh.j2', dest: 'lego-deploy-hook.sh'}
+
+- name: Copy lego config
+  template:
+    src: lego.yml.j2
+    dest: /home/{{ main_username }}/.lego.yml
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: '0600'
 
 ### Backup Restore
 - name: Create restore script

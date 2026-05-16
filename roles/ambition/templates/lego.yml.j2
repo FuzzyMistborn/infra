@@ -1,0 +1,47 @@
+storage: /home/{{ main_username }}/lego
+
+accounts:
+  fuzzymistborn:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: "fuzzy@fuzzymistborn.com"
+    keyType: EC256
+    acceptsTermsOfService: true
+  personal:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: "{{ secret_new_email }}"
+    keyType: EC256
+    acceptsTermsOfService: true
+
+challenges:
+  hetzner-dns:
+    dns:
+      provider: hetzner
+      resolvers:
+        - "9.9.9.9:53"
+
+certificates:
+  fuzzymistborn:
+    challenge: hetzner-dns
+    account: fuzzymistborn
+    domains:
+      - "*.fuzzymistborn.com"
+    renew:
+      days: 45
+  ci:
+    challenge: hetzner-dns
+    account: fuzzymistborn
+    domains:
+      - "*.ci.fuzzymistborn.com"
+    renew:
+      days: 45
+  personal:
+    challenge: hetzner-dns
+    account: personal
+    domains:
+      - "*.{{ secret_personal_url }}"
+    renew:
+      days: 45
+
+hooks:
+  deploy:
+    command: '/home/{{ main_username }}/scripts/lego-deploy-hook.sh'

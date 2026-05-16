@@ -16,7 +16,7 @@
     - docker
     - caddy
 
-- name: Copy certs script
+- name: Copy scripts
   template:
     src: "{{ item.src }}"
     dest: /home/{{ main_username }}/{{ item.dest }}
@@ -24,8 +24,16 @@
     group: "{{ main_username }}"
     mode: +x
   loop:
-    - {src: 'certs.sh.j2', dest: 'certs.sh'}
     - {src: 'ddns_vps.sh.j2', dest: 'ddns_vps.sh'}
+    - {src: 'lego-deploy-hook.sh.j2', dest: 'lego-deploy-hook.sh'}
+
+- name: Copy lego config
+  template:
+    src: lego.yml.j2
+    dest: /home/{{ main_username }}/.lego.yml
+    owner: "{{ main_username }}"
+    group: "{{ main_username }}"
+    mode: '0600'
 
 ### LEGO variable
 - name: populate /etc/environment

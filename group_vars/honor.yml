@@ -36,7 +36,7 @@ cronjobs:
     minute: 15
     hour: 0
   - name: Cert Update
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_honor_certs }} -- /home/{{ main_username }}/certs.sh
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_honor_certs }} -- /usr/local/bin/lego --config /home/{{ main_username }}/.lego.yml
     user: root
     minute: 0
     hour: 19

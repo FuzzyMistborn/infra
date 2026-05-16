@@ -1,71 +1,58 @@
 ---
-- name: Fix CrowdSec auth.log logrotate for Docker bind mount
-  hosts: all
-  become: true
 
-  tasks:
+- name: Remove /var/log/auth.log from rsyslog logrotate config
+  ansible.builtin.lineinfile:
+    path: /etc/logrotate.d/rsyslog
+    line: "/var/log/auth.log"
+    state: absent
 
-    - name: Remove /var/log/auth.log from rsyslog logrotate config
-      ansible.builtin.lineinfile:
-        path: /etc/logrotate.d/rsyslog
-        line: "/var/log/auth.log"
-        state: absent
-      notify: Verify rsyslog logrotate config
+- name: Ensure su directive exists in rsyslog logrotate config
+  ansible.builtin.lineinfile:
+    path: /etc/logrotate.d/rsyslog
+    insertafter: "^{"
+    line: "        su root adm"
+    state: present
 
-    - name: Ensure su directive exists in rsyslog logrotate config
-      ansible.builtin.lineinfile:
-        path: /etc/logrotate.d/rsyslog
-        insertafter: "^{"
-        line: "        su root adm"
-        state: present
+- name: Deploy auth.log logrotate config with copytruncate
+  ansible.builtin.copy:
+    dest: /etc/logrotate.d/auth-crowdsec
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      /var/log/auth.log {
+          su root adm
+          weekly
+          missingok
+          notifempty
+          compress
+          delaycompress
+          copytruncate
+      }
 
-    - name: Deploy auth.log logrotate config with copytruncate
-      ansible.builtin.copy:
-        dest: /etc/logrotate.d/auth-crowdsec
-        owner: root
-        group: root
-        mode: "0644"
-        content: |
-          /var/log/auth.log {
-              su root adm
-              weekly
-              missingok
-              notifempty
-              compress
-              delaycompress
-              copytruncate
-          }
+- name: Validate auth-crowdsec logrotate config (debug/dry-run)
+  ansible.builtin.command:
+    cmd: logrotate --debug /etc/logrotate.d/auth-crowdsec
+  register: logrotate_auth_debug
+  changed_when: false
 
-    - name: Validate auth-crowdsec logrotate config (debug/dry-run)
-      ansible.builtin.command:
-        cmd: logrotate --debug /etc/logrotate.d/auth-crowdsec
-      register: logrotate_auth_debug
-      changed_when: false
+- name: Show auth-crowdsec logrotate debug output
+  ansible.builtin.debug:
+    var: logrotate_auth_debug.stderr_lines
 
-    - name: Show auth-crowdsec logrotate debug output
-      ansible.builtin.debug:
-        var: logrotate_auth_debug.stderr_lines
+- name: Validate rsyslog logrotate config (debug/dry-run)
+  ansible.builtin.command:
+    cmd: logrotate --debug /etc/logrotate.d/rsyslog
+  register: logrotate_rsyslog_debug
+  changed_when: false
 
-    - name: Validate rsyslog logrotate config (debug/dry-run)
-      ansible.builtin.command:
-        cmd: logrotate --debug /etc/logrotate.d/rsyslog
-      register: logrotate_rsyslog_debug
-      changed_when: false
+- name: Show rsyslog logrotate debug output
+  ansible.builtin.debug:
+    var: logrotate_rsyslog_debug.stderr_lines
 
-    - name: Show rsyslog logrotate debug output
-      ansible.builtin.debug:
-        var: logrotate_rsyslog_debug.stderr_lines
-
-    - name: Check for permission errors in logrotate output
-      ansible.builtin.fail:
-        msg: "logrotate reported a permission error - check su directive"
-      when: >
-        'insecure permissions' in (logrotate_auth_debug.stderr | default('')) or
-        'insecure permissions' in (logrotate_rsyslog_debug.stderr | default(''))
-
-  handlers:
-
-    - name: Verify rsyslog logrotate config
-      ansible.builtin.command:
-        cmd: logrotate --debug /etc/logrotate.d/rsyslog
-      changed_when: false
+- name: Check for permission errors in logrotate output
+  ansible.builtin.fail:
+    msg: "logrotate reported a permission error - check su directive"
+  when: >
+    'insecure permissions' in (logrotate_auth_debug.stderr | default('')) or
+    'insecure permissions' in (logrotate_rsyslog_debug.stderr | default(''))

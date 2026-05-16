@@ -88,13 +88,13 @@
 books.{{ secret_personal_url }} {
 	reverse_proxy http://192.168.50.20:13378
 	encode gzip zstd
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/external.crt /home/{{ main_username }}/lego/certificates/external.key
 	import headers
 }
 # Bitwarden
 bitwarden.{{ secret_personal_url }} {
 	reverse_proxy http://192.168.50.21:6482
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/external.crt /home/{{ main_username }}/lego/certificates/external.key
 	import headers
 }
 # Nextcloud
@@ -103,7 +103,7 @@ calendar.{{ secret_personal_url }} {
 }
 cloud.{{ secret_personal_url }} {
 	reverse_proxy http://192.168.50.20:3491
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/external.crt /home/{{ main_username }}/lego/certificates/external.key
 	import headers
 	redir /.well-known/carddav /remote.php/dav 301
 	redir /.well-known/caldav /remote.php/dav 301
@@ -111,19 +111,19 @@ cloud.{{ secret_personal_url }} {
 # Ferdium
 ferdium.{{ secret_personal_url }} {
 	reverse_proxy http://192.168.50.21:3333
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/external.crt /home/{{ main_username }}/lego/certificates/external.key
 	import headers
 }
 # Pocket-ID
 id.{{ secret_personal_url }} {
 	reverse_proxy http://192.168.50.10:1411
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/external.crt /home/{{ main_username }}/lego/certificates/external.key
 	import headers
 }
 # Linkwarden
 linkwarden.{{ secret_personal_url }} {
 	reverse_proxy http://192.168.50.21:3000
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/external.crt /home/{{ main_username }}/lego/certificates/external.key
 	import headers
 }
 # Jellyfin
@@ -133,25 +133,25 @@ media.{{ secret_personal_url }} {
 		X-Frame-Options "SAMEORIGIN"
 		X-Forwarded-Host {host}
 	}
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/external.crt /home/{{ main_username }}/lego/certificates/external.key
 	import headers
 }
 # MCP
 mcp.{{ secret_personal_url }} {
 	reverse_proxy http://192.168.50.10:8086
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/external.crt /home/{{ main_username }}/lego/certificates/external.key
 	import headers
 }
 # Navidrome
 music.{{ secret_personal_url }} {
 	reverse_proxy http://192.168.50.20:4533
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/external.crt /home/{{ main_username }}/lego/certificates/external.key
 	import headers
 }
 # FreshRSS
 news.{{ secret_personal_url }} {
 	reverse_proxy http://192.168.50.21:8010
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/external.crt /home/{{ main_username }}/lego/certificates/external.key
 	import rss_headers
 }
 # Collabora
@@ -162,56 +162,56 @@ office.{{ secret_personal_url }} {
 			tls_insecure_skip_verify
 		}
 	}
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/external.crt /home/{{ main_username }}/lego/certificates/external.key
 	import headers
 }
 # Paperless
 paperless.{{ secret_personal_url }} {
 	reverse_proxy http://192.168.50.20:8100
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/external.crt /home/{{ main_username }}/lego/certificates/external.key
 	import headers
 }
 # Immich
 photos.{{ secret_personal_url }} {
 	reverse_proxy http://192.168.50.25:2283
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/external.crt /home/{{ main_username }}/lego/certificates/external.key
 	import headers
 }
 # Radarr
 radarr.{{ secret_personal_url }} {
 	reverse_proxy http://192.168.50.20:7878
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/external.crt /home/{{ main_username }}/lego/certificates/external.key
 	import headers
 }
 # Booklore
 read.{{ secret_personal_url }} {
 	reverse_proxy http://192.168.50.20:6060
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/external.crt /home/{{ main_username }}/lego/certificates/external.key
 	import headers
 }
 # RomM
 roms.{{ secret_personal_url }} {
 	reverse_proxy http://192.168.50.20:2500
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/external.crt /home/{{ main_username }}/lego/certificates/external.key
 	import headers
 	encode gzip zstd
 }
 # HomeAssistant
 smarthome.{{ secret_personal_url }} {
 	reverse_proxy http://192.168.30.5:8123
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/external.crt /home/{{ main_username }}/lego/certificates/external.key
 	import headers
 }
 # Sonarr
 sonarr.{{ secret_personal_url }} {
 	reverse_proxy http://192.168.50.20:8989
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/external.crt /home/{{ main_username }}/lego/certificates/external.key
 	import headers
 }
 # Invidious
 video.{{ secret_personal_url }} {
 	reverse_proxy http://192.168.50.21:3500
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/external.crt /home/{{ main_username }}/lego/certificates/external.key
 	import headers
 }
 
@@ -219,19 +219,19 @@ video.{{ secret_personal_url }} {
 # Adguard (Honor)
 adguard.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.10:81
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Adguard (Unity)
 adguard2.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.1.11:81
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Llama
 ai.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.25:3010
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Beszel
@@ -244,42 +244,42 @@ beszel.{{ secret_personal_internal_url }} {
 			read_timeout 360s
 		}
 	}
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Calibre
 calibre.{{ secret_personal_internal_url }} {
 	reverse_proxy 192.168.1.10:8085
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # ChangeDetection
 change.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.21:5000
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Dockhand
 docker.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.1.10:3500
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Diagrams.net
 draw.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.21:8080
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # ESPHome
 esphome.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.30.5:6052
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Firefox
 firefox.{{ secret_personal_internal_url }} {
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 	reverse_proxy 192.168.50.24:3001 {
 		transport http {
@@ -290,25 +290,25 @@ firefox.{{ secret_personal_internal_url }} {
 # Frigate
 frigate.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.1.10:8971
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Handbrake
 handbrake.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.24:5800
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Homebox
 homebox.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.21:7745
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Influx
 influx.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.22:8086
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Imports
@@ -329,60 +329,60 @@ import.{{ secret_personal_internal_url }} {
         root * /home/{{ main_username }}/import
         file_server
     }
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # MusicAssistant
 mass.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.30.5:8095
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # MXRoute
 mxroute.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.21:5001
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # MXRoute-Bitwarden
 mxbit.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.21:6123
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Nodered
 nodered.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.30.5:1880
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Trilium
 notes.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.21:8015
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Outline
 outline.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.21:3600
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # PDF
 pdf.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.21:8081
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Prowlarr
 prowlarr.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.20:9696
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Proxmox
 proxmox.{{ secret_personal_internal_url }} {
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 	reverse_proxy 192.168.1.10:8006 {
 		transport http {
@@ -393,79 +393,85 @@ proxmox.{{ secret_personal_internal_url }} {
 # Radarr UHD
 radarr_uhd.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.20:7879
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Seerr
 requests.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.20:5055
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Sabnzbd
 sabnzb.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.20:8060
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Scrutiny (Adonalsium)
 scrutiny.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.1.10:8080
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Scrutiny (Ishap)
 scrutiny2.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.1.5:8080
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
+	import headers
+}
+# Spoolman
+spoolman.{{ secret_personal_internal_url }} {
+	reverse_proxy http://192.168.50.21:7912
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Tasmota
 tasmota.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.30.5:5555
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Termix
 termix.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.1.10:8050
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Dawarich
 track.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.23:3000
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Traffic
 traffic.{{ secret_personal_internal_url }} {
 	file_server
 	root * /home/{{ main_username }}/web
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Uptime
 uptime.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.1.10:3001
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Yamtrack
 yamtrack.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.20:8000
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Z2MQTTT
 z2m.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.1.11:8080
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
 # Zwavejs
 zwavejs.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.1.11:8091
-	tls /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.crt /home/{{ main_username }}/lego/certificates/_.{{ secret_personal_internal_url }}.key
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
