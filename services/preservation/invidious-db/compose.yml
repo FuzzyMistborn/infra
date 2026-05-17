@@ -1,6 +1,6 @@
 services:
   invidious-db:
-    image: pgautoupgrade/pgautoupgrade:18.3-alpine
+    image: pgautoupgrade/pgautoupgrade:18.4-alpine
     container_name: invidious-db
     volumes:
       - "{{ appdata_path }}/invidious/data:/var/lib/postgresql"

@@ -1,6 +1,6 @@
 services:
   outline-db:
-    image: pgautoupgrade/pgautoupgrade:18.3-alpine
+    image: pgautoupgrade/pgautoupgrade:18.4-alpine
     container_name: outline-db
     volumes:
       - "{{ appdata_path }}/outline-db/data:/var/lib/postgresql"
