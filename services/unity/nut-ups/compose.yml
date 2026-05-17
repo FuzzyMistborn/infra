@@ -1,6 +1,6 @@
 services:
   nut-ups:
-    image: fuzzymistborn/nut-upsd:2.8.2
+    image: fuzzymistborn/nut-upsd:2.8.5
     container_name: nut-ups
     devices:
       - /dev/bus/usb:/dev/bus/usb
