@@ -1,6 +1,6 @@
 services:
   dawarich-app:
-    image: freikin/dawarich:1.7.5
+    image: freikin/dawarich:1.7.8
     container_name: dawarich-app
     volumes:
       - "{{ appdata_path }}/dawarich/public:/var/app/public"
@@ -83,7 +83,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   dawarich-sidekiq:
-    image: freikin/dawarich:1.7.5
+    image: freikin/dawarich:1.7.8
     container_name: dawarich-sidekiq
     volumes:
       - "{{ appdata_path }}/dawarich/public:/var/app/public"
