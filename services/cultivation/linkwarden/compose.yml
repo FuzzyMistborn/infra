@@ -28,7 +28,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   linkwarden-meilisearch:
-    image: getmeili/meilisearch:v1.42.1
+    image: getmeili/meilisearch:v1.43.1
     container_name: linkwarden-meilisearch
     restart: unless-stopped
     environment:
