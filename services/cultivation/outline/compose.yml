@@ -42,7 +42,7 @@ services:
     security_opt:
       - no-new-privileges:true
   outline-redis:
-    image: redis:8.6.2
+    image: redis:8.6.3
     container_name: outline-redis
     networks:
       - outline-net
