@@ -1,6 +1,6 @@
 services:
   woodpecker-github:
-    image: quay.io/woodpeckerci/woodpecker-server:v3.14.0
+    image: quay.io/woodpeckerci/woodpecker-server:v3.14.1
     container_name: woodpecker-github
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -26,7 +26,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   woodpecker-gitea:
-    image: quay.io/woodpeckerci/woodpecker-server:v3.14.0
+    image: quay.io/woodpeckerci/woodpecker-server:v3.14.1
     container_name: woodpecker-gitea
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
