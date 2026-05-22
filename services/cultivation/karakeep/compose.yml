@@ -1,0 +1,74 @@
+services:
+  karakeep:
+    image: ghcr.io/karakeep-app/karakeep:0.32.0
+    container_name: karakeep
+    restart: unless-stopped
+    volumes:
+      - "{{ appdata_path }}/karakeep/data:/data"
+    ports:
+      - 3400:3000
+    environment:
+      - MEILI_ADDR=http://karakeep-meilisearch:7700
+      - MEILI_MASTER_KEY={{ secret_karakeep_meilisearch_key }}
+      - NEXTAUTH_URL=https://links.{{ secret_personal_internal_url }}
+      - NEXTAUTH_SECRET={{ secret_karakeep_nextauth }}
+
+      - DISABLE_SIGNUPS=false
+      - DISABLE_PASSWORD_AUTH=false
+      - OAUTH_AUTO_REDIRECT=false
+      - OAUTH_PROVIDER_NAME=PocketID
+      - OAUTH_WELLKNOWN_URL=https://id.{{ secret_personal_url }}/.well-known/openid-configuration
+      - OAUTH_CLIENT_ID={{ secret_karakeep_pocket_id_user }}
+      - OAUTH_CLIENT_SECRET={{ secret_karakeep_pocket_id_key }}
+
+      - OPENAI_BASE_URL=http://192.168.50.25:8080/v1
+      - OPENAI_API_KEY=dummy
+      - INFERENCE_TEXT_MODEL=gemma-4-e4b
+      - INFERENCE_IMAGE_MODEL=gemma-4-e4b
+      - OCR_CACHE_DIR=/data/ocr-cache
+
+      - BROWSER_WEB_URL=http://karakeep-browser:9222
+      - DB_WAL_MODE=true
+      - CRAWLER_FULL_PAGE_SCREENSHOT=true
+      - CRAWLER_SCREENSHOT_TIMEOUT_SEC=20
+      - CRAWLER_STORE_PDF=true
+      - CRAWLER_FULL_PAGE_ARCHIVE=true
+      - LOG_LEVEL=notice
+      - DATA_DIR=/data
+    networks:
+      - karakeep-net
+    security_opt:
+      - no-new-privileges:true
+  karakeep-browser:
+    image: gcr.io/zenika-hub/alpine-chrome:124
+    container_name: karakeep-browser
+    restart: unless-stopped
+    command:
+      - --no-sandbox
+      - --disable-gpu
+      - --disable-dev-shm-usage
+      - --remote-debugging-address=0.0.0.0
+      - --remote-debugging-port=9222
+      - --hide-scrollbars
+    networks:
+      - karakeep-net
+  karakeep-meilisearch:
+    image: getmeili/meilisearch:v1.43.1
+    container_name: karakeep-meilisearch
+    restart: unless-stopped
+    mem_limit: 512m
+    memswap_limit: 512m
+    environment:
+      - MEILI_MASTER_KEY={{ secret_karakeep_meilisearch_key }}
+      - MEILI_EXPERIMENTAL_DUMPLESS_UPGRADE=true
+      - MEILI_NO_ANALYTICS=true
+      - MEILI_MAX_INDEXING_MEMORY=256Mb
+    volumes:
+      - "{{ appdata_path }}/karakeep/meili_data:/meili_data"
+    networks:
+      - karakeep-net
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  karakeep-net:

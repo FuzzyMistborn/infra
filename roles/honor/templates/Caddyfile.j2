@@ -120,12 +120,6 @@ id.{{ secret_personal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/external.crt /home/{{ main_username }}/lego/certificates/external.key
 	import headers
 }
-# Linkwarden
-linkwarden.{{ secret_personal_url }} {
-	reverse_proxy http://192.168.50.21:3000
-	tls /home/{{ main_username }}/lego/certificates/external.crt /home/{{ main_username }}/lego/certificates/external.key
-	import headers
-}
 # Jellyfin
 media.{{ secret_personal_url }} {
 	reverse_proxy http://192.168.50.24:8096
@@ -329,6 +323,12 @@ import.{{ secret_personal_internal_url }} {
         root * /home/{{ main_username }}/import
         file_server
     }
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
+	import headers
+}
+# Karakeep
+links.{{ secret_personal_internal_url }} {
+	reverse_proxy http://192.168.50.21:3400
 	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd /home/{{ main_username }}
-docker compose up -d nextcloud-db vaultwarden-db ha-db romm-db invidious-db linkwarden-db booklore-db influx-db
+docker compose up -d nextcloud-db vaultwarden-db ha-db romm-db invidious-db booklore-db influx-db
 
 sleep 30s
 echo Restoring Nextcloud DB
@@ -28,11 +28,6 @@ echo Restoring Invidious DB
 cd /home/{{ main_username }}/db_backups/invidious
 LAST_INVIDIOUS=$(ls -t | head -n 1)
 cat /home/{{ main_username }}/db_backups/invidious/$LAST_INVIDIOUS | docker exec -i invidious-db psql -U kemal -d invidious
-
-echo Restoring Linkwarden DB
-cd /home/{{ main_username }}/db_backups/linkwarden
-LAST_LINKWARDEN=$(ls -t | head -n 1)
-cat /home/{{ main_username }}/db_backups/linkwarden/$LAST_LINKWARDEN | docker exec -i linkwarden-db psql -U postgres -d postgres
 
 echo Restoring Outline DB
 cd /home/{{ main_username }}/db_backups/outline
