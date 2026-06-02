@@ -1,6 +1,6 @@
 services:
   romm-db:
-    image: mariadb:12.2.2
+    image: mariadb:12.3.2
     container_name: romm-db
     volumes:
       - "{{ appdata_path }}/romm_db:/var/lib/mysql"
