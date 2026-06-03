@@ -420,6 +420,12 @@ scrutiny2.{{ secret_personal_internal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
+# Snapmaker Fluidd
+snapmaker.{{ secret_personal_internal_url }} {
+	reverse_proxy http://192.168.30.89
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
+	import headers
+}
 # Spoolman
 spoolman.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.21:7912
