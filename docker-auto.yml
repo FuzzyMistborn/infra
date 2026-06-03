@@ -33,7 +33,7 @@
 
     - name: Get list of all docker hosts from inventory
       set_fact:
-        all_docker_hosts: "{{ groups['docker'] | map('extract', hostvars, 'group_names') | map('reject', 'search', 'children') | map('reject', 'in', ['docker', 'lxc', 'vms', 'desktop', 'ubuntu', 'fedora', 'arch', 'shards']) | map('first') | unique | list }}"
+        all_docker_hosts: "{{ groups['docker'] | map('extract', hostvars, 'group_names') | map('reject', 'search', 'children') | map('reject', 'in', ['docker', 'lxc', 'vms', 'ubuntu', 'fedora', 'arch', 'shards']) | map('first') | unique | list }}"
 
     - name: Get list of hosts to check
       set_fact:
@@ -160,7 +160,7 @@
 
     - name: Get actual hostname from inventory
       set_fact:
-        actual_hostname: "{{ group_names | reject('search', 'children') | reject('in', ['docker', 'lxc', 'vms', 'desktop', 'ubuntu', 'fedora', 'shards']) | first }}"
+        actual_hostname: "{{ group_names | reject('search', 'children') | reject('in', ['docker', 'lxc', 'vms', 'ubuntu', 'fedora', 'shards']) | first }}"
       when: connectivity_check is succeeded
 
     - name: Find containers for this host
