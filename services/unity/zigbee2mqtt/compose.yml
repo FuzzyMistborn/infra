@@ -1,6 +1,6 @@
 services:
   zigbee2mqtt:
-    image: ghcr.io/koenkk/zigbee2mqtt:2.10.1
+    image: ghcr.io/koenkk/zigbee2mqtt:2.11.0
     container_name: zigbee2mqtt
     devices:
       - /dev/zigbee:/dev/zigbee
