@@ -76,7 +76,7 @@ services:
     security_opt:
       - no-new-privileges:true
   prowlarr:
-    image: ghcr.io/linuxserver/prowlarr:2.3.5
+    image: ghcr.io/linuxserver/prowlarr:2.4.0
     container_name: prowlarr
     volumes:
       - "{{ appdata_path }}/prowlarr:/config"
