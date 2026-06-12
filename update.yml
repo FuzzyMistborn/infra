@@ -28,6 +28,14 @@
         upgrade: dist
         autoremove: yes
 
+- hosts: adonalsium
+  vars_files:
+    - 'vars/vault.yaml'
+    - 'install/snapraid/defaults/main.yml'
+    - 'group_vars/all.yaml'
+  roles:
+    - role: install/snapraid
+
 - hosts: ambition
   vars_files:
     - 'vars/vault.yaml'

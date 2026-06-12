@@ -18,3 +18,17 @@ services:
     security_opt:
       - no-new-privileges:true
     restart: unless-stopped
+
+  mobileraker-companion:
+    image: ghcr.io/clon1998/mobileraker_companion:latest
+    container_name: mobileraker-companion
+    volumes:
+    - "{{ appdata_path }}/mobileraker/mobileraker.conf:/opt/printer_data/config/mobileraker.conf"
+    networks:
+      - mobileraker-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  mobileraker-net:
