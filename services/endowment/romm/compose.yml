@@ -1,6 +1,6 @@
 services:
   romm:
-    image: rommapp/romm:4.8.1
+    image: rommapp/romm:4.9.0
     container_name: romm
     restart: unless-stopped
     environment:
