@@ -1,6 +1,6 @@
 services:
   signal-api:
-    image: bbernhard/signal-cli-rest-api:0.99
+    image: bbernhard/signal-cli-rest-api:0.100
     container_name: signal-api
     volumes:
       - "{{ appdata_path }}/signal-api:/home/.local/share/signal-cli"
