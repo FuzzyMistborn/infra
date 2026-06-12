@@ -1,0 +1,44 @@
+# {{ ansible_managed }}
+
+### System
+sys_log_directory = {{ snapraidd_log_directory }}
+sys_log_retention_days = {{ snapraidd_log_retention_days }}
+
+### Network & REST API
+net_enabled = {{ snapraidd_net_enabled }}
+{% if snapraidd_net_port %}
+net_port = {{ snapraidd_net_port }}
+{% endif %}
+{% if snapraidd_net_acl %}
+net_acl = {{ snapraidd_net_acl }}
+{% endif %}
+net_security_headers = 1
+net_allowed_origin = self
+net_config_full_access = 0
+{% if snapraidd_net_web_root %}
+net_web_root = {{ snapraidd_net_web_root }}
+{% endif %}
+
+### Automation & Maintenance
+maintenance_schedule = {{ snapraidd_maintenance_schedule }}
+sync_threshold_deletes = {{ snapraidd_sync_threshold_deletes }}
+sync_threshold_updates = {{ snapraidd_sync_threshold_updates }}
+touch_zero_subseconds = {{ snapraidd_touch_zero_subseconds }}
+scrub_percentage = {{ snapraidd_scrub_percentage }}
+scrub_older_than = {{ snapraidd_scrub_older_than }}
+
+### Disk Monitoring & Power
+probe_interval_minutes = {{ snapraidd_probe_interval_minutes }}
+spindown_idle_minutes = {{ snapraidd_spindown_idle_minutes }}
+
+### Notifications
+notify_syslog_enabled = {{ snapraidd_notify_syslog_enabled }}
+notify_syslog_level = {{ snapraidd_notify_syslog_level }}
+notify_differences = {{ snapraidd_notify_differences }}
+notify_result_level = {{ snapraidd_notify_result_level }}
+{% if snapraidd_notify_heartbeat %}
+notify_heartbeat = {{ snapraidd_notify_heartbeat }}
+{% endif %}
+{% if snapraidd_notify_result %}
+notify_result = {{ snapraidd_notify_result }}
+{% endif %}

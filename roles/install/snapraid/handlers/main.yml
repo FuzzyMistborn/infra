@@ -1,0 +1,5 @@
+---
+- name: reload snapraidd
+  systemd:
+    name: snapraidd
+    state: reloaded

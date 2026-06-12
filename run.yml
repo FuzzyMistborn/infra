@@ -93,7 +93,7 @@
     - role: install/docker-patch
     - role: docker-compose-generator
     - role: install/chezmoi
-    - role: ironicbadger.snapraid
+    - role: install/snapraid
 
 - hosts: ishap
   become: true

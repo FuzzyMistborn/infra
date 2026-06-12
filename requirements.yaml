@@ -1,6 +1,5 @@
 ---
 roles:
-- src: ironicbadger.snapraid
 - src: caddy_ansible.caddy_ansible
 - src: grog.package
 - src: geerlingguy.docker

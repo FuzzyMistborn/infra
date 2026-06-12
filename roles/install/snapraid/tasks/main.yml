@@ -1,0 +1,6 @@
+---
+- name: install snapraid and snapraid-daemon
+  include_tasks: install.yml
+
+- name: configure snapraid
+  include_tasks: configure.yml

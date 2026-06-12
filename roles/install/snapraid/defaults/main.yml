@@ -1,0 +1,49 @@
+---
+# Installation
+snapraid_force_install: false
+
+# snapraid.conf
+snapraid_config_path: /etc/snapraid.conf
+snapraid_data_disks: []
+snapraid_parity_disks: []
+snapraid_content_files:
+  - /var/snapraid.content
+snapraid_config_excludes: []
+snapraid_config_hidden_files_enabled: false
+snapraid_config_hidden_files: nohidden
+
+# snapraidd.conf - System
+snapraidd_config_path: /etc/snapraidd.conf
+snapraidd_log_directory: /var/log/snapraid
+snapraidd_log_retention_days: 120
+
+# snapraidd.conf - Network & REST API
+snapraidd_net_enabled: 1
+snapraidd_net_port: "127.0.0.1:7627"
+snapraidd_net_acl: ""
+snapraidd_net_web_root: commander.zip
+
+# snapraidd.conf - Automation & Maintenance
+snapraidd_maintenance_schedule: "02:00"
+snapraidd_sync_threshold_deletes: 50
+snapraidd_sync_threshold_updates: 100
+snapraidd_touch_zero_subseconds: 1
+snapraidd_scrub_percentage: 0.7
+snapraidd_scrub_older_than: 10
+
+# snapraidd.conf - Disk Monitoring & Power
+snapraidd_probe_interval_minutes: 3
+snapraidd_spindown_idle_minutes: 15
+
+# snapraidd.conf - Notifications
+snapraidd_notify_syslog_enabled: 1
+snapraidd_notify_syslog_level: info
+snapraidd_notify_differences: 1
+snapraidd_notify_result_level: error
+snapraidd_notify_heartbeat: ""
+snapraidd_notify_result: ""
+
+# SMTP credentials - if snapraidd_smtp_host is set, manages /root/.netrc
+snapraidd_smtp_host: ""
+snapraidd_smtp_user: ""
+snapraidd_smtp_password: ""

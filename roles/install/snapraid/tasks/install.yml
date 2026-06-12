@@ -1,0 +1,81 @@
+---
+- name: check installed snapraid version
+  shell: "dpkg-query -W -f='${Version}' snapraid 2>/dev/null || true"
+  register: snapraid_installed_version
+  changed_when: false
+
+- name: check installed snapraid-daemon version
+  shell: "dpkg-query -W -f='${Version}' snapraid-daemon 2>/dev/null || true"
+  register: snapraidd_installed_version
+  changed_when: false
+
+- name: get latest snapraid release from GitHub
+  uri:
+    url: https://api.github.com/repos/amadvance/snapraid/releases/latest
+    url_username: "{{ github_api_user | default(omit) }}"
+    url_password: "{{ github_api_pass | default(omit) }}"
+    return_content: true
+    force_basic_auth: "{{ github_api_auth | default(omit) }}"
+  register: snapraid_latest_release
+
+- name: get latest snapraid-daemon release from GitHub
+  uri:
+    url: https://api.github.com/repos/amadvance/snapraid-daemon/releases/latest
+    url_username: "{{ github_api_user | default(omit) }}"
+    url_password: "{{ github_api_pass | default(omit) }}"
+    return_content: true
+    force_basic_auth: "{{ github_api_auth | default(omit) }}"
+  register: snapraidd_latest_release
+
+- name: set version and arch facts
+  set_fact:
+    snapraid_latest_version: "{{ snapraid_latest_release.json.tag_name | regex_replace('^v', '') }}"
+    snapraidd_latest_version: "{{ snapraidd_latest_release.json.tag_name | regex_replace('^v', '') }}"
+    snapraid_deb_arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}"
+
+- name: determine what needs installing
+  set_fact:
+    snapraid_needs_install: "{{ snapraid_force_install or snapraid_installed_version.stdout != snapraid_latest_version }}"
+    snapraidd_needs_install: "{{ snapraid_force_install or snapraidd_installed_version.stdout != snapraidd_latest_version }}"
+
+- name: create temporary download directory
+  tempfile:
+    state: directory
+  register: snapraid_tmpdir
+  when: snapraid_needs_install or snapraidd_needs_install
+
+- name: resolve snapraid deb download url
+  set_fact:
+    snapraid_deb_url: "{{ snapraid_latest_release.json.assets | selectattr('name', 'match', '.*_' + snapraid_deb_arch + '\\.deb$') | map(attribute='browser_download_url') | first }}"
+  when: snapraid_needs_install
+
+- name: resolve snapraid-daemon deb download url
+  set_fact:
+    snapraidd_deb_url: "{{ snapraidd_latest_release.json.assets | selectattr('name', 'match', '.*_' + snapraid_deb_arch + '\\.deb$') | map(attribute='browser_download_url') | first }}"
+  when: snapraidd_needs_install
+
+- name: download snapraid deb
+  get_url:
+    url: "{{ snapraid_deb_url }}"
+    dest: "{{ snapraid_tmpdir.path }}/snapraid.deb"
+  when: snapraid_needs_install
+
+- name: download snapraid-daemon deb
+  get_url:
+    url: "{{ snapraidd_deb_url }}"
+    dest: "{{ snapraid_tmpdir.path }}/snapraid-daemon.deb"
+  when: snapraidd_needs_install
+
+- name: install snapraid
+  command: "dpkg -i {{ snapraid_tmpdir.path }}/snapraid.deb"
+  when: snapraid_needs_install
+
+- name: install snapraid-daemon
+  command: "dpkg -i {{ snapraid_tmpdir.path }}/snapraid-daemon.deb"
+  when: snapraidd_needs_install
+
+- name: clean up temporary download directory
+  file:
+    path: "{{ snapraid_tmpdir.path }}"
+    state: absent
+  when: (snapraid_needs_install or snapraidd_needs_install) and snapraid_tmpdir.path is defined

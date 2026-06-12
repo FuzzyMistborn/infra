@@ -401,8 +401,6 @@ autorestic_config_yaml:
 
 ### Snapraid Config
 snapraid_force_install: false
-snapraid_install: true
-snapraid_runner: true
 snapraid_data_disks:
   - path: /mnt/disk1
     content: true
@@ -415,19 +413,6 @@ snapraid_data_disks:
 snapraid_parity_disks:
   - path: /mnt/parity1
     content: true
-snapraid_bin_path: /usr/bin/snapraid
-snapraid_runner_email_address_from: "{{ secret_snapraid_email_from }}"
-snapraid_runner_email_address_to: "{{ secret_snapraid_email_to }}"
-snapraid_runner_email_address: "{{ secret_snapraid_email_address }}"
-snapraid_runner_email_pass: "{{ secret_snapraid_email_pass }}"
-snapraid_runner_email_subject: "[SnapRAID] Adonalsium Status Report"
-snapraid_runner_smtp_host: "{{ secret_snapraid_smtp_host }}"
-snapraid_runner_smtp_port: 465
-snapraid_runner_use_ssl: true
-snapraid_runner_touch: false
-snapraid_runner_command: "python3 {{ snapraid_runner_bin }} -c {{ snapraid_runner_conf }}"
-snapraid_runner_cron_jobs:
-  - {job: '/usr/local/bin/runitor -uuid {{ secret_hc_adonalsium_snapraid }} -- {{ snapraid_runner_command }}', name: 'snapraid_runner', weekday: '*', hour: '04'}
 snapraid_config_excludes:
   - "*.unrecoverable"
   - "/tmp/"
@@ -446,3 +431,17 @@ snapraid_config_excludes:
   - ".TemporaryItems"
   - ".AppleDB"
   - ".Trash*"
+
+### Snapraid Daemon Config
+snapraidd_net_port: "7627"
+snapraidd_maintenance_schedule: "04:00"
+sync_threshold_deletes: 500
+sync_threshold_updates: 250
+snapraidd_touch_zero_subseconds: 0
+snapraidd_scrub_percentage: 15
+snapraidd_scrub_older_than: 10
+snapraidd_notify_heartbeat: "curl -f --max-time 30 --retry 3 {{ secret_hc_ping_url }}/{{ secret_hc_adonalsium_snapraid }}"
+snapraidd_notify_result: "curl --netrc --url smtps://{{ secret_snapraid_smtp_host }}:465 --ssl-reqd --mail-from {{ secret_snapraid_email_from }} --mail-rcpt {{ secret_snapraid_email_to }} --upload-file -"
+snapraidd_smtp_host: "{{ secret_snapraid_smtp_host }}"
+snapraidd_smtp_user: "{{ secret_snapraid_email_address }}"
+snapraidd_smtp_password: "{{ secret_snapraid_email_pass }}"

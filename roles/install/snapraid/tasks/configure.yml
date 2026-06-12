@@ -1,0 +1,41 @@
+---
+- name: validate snapraid configuration
+  block:
+    - fail:
+        msg: No data disks defined
+      when: snapraid_data_disks | length == 0
+    - fail:
+        msg: No parity disks defined
+      when: snapraid_parity_disks | length == 0
+
+- name: install snapraid.conf
+  template:
+    src: snapraid.conf.j2
+    dest: "{{ snapraid_config_path }}"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: install snapraidd.conf
+  template:
+    src: snapraidd.conf.j2
+    dest: "{{ snapraidd_config_path }}"
+    owner: root
+    group: root
+    mode: "0640"
+  notify: reload snapraidd
+
+- name: manage /root/.netrc for SMTP credentials
+  template:
+    src: netrc.j2
+    dest: /root/.netrc
+    owner: root
+    group: root
+    mode: "0600"
+  when: snapraidd_smtp_host != ""
+
+- name: enable and start snapraidd
+  systemd:
+    name: snapraidd
+    enabled: true
+    state: started
