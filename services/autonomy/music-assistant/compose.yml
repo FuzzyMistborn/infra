@@ -1,6 +1,6 @@
 services:
   music-assistant:
-    image: ghcr.io/music-assistant/server:2.8.8
+    image: ghcr.io/music-assistant/server:2.9.1
     container_name: music-assistant
     network_mode: host
     privileged: true
