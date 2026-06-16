@@ -20,6 +20,7 @@ services:
       - HBOX_MAILER_PASSWORD={{ secret_snapraid_email_pass }}
       - HBOX_MAILER_FROM=homebox@{{ secret_personal_url }}
       - HBOX_OPTIONS_TRUST_PROXY=true
+      - HBOX_AUTH_API_KEY_PEPPER={{ secret_homebox_pepper_key }}
       - HBOX_OIDC_ENABLED=true
       - HBOX_OIDC_ISSUER_URL=https://id.{{ secret_personal_url }}
       - HBOX_OIDC_CLIENT_ID={{ secret_homebox_pocket_id_user }}
