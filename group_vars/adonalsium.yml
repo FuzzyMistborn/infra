@@ -435,13 +435,14 @@ snapraid_config_excludes:
 ### Snapraid Daemon Config
 snapraidd_net_port: "7627"
 snapraidd_maintenance_schedule: "04:00"
-sync_threshold_deletes: 500
-sync_threshold_updates: 250
+snapraidd_sync_threshold_deletes: 500
+snapraidd_sync_threshold_updates: 250
 snapraidd_touch_zero_subseconds: 0
 snapraidd_scrub_percentage: 15
 snapraidd_scrub_older_than: 10
-snapraidd_notify_heartbeat: "curl -f --max-time 30 --retry 3 {{ secret_hc_ping_url }}/{{ secret_hc_adonalsium_snapraid }}"
-snapraidd_notify_result: "curl --netrc --url smtps://{{ secret_snapraid_smtp_host }}:465 --ssl-reqd --mail-from {{ secret_snapraid_email_from }} --mail-rcpt {{ secret_snapraid_email_to }} --upload-file -"
+snapraidd_healthchecks_url: "{{ secret_hc_ping_url }}/{{ secret_hc_adonalsium_snapraid }}"
+snapraidd_mail_from: "{{ secret_snapraid_email_from }}"
+snapraidd_mail_to: "{{ secret_snapraid_email_to }}"
 snapraidd_smtp_host: "{{ secret_snapraid_smtp_host }}"
 snapraidd_smtp_user: "{{ secret_snapraid_email_address }}"
 snapraidd_smtp_password: "{{ secret_snapraid_email_pass }}"

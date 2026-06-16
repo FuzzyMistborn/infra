@@ -1,0 +1,32 @@
+#!/bin/sh
+# {{ ansible_managed }}
+#
+# Used as snapraidd's notify_result command: "{{ snapraidd_notify_script_path }} \"%s\" \"%l\""
+# Receives the task report on stdin, subject as $1, level as $2.
+set -eu
+
+subject="${1:-}"
+level="${2:-info}"
+body="$(cat)"
+
+{% if snapraidd_healthchecks_url %}
+case "$level" in
+  error|critical)
+    hc_url="{{ snapraidd_healthchecks_url }}/fail"
+    ;;
+  *)
+    hc_url="{{ snapraidd_healthchecks_url }}"
+    ;;
+esac
+printf '%s' "$body" | curl -fsS -m 10 --retry 5 --data-binary @- -o /dev/null "$hc_url" || true
+{% endif %}
+
+{% if snapraidd_smtp_host and snapraidd_mail_from and snapraidd_mail_to %}
+case ",{{ snapraidd_notify_email_levels }}," in
+  *",$level,"*)
+    printf 'Subject: %s\n\n%s' "$subject" "$body" | curl --netrc --url smtps://{{ snapraidd_smtp_host }}:465 --ssl-reqd --mail-from {{ snapraidd_mail_from }} --mail-rcpt {{ snapraidd_mail_to }} --upload-file - || true
+    ;;
+esac
+{% endif %}
+
+exit 0

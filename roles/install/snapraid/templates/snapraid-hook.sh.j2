@@ -1,0 +1,21 @@
+#!/bin/sh
+# {{ ansible_managed }}
+#
+# Used as snapraidd's hook_script. Called as: {{ snapraidd_hook_script_path }} EVENT
+# EVENT is one of: task-begin, task-end, task-error
+set -eu
+
+event="${1:-}"
+
+{% if snapraidd_healthchecks_url %}
+case "$event" in
+  task-begin)
+    curl -fsS -m 10 --retry 5 -o /dev/null "{{ snapraidd_healthchecks_url }}/start" || true
+    ;;
+  task-error)
+    curl -fsS -m 10 --retry 5 -o /dev/null "{{ snapraidd_healthchecks_url }}/fail" || true
+    ;;
+esac
+{% endif %}
+
+exit 0

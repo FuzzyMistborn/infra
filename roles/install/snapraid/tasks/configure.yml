@@ -16,6 +16,22 @@
     group: root
     mode: "0644"
 
+- name: install snapraid notify script
+  template:
+    src: snapraid-notify.sh.j2
+    dest: "{{ snapraidd_notify_script_path }}"
+    owner: root
+    group: root
+    mode: "0750"
+
+- name: install snapraid hook script
+  template:
+    src: snapraid-hook.sh.j2
+    dest: "{{ snapraidd_hook_script_path }}"
+    owner: root
+    group: root
+    mode: "0750"
+
 - name: install snapraidd.conf
   template:
     src: snapraidd.conf.j2

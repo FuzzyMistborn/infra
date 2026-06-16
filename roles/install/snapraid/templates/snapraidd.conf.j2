@@ -36,9 +36,5 @@ notify_syslog_enabled = {{ snapraidd_notify_syslog_enabled }}
 notify_syslog_level = {{ snapraidd_notify_syslog_level }}
 notify_differences = {{ snapraidd_notify_differences }}
 notify_result_level = {{ snapraidd_notify_result_level }}
-{% if snapraidd_notify_heartbeat %}
-notify_heartbeat = {{ snapraidd_notify_heartbeat }}
-{% endif %}
-{% if snapraidd_notify_result %}
-notify_result = {{ snapraidd_notify_result }}
-{% endif %}
+hook_script = {{ snapraidd_hook_script_path }}
+notify_result = {{ snapraidd_notify_script_path }} "%s" "%l"

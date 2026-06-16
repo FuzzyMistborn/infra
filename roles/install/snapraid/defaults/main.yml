@@ -39,9 +39,23 @@ snapraidd_spindown_idle_minutes: 15
 snapraidd_notify_syslog_enabled: 1
 snapraidd_notify_syslog_level: info
 snapraidd_notify_differences: 1
-snapraidd_notify_result_level: error
-snapraidd_notify_heartbeat: ""
-snapraidd_notify_result: ""
+snapraidd_notify_result_level: info
+
+# Healthchecks.io-style ping base URL (no /start or /fail suffix).
+# When set, the hook script pings /start on task-begin and /fail on
+# task-error, and the notify script pings success (or /fail) with the
+# task report attached as the ping body - mirroring runitor's behavior.
+snapraidd_healthchecks_url: ""
+
+# Email is only forwarded by the notify script for these report levels
+# (comma-separated, no spaces). Matches the old snapraid-runner
+# "sendon: error" behavior.
+snapraidd_notify_email_levels: "error,critical"
+snapraidd_mail_from: ""
+snapraidd_mail_to: ""
+
+snapraidd_hook_script_path: /usr/local/bin/snapraid-hook.sh
+snapraidd_notify_script_path: /usr/local/bin/snapraid-notify.sh
 
 # SMTP credentials - if snapraidd_smtp_host is set, manages /root/.netrc
 snapraidd_smtp_host: ""

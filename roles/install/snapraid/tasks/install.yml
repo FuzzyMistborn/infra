@@ -71,7 +71,7 @@
   when: snapraid_needs_install
 
 - name: install snapraid-daemon
-  command: "dpkg -i {{ snapraid_tmpdir.path }}/snapraid-daemon.deb"
+  command: "dpkg -i --force-confold {{ snapraid_tmpdir.path }}/snapraid-daemon.deb"
   when: snapraidd_needs_install
 
 - name: clean up temporary download directory
