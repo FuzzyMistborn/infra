@@ -1,6 +1,6 @@
 services:
   grimmory:
-    image: ghcr.io/grimmory-tools/grimmory:v3.2.1
+    image: ghcr.io/grimmory-tools/grimmory:v3.2.2
     container_name: grimmory
     environment:
       - USER_ID={{ main_uid }}
