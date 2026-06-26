@@ -42,7 +42,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   sonarr:
-    image: ghcr.io/linuxserver/sonarr:4.0.17
+    image: ghcr.io/linuxserver/sonarr:4.0.19
     container_name: sonarr
     volumes:
       - "{{ appdata_path }}/sonarr:/config"
