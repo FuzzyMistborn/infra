@@ -1,0 +1,28 @@
+services:
+  manyfold:
+    image: ghcr.io/manyfold3d/manyfold-solo:0.145.1
+    container_name: manyfold
+    volumes:
+      - "{{ appdata_path }}/manyfold:/config"
+      - /mnt/Media/Files/3DPrints:/models
+    ports:
+      - 3214:3214
+    environment:
+      - SECRET_KEY_BASE=zJdh/Qi0wD0HYYbGojzT3w7zSmIy+57QnHi8cfD+WTDSPULu+dA5wsJAC6pkl/l
+      - PUID={{ main_uid }}
+      - PGID={{ main_gid }}
+    networks:
+      - manyfold-net
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - SETUID
+      - SETGID
+    restart: unless-stopped
+
+networks:
+  manyfold-net:
