@@ -1,4 +1,4 @@
-services:  
+services:
   podbooth:
     build:
       context: podbooth
@@ -21,7 +21,7 @@ services:
       - TZ={{ ntp_timezone }}
       - WHISPERX_API_URL=http://192.168.50.25:8200
       - LOG_LEVEL=warning
-      #- HOST_PASSWORD: your-password
+      # - HOST_PASSWORD: your-password
     security_opt:
       - no-new-privileges:true
 

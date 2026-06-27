@@ -1,4 +1,4 @@
-services:  
+services:
   whisperx:
     image: ghcr.io/fuzzymistborn/whisperx-api:main
     container_name: whisperx
