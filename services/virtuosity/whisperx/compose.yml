@@ -1,0 +1,26 @@
+services:  
+  whisperx:
+    image: ghcr.io/fuzzymistborn/whisperx-api:main
+    container_name: whisperx
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    ports:
+      - 8200:8000
+    volumes:
+      - "{{ appdata_path }}/whisperx/cache:/root/.cache"
+    environment:
+      - MODEL_TTL_SEC=300
+      - HF_TOKEN={{ secret_hf_token }}
+      - DIARIZATION_MODEL=pyannote/speaker-diarization-community-1
+      - LOCAL_ONLY_MODELS=0
+    restart: unless-stopped
+    networks:
+      - whisperx-net
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  whisperx-net:

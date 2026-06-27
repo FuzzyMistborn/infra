@@ -487,3 +487,12 @@ zwavejs.{{ secret_personal_internal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
+# Podbooth
+recording.{{ secret_personal_internal_url }} {
+        reverse_proxy http://192.168.50.25:8100
+        tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
+}
+livekit.{{ secret_personal_internal_url }} {
+        reverse_proxy http://192.168.50.25:7880
+        tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
+}

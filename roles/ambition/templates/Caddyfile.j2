@@ -270,6 +270,18 @@ uptime.{{ secret_personal_url }} {
 	import max-geofilter
 }
 #### Home
+books.{{ secret_personal_url }} {
+	crowdsec
+	reverse_proxy https://10.10.10.10:443 {
+		transport http {
+			tls_server_name books.{{ secret_personal_url }}
+		}
+		header_up Host books.{{ secret_personal_url }}
+	}
+	tls /home/{{ main_username }}/lego/certificates/personal.crt /home/{{ main_username }}/lego/certificates/personal.key
+	import personal_headers
+	import max-geofilter
+}
 bitwarden.{{ secret_personal_url }} {
 	crowdsec
 	reverse_proxy https://10.10.10.10:443 {

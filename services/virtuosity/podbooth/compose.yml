@@ -1,0 +1,61 @@
+services:  
+  podbooth:
+    build:
+      context: podbooth
+    container_name: podbooth-app
+    restart: unless-stopped
+    ports:
+      - "8100:8000"
+    volumes:
+      - "{{ appdata_path }}/podbooth/recordings:/recordings"
+    depends_on:
+      - podbooth-livekit
+    environment:
+      - LIVEKIT_API_KEY=devkey
+      - LIVEKIT_API_SECRET=devsecret
+      - LIVEKIT_URL=ws://podbooth-livekit:7880
+      - LIVEKIT_PUBLIC_URL=wss://livekit.{{ secret_personal_internal_url }}
+      - SECRET_KEY=Jind607X6kwrpHnFz9+rKVmF9vdipRseNxyt5tV53Fk=
+      - BASE_URL=https://recording.{{ secret_personal_internal_url }}
+      - RECORDINGS_DIR=/recordings
+      - TZ={{ ntp_timezone }}
+      - WHISPERX_API_URL=http://192.168.50.25:8200
+      - LOG_LEVEL=warning
+      #- HOST_PASSWORD: your-password
+    security_opt:
+      - no-new-privileges:true
+
+  podbooth-livekit:
+    image: livekit/livekit-server:latest
+    container_name: podbooth-livekit
+    restart: unless-stopped
+    ports:
+      - "7880:7880"
+      - "7881:7881"
+      - "50000-50200:50000-50200/udp"
+    volumes:
+      - "{{ appdata_path }}/podbooth/livekit/livekit.yaml:/livekit.yaml"
+    entrypoint: ["/livekit-server"]
+    command: ["--config", "/livekit.yaml"]
+    security_opt:
+      - no-new-privileges:true
+
+  podbooth-coturn:
+    image: coturn/coturn:latest
+    container_name: podbooth-coturn
+    restart: unless-stopped
+    network_mode: host
+    command:
+      - "-n"
+      - "--lt-cred-mech"
+      - "--fingerprint"
+      - "--no-multicast-peers"
+      - "--no-stdout-log"
+      - "--min-port=49160"
+      - "--max-port=49200"
+      - "--realm=podbooth.local"
+      - "--user=turnuser:turnpassword"
+      - "--relay-ip=192.168.50.25"
+      - "--external-ip=192.168.50.25"
+    security_opt:
+      - no-new-privileges:true
