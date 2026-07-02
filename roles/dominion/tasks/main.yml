@@ -11,7 +11,7 @@
     dest: /home/{{ main_username }}/.ssh/ambition
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-    mode: 0600
+    mode: '0600'
     content: "{{ secret_ambition_ssh }}"
 
 - name: Add Gitea SSH Key
@@ -19,7 +19,7 @@
     dest: /home/{{ main_username }}/.ssh/gitea
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-    mode: 0600
+    mode: '0600'
     content: "{{ secret_gitea_ssh }}"
 
 - name: Add ansible SSH Key
@@ -27,7 +27,7 @@
     dest: /home/{{ main_username }}/.ssh/ansible_user
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-    mode: 0600
+    mode: '0600'
     content: "{{ secret_ansible_key }}"
 
 - name: Add ssh config
@@ -35,7 +35,7 @@
     dest: /home/{{ main_username }}/.ssh/config
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-    mode: 0664
+    mode: '0664'
     content: |
       Host github.com
         IdentityFile ~/.ssh/github
@@ -80,7 +80,7 @@
     dest: "/home/{{ main_username }}/.config/Bitwarden CLI/data.json"
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-    mode: 0644
+    mode: '0644'
     content: |
       {
         "installedVersion": "{{ bw_ver.stdout }}",

@@ -12,7 +12,7 @@
     state: directory
     owner: nobody
     group: nogroup
-    mode: 0777
+    mode: '0777'
   loop: "{{ smb_mountpoints }}"
 
 - name: Add smbcredentials
@@ -20,7 +20,7 @@
     dest: /home/{{ main_username }}/.smbcredentials
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-    mode: 0600
+    mode: '0600'
     content: |
       user=samba
       password={{ secret_samba_pass }}

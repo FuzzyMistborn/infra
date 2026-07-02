@@ -149,13 +149,13 @@
       slurp:
         path: /tmp/ansible_docker_update_plan.json
       register: update_plan_file
-      run_once: true
+      run_once: true  # noqa: run-once[task] - default linear strategy, not free
       when: connectivity_check is succeeded
 
     - name: Parse update plan
       set_fact:
         update_plan: "{{ update_plan_file.content | b64decode | from_json }}"
-      run_once: true
+      run_once: true  # noqa: run-once[task] - default linear strategy, not free
       when: connectivity_check is succeeded
 
     - name: Get actual hostname from inventory
@@ -224,7 +224,6 @@
           updated: false
           status: "unreachable"
       when: connectivity_check is failed or connectivity_check is unreachable
-      ignore_errors: true
 
     - name: Send results to localhost
       delegate_to: localhost
@@ -232,7 +231,7 @@
       set_fact:
         all_results: "{{ all_results | default([]) + [hostvars[item]['my_update_result']] }}"
       loop: "{{ ansible_play_hosts_all }}"
-      run_once: true
+      run_once: true  # noqa: run-once[task] - default linear strategy, not free
       when: hostvars[item].my_update_result is defined
 
     - name: Clear host errors to continue playbook

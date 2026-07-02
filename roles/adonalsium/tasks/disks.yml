@@ -12,7 +12,7 @@
     state: directory
     owner: nobody
     group: nogroup
-    mode: 0777
+    mode: '0777'
   loop: "{{ mergerfs_mount + data_disks + parity_disks + cifs_mount + external_mount }}"
 
 - name: mount disks

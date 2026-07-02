@@ -39,7 +39,7 @@
     dest: /etc/systemd/system/lnxlink.service
     owner: root
     group: root
-    mode: 0644
+    mode: '0644'
 
 - name: Reload systemd services/timers
   systemd:

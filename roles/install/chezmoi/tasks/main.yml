@@ -7,7 +7,7 @@
     dest: /home/{{ main_username }}/.ssh/chezmoi
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-    mode: 0600
+    mode: '0600'
     content: "{{ secret_chezmoi_key }}"
 
 - name: Add ssh config
@@ -15,7 +15,7 @@
     dest: /home/{{ main_username }}/.ssh/config
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-    mode: 0664
+    mode: '0664'
     content: |
       Host git.fuzzymistborn.com
         user git
@@ -29,7 +29,7 @@
     line: "{{ secret_gitea_known_key }}"
     create: yes
     owner: "{{ main_username }}"
-    mode: 0600
+    mode: '0600'
 
 - name: Initialize chezmoi
   ansible.builtin.command: "chezmoi init --apply --force {{ chezmoi_init_url }}"

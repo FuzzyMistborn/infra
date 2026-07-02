@@ -27,7 +27,7 @@
     dest: /etc/sudoers.d/ansible
     owner: root
     group: root
-    mode: 0440
+    mode: '0440'
 
 - name: SSH Keys
   authorized_key:
@@ -72,7 +72,7 @@
   get_url:
     url: https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list
     dest: /etc/apt/sources.list.d/nvidia-docker.list
-    mode: 0644
+    mode: '0644'
 
 - name: Install Nvidia container toolkit
   apt:
@@ -94,7 +94,7 @@
     state: directory
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-    mode: 0777
+    mode: '0777'
   loop: "{{ mountpoints }}"
 
 - name: Add smbcredentials
@@ -102,7 +102,7 @@
     dest: /home/{{ main_username }}/.smbcredentials
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-    mode: 0600
+    mode: '0600'
     content: |
       user=samba
       password={{ secret_samba_pass }}

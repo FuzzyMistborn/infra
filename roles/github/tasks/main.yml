@@ -4,7 +4,7 @@
     dest: /home/{{ main_username }}/.ssh/github
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-    mode: 0600
+    mode: '0600'
     content: "{{ secret_github_ssh }}"
 - name: Copy Github script
   template:
@@ -18,7 +18,7 @@
     dest: /home/{{ main_username }}/.ssh/config
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-    mode: 0664
+    mode: '0664'
     content: |
       Host github.com
         IdentityFile ~/.ssh/github

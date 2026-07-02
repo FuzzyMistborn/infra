@@ -45,7 +45,7 @@
       file:
         path: "{{ mergerfs_download_directory }}"
         state: directory
-        mode: 0755
+        mode: '0755'
 
     - name: download mergerfs
       get_url:

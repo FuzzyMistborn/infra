@@ -40,7 +40,7 @@
     dest: /home/{{ main_username }}/.smbcredentials
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-    mode: 0600
+    mode: '0600'
     content: |
       user=samba
       password={{ secret_samba_pass }}
@@ -69,7 +69,7 @@
     dest: /etc/sudoers.d/ansible
     owner: root
     group: root
-    mode: 0440
+    mode: '0440'
 
 - name: SSH Keys
   authorized_key:
@@ -108,7 +108,7 @@
     dest: /etc/issue
     owner: root
     group: root
-    mode: 0644
+    mode: '0644'
 
 ### Infrastructure
 - name: Set up disks/mounts
@@ -143,7 +143,7 @@
     dest: /etc/vsftpd.conf
     owner: root
     group: root
-    mode: 0644
+    mode: '0644'
 
 - name: Ensure vsftpd is enabled and running
   ansible.builtin.service:

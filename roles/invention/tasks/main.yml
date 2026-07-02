@@ -48,7 +48,7 @@
     dest: /etc/systemd/system/{{ item }}
     owner: root
     group: root
-    mode: 0644
+    mode: '0644'
   loop:
     - restic_backup.service
     - restic_backup.timer

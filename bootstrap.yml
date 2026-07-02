@@ -35,7 +35,7 @@
         dest: /etc/sudoers.d/ansible
         owner: root
         group: root
-        mode: 0440
+        mode: '0440'
     - name: SSH Keys
       authorized_key:
         user: "{{ item.user }}"
@@ -51,7 +51,7 @@
         dest: /etc/ssh/sshd_config
         owner: root
         group: root
-        mode: 0600
+        mode: '0600'
     - name: Restart ssh
       service:
         name: ssh
@@ -85,7 +85,7 @@
         dest: /etc/sudoers.d/ansible
         owner: root
         group: root
-        mode: 0440
+        mode: '0440'
     - name: SSH Keys
       authorized_key:
         user: "{{ item.user }}"
@@ -100,7 +100,7 @@
         dest: /etc/ssh/sshd_config
         owner: root
         group: root
-        mode: 0600
+        mode: '0600'
     - name: Restart ssh
       service:
         name: ssh
@@ -128,7 +128,7 @@
         dest: /etc/sudoers.d/ansible
         owner: root
         group: root
-        mode: 0440
+        mode: '0440'
     - name: Add SSH Keys
       authorized_key:
         user: ansible
@@ -140,7 +140,7 @@
         dest: /etc/ssh/sshd_config
         owner: root
         group: root
-        mode: 0600
+        mode: '0600'
     - name: Restart ssh
       service:
         name: sshd
@@ -173,7 +173,7 @@
         dest: /etc/sudoers.d/ansible
         owner: root
         group: root
-        mode: 0440
+        mode: '0440'
     - name: SSH Keys
       authorized_key:
         user: "{{ item.user }}"
@@ -189,7 +189,7 @@
         dest: /etc/ssh/sshd_config
         owner: root
         group: root
-        mode: 0600
+        mode: '0600'
     - name: Restart ssh
       service:
         name: sshd
