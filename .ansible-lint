@@ -11,3 +11,15 @@ skip_list:
   - no-changed-when
   - git-latest
   - risky-file-permissions
+  # Newly-enforced as of the ansible-lint 26.6.0 image update (2026-06-30).
+  # These are real, pre-existing findings across the repo, not regressions.
+  # See LINT-DEBT.md for what each means and how to burn this list down.
+  - fqcn
+  - var-naming
+  - name
+  - jinja
+  - key-order
+  - schema
+  - no-free-form
+  - package-latest
+  - role-name

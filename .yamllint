@@ -14,6 +14,8 @@ rules:
   commas:
     max-spaces-after: -1
     level: error
+  comments:
+    min-spaces-from-content: 1
   comments-indentation: disable
   document-start:
     ignore:
@@ -23,6 +25,9 @@ rules:
     level: error
   line-length: disable
   new-line-at-end-of-file: disable
+  octal-values:
+    forbid-implicit-octal: true
+    forbid-explicit-octal: true
   truthy:
     allowed-values: ['true', 'false', 'yes', 'no']
 
