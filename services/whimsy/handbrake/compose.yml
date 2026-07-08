@@ -1,6 +1,6 @@
 services:
   handbrake:
-    image: ghcr.io/jlesage/handbrake:v26.03.3
+    image: ghcr.io/jlesage/handbrake:v26.07.1
     container_name: handbrake
     devices:
       - /dev/dri/renderD128:/dev/dri/renderD128
