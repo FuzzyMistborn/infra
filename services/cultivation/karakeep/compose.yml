@@ -53,7 +53,7 @@ services:
     networks:
       - karakeep-net
   karakeep-meilisearch:
-    image: getmeili/meilisearch:v1.48.2
+    image: getmeili/meilisearch:v1.49.0
     container_name: karakeep-meilisearch
     restart: unless-stopped
     mem_limit: 512m
