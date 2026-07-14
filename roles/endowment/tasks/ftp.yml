@@ -1,0 +1,42 @@
+---
+
+- name: Ensure ftpscanner system user exists
+  ansible.builtin.user:
+    name: ftpscanner
+    shell: /bin/bash
+    create_home: true
+    system: false
+    password: "{{ secret_ftp_pass | password_hash('sha512') }}"
+
+- name: Add ftpscanner to main user group
+  ansible.builtin.user:
+    name: ftpscanner
+    groups: "{{ main_username }}"
+    append: true
+
+- name: Ensure paperless consume directory exists with correct ownership
+  ansible.builtin.file:
+    path: "{{ appdata_path }}/paperless/consume"
+    state: directory
+    owner: "{{ main_username }}"
+    group: "{{ main_groupname }}"
+    mode: "0775"
+
+- name: Install vsftpd config
+  template:
+    src: vsftpd.conf.j2
+    dest: /etc/vsftpd.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Ensure vsftpd is enabled and running
+  ansible.builtin.service:
+    name: vsftpd
+    state: started
+    enabled: true
+
+- name: Restart vsftpd
+  ansible.builtin.service:
+    name: vsftpd
+    state: restarted

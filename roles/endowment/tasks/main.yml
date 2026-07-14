@@ -34,6 +34,14 @@
 - name: Set up disks/mounts
   include_tasks: disks.yml
 
+#### FTP (scanner -> paperless consume)
+- name: Set up FTP server
+  include_tasks:
+    file: ftp.yml
+    apply:
+      tags: ftp
+  tags: ftp
+
 ### Backup Restore
 - name: Create restore script
   copy:

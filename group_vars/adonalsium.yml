@@ -15,7 +15,6 @@ package_list:
   - name: sudo
   - name: screen
   - name: wireguard
-  - name: vsftpd
 
 ### Pip Packages
 pip_packages:

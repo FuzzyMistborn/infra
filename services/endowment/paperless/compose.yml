@@ -14,7 +14,7 @@ services:
       - "{{ appdata_path }}/paperless/data:/usr/src/paperless/data"
       - "{{ appdata_path }}/paperless/media:/usr/src/paperless/media"
       - "{{ appdata_path }}/paperless/export:/usr/src/paperless/export"
-      - "/mnt/Media/Files/scans:/usr/src/paperless/consume"
+      - "{{ appdata_path }}/paperless/consume:/usr/src/paperless/consume"
     ports:
       - 8100:8000
     environment:
@@ -27,7 +27,6 @@ services:
       - USERMAP_GID={{ main_gid }}
       - PAPERLESS_APPS=allauth.socialaccount.providers.openid_connect
       - PAPERLESS_SOCIALACCOUNT_PROVIDERS={"openid_connect":{"SCOPE":["openid","profile","email"],"OAUTH_PKCE_ENABLED":true,"APPS":[{"provider_id":"pocket-id","name":"Pocket-ID","client_id":"{{ secret_paperless_pocket_id_user }}","secret":"{{ secret_paperless_pocket_id_key }}","settings":{"server_url":"https://id.{{ secret_personal_url }}"}}]}}
-      - PAPERLESS_CONSUMER_POLLING=60
     networks:
       - paperless-net
     security_opt:

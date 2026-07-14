@@ -14,6 +14,7 @@ package_list:
   - name: python
   - name: restic
   - name: sudo
+  - name: vsftpd
   - name: wget
 
 smb_mountpoints:
