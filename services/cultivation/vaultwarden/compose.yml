@@ -1,6 +1,6 @@
 services:
   vaultwarden:
-    image: ghcr.io/dani-garcia/vaultwarden:1.36.0
+    image: ghcr.io/dani-garcia/vaultwarden:1.37.0
     container_name: vaultwarden
     volumes:
       - "{{ appdata_path }}/vaultwarden/data:/data"
