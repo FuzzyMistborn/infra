@@ -1,6 +1,6 @@
 services:
   collabora:
-    image: collabora/code:26.04.2.1.1
+    image: collabora/code:26.04.2.4.1
     container_name: collabora
     privileged: true
     cap_add:
