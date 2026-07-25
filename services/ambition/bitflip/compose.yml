@@ -13,7 +13,6 @@ services:
       - GUILD_ID={{ secret_bitbot_discord_server_id }}
       - ANNOUNCEMENT_CHANNEL_ID={{ secret_bitbot_discord_channel_id }}
       - HOST_ROLE_IDS={{ secret_bitbot_discord_host_id }}
-      - HOSTS_CHANNEL_ID={{ secret_bitbot_discord_host_channel }}
       - RSS_FEED_URL=https://bitflip.show/rss.xml
       - POLL_INTERVAL_MINUTES=15
       - ANNOUNCEMENT_MESSAGE=🎙 **New episode of BitFlip just dropped!**
@@ -21,7 +20,6 @@ services:
       - NOTIFICATION_SIGNUP_CHANNEL_ID={{ secret_bitbot_discord_notification_channel }}
       - SHOW_TOPICS_CHANNEL_ID={{ secret_bibot_discord_topic_channel }}
       - TZ={{ ntp_timezone }}
-      - REMINDER_CRON=30 19 * * 3
     networks:
       - bitbot-net
     security_opt:
