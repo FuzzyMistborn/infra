@@ -17,19 +17,40 @@ services:
       - /mnt/Media/Parents Movies:/mnt/parents_movies
       - /mnt/Media/Parents TV:/mnt/parents_tv
       - /mnt/Media/Family Videos:/mnt/home_videos
-    ports:
-      - 8096:8096
+    network_mode: host
     environment:
       - UID=1001
       - GID=1001
       - PUID=1001
       - PGID=1001
       - TZ={{ ntp_timezone }}
-    networks:
-      - jellyfin-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+  press:
+    image: ghcr.io/fuzzymistborn/jellyjar/press:0.3.1
+    container_name: press
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128
+    volumes:
+      - "{{ appdata_path }}/press/config:/config"
+      - /tmp/jellyjar:/output
+      - /mnt/Media/Movies:/mnt/movies
+      - /mnt/Media/UHD:/mnt/UHD
+      - /mnt/Media/TV Shows:/mnt/tv
+      - /mnt/Media/Kids Movies:/mnt/kids
+      - /mnt/Media/Kids TV:/mnt/kids_tv
+    ports:
+      - 8090:8090
+    environment:
+      - MEDIA_ROOT=/mnt
+      - OUTPUT_ROOT=/output
+      - CONFIG_ROOT=/config
+      - LIBVA_DRIVER_NAME=iHD
+      # ENCODER: h264_vaapi     # pin encoder; skips startup probe (h264_nvenc | h264_qsv | h264_vaapi | libx264)
+      - MAX_WORKERS=1
+      - CLEANUP_AFTER_DAYS=5
     security_opt:
       - no-new-privileges:true
     restart: unless-stopped
 
-networks:
-  jellyfin-net:
