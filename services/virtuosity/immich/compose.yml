@@ -54,7 +54,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   immich-redis:
-    image: docker.io/valkey/valkey:9@sha256:3b55fbaa0cd93cf0d9d961f405e4dfcc70efe325e2d84da207a0a8e6d8fde4f9
+    image: docker.io/valkey/valkey:9@sha256:4963247afc4cd33c7d3b2d2816b9f7f8eeebab148d29056c2ca4d7cbc966f2d9
     container_name: immich_redis
     networks:
       - immich-net
@@ -66,6 +66,7 @@ services:
     container_name: immich_database
     volumes:
       - "{{ appdata_path }}/immich/database:/var/lib/postgresql/data"
+    shm_size: 128mb
     environment:
       - POSTGRES_PASSWORD={{ secret_immich_db_pass }}
       - POSTGRES_USER=postgres
