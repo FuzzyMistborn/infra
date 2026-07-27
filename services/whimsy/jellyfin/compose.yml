@@ -28,7 +28,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   press:
-    image: ghcr.io/fuzzymistborn/jellyjar/press:0.3.1
+    image: ghcr.io/fuzzymistborn/jellyjar/press:0.4.0
     container_name: press
     devices:
       - /dev/dri/renderD128:/dev/dri/renderD128
