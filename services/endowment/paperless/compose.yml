@@ -1,6 +1,6 @@
 services:
   paperless-redis:
-    image: redis:8.8.0
+    image: redis:8.8.1
     container_name: paperless-redis
     networks:
       - paperless-net
