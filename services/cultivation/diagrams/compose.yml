@@ -1,6 +1,6 @@
 services:
   diagrams:
-    image: jgraph/drawio:30.3.6
+    image: jgraph/drawio:30.4.3
     container_name: diagrams
     ports:
       - 8080:8080
