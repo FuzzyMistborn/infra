@@ -1,6 +1,6 @@
 services:
   spoolman:
-    image: ghcr.io/donkie/spoolman:0.24.0
+    image: ghcr.io/donkie/spoolman:0.25.0
     container_name: spoolman
     ports:
       - "7912:8000"
