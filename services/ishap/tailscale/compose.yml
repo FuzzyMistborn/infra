@@ -21,7 +21,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   tailscale:
-    image: ghcr.io/tailscale/tailscale:v1.98.9
+    image: ghcr.io/tailscale/tailscale:v1.102.2
     container_name: tailscale
 #    network_mode: service:gluetun
     privileged: true
