@@ -6,6 +6,7 @@ services:
       - /dev/dri:/dev/dri
     environment:
       - AUTO_GPU=true
+      - SELKIES_ENCODER=jpeg
       - PUID=1000
       - PGID=1000
       - TZ={{ ntp_timezone }}

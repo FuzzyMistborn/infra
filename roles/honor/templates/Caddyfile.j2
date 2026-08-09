@@ -463,15 +463,15 @@ traffic.{{ secret_personal_internal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
-# Uptime
-uptime.{{ secret_personal_internal_url }} {
-	reverse_proxy http://192.168.1.10:3001
+# TREK
+travel.{{ secret_personal_internal_url }} {
+	reverse_proxy http://192.168.50.21:3000
 	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
-# Yamtrack
-yamtrack.{{ secret_personal_internal_url }} {
-	reverse_proxy http://192.168.50.20:8000
+# Uptime
+uptime.{{ secret_personal_internal_url }} {
+	reverse_proxy http://192.168.1.10:3001
 	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }

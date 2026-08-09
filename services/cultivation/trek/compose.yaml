@@ -1,0 +1,41 @@
+services:
+  trek:
+    image: mauriceboe/trek:3.4.1
+    container_name: trek
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETUID
+      - SETGID
+    tmpfs:
+      - /tmp:noexec,nosuid,size=64m
+    ports:
+      - 3000:3000
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - ENCRYPTION_KEY={{ secret_trek_key }}
+      - TZ={{ ntp_timezone }}
+      - LOG_LEVEL=info
+  #      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-}
+      - APP_URL=https://travel.{{ secret_personal_internal_url }}
+      - FORCE_HTTPS=true
+      # - TRUST_PROXY=1
+      - OIDC_ISSUER=https://id.{{ secret_personal_url }}
+      - OIDC_CLIENT_ID={{ secret_trek_oidc_client_id }}
+      - OIDC_CLIENT_SECRET={{ lzVSeY407FKwTtn5mQ3G807PQUSTiLxJ }}
+      - OIDC_DISPLAY_NAME=Pocket-ID
+    volumes:
+    - "{{ appdata_path }}/trek/data:/app/data"
+    - "{{ appdata_path }}/trek/uploads:/app/uploads"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
