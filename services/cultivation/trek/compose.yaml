@@ -30,8 +30,8 @@ services:
       - OIDC_CLIENT_SECRET={{ lzVSeY407FKwTtn5mQ3G807PQUSTiLxJ }}
       - OIDC_DISPLAY_NAME=Pocket-ID
     volumes:
-    - "{{ appdata_path }}/trek/data:/app/data"
-    - "{{ appdata_path }}/trek/uploads:/app/uploads"
+      - "{{ appdata_path }}/trek/data:/app/data"
+      - "{{ appdata_path }}/trek/uploads:/app/uploads"
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
