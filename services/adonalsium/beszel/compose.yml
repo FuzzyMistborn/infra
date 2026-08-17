@@ -1,6 +1,6 @@
 services:
   beszel:
-    image: ghcr.io/henrygd/beszel/beszel:0.18.7
+    image: ghcr.io/henrygd/beszel/beszel:0.18.8
     container_name: beszel
     restart: unless-stopped
     environment:
