@@ -1,6 +1,6 @@
 services:
   karakeep:
-    image: ghcr.io/karakeep-app/karakeep:0.33.1
+    image: ghcr.io/karakeep-app/karakeep:0.33.2
     container_name: karakeep
     restart: unless-stopped
     volumes:
@@ -53,7 +53,7 @@ services:
     networks:
       - karakeep-net
   karakeep-meilisearch:
-    image: getmeili/meilisearch:v1.52.0
+    image: getmeili/meilisearch:v1.53.1
     container_name: karakeep-meilisearch
     restart: unless-stopped
     mem_limit: 512m
