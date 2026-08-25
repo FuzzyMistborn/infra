@@ -10,7 +10,7 @@ services:
     volumes:
       - "{{ appdata_path }}/beszel/data:/beszel_data"
   beszel-agent:
-    image: ghcr.io/henrygd/beszel/beszel-agent:0.18.7-alpine
+    image: ghcr.io/henrygd/beszel/beszel-agent:0.18.8-alpine
     container_name: beszel-agent
     restart: unless-stopped
     network_mode: host
