@@ -40,7 +40,6 @@
     - {src: 'docker.sh.j2', dest: 'docker.sh'}
     - {src: 'update_ha.sh.j2', dest: 'update_ha.sh'}
     - {src: 'google_traffic.py.j2', dest: 'google_traffic.py'}
-    - {src: 'waze_daycare.py.j2', dest: 'waze_daycare.py'}
     - {src: 'waze_home.py.j2', dest: 'waze_home.py'}
     - {src: 'waze_live.py.j2', dest: 'waze_live.py'}
 
