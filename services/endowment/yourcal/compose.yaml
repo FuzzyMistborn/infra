@@ -1,0 +1,24 @@
+services:
+  yourcal:
+    image: ghcr.io/fuzzymistborn/yourcal:latest
+    container_name: yourcal
+    ports:
+      - 3000:3000
+    environment:
+      - SESSION_SECRET=6137fd32738d5b63823fca08b1c35b209a7202859835d90dca0a2ec3315a00db
+      - SESSION_TTL_DAYS=7
+      - CACHE_ENABLED=true
+      - SQLITE_PATH=/app/data/cache.db
+      - CACHE_SYNC_TTL_MS=30000
+      - DEFAULT_TIMEZONE=America/New_York
+      - NODE_ENV=development
+    volumes:
+      - "{{ appdata_path }}/yourcal:/app/data"
+    networks:
+      - yourcal-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  yourcal-net:

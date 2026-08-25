@@ -21,14 +21,14 @@ services:
       - ENCRYPTION_KEY={{ secret_trek_key }}
       - TZ={{ ntp_timezone }}
       - LOG_LEVEL=info
-  #      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-}
       - APP_URL=https://travel.{{ secret_personal_internal_url }}
       - FORCE_HTTPS=true
-      # - TRUST_PROXY=1
       - OIDC_ISSUER=https://id.{{ secret_personal_url }}
       - OIDC_CLIENT_ID={{ secret_trek_oidc_client_id }}
-      - OIDC_CLIENT_SECRET={{ lzVSeY407FKwTtn5mQ3G807PQUSTiLxJ }}
+      - OIDC_CLIENT_SECRET={{ secret_trek_oidc_client_secret }}
       - OIDC_DISPLAY_NAME=Pocket-ID
+      - SESSION_DURATION=3d
+      - SESSION_DURATION_REMEMBER=60d
     volumes:
       - "{{ appdata_path }}/trek/data:/app/data"
       - "{{ appdata_path }}/trek/uploads:/app/uploads"
