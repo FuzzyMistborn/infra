@@ -63,8 +63,8 @@ services:
       - dawarich-net
     security_opt:
       - no-new-privileges:true
-    mem_limit: 400M
-    memswap_limit: 400M
+    mem_limit: 500M
+    memswap_limit: 500M
     shm_size: 1G
     restart: unless-stopped
   dawarich-redis:

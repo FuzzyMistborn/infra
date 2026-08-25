@@ -28,13 +28,13 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   press:
-    image: ghcr.io/fuzzymistborn/jellyjar/press:0.5.1
+    image: ghcr.io/fuzzymistborn/jellyjar/press:0.5.2
     container_name: press
     devices:
       - /dev/dri/renderD128:/dev/dri/renderD128
     volumes:
       - "{{ appdata_path }}/press/config:/config"
-      - /tmp/jellyjar:/output
+      - /mnt/scratch/press:/output
       - /mnt/Media/Movies:/mnt/movies
       - /mnt/Media/UHD:/mnt/UHD
       - /mnt/Media/TV Shows:/mnt/tv
