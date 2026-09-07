@@ -28,7 +28,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   traccar-db:
-    image: pgautoupgrade/pgautoupgrade:18.4-alpine
+    image: pgautoupgrade/pgautoupgrade:18.6-alpine
     container_name: traccar-db
     environment:
       - POSTGRES_DB=traccar
