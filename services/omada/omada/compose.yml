@@ -1,6 +1,6 @@
 services:
   omada-controller:
-    image: mbentley/omada-controller:6.2
+    image: mbentley/omada-controller:6.3
     container_name: omada-controller
     network_mode: host
     volumes:
