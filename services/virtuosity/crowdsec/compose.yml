@@ -1,6 +1,6 @@
 services:
   crowdsec:
-    image: ghcr.io/crowdsecurity/crowdsec:v1.7.8
+    image: ghcr.io/crowdsecurity/crowdsec:v1.8.1
     container_name: crowdsec
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
