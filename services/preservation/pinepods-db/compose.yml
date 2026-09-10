@@ -1,0 +1,22 @@
+services:
+  pinepods-db:
+    image: pgautoupgrade/pgautoupgrade:18.6-alpine
+    container_name: pinepods-db
+    volumes:
+      - "{{ appdata_path }}/pinepods-db/data:/var/lib/postgresql"
+    ports:
+      - 5438:5432
+    environment:
+      - POSTGRES_DB=pinepods
+      - POSTGRES_USER=pinepods
+      - POSTGRES_PASSWORD={{ secret_pinepods_db_pass }}
+    networks:
+      - pinepods-db-net
+    mem_limit: 300M
+    memswap_limit: 300M
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  pinepods-db-net:

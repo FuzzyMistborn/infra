@@ -1,0 +1,47 @@
+services:
+  pinepods-valkey:
+    image: valkey/valkey:8.1.10-alpine
+    container_name: pinepods-valkey
+    networks:
+      - pinepods-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+  pinepods:
+    image: madeofpendletonwool/pinepods:0.9.0
+    container_name: pinepods
+    volumes:
+      - "{{ appdata_path }}/pinepods/downloads:/opt/pinepods/downloads"
+      - "{{ appdata_path }}/pinepods/backups:/opt/pinepods/backups"
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    ports:
+      - 8040:8040
+    environment:
+      - SEARCH_API_URL=https://search.pinepods.online/api/search
+      - PEOPLE_API_URL=https://people.pinepods.online
+      - HOSTNAME=http://192.168.50.20:8040
+      - USERNAME={{ main_username }}
+      - PASSWORD={{ secret_pinepods_admin_pass }}
+      - FULLNAME={{ secret_fullname }}
+      - EMAIL={{ secret_email }}
+      - DB_TYPE=postgresql
+      - DB_HOST=192.168.50.22
+      - DB_PORT=5438
+      - DB_USER=pinepods
+      - DB_PASSWORD={{ secret_pinepods_db_pass }}
+      - DB_NAME=pinepods
+      - VALKEY_HOST=pinepods-valkey
+      - VALKEY_PORT=6379
+      - DEBUG_MODE=false
+      - PUID=911
+      - PGID=911
+      - TZ={{ntp_timezone}}
+    networks:
+      - pinepods-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  pinepods-net:

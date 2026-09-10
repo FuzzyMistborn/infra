@@ -374,6 +374,12 @@ pdf.{{ secret_personal_internal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
+# Pinepods
+podcasts.{{ secret_personal_internal_url }} {
+	reverse_proxy http://192.168.50.20:8040
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
+	import headers
+}
 # Prowlarr
 prowlarr.{{ secret_personal_internal_url }} {
 	reverse_proxy http://192.168.50.20:9696

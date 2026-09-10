@@ -30,6 +30,11 @@ echo Backing up Outline DB
 today=$(date +"%Y_%m_%d")
 docker exec outline-db sh -c 'pg_dumpall -U outline' > /home/{{ main_username }}/db_backups/outline/outlineDB_$today.sql
 
+#### PinePods DB Backup
+echo Backing up PinePods DB
+today=$(date +"%Y_%m_%d")
+docker exec pinepods-db sh -c 'pg_dumpall -U pinepods' > /home/{{ main_username }}/db_backups/pinepods/pinepodsDB_$today.sql
+
 #### Booklore DB Backup
 echo Backing up Booklore DB
 today=$(date +"%Y_%m_%d")

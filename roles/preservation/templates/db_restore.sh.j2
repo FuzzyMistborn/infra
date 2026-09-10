@@ -34,6 +34,11 @@ cd /home/{{ main_username }}/db_backups/outline
 LAST_OUTLINE=$(ls -t | head -n 1)
 cat /home/{{ main_username }}/db_backups/outline/$LAST_OUTLINE | docker exec -i outline-db psql -U outline -d outline
 
+echo Restoring PinePods DB
+cd /home/{{ main_username }}/db_backups/pinepods
+LAST_PINEPODS=$(ls -t | head -n 1)
+cat /home/{{ main_username }}/db_backups/pinepods/$LAST_PINEPODS | docker exec -i pinepods-db psql -U pinepods -d pinepods
+
 echo Restoring Booklore DB
 cd /home/{{ main_username }}/db_backups/booklore
 LAST_BOOKLORE=$(ls -t | head -n 1)
