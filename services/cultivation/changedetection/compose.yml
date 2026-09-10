@@ -1,6 +1,6 @@
 services:
   changedetection:
-    image: ghcr.io/dgtlmoon/changedetection.io:0.60.3
+    image: ghcr.io/dgtlmoon/changedetection.io:0.60.4
     container_name: changedetection
     volumes:
       - "{{ appdata_path }}/change:/datastore"
