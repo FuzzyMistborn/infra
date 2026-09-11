@@ -1,6 +1,6 @@
 services:
   uptime:
-    image: louislam/uptime-kuma:2.5.3
+    image: louislam/uptime-kuma:2.5.4
     container_name: uptime
     volumes:
       - "{{ appdata_path }}/uptime:/app/data"
