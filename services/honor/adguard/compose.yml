@@ -18,7 +18,7 @@ services:
       - adguard-net
     restart: unless-stopped
   adguard-sync:
-    image: ghcr.io/linuxserver/adguardhome-sync:0.9.2
+    image: ghcr.io/linuxserver/adguardhome-sync:0.9.3
     container_name: adguard-sync
     volumes:
       - "{{ appdata_path }}/adguardsync/config:/config"
