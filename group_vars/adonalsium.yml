@@ -319,6 +319,7 @@ autorestic_config_yaml:
             - '.mpeg'
             - '.wmv'
             - '.avi'
+            - '.mkv'
 
   locations:
     docker:
@@ -393,6 +394,7 @@ autorestic_config_yaml:
           exclude:
             - 'Takeout'
             - 'arch'
+            - "1-Processing"
         forget:
           keep-daily: 1
           keep-weekly: 8

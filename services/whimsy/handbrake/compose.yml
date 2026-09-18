@@ -7,8 +7,8 @@ services:
     volumes:
       - "{{ appdata_path }}/handbrake/config:/config"
       - "{{ appdata_path }}/handbrake/storage:/storage"
-      - /mnt/Media/Movies/1-Processing/Handbrake/Watch:/watch
-      - /mnt/Media/Movies/1-Processing/Handbrake/Output:/output
+      - /mnt/Media/Files/1-Processing/Handbrake/Watch:/watch
+      - /mnt/Media/Files/1-Processing/Handbrake/Output:/output
       - "/mnt/Media/Kids Movies:/stuff/kids_movies:ro"
       - "/mnt/Media/Kids TV:/stuff/kids_tv:ro"
       - "/mnt/Media/Movies:/stuff/movies:ro"
