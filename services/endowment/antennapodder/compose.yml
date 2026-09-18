@@ -1,0 +1,14 @@
+services:
+  antennapodder:
+    image: ghcr.io/bladewdr/antennapodder:0.1.4
+    container_name: antennapodder
+    restart: unless-stopped
+    ports:
+      - 8040:3000
+    environment:
+      - PORT=3000
+      - DATA_DIR=/data
+      - ANTENNAPODDER_USER=admin
+      - ANTENNAPODDER_PASS={{ secret_antennapod_pass }}
+    volumes:
+      - "{{ appdata_path }}/podcasts/data:/data"
