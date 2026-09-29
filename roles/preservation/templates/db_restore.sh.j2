@@ -1,23 +1,24 @@
 #!/bin/bash
+set -o pipefail
 
 cd /home/{{ main_username }}
-docker compose up -d nextcloud-db vaultwarden-db ha-db romm-db invidious-db booklore-db influx-db
+docker compose up -d nextcloud-db vaultwarden-db ha-db romm-db invidious-db booklore-db influx-db outline-db
 
 sleep 30s
 echo Restoring Nextcloud DB
 cd /home/{{ main_username }}/db_backups/nextcloud
 LAST_NEXTCLOUD=$(ls -t | head -n 1)
-cat /home/{{ main_username }}/db_backups/nextcloud/$LAST_NEXTCLOUD | docker exec -i nextcloud-db psql -U nextcloud -d nextcloud
+zstd -dc /home/{{ main_username }}/db_backups/nextcloud/$LAST_NEXTCLOUD | docker exec -i nextcloud-db psql -U nextcloud -d nextcloud
 
 echo Restoring Vaultwarden DB
 cd /home/{{ main_username }}/db_backups/vaultwarden
 LAST_VAULTWARDEN=$(ls -t | head -n 1)
-cat /home/{{ main_username }}/db_backups/vaultwarden/$LAST_VAULTWARDEN | docker exec -i vaultwarden-db psql -U vaultwarden -d vaultwarden
+zstd -dc /home/{{ main_username }}/db_backups/vaultwarden/$LAST_VAULTWARDEN | docker exec -i vaultwarden-db psql -U vaultwarden -d vaultwarden
 
 echo Restoring HA DB
 cd /home/{{ main_username }}/db_backups/ha
 LAST_HA=$(ls -t | head -n 1)
-cat /home/{{ main_username }}/db_backups/ha/$LAST_HA | docker exec -i ha-db psql -U homeassistant -d homeassistant
+zstd -dc /home/{{ main_username }}/db_backups/ha/$LAST_HA | docker exec -i ha-db psql -U homeassistant -d homeassistant
 
 echo Restoring ROMM DB
 cd /home/{{ main_username }}/db_backups/romm
@@ -27,12 +28,12 @@ docker exec -i romm-db mariadb -u romm -p{{ secret_romm_db_pass }} romm < /home/
 echo Restoring Invidious DB
 cd /home/{{ main_username }}/db_backups/invidious
 LAST_INVIDIOUS=$(ls -t | head -n 1)
-cat /home/{{ main_username }}/db_backups/invidious/$LAST_INVIDIOUS | docker exec -i invidious-db psql -U kemal -d invidious
+zstd -dc /home/{{ main_username }}/db_backups/invidious/$LAST_INVIDIOUS | docker exec -i invidious-db psql -U kemal -d invidious
 
 echo Restoring Outline DB
 cd /home/{{ main_username }}/db_backups/outline
 LAST_OUTLINE=$(ls -t | head -n 1)
-cat /home/{{ main_username }}/db_backups/outline/$LAST_OUTLINE | docker exec -i outline-db psql -U outline -d outline
+zstd -dc /home/{{ main_username }}/db_backups/outline/$LAST_OUTLINE | docker exec -i outline-db psql -U outline -d outline
 
 echo Restoring Booklore DB
 cd /home/{{ main_username }}/db_backups/booklore

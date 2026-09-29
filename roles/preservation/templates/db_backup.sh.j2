@@ -1,50 +1,54 @@
 #!/bin/bash
+set -o pipefail
+rc=0
 
 # Nextcloud DB Backup
 echo Backing up Nextcloud DB
 today=$(date +"%Y_%m_%d")
-docker exec nextcloud-db sh -c 'pg_dumpall -U nextcloud' > /home/{{ main_username }}/db_backups/nextcloud/nextcloudDB_$today.sql
+docker exec nextcloud-db sh -c 'pg_dumpall -U nextcloud' | zstd -q -f -T0 -o /home/{{ main_username }}/db_backups/nextcloud/nextcloudDB_$today.sql.zst || rc=1
 
 #### Vaultwarden DB Backup
 echo Backing up Vaultwarden DB
 today=$(date +"%Y_%m_%d")
-docker exec vaultwarden-db sh -c 'pg_dumpall -U vaultwarden' > /home/{{ main_username }}/db_backups/vaultwarden/vaultwardenDB_$today.sql
+docker exec vaultwarden-db sh -c 'pg_dumpall -U vaultwarden' | zstd -q -f -T0 -o /home/{{ main_username }}/db_backups/vaultwarden/vaultwardenDB_$today.sql.zst || rc=1
 
 #### HA DB Backup
 echo Backing up HA DB
 today=$(date +"%Y_%m_%d")
-docker exec ha-db sh -c 'pg_dumpall -U homeassistant' > /home/{{ main_username }}/db_backups/ha/haDB_$today.sql
+docker exec ha-db sh -c 'pg_dumpall -U homeassistant' | zstd -q -f -T0 -o /home/{{ main_username }}/db_backups/ha/haDB_$today.sql.zst || rc=1
 
 #### ROMM DB Backup
 echo Backing up ROMM DB
 today=$(date +"%Y_%m_%d")
-docker exec romm-db sh -c 'exec mariadb-dump --single-transaction -h localhost -u romm-user -p{{ secret_romm_db_pass }} romm' > /home/{{ main_username }}/db_backups/romm/rommDB_$today.sql
+docker exec romm-db sh -c 'exec mariadb-dump --single-transaction -h localhost -u romm-user -p{{ secret_romm_db_pass }} romm' > /home/{{ main_username }}/db_backups/romm/rommDB_$today.sql || rc=1
 
 #### Invidious DB Backup
 echo Backing up Invidious DB
 today=$(date +"%Y_%m_%d")
-docker exec invidious-db sh -c 'pg_dumpall -U kemal' > /home/{{ main_username }}/db_backups/indivious/invidiousDB_$today.sql
+docker exec invidious-db sh -c 'pg_dumpall -U kemal' | zstd -q -f -T0 -o /home/{{ main_username }}/db_backups/invidious/invidiousDB_$today.sql.zst || rc=1
 
 #### Outline DB Backup
 echo Backing up Outline DB
 today=$(date +"%Y_%m_%d")
-docker exec outline-db sh -c 'pg_dumpall -U outline' > /home/{{ main_username }}/db_backups/outline/outlineDB_$today.sql
+docker exec outline-db sh -c 'pg_dumpall -U outline' | zstd -q -f -T0 -o /home/{{ main_username }}/db_backups/outline/outlineDB_$today.sql.zst || rc=1
 
 #### Booklore DB Backup
 echo Backing up Booklore DB
 today=$(date +"%Y_%m_%d")
-docker exec booklore-db sh -c 'exec mariadb-dump --single-transaction --skip-ssl -h localhost -u booklore -p{{ secret_booklore_db_pass }} booklore' > /home/{{ main_username }}/db_backups/booklore/bookloreDB_$today.sql
+docker exec booklore-db sh -c 'exec mariadb-dump --single-transaction --skip-ssl -h localhost -u booklore -p{{ secret_booklore_db_pass }} booklore' > /home/{{ main_username }}/db_backups/booklore/bookloreDB_$today.sql || rc=1
 
 #### InfluxDB Backup
 echo Backing up InfluxDB
 docker exec influx-db sh -c 'influx backup \
   /media/backup/$(date +"%Y.%m.%d") \
-  -t {{ secret_influxdb_token }} && chmod 777 -R /media/backup'
+  -t {{ secret_influxdb_token }} && chmod 777 -R /media/backup' || rc=1
 
 #### Delete Old
-find /home/{{ main_username }}/db_backups/* -mtime +6 -type f -delete
-find /home/{{ main_username }}/db_backups/influxdb -mtime +6 -type d -delete
+find /home/{{ main_username }}/db_backups/* -mmin +$((7*24*60 - 60)) -type f -delete
+find /home/{{ main_username }}/db_backups/influxdb -mmin +$((7*24*60 - 60)) -type d -delete
 find /home/{{ main_username }}/db_backups/influxdb -type d -empty -delete
 
 #### Backup the backups
-/usr/local/bin/autorestic backup -a -c /home/{{ main_username }}/.autorestic.yml
+/usr/local/bin/autorestic backup -a -c /home/{{ main_username }}/.autorestic.yml || rc=1
+
+exit $rc

@@ -11,6 +11,7 @@ package_list:
   - name: sudo
   - name: restic
   - name: wget
+  - name: zstd
 
 pull_backup: false
 
