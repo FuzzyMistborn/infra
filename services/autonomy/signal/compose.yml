@@ -2,6 +2,7 @@ services:
   signal-api:
     image: bbernhard/signal-cli-rest-api:0.101
     container_name: signal-api
+    user: "0:0"
     volumes:
       - "{{ appdata_path }}/signal-api:/home/.local/share/signal-cli"
     ports:
