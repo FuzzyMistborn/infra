@@ -10,9 +10,13 @@ services:
     environment:
       - username=admin
       - password={{ secret_collabora_pw }}
-      - domain={{ secret_collabora_url }}
+      - aliasgroup1={{ secret_collabora_url }}:443
+      - aliasgroup2={{ secret_collabora_url }}:443
       - server_name=office.{{ secret_personal_url }}
       - dictionaries=en_US
+      - extra_params=--o:ssl.enable=true --o:ssl.termination=true --o:ssl.ssl_verification=true --o:welcome.enable=false --o:net.frame_ancestors=cloud.{{ secret_personal_internal_url }}
+    volumes:
+      - "{{ appdata_path }}/collabora/proof_key:/etc/coolwsd/proof_key:ro"
     networks:
       - collabora-net
     mem_limit: 1000M
