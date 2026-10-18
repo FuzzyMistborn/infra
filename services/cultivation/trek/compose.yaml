@@ -29,6 +29,7 @@ services:
       - OIDC_DISPLAY_NAME=Pocket-ID
       - SESSION_DURATION=3d
       - SESSION_DURATION_REMEMBER=60d
+      - ALLOW_INTERNAL_NETWORK=true
     volumes:
       - "{{ appdata_path }}/trek/data:/app/data"
       - "{{ appdata_path }}/trek/uploads:/app/uploads"

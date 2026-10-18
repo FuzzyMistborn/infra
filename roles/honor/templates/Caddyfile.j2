@@ -157,7 +157,7 @@ office.{{ secret_personal_url }} {
 		}
 	}
 	tls /home/{{ main_username }}/lego/certificates/external.crt /home/{{ main_username }}/lego/certificates/external.key
-	import headers
+#	import headers
 }
 # Paperless
 paperless.{{ secret_personal_url }} {
@@ -501,4 +501,13 @@ recording.{{ secret_personal_internal_url }} {
 livekit.{{ secret_personal_internal_url }} {
         reverse_proxy http://192.168.50.25:7880
         tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
+}
+# OpenCloud
+cloud.{{ secret_personal_internal_url }} {
+	reverse_proxy http://192.168.50.20:9200
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
+}
+cloud-office.{{ secret_personal_internal_url }} {
+	reverse_proxy http://192.168.50.20:9300
+	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 }
