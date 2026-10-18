@@ -1,6 +1,6 @@
 services:
   gitea:
-    image: gitea/gitea:28.0.0
+    image: gitea/gitea:28.1.0
     container_name: gitea
     volumes:
       - "{{ appdata_path }}/gitea/data:/data"
