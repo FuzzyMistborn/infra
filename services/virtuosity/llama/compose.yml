@@ -1,10 +1,10 @@
 services:
   llama-swap:
-    image: ghcr.io/mostlygeek/llama-swap:unified-cuda-2026-05-13
+    image: ghcr.io/mostlygeek/llama-swap:v265-cuda-b11718
     container_name: llama-swap
     volumes:
       - /mnt/llms/models:/models:ro
-      - "{{ appdata_path }}/llama/config.yml:/etc/llama-swap/config/config.yaml:ro"
+      - "{{ appdata_path }}/llama/config.yml:/app/config.yaml:ro"
     ports:
       - 8080:8080
     runtime: nvidia

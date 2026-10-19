@@ -1,11 +1,13 @@
 services:
   photon:
-    image: ghcr.io/rtuszik/photon-docker:0.7.0-rev.3
+    image: ghcr.io/rtuszik/photon-docker:2.4.0
     container_name: photon
     environment:
-      - COUNTRY_CODE=us
+      - UPDATE_STRATEGY=SEQUENTIAL
+      - UPDATE_INTERVAL=720h
+      - REGION=north-america
     volumes:
-      - /mnt/external_data/photon:/photon/photon_data
+      - /mnt/external_data/photon:/photon/data
     restart: unless-stopped
     ports:
       - 2322:2322

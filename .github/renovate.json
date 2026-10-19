@@ -23,7 +23,15 @@
       "versioning": "regex:^release-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$"
     },
     {
-      "matchPackageNames": ["corentinth/it-tools, ghcr.io/wez/govee2mqtt"],
+      "matchPackageNames": ["ghcr.io/linuxserver/jellyfin"],
+      "versioning": "regex:^version-(?<major>\\d+)\\.(?<minor>\\d+)ubu(?<compatibility>\\d+)$"
+    },
+    {
+      "matchPackageNames": ["ghcr.io/mostlygeek/llama-swap"],
+      "versioning": "regex:^v(?<major>\\d+)-cuda-b(?<minor>\\d+)$"
+    },
+    {
+      "matchPackageNames": ["ghcr.io/wez/govee2mqtt"],
       "versioning": "regex:^(?<major>\\d{4})\\.(?<minor>\\d{2})\\.(?<patch>\\d{2})-[a-f0-9]+$"
     }
   ]
