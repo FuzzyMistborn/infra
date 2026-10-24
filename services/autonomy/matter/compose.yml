@@ -1,6 +1,6 @@
 services:
   matter-server:
-    image: ghcr.io/matter-js/matterjs-server:1.4.0
+    image: ghcr.io/matter-js/matterjs-server:1.5.5
     container_name: matter-server
     restart: unless-stopped
     network_mode: host
