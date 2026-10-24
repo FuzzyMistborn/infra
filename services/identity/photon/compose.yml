@@ -1,6 +1,6 @@
 services:
   photon:
-    image: ghcr.io/rtuszik/photon-docker:2.4.0
+    image: ghcr.io/rtuszik/photon-docker:2.5.0
     container_name: photon
     environment:
       - UPDATE_STRATEGY=SEQUENTIAL
