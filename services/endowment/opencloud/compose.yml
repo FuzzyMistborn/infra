@@ -31,17 +31,17 @@ services:
     # ── OIDC / Pocket-ID ──────────────────────────────────────────────────
     # Uncomment this block when ready to switch to Pocket-ID.
     # Also uncomment the proxy.yaml volume mount below.
-      #- OC_EXCLUDE_RUN_SERVICES=idp
-      #- OC_OIDC_ISSUER=https://id.example.com
-      #- WEB_OIDC_CLIENT_ID=opencloud
-      #- WEB_OIDC_SCOPE=openid profile email groups offline_access
-      #- PROXY_OIDC_REWRITE_WELLKNOWN=true
-      #- PROXY_AUTOPROVISION_ACCOUNTS=true
-      #- PROXY_OIDC_ACCESS_TOKEN_VERIFY_METHOD=none
-      #- PROXY_ROLE_ASSIGNMENT_DRIVER=oidc
-      #- PROXY_ROLE_ASSIGNMENT_OIDC_CLAIM=groups
-      #- GRAPH_ASSIGN_DEFAULT_USER_ROLE=false
-      #- GRAPH_USERNAME_MATCH=none
+      # - OC_EXCLUDE_RUN_SERVICES=idp
+      # - OC_OIDC_ISSUER=https://id.example.com
+      # - WEB_OIDC_CLIENT_ID=opencloud
+      # - WEB_OIDC_SCOPE=openid profile email groups offline_access
+      # - PROXY_OIDC_REWRITE_WELLKNOWN=true
+      # - PROXY_AUTOPROVISION_ACCOUNTS=true
+      # - PROXY_OIDC_ACCESS_TOKEN_VERIFY_METHOD=none
+      # - PROXY_ROLE_ASSIGNMENT_DRIVER=oidc
+      # - PROXY_ROLE_ASSIGNMENT_OIDC_CLAIM=groups
+      # - GRAPH_ASSIGN_DEFAULT_USER_ROLE=false
+      # - GRAPH_USERNAME_MATCH=none
 
     # ── Collabora / WOPI ──────────────────────────────────────────────────
       - COLLABORATION_WOPI_SRC=https://files.{{ secret_personal_url }}
