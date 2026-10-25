@@ -2,21 +2,28 @@ services:
   collabora:
     image: collabora/code:26.04.5.1.1
     container_name: collabora
-    privileged: true
     cap_add:
-      - MKNOD
+      - SYS_ADMIN
+    security_opt:
+      - seccomp=unconfined
+      - apparmor:unconfined
     ports:
       - 9980:9980
     environment:
       - username=admin
       - password={{ secret_collabora_pw }}
-      - aliasgroup1={{ secret_collabora_url }}:443
-      - aliasgroup2={{ secret_collabora_url }}:443
-      - server_name=office.{{ secret_personal_url }}
+      - aliasgroup1=https://files.{{ secret_personal_url }}:443
       - dictionaries=en_US
-      - extra_params=--o:ssl.enable=true --o:ssl.termination=true --o:ssl.ssl_verification=true --o:welcome.enable=false --o:net.frame_ancestors=cloud.{{ secret_personal_internal_url }}
+      - extra_params=--o:ssl.enable=false --o:ssl.termination=true --o:welcome.enable=false --o:net.lok_allow.host[14]=files.{{ secret_personal_url }}
     volumes:
+      - /usr/share/fonts/truetype:/usr/share/fonts/truetype/more:ro
+      - /usr/share/fonts/truetype:/opt/cool/systemplate/usr/share/fonts/truetype/more:ro
       - "{{ appdata_path }}/collabora/proof_key:/etc/coolwsd/proof_key:ro"
+    healthcheck:
+      test: ["CMD", "/usr/bin/coolwsd", "--probe", "--use-env-vars"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
     networks:
       - collabora-net
     mem_limit: 1000M

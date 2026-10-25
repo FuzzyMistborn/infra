@@ -1,0 +1,18 @@
+services:
+  baikal:
+    image: ghcr.io/aalmenar/baikal:0.13.0-nginx
+    container_name: baikal
+    ports:
+      - 8070:80
+    environment:
+      - APPLY_HOME_ASSISTANT_FIX=true
+    volumes:
+      - "{{ appdata_path }}/baikal/config:/var/www/baikal/config"
+      - "{{ appdata_path }}/baikal/data:/var/www/baikal/Specific"
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    networks:
+      - baikal-net
+networks:
+  baikal-net:

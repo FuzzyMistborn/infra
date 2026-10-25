@@ -1,0 +1,27 @@
+services:
+  yourdav:
+    image: ghcr.io/fuzzymistborn/yourdav:0.7.1
+    container_name: yourdav
+    ports:
+      - 3000:3000
+    environment:
+      - SESSION_SECRET={{ secret_yourdav_session_secret }}
+      - SESSION_TTL_DAYS=60
+      - ALLOWED_DAV_HOSTS=dav.{{ secret_personal_internal_url }}
+      - DAV_SERVER_URL=https://dav.{{ secret_personal_internal_url }}
+      - ALLOW_PRIVATE_SUBSCRIPTIONS=true
+      - CACHE_ENABLED=true
+      - SQLITE_PATH=/app/data/cache.db
+      - CACHE_SYNC_TTL_MS=30000
+      - DEFAULT_TIMEZONE=America/New_York
+      - NODE_ENV=development
+    volumes:
+      - "{{ appdata_path }}/yourdav:/app/data"
+    networks:
+      - yourdav-net
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+networks:
+  yourdav-net:

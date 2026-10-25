@@ -297,18 +297,13 @@ bitwarden.{{ secret_personal_url }} {
 	import max-geofilter
 }
 
-calendar.{{ secret_personal_url }} {
-	redir /* https://cloud.{{ secret_personal_url }}/apps/calendar/ 301
-	tls /home/{{ main_username }}/lego/certificates/personal.crt /home/{{ main_username }}/lego/certificates/personal.key
-}
-
-cloud.{{ secret_personal_url }} {
+files.{{ secret_personal_url }} {
 	crowdsec
 	reverse_proxy https://10.10.10.10:443 {
 		transport http {
-			tls_server_name cloud.{{ secret_personal_url }}
+			tls_server_name files.{{ secret_personal_url }}
 		}
-		header_up Host cloud.{{ secret_personal_url }}
+		header_up Host files.{{ secret_personal_url }}
 	}
 	tls /home/{{ main_username }}/lego/certificates/personal.crt /home/{{ main_username }}/lego/certificates/personal.key
 	import personal_headers
