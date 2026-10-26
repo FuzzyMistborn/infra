@@ -128,7 +128,8 @@
       when: update_plan is defined and update_plan | length > 0
 
 - name: Set Docker Vars/Run Updates
-  hosts: docker
+  # end_play only ends the first play, so skip this one when there is no plan
+  hosts: "{{ 'docker' if hostvars['localhost'].update_plan | default([]) | length > 0 else 'none' }}"
   become: true
   vars_files:
     - "vars/vault.yaml"
@@ -231,10 +232,12 @@
       delegate_to: localhost
       delegate_facts: true
       ansible.builtin.set_fact:
-        all_results: "{{ all_results | default([]) + [hostvars[item]['my_update_result']] }}"
-      loop: "{{ ansible_play_hosts_all }}"
+        all_results: >-
+          {{ ansible_play_hosts_all
+             | map('extract', hostvars, 'my_update_result')
+             | select('defined')
+             | list }}
       run_once: true # noqa: run-once[task] - default linear strategy, not free
-      when: hostvars[item].my_update_result is defined
 
     - name: Clear host errors to continue playbook
       ansible.builtin.meta: clear_host_errors

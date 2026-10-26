@@ -13,6 +13,8 @@ services:
     environment:
       - ESPHOME_USERNAME=builder
       - ESPHOME_PASSWORD={{ secret_espbuilder_pass }}
+    healthcheck:
+      disable: true # image default curls :6052, which --remote-build-only doesn't serve
     command:
       - dashboard
       - /config
