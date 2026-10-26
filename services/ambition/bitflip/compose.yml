@@ -1,3 +1,4 @@
+---
 services:
   bitbot:
     image: fuzzymistborn/bitbot:latest

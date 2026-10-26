@@ -1,12 +1,12 @@
 ---
-- name: restart wireguard service
-  service:
+- name: Restart wireguard service
+  ansible.builtin.service:
     name: wg-quick@wg0
-    enabled: 'true'
+    enabled: "true"
     state: restarted
 
-- name: start wireguard service
-  service:
+- name: Start wireguard service
+  ansible.builtin.service:
     name: wg-quick@wg0
-    enabled: 'true'
+    enabled: "true"
     state: started

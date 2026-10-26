@@ -1,3 +1,4 @@
+---
 services:
   tasmota:
     image: ghcr.io/tasmoadmin/tasmoadmin:v5.0.0

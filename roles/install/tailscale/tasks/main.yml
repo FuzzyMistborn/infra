@@ -7,24 +7,39 @@
 - name: Apt Dependencies
   become: true
   ansible.builtin.apt:
-    name: "{{ apt_dependencies }}"
+    name: "{{ tailscale_apt_dependencies }}"
     state: present
 
-- name: Add Tailscale Signing Key
+- name: Find old Tailscale list files
   become: true
-  ansible.builtin.apt_key:
-    url: "{{ apt_signkey }}"
-    state: present
+  ansible.builtin.find:
+    paths: /etc/apt/sources.list.d
+    patterns: "*.list"
+    contains: 'pkgs\.tailscale\.com'
+    use_regex: false
+  register: tailscale_old_repo_lists
 
-- name: Add Tailscale Deb
+- name: Remove old Tailscale list files
   become: true
-  ansible.builtin.apt_repository:
-    repo: "{{ apt_deb }}"
-    state: present
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ tailscale_old_repo_lists.files }}"
+  loop_control:
+    label: "{{ item.path }}"
+
+- name: Add Tailscale apt repository
+  become: true
+  ansible.builtin.deb822_repository:
+    name: tailscale
+    uris: "https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }}"
+    suites: "{{ ansible_distribution_release | lower }}"
+    components: main
+    signed_by: "{{ tailscale_apt_signkey }}"
 
 - name: Install Tailscale
   become: true
   ansible.builtin.apt:
     name: "{{ tailscale_package }}"
-    state: latest
+    state: present
     update_cache: true

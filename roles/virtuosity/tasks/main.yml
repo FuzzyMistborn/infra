@@ -1,8 +1,7 @@
 ---
-
 ### Basic Setup/Boostrap
 - name: Ensure user groups exists
-  group:
+  ansible.builtin.group:
     name: "{{ item }}"
     state: present
   loop:
@@ -10,7 +9,7 @@
     - ansible
 
 - name: Add users
-  user:
+  ansible.builtin.user:
     name: "{{ item.user }}"
     password: "{{ item.pass }}"
     groups:
@@ -18,29 +17,29 @@
       - sudo
     shell: /bin/bash
   loop:
-    - {user: "{{ main_username }}", pass: "{{ secret_main_user_pass }}"}
-    - {user: ansible, pass: "{{ secret_ansible_pass }}"}
+    - { user: "{{ main_username }}", pass: "{{ secret_main_user_pass }}" }
+    - { user: ansible, pass: "{{ secret_ansible_pass }}" }
 
 - name: Add sudoers file for ansible
-  copy:
+  ansible.builtin.copy:
     src: sudoer_ansible
     dest: /etc/sudoers.d/ansible
     owner: root
     group: root
-    mode: '0440'
+    mode: "0440"
 
 - name: SSH Keys
-  authorized_key:
+  ansible.posix.authorized_key:
     user: "{{ item.user }}"
     state: present
     key: "{{ item.ssh }}"
   loop:
-    - {user: "{{ main_username }}", ssh: "{{ secret_main_user_ssh }}"}
-    - {user: "{{ main_username }}", ssh: "{{ secret_main_user_alt_ssh }}"}
-    - {user: ansible, ssh: "{{ secret_ansible_ssh }}"}
+    - { user: "{{ main_username }}", ssh: "{{ secret_main_user_ssh }}" }
+    - { user: "{{ main_username }}", ssh: "{{ secret_main_user_alt_ssh }}" }
+    - { user: ansible, ssh: "{{ secret_ansible_ssh }}" }
 
-- name: create main user directories
-  file:
+- name: Create main user directories
+  ansible.builtin.file:
     path: /home/{{ main_username }}/{{ item }}
     state: directory
     owner: "{{ main_username }}"
@@ -50,66 +49,82 @@
     - docker/immich
 
 ### GPU
-- name: Add Nvidia PPA repo
-  apt_repository:
-    repo: ppa:graphics-drivers/ppa
+- name: Install python3-debian for deb822_repository
+  ansible.builtin.apt:
+    name: python3-debian
     state: present
+
+- name: Check Nvidia PPA signing key is set
+  ansible.builtin.assert:
+    that: virtuosity_nvidia_ppa_signed_by | length > 0
+    fail_msg: >-
+      Set virtuosity_nvidia_ppa_signed_by to a URL for the graphics-drivers PPA signing key
+      (see defaults/main.yml)
+
+- name: Remove old Nvidia container toolkit list file
+  ansible.builtin.file:
+    path: /etc/apt/sources.list.d/nvidia-docker.list
+    state: absent
+
+- name: Add Nvidia PPA repo
+  ansible.builtin.deb822_repository:
+    name: "graphics-drivers-ubuntu-ppa-{{ ansible_distribution_release }}"
+    uris: http://ppa.launchpadcontent.net/graphics-drivers/ppa/ubuntu
+    suites: "{{ ansible_distribution_release }}"
+    components: main
+    signed_by: "{{ virtuosity_nvidia_ppa_signed_by }}"
 
 - name: Install NVIDIA driver and utils
-  apt:
+  ansible.builtin.apt:
     pkg: nvidia-driver-{{ nvidia_driver_version }}
-    install_recommends: no
+    install_recommends: false
     state: present
-    update_cache: yes
-    autoremove: yes
+    update_cache: true
+    autoremove: true
 
-- name: Add Nvidia repo gpg key
-  apt_key:
-    url: https://nvidia.github.io/libnvidia-container/gpgkey
-    state: present
-
-- name: Add Nvidia apt repo
-  get_url:
-    url: https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list
-    dest: /etc/apt/sources.list.d/nvidia-docker.list
-    mode: '0644'
+- name: Add Nvidia container toolkit apt repo
+  ansible.builtin.deb822_repository:
+    name: nvidia-container-toolkit
+    uris: https://nvidia.github.io/libnvidia-container/stable/deb/amd64
+    suites: /
+    signed_by: https://nvidia.github.io/libnvidia-container/gpgkey
 
 - name: Install Nvidia container toolkit
-  apt:
+  ansible.builtin.apt:
     name:
       - nvidia-container-toolkit
     state: present
-    update_cache: yes
+    update_cache: true
 
 ### fstab/disk mounts
-- name: make sure disks unmounted
-  mount:
+- name: Make sure disks unmounted
+  ansible.posix.mount:
     path: "{{ item.path }}"
     state: unmounted
   loop: "{{ mountpoints }}"
 
-- name: create /mnt points
-  file:
+- name: Create /mnt points
+  ansible.builtin.file:
     dest: "{{ item.path }}"
     state: directory
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-    mode: '0777'
+    mode: "0777"
   loop: "{{ mountpoints }}"
 
 - name: Add smbcredentials
-  copy:
+  ansible.builtin.copy:
     dest: /home/{{ main_username }}/.smbcredentials
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-    mode: '0600'
+    mode: "0600"
     content: |
       user=samba
       password={{ secret_samba_pass }}
       domain=cosmere
 
-- name: mount disks
-  mount:
+- name: Mount disks
+  ansible.posix.mount:
     path: "{{ item.path }}"
     src: "{{ item.source }}"
     fstype: "{{ item.fs }}"

@@ -1,3 +1,4 @@
+---
 services:
   omada-controller:
     image: mbentley/omada-controller:6.3

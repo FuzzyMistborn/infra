@@ -1,3 +1,4 @@
+---
 services:
   beszel:
     image: ghcr.io/henrygd/beszel/beszel:0.21.0

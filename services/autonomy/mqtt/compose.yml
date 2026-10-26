@@ -1,3 +1,4 @@
+---
 services:
   mqtt:
     image: eclipse-mosquitto:2.0.22

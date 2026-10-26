@@ -1,8 +1,7 @@
 ---
-
 ### Basic Setup
 - name: Ensure user groups exists
-  group:
+  ansible.builtin.group:
     name: "{{ item }}"
     state: present
   loop:
@@ -10,7 +9,7 @@
     - ansible
 
 - name: Add users
-  user:
+  ansible.builtin.user:
     name: "{{ item.user }}"
     password: "{{ item.pass }}"
     groups:
@@ -18,42 +17,42 @@
       - sudo
     shell: /bin/bash
   loop:
-    - {user: "{{ main_username }}", pass: "{{ secret_main_user_pass }}"}
-    - {user: ansible, pass: "{{ secret_ansible_pass }}"}
+    - { user: "{{ main_username }}", pass: "{{ secret_main_user_pass }}" }
+    - { user: ansible, pass: "{{ secret_ansible_pass }}" }
 
 - name: Add samba users
-  user:
+  ansible.builtin.user:
     name: samba
     password: "!"
-    create_home: no
+    create_home: false
 
 - name: Add samba user password
-  command:
+  ansible.builtin.command:
     cmd: /usr/bin/smbpasswd -s -a samba
     stdin: |
       {{ secret_samba_pass }}
       {{ secret_samba_pass }}
 
 - name: Add sudoers file for ansible
-  copy:
+  ansible.builtin.copy:
     src: sudoer_ansible
     dest: /etc/sudoers.d/ansible
     owner: root
     group: root
-    mode: '0440'
+    mode: "0440"
 
 - name: SSH Keys
-  authorized_key:
+  ansible.posix.authorized_key:
     user: "{{ item.user }}"
     state: present
     key: "{{ item.ssh }}"
   loop:
-    - {user: "{{ main_username }}", ssh: "{{ secret_main_user_ssh }}"}
-    - {user: "{{ main_username }}", ssh: "{{ secret_main_user_alt_ssh }}"}
-    - {user: ansible, ssh: "{{ secret_ansible_ssh }}"}
+    - { user: "{{ main_username }}", ssh: "{{ secret_main_user_ssh }}" }
+    - { user: "{{ main_username }}", ssh: "{{ secret_main_user_alt_ssh }}" }
+    - { user: ansible, ssh: "{{ secret_ansible_ssh }}" }
 
-- name: create main user directories
-  file:
+- name: Create main user directories
+  ansible.builtin.file:
     path: /home/{{ main_username }}/{{ item }}
     state: directory
     owner: "{{ main_username }}"
@@ -63,44 +62,44 @@
     - docker/scrutiny
 
 - name: Copy scripts
-  copy:
+  ansible.builtin.copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     mode: +x
   loop:
-    - {src: "trim.sh", dest: "/home/{{ main_username }}/trim.sh"}
+    - { src: "trim.sh", dest: "/home/{{ main_username }}/trim.sh" }
 
 # Source: https://www.reddit.com/r/Proxmox/comments/118i6ct/tutorialguide_how_to_make_the_prelogin_banner/
 - name: Copy issue file to adjust displayer IP address
-  copy:
+  ansible.builtin.copy:
     src: etc/issue
     dest: /etc/issue
     owner: root
     group: root
-    mode: '0644'
+    mode: "0644"
 
 ### Infrastructure
 - name: Set up disks/mounts
-  include_tasks: disks.yml
+  ansible.builtin.include_tasks: disks.yml
 
 - name: Set up containers
-  include_tasks: infrastructure.yml
+  ansible.builtin.include_tasks: infrastructure.yml
   when: infrastructure == true
 
 - name: Install samba config
-  template:
+  ansible.builtin.template:
     src: smb.conf.j2
     dest: /etc/samba/smb.conf
     owner: root
     group: root
 - name: Restart samba
-  service:
+  ansible.builtin.service:
     name: smbd
     state: restarted
 
 ### Backup Restore
 - name: Create restore script
-  copy:
+  ansible.builtin.copy:
     dest: /home/{{ main_username }}/restore.sh
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
@@ -110,19 +109,19 @@
       /usr/local/bin/autorestic restore -f -l docker --from local_docker --to /
   when: pull_backup == true
 - name: Run restore script
-  command: /bin/bash ./restore.sh
+  ansible.builtin.command: /bin/bash ./restore.sh
   args:
     chdir: "/home/{{ main_username }}"
   when: pull_backup == true
 - name: Remove restore script
-  file:
+  ansible.builtin.file:
     path: /home/{{ main_username }}/restore.sh
     state: absent
   when: pull_backup == true
 
 ### Wireguard/Misc
 - name: Enable IPv4 forwarding
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.ip_forward
     value: 1
-    reload: yes
+    reload: true

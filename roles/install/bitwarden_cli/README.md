@@ -16,15 +16,15 @@ This role has a number of variables that can be configured.
 | Variable                            | Description                                              | Default           |
 | ----------------------------------- | -------------------------------------------------------- | ----------------- |
 | **bwo_download_latest_ver**        | Whether to download the latest version from Github.      | `true`
-| **bw_pinned_ver**                 | Desired version of BW CLI (overriden by above var).        | `1.20.0`
+| **bitwarden_cli_pinned_ver**                 | Desired version of BW CLI (overriden by above var).        | `1.20.0`
 | **bw_distro**                     | Which distro to target for download.                     | `linux`
 | **bw_install_directory**          | Where to install BW CLI binary.                            | `/usr/local/bin`
 
 By default the role fetches and installs the latest available version.  You can disable this by pinning to a specific version.  Here's an example if you wanted to set the version.
 
 ```yaml
-bw_download_latest_ver: false
-bw_pinned_ver: 1.20.0
+bitwarden_cli_download_latest_ver: false
+bitwarden_cli_pinned_ver: 1.20.0
 ```
 By setting a pinned version, a version will only be pulled if the installed version does not match the pinned version.
 

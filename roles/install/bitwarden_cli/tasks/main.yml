@@ -1,44 +1,45 @@
 ---
-
-- name: install dependencies for nodesource repo
-  package:
+- name: Install dependencies for nodesource repo
+  ansible.builtin.package:
     name:
       - ca-certificates
       - curl
       - gnupg
     state: present
 
-- name: create apt keyrings directory
-  file:
-    path: /etc/apt/keyrings
-    state: directory
-    mode: "0755"
-
-- name: download nodesource gpg key
-  get_url:
-    url: https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key
-    dest: /tmp/nodesource.gpg.key
-    mode: "0644"
-
-- name: dearmor nodesource gpg key
-  shell: gpg --dearmor < /tmp/nodesource.gpg.key > /etc/apt/keyrings/nodesource.gpg
-  args:
-    creates: /etc/apt/keyrings/nodesource.gpg
-
-- name: add nodesource apt repository
-  apt_repository:
-    repo: "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_{{ nodejs_major_version }}.x nodistro main"
+- name: Install python3-debian for deb822_repository
+  ansible.builtin.package:
+    name: python3-debian
     state: present
-    filename: nodesource
 
-- name: install nodejs
-  package:
+- name: Remove old nodesource list file and keyring
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/apt/sources.list.d/nodesource.list
+    - /etc/apt/keyrings/nodesource.gpg
+
+- name: Add nodesource apt repository
+  ansible.builtin.deb822_repository:
+    name: nodesource
+    uris: "https://deb.nodesource.com/node_{{ bitwarden_cli_nodejs_major_version }}.x"
+    suites: nodistro
+    components: main
+    signed_by: https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key
+
+- name: Update apt cache for nodesource repository
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install nodejs
+  ansible.builtin.package:
     name: nodejs
     state: present
 
-- name: install bitwarden cli via npm
+- name: Install bitwarden cli via npm
   community.general.npm:
     name: "@bitwarden/cli"
     global: true
-    state: "{{ 'latest' if bw_download_latest_ver else 'present' }}"
-    version: "{{ bw_pinned_ver if not bw_download_latest_ver else omit }}"
+    state: "{{ 'latest' if bitwarden_cli_download_latest_ver else 'present' }}"
+    version: "{{ bitwarden_cli_pinned_ver if not bitwarden_cli_download_latest_ver else omit }}"

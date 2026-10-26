@@ -1,7 +1,6 @@
 ---
-
-- name: create config directories
-  file:
+- name: Create config directories
+  ansible.builtin.file:
     path: "/home/{{ main_username }}/{{ item }}"
     state: directory
     owner: "{{ main_username }}"
@@ -13,7 +12,7 @@
 
 #### DIUN
 - name: Copy DIUN Config Template
-  template:
+  ansible.builtin.template:
     src: diun_config.yml.j2
     dest: /home/{{ main_username }}/docker/diun/config.yml
     owner: "{{ main_username }}"
@@ -21,7 +20,7 @@
 
 ### Backup Restore
 - name: Create restore script
-  copy:
+  ansible.builtin.copy:
     dest: /home/{{ main_username }}/restore.sh
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
@@ -31,24 +30,24 @@
       /usr/local/bin/autorestic restore -f -l docker --from local_docker --to /
   when: pull_backup == true
 - name: Run restore script
-  command: /bin/bash ./restore.sh
+  ansible.builtin.command: /bin/bash ./restore.sh
   args:
     chdir: "/home/{{ main_username }}"
   when: pull_backup == true
 - name: Remove restore script
-  file:
+  ansible.builtin.file:
     path: /home/{{ main_username }}/restore.sh
     state: absent
   when: pull_backup == true
 
 ### Restic
 - name: Copy systemd service file
-  template:
+  ansible.builtin.template:
     src: ../templates/systemd/{{ item }}.j2
     dest: /etc/systemd/system/{{ item }}
     owner: root
     group: root
-    mode: '0644'
+    mode: "0644"
   loop:
     - restic_backup.service
     - restic_backup.timer
@@ -56,7 +55,7 @@
     - restic_prune.timer
 
 - name: Reload systemd services/timers
-  systemd:
+  ansible.builtin.systemd:
     enabled: true
     daemon-reload: true
     state: started

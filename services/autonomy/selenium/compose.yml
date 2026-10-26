@@ -1,3 +1,4 @@
+---
 services:
   selenium:
     image: selenium/standalone-firefox:158.0

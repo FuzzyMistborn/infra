@@ -1,3 +1,4 @@
+---
 services:
   healthchecks:
     image: ghcr.io/linuxserver/healthchecks:4.4.20261012

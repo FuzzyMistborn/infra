@@ -1,3 +1,4 @@
+---
 services:
   matter-server:
     image: ghcr.io/matter-js/matterjs-server:1.4.0

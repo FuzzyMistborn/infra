@@ -1,3 +1,4 @@
+---
 services:
   trek:
     image: mauriceboe/trek:4.3.3

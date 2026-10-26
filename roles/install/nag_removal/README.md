@@ -9,11 +9,11 @@ An ansible role to install [pve-fake-subscription](https://github.com/Jamesits/p
 
 ## Configuration
 
-Below are the configurable variables.  Note that `nag_force_install` defaults to `false`.  The purpose of that variable is to force an install to a specific version you pinned.
+Below are the configurable variables.  Note that `nag_removal_force_install` defaults to `false`.  The purpose of that variable is to force an install to a specific version you pinned.
 
 ```yaml
-nag_ver: v0.0.7
-nag_force_install: false
+nag_removal_ver: v0.0.7
+nag_removal_force_install: false
 ```
 Note that the `v` is necessary.
 

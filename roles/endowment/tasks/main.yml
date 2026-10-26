@@ -1,7 +1,6 @@
 ---
-
-- name: create directories
-  file:
+- name: Create directories
+  ansible.builtin.file:
     path: "/home/{{ main_username }}/{{ item }}"
     state: directory
     owner: "{{ main_username }}"
@@ -11,32 +10,32 @@
     - scripts
 
 - name: Copy scripts
-  copy:
+  ansible.builtin.copy:
     src: "{{ item.path }}"
     dest: /home/{{ main_username }}/scripts/{{ item.path }}
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
     mode: "{{ item.mode }}"
   loop:
-    - {path: "nextcloud_cron.sh", mode: "+x"}
+    - { path: "nextcloud_cron.sh", mode: "+x" }
 
 - name: Copy photos script templates
-  template:
+  ansible.builtin.template:
     src: "{{ item.src }}"
     dest: /home/{{ main_username }}/scripts/{{ item.dest }}
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
     mode: +x
   loop:
-    - {src: 'photos.sh.j2', dest: 'photos.sh'}
+    - { src: "photos.sh.j2", dest: "photos.sh" }
 
 #### Mount disks
 - name: Set up disks/mounts
-  include_tasks: disks.yml
+  ansible.builtin.include_tasks: disks.yml
 
 #### FTP (scanner -> paperless consume)
 - name: Set up FTP server
-  include_tasks:
+  ansible.builtin.include_tasks:
     file: ftp.yml
     apply:
       tags: ftp
@@ -44,7 +43,7 @@
 
 ### Backup Restore
 - name: Create restore script
-  copy:
+  ansible.builtin.copy:
     dest: /home/{{ main_username }}/restore.sh
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
@@ -54,12 +53,12 @@
       /usr/local/bin/autorestic restore -f -l docker --from local_docker --to /
   when: pull_backup == true
 - name: Run restore script
-  command: /bin/bash ./restore.sh
+  ansible.builtin.command: /bin/bash ./restore.sh
   args:
     chdir: "/home/{{ main_username }}"
   when: pull_backup == true
 - name: Remove restore script
-  file:
+  ansible.builtin.file:
     path: /home/{{ main_username }}/restore.sh
     state: absent
   when: pull_backup == true

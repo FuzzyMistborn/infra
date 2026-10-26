@@ -1,16 +1,16 @@
 ---
-
-- hosts: localhost
+- name: Which Hosts
+  hosts: localhost
   gather_facts: false
   vars_prompt:
     - name: target_hosts
       prompt: Which hosts to update? (space-separated, or 'all' for all docker hosts)
-      private: no
+      private: false
       default: "all"
 
   tasks:
     - name: Get changed images from git
-      shell: |
+      ansible.builtin.shell: |
         cd {{ playbook_dir }}
         git diff HEAD@{1} HEAD -- services/*/*/compose.yaml services/*/*/compose.yml 2>/dev/null | \
         grep -E '^\+.*image:' | \
@@ -23,24 +23,25 @@
       failed_when: false
 
     - name: Show changed images
-      debug:
+      ansible.builtin.debug:
         msg: "Changed images: {{ changed_images.stdout_lines }}"
       when: changed_images.stdout_lines | length > 0
 
     - name: Exit if no changes
-      meta: end_play
+      ansible.builtin.meta: end_play
       when: changed_images.stdout_lines | length == 0
 
     - name: Get list of all docker hosts from inventory
-      set_fact:
-        all_docker_hosts: "{{ groups['docker'] | map('extract', hostvars, 'group_names') | map('reject', 'search', 'children') | map('reject', 'in', ['docker', 'lxc', 'vms', 'ubuntu', 'fedora', 'arch', 'shards']) | map('first') | unique | list }}"
+      ansible.builtin.set_fact:
+        all_docker_hosts: "{{ groups['docker'] | map('extract', hostvars, 'group_names') | map('reject', 'search', 'children') | map('reject', 'in', ['docker', 'lxc',
+          'vms', 'ubuntu', 'fedora', 'arch', 'shards']) | map('first') | unique | list }}"
 
     - name: Get list of hosts to check
-      set_fact:
+      ansible.builtin.set_fact:
         hosts_to_check: "{{ target_hosts.split() if target_hosts != 'all' else all_docker_hosts }}"
 
     - name: Find affected containers per host
-      shell: |
+      ansible.builtin.shell: |
         cd {{ playbook_dir }}
         HOST="{{ item }}"
 
@@ -79,19 +80,19 @@
       no_log: true
 
     - name: Build update plan
-      set_fact:
+      ansible.builtin.set_fact:
         update_plan: "{{ update_plan | default([]) + [{'host': item.item, 'containers': item.stdout | trim}] }}"
       loop: "{{ host_containers.results }}"
       when: item.stdout | trim | length > 0
       no_log: true
 
     - name: Sort update plan alphabetically
-      set_fact:
+      ansible.builtin.set_fact:
         update_plan: "{{ update_plan | sort(attribute='host') }}"
       when: update_plan is defined and update_plan | length > 0
 
     - name: Build update plan display
-      set_fact:
+      ansible.builtin.set_fact:
         plan_header:
           - ""
           - "═══════════════════════════════════════════════════════════"
@@ -102,12 +103,12 @@
       when: update_plan is defined and update_plan | length > 0
 
     - name: Display update plan
-      debug:
+      ansible.builtin.debug:
         msg: "{{ plan_header + plan_lines + ['═══════════════════════════════════════════════════════════'] }}"
       when: update_plan is defined and update_plan | length > 0
 
     - name: No updates needed
-      debug:
+      ansible.builtin.debug:
         msg:
           - ""
           - "═══════════════════════════════════════════════════════════"
@@ -116,20 +117,21 @@
       when: update_plan is not defined or update_plan | length == 0
 
     - name: Confirm before proceeding
-      pause:
+      ansible.builtin.pause:
         prompt: "Press ENTER to proceed with updates, or Ctrl+C to abort"
       when: update_plan is defined and update_plan | length > 0
 
     - name: Save update plan to temp file
-      copy:
+      ansible.builtin.copy:
         content: "{{ update_plan | to_nice_json }}"
         dest: /tmp/ansible_docker_update_plan.json
       when: update_plan is defined and update_plan | length > 0
 
-- hosts: docker
+- name: Set Docker Vars/Run Updates
+  hosts: docker
   become: true
   vars_files:
-    - 'vars/vault.yaml'
+    - "vars/vault.yaml"
   gather_facts: false
   ignore_unreachable: true
 
@@ -138,7 +140,7 @@
 
   tasks:
     - name: Check connectivity
-      ping:
+      ansible.builtin.ping:
       register: connectivity_check
       ignore_errors: true
       ignore_unreachable: true
@@ -146,35 +148,35 @@
     - name: Load update plan
       delegate_to: localhost
       become: false
-      slurp:
+      ansible.builtin.slurp:
         path: /tmp/ansible_docker_update_plan.json
       register: update_plan_file
-      run_once: true  # noqa: run-once[task] - default linear strategy, not free
+      run_once: true # noqa: run-once[task] - default linear strategy, not free
       when: connectivity_check is succeeded
 
     - name: Parse update plan
-      set_fact:
+      ansible.builtin.set_fact:
         update_plan: "{{ update_plan_file.content | b64decode | from_json }}"
-      run_once: true  # noqa: run-once[task] - default linear strategy, not free
+      run_once: true # noqa: run-once[task] - default linear strategy, not free
       when: connectivity_check is succeeded
 
     - name: Get actual hostname from inventory
-      set_fact:
+      ansible.builtin.set_fact:
         actual_hostname: "{{ group_names | reject('search', 'children') | reject('in', ['docker', 'lxc', 'vms', 'ubuntu', 'fedora', 'shards']) | first }}"
       when: connectivity_check is succeeded
 
     - name: Find containers for this host
-      set_fact:
+      ansible.builtin.set_fact:
         my_containers: "{{ (update_plan | selectattr('host', 'equalto', actual_hostname) | first).containers | default('') }}"
       when: connectivity_check is succeeded
 
     - name: Show what will be updated on this host
-      debug:
+      ansible.builtin.debug:
         msg: "{{ actual_hostname }}: {{ my_containers if my_containers else 'Nothing to update' }}"
       when: connectivity_check is succeeded
 
     - name: Docker Pull
-      command: "docker compose pull {{ my_containers }}"
+      ansible.builtin.command: "docker compose pull {{ my_containers }}"
       args:
         chdir: /home/{{ main_username }}/
       when:
@@ -183,7 +185,7 @@
       register: pull_result
 
     - name: Docker Update
-      command: "docker compose up -d {{ my_containers }}"
+      ansible.builtin.command: "docker compose up -d {{ my_containers }}"
       args:
         chdir: /home/{{ main_username }}/
       when:
@@ -192,7 +194,7 @@
       register: update_result
 
     - name: Show pull output
-      debug:
+      ansible.builtin.debug:
         var: pull_result.stdout_lines
       when:
         - connectivity_check is succeeded
@@ -200,13 +202,13 @@
         - pull_result is defined
 
     - name: Docker prune
-      command: "docker image prune -af"
+      ansible.builtin.command: "docker image prune -af"
       when:
         - connectivity_check is succeeded
         - my_containers | length > 0
 
     - name: Collect update results for successful hosts
-      set_fact:
+      ansible.builtin.set_fact:
         my_update_result:
           host: "{{ actual_hostname }}"
           containers: "{{ my_containers }}"
@@ -217,7 +219,7 @@
         - my_containers | length > 0
 
     - name: Collect unreachable host info
-      set_fact:
+      ansible.builtin.set_fact:
         my_update_result:
           host: "{{ actual_hostname | default(inventory_hostname) }}"
           containers: "N/A"
@@ -228,41 +230,43 @@
     - name: Send results to localhost
       delegate_to: localhost
       delegate_facts: true
-      set_fact:
+      ansible.builtin.set_fact:
         all_results: "{{ all_results | default([]) + [hostvars[item]['my_update_result']] }}"
       loop: "{{ ansible_play_hosts_all }}"
-      run_once: true  # noqa: run-once[task] - default linear strategy, not free
+      run_once: true # noqa: run-once[task] - default linear strategy, not free
       when: hostvars[item].my_update_result is defined
 
     - name: Clear host errors to continue playbook
-      meta: clear_host_errors
+      ansible.builtin.meta: clear_host_errors
 
-- hosts: localhost
+- name: Docker Update Summary
+  hosts: localhost
   gather_facts: false
   tasks:
     - name: Sort summary alphabetically
-      set_fact:
+      ansible.builtin.set_fact:
         update_summary: "{{ all_results | sort(attribute='host') }}"
       when: all_results is defined and all_results | length > 0
 
     - name: Build summary display
-      set_fact:
+      ansible.builtin.set_fact:
         summary_header:
           - ""
           - "═══════════════════════════════════════════════════════════"
           - "            UPDATE SUMMARY"
           - "═══════════════════════════════════════════════════════════"
-        summary_lines: "{{ summary_lines | default([]) + [('  %-20s' | format(item.host + ':')) + (item.containers if item.status != 'unreachable' else 'OFFLINE (skipped)') + (' ✓' if item.updated else '')] }}"
+        summary_lines: "{{ summary_lines | default([]) + [('  %-20s' | format(item.host + ':')) + (item.containers if item.status != 'unreachable' else 'OFFLINE (skipped)')
+          + (' ✓' if item.updated else '')] }}"
       loop: "{{ update_summary | default([]) }}"
       when: update_summary is defined and update_summary | length > 0
 
     - name: Display final summary
-      debug:
+      ansible.builtin.debug:
         msg: "{{ summary_header + summary_lines + ['═══════════════════════════════════════════════════════════'] }}"
       when: update_summary is defined and update_summary | length > 0
 
     - name: No updates message
-      debug:
+      ansible.builtin.debug:
         msg:
           - ""
           - "═══════════════════════════════════════════════════════════"
@@ -271,6 +275,6 @@
       when: update_summary is not defined or update_summary | length == 0
 
     - name: Cleanup temp file
-      file:
+      ansible.builtin.file:
         path: /tmp/ansible_docker_update_plan.json
         state: absent

@@ -1,3 +1,4 @@
+---
 services:
   dawarich-app:
     image: freikin/dawarich:1.16.0
@@ -32,11 +33,11 @@ services:
       - OIDC_REDIRECT_URI=https://track.{{ secret_personal_internal_url }}/users/auth/openid_connect/callback
       - OIDC_PROVIDER_NAME=PocketID
       - OIDC_AUTO_REGISTER=false
-#      - ALLOW_EMAIL_PASSWORD_REGISTRATION=false
+    #      - ALLOW_EMAIL_PASSWORD_REGISTRATION=false
     stdin_open: true
     tty: true
     entrypoint: web-entrypoint.sh
-    command: ['bin/rails', 'server', '-p', '3000', '-b', '::']
+    command: ["bin/rails", "server", "-p", "3000", "-b", "::"]
     logging:
       driver: json-file
       options:
@@ -111,11 +112,11 @@ services:
       - OIDC_REDIRECT_URI=https://track.{{ secret_personal_internal_url }}/users/auth/openid_connect/callback
       - OIDC_PROVIDER_NAME=PocketID
       - OIDC_AUTO_REGISTER=false
-#      - ALLOW_EMAIL_PASSWORD_REGISTRATION=false
+    #      - ALLOW_EMAIL_PASSWORD_REGISTRATION=false
     stdin_open: true
     tty: true
     entrypoint: sidekiq-entrypoint.sh
-    command: ['bundle', 'exec', 'sidekiq']
+    command: ["bundle", "exec", "sidekiq"]
     logging:
       driver: json-file
       options:

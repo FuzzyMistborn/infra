@@ -1,3 +1,4 @@
+---
 services:
   vaultwarden:
     image: ghcr.io/dani-garcia/vaultwarden:1.37.4
@@ -14,8 +15,8 @@ services:
       - SMTP_USERNAME={{ secret_snapraid_email_address }}
       - SMTP_PASSWORD={{ secret_snapraid_email_pass }}
       - ADMIN_TOKEN={{ secret_vaultwarden_token }}
-      - WEBSOCKET_ENABLED=false  # Required to use websockets
-      - SIGNUPS_ALLOWED=false  # set to false to disable signups
+      - WEBSOCKET_ENABLED=false # Required to use websockets
+      - SIGNUPS_ALLOWED=false # set to false to disable signups
       - LOG_FILE=/data/log/vaultwarden.log
       - LOG_LEVEL=warn
       - EXTENDED_LOGGING=true

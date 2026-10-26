@@ -1,65 +1,66 @@
 ---
-
-- name: get status of lazygit_install_path
-  stat:
+- name: Get status of lazygit_install_path
+  ansible.builtin.stat:
     path: "{{ lazygit_install_path }}"
-  register: is_installed
+  register: lazygit_stat
 
-- name: set lazygit installed
-  set_fact:
-    lazygit_is_installed: "{{ is_installed.stat.exists }}"
+- name: Set lazygit installed
+  ansible.builtin.set_fact:
+    lazygit_is_installed: "{{ lazygit_stat.stat.exists }}"
 
-- name: check lazygit version
-  shell: "{{ lazygit_install_path }} --version | grep -oP 'version=\\K[^,]+'"
+- name: Check lazygit version
+  ansible.builtin.shell: "{{ lazygit_install_path }} --version | grep -oP 'version=\\K[^,]+'"
   changed_when: false
-  register: installed_version_registered
+  register: lazygit_installed_version_registered
   when: lazygit_is_installed == True
 
-- name: get latest release
-  uri:
+- name: Get latest release
+  ansible.builtin.uri:
     url: https://api.github.com/repos/jesseduffield/lazygit/releases/latest
-    url_username: "{{ github_api_user | default (omit) }}"
-    url_password: "{{ github_api_pass | default (omit) }}"
+    url_username: "{{ github_api_user | default(omit) }}"
+    url_password: "{{ github_api_pass | default(omit) }}"
     return_content: true
-    force_basic_auth: "{{ github_api_auth | default (omit) }}"
-  register: release_version_registered
+    force_basic_auth: "{{ github_api_auth | default(omit) }}"
+  register: lazygit_release_registered
   when: lazygit_download_latest_ver == True
 
-- name: set lazygit version (latest)
-  set_fact:
-    lazygit_ver: "{{ release_version_registered.json.tag_name|regex_replace('v') }}"
+- name: Set lazygit version (latest)
+  ansible.builtin.set_fact:
+    lazygit_ver: "{{ lazygit_release_registered.json.tag_name | regex_replace('v') }}"
   when: lazygit_download_latest_ver == True
 
-- name: set lazygit version (pinned)
-  set_fact:
+- name: Set lazygit version (pinned)
+  ansible.builtin.set_fact:
     lazygit_ver: "{{ lazygit_pinned_ver }}"
   when: lazygit_download_latest_ver == False
 
-- block:
-    - name: ensure lazygit_download_directory does not exist
-      file:
+- name: Install lazygit
+  when: lazygit_is_installed == False or ( lazygit_is_installed == True and lazygit_download_latest_ver == True and lazygit_installed_version_registered.stdout !=
+    lazygit_ver ) or ( lazygit_is_installed == True and lazygit_download_latest_ver == False and lazygit_installed_version_registered.stdout != lazygit_pinned_ver )
+  block:
+    - name: Ensure lazygit_download_directory does not exist
+      ansible.builtin.file:
         path: "{{ lazygit_download_directory }}"
         state: absent
 
-    - name: create lazygit_download_directory
-      file:
+    - name: Create lazygit_download_directory
+      ansible.builtin.file:
         path: "{{ lazygit_download_directory }}"
         state: directory
-        mode: '0755'
+        mode: "0755"
 
-    - name: download lazygit
-      unarchive:
+    - name: Download lazygit
+      ansible.builtin.unarchive:
         src: "{{ lazygit_gh_url }}v{{ lazygit_ver }}/lazygit_{{ lazygit_ver }}_{{ lazygit_distro }}.tar.gz"
         dest: "{{ lazygit_download_directory }}"
-        remote_src: yes
+        remote_src: true
         owner: root
         group: root
         mode: +x
 
-    - name: move to lazygit path
-      copy:
+    - name: Move to lazygit path
+      ansible.builtin.copy:
         src: "{{ lazygit_download_directory }}/lazygit"
         dest: "{{ lazygit_install_directory }}"
-        remote_src: yes
+        remote_src: true
         mode: +x
-  when: lazygit_is_installed == False or ( lazygit_is_installed == True and lazygit_download_latest_ver == True and installed_version_registered.stdout != lazygit_ver ) or ( lazygit_is_installed == True and lazygit_download_latest_ver == False and installed_version_registered.stdout != lazygit_pinned_ver )

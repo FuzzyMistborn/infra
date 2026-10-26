@@ -1,5 +1,5 @@
 ---
-- name: reload snapraidd
-  systemd:
+- name: Reload snapraidd
+  ansible.builtin.systemd:
     name: snapraidd
     state: reloaded

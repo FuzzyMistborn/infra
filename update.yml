@@ -1,71 +1,77 @@
 ---
-
-- hosts: shards ambition unity virtuosity whimsy
+- name: Update all packages (ubuntu)
+  hosts: shards ambition unity virtuosity whimsy
   tasks:
-    - name: update all packages
+    - name: Update all packages
       become: true
-      apt:
-        update_cache: yes
+      ansible.builtin.apt:
+        update_cache: true
         cache_valid_time: 86400
-        upgrade: 'yes'
-        autoremove: yes
+        upgrade: "yes"
+        autoremove: true
 
-- hosts: adonalsium ishap
+- name: Update all packages (debian)
+  hosts: adonalsium ishap
   vars_files:
-    - 'vars/vault.yaml'
-    - 'group_vars/all.yaml'
+    - "vars/vault.yaml"
+    - "group_vars/all.yaml"
   roles:
     - role: install/mergerfs
       become: true
     - role: install/runitor
       become: true
   tasks:
-    - name: update all packages
+    - name: Update all packages
       become: true
-      apt:
-        update_cache: yes
+      ansible.builtin.apt:
+        update_cache: true
         cache_valid_time: 86400
         upgrade: dist
-        autoremove: yes
+        autoremove: true
 
-- hosts: adonalsium
+- name: Install snapraid
+  hosts: adonalsium
   vars_files:
-    - 'vars/vault.yaml'
-    - 'install/snapraid/defaults/main.yml'
-    - 'group_vars/all.yaml'
+    - "vars/vault.yaml"
+    - "install/snapraid/defaults/main.yml"
+    - "group_vars/all.yaml"
   roles:
     - role: install/snapraid
 
-- hosts: ambition
+- name: Install lego/runitor
+  hosts: ambition
   vars_files:
-    - 'vars/vault.yaml'
-    - 'group_vars/all.yaml'
+    - "vars/vault.yaml"
+    - "group_vars/all.yaml"
   roles:
     - role: install/lego
     - role: install/runitor
       become: true
 
-- hosts: honor
+- name: Install lego/runitor
+  hosts: honor
   vars_files:
-    - 'vars/vault.yaml'
-    - 'group_vars/all.yaml'
+    - "vars/vault.yaml"
+    - "group_vars/all.yaml"
   roles:
     - role: install/lego
     - role: install/runitor
       become: true
 
-- hosts: dominion omada
+- name: Install runitor
+  hosts: dominion omada
   vars_files:
-    - 'vars/vault.yaml'
-    - 'group_vars/all.yaml'
+    - "vars/vault.yaml"
+    - "group_vars/all.yaml"
   roles:
     - role: install/runitor
       become: true
 
-- hosts: endowment autonomy cultivation preservation
+- name: Install runitor
+  hosts: endowment autonomy cultivation preservation
   vars_files:
-    - 'vars/vault.yaml'
-    - 'group_vars/all.yaml'
+    - "vars/vault.yaml"
+    - "group_vars/all.yaml"
   roles:
     - role: install/runitor
       become: true

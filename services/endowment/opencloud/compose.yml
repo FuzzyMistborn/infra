@@ -1,3 +1,4 @@
+---
 services:
   opencloud:
     image: opencloudeu/opencloud-rolling:8.1.0
@@ -15,22 +16,22 @@ services:
       - OC_URL=https://files.{{ secret_personal_url }}
       - OC_LOG_LEVEL=warn
 
-    # ── Embedded services ─────────────────────────────────────────────────
+      # ── Embedded services ─────────────────────────────────────────────────
       - OC_ADD_RUN_SERVICES=collaboration
 
-    # ── TLS / reverse proxy ───────────────────────────────────────────────
-    # Testing (no proxy): true  — OC generates a self-signed cert
-    # Production (Caddy): false — Caddy terminates TLS
+      # ── TLS / reverse proxy ───────────────────────────────────────────────
+      # Testing (no proxy): true  — OC generates a self-signed cert
+      # Production (Caddy): false — Caddy terminates TLS
       - PROXY_TLS=false
-    # Default is false, but `opencloud init` prompts interactively without it
+      # Default is false, but `opencloud init` prompts interactively without it
       - OC_INSECURE=false
 
-    # ── Built-in IDM / admin ──────────────────────────────────────────────
+      # ── Built-in IDM / admin ──────────────────────────────────────────────
       - IDM_ADMIN_PASSWORD={{ secret_openclouud_idm_pass }}
 
-    # ── OIDC / Pocket-ID ──────────────────────────────────────────────────
-    # Uncomment this block when ready to switch to Pocket-ID.
-    # Also uncomment the proxy.yaml volume mount below.
+      # ── OIDC / Pocket-ID ──────────────────────────────────────────────────
+      # Uncomment this block when ready to switch to Pocket-ID.
+      # Also uncomment the proxy.yaml volume mount below.
       # - OC_EXCLUDE_RUN_SERVICES=idp
       # - OC_OIDC_ISSUER=https://id.example.com
       # - WEB_OIDC_CLIENT_ID=opencloud
@@ -43,18 +44,18 @@ services:
       # - GRAPH_ASSIGN_DEFAULT_USER_ROLE=false
       # - GRAPH_USERNAME_MATCH=none
 
-    # ── Collabora / WOPI ──────────────────────────────────────────────────
+      # ── Collabora / WOPI ──────────────────────────────────────────────────
       - COLLABORATION_WOPI_SRC=https://files.{{ secret_personal_url }}
       - COLLABORATION_APP_NAME=CollaboraOnline
       - COLLABORATION_APP_PRODUCT=Collabora
       - COLLABORATION_APP_ADDR=https://collabora.{{ secret_personal_internal_url }}
       - COLLABORATION_APP_ICON=https://collabora.{{ secret_personal_internal_url }}/favicon.ico
 
-    # ── Full-text search (Tika) ───────────────────────────────────────────
+      # ── Full-text search (Tika) ───────────────────────────────────────────
       - SEARCH_EXTRACTOR_TYPE=tika
       - SEARCH_EXTRACTOR_TIKA_TIKA_URL=http://tika:9998
 
-    # ── Misc / password policy ────────────────────────────────────────────
+      # ── Misc / password policy ────────────────────────────────────────────
       - FRONTEND_ARCHIVER_MAX_SIZE=10000000000
       - PROXY_CSP_CONFIG_FILE_LOCATION=/etc/opencloud/csp.yaml
     volumes:

@@ -1,0 +1,5 @@
+---
+# Signing key for the graphics-drivers PPA
+# (fingerprint 2388FF3BE10A76F638F80723FCAE110B1118213C, see
+# https://launchpad.net/~graphics-drivers/+archive/ubuntu/ppa)
+virtuosity_nvidia_ppa_signed_by: https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2388FF3BE10A76F638F80723FCAE110B1118213C

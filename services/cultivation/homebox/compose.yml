@@ -1,3 +1,4 @@
+---
 services:
   homebox:
     image: ghcr.io/sysadminsmedia/homebox:0.27.0
@@ -8,7 +9,8 @@ services:
       - HBOX_LOG_FORMAT=text
       - HBOX_WEB_MAX_UPLOAD_SIZE=20
       - HBOX_OPTIONS_ALLOW_REGISTRATION=false
-      - HBOX_LABEL_MAKER_PRINT_COMMAND=mosquitto_pub -h 192.168.30.5 -u homeassistant -P {{ secret_mqtt_pass }} -t homebox/labels --retain -f {{'{{'}}.FileName}}
+      - HBOX_LABEL_MAKER_PRINT_COMMAND=mosquitto_pub -h 192.168.30.5 -u homeassistant -P {{ secret_mqtt_pass }} -t homebox/labels --retain -f
+        {{'{{'}}.FileName}}
       - HBOX_LABEL_MAKER_PADDING=5
       - HBOX_LABEL_MAKER_MARGIN=5
       - HBOX_LABEL_MAKER_WIDTH=320

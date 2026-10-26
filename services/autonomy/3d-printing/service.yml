@@ -1,3 +1,4 @@
+---
 services:
   bambuddy:
     image: ghcr.io/maziggy/bambuddy:0.2.4.3

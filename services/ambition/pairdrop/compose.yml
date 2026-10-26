@@ -1,3 +1,4 @@
+---
 services:
   pairdrop:
     image: lscr.io/linuxserver/pairdrop:1.11.2

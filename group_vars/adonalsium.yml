@@ -76,7 +76,7 @@ lxc_vlans:
     gw: 192.168.50.1
     ip: 192.168.50.10
     tag: 50
-    disk: 'local-lvm:15'
+    disk: "local-lvm:15"
     cores: 2
     memory: 1024
     nesting: 1
@@ -87,7 +87,7 @@ lxc_vlans:
     gw: 192.168.30.1
     ip: 192.168.30.7
     tag: 30
-    disk: 'local-lvm:15'
+    disk: "local-lvm:15"
     cores: 4
     memory: 4096
     nesting: 1
@@ -99,7 +99,7 @@ lxc_vlans:
     gw: 192.168.30.1
     ip: 192.168.30.5
     tag: 30
-    disk: 'local-lvm:55'
+    disk: "local-lvm:55"
     cores: 6
     memory: 6144
     swap: 1024
@@ -111,7 +111,7 @@ lxc_vlans:
     gw: 192.168.50.1
     ip: 192.168.50.21
     tag: 50
-    disk: 'local-lvm:35'
+    disk: "local-lvm:35"
     cores: 4
     memory: 4096
     nesting: 1
@@ -122,7 +122,7 @@ lxc_vlans:
     gw: 192.168.50.1
     ip: 192.168.50.22
     tag: 50
-    disk: 'local-lvm:50'
+    disk: "local-lvm:50"
     cores: 4
     memory: 3072
     nesting: 1
@@ -135,7 +135,7 @@ lxc_mounts:
     gw: 192.168.50.1
     ip: 192.168.50.20
     bridge: vmbr2
-    disk: 'local-lvm:65'
+    disk: "local-lvm:65"
     cores: 8
     memory: 7168
     nesting: 1
@@ -155,7 +155,7 @@ vm_uefi:
     bios: ovmf
     onboot: true
     iso: ubuntu-24.04-live-server-amd64.iso
-    pcie: '0000:01:00'
+    pcie: "0000:01:00"
 
 ### LNXLink
 lnxlink_bash: true
@@ -167,15 +167,16 @@ lnxlink_mounts: true
 pull_backup: false
 infrastructure: false
 # mergerfs_ver: 2.32.4
-# nag_ver: 0.0.7
+# nag_removal_ver: 0.0.7
 
 ### Cronjobs
 cronjobs:
   - name: Scrutiny
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_adonalsium_scrutiny }} -- docker exec scrutiny /opt/scrutiny/bin/scrutiny-collector-metrics run > /dev/null 2>&1
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_adonalsium_scrutiny }} -- docker exec scrutiny /opt/scrutiny/bin/scrutiny-collector-metrics run > /dev/null
+      2>&1
     user: "{{ main_username }}"
     minute: 0
-    hour: '*/6'
+    hour: "*/6"
   - name: Restic Prune
     job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_adonalsium }} -- /usr/local/bin/autorestic forget -a --prune
     user: "{{ main_username }}"
@@ -189,12 +190,14 @@ cronjobs:
     hour: 3
     day: 1
   - name: Media Backup (Docker)
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_backup_adonalsium_docker }} -- /usr/local/bin/autorestic backup -l docker -c /home/{{ main_username }}/.autorestic.yml
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_backup_adonalsium_docker }} -- /usr/local/bin/autorestic backup -l docker -c /home/{{ main_username
+      }}/.autorestic.yml
     user: root
     minute: 45
     hour: 23
   - name: Media Backup (Everything Else)
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_backup_adonalsium_all }} -- /usr/local/bin/autorestic backup -l photos -l immich -l files -l music -l audiobooks -l ebooks -c /home/{{ main_username }}/.autorestic.yml
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_backup_adonalsium_all }} -- /usr/local/bin/autorestic backup -l photos -l immich -l files -l music -l
+      audiobooks -l ebooks -c /home/{{ main_username }}/.autorestic.yml
     user: root
     minute: 15
     hour: 1
@@ -211,57 +214,57 @@ cronjobs:
     special_time: reboot
 
 ### Autorestic Config
-autorestic_config_user: "{{ main_username}}"
-autorestic_config_directory: "/home/{{ main_username}}"
+autorestic_config_user: "{{ main_username }}"
+autorestic_config_directory: "/home/{{ main_username }}"
 autorestic_run_check: false
 autorestic_config_yaml:
   version: 2
   backends:
     local_docker:
       type: rest
-      path: 'http://192.168.1.5:8500/adonalsium'
+      path: "http://192.168.1.5:8500/adonalsium"
       key: "{{ secret_restic_repo_password }}"
       rest:
         user: "{{ secret_restic_rest_user }}"
         password: "{{ secret_restic_rest_password }}"
     local_photos:
       type: rest
-      path: 'http://192.168.1.5:8500/media/photos'
+      path: "http://192.168.1.5:8500/media/photos"
       key: "{{ secret_restic_repo_password }}"
       rest:
         user: "{{ secret_restic_rest_user }}"
         password: "{{ secret_restic_rest_password }}"
     local_immich:
       type: rest
-      path: 'http://192.168.1.5:8500/media/immich'
+      path: "http://192.168.1.5:8500/media/immich"
       key: "{{ secret_restic_repo_password }}"
       rest:
         user: "{{ secret_restic_rest_user }}"
         password: "{{ secret_restic_rest_password }}"
     local_music:
       type: rest
-      path: 'http://192.168.1.5:8500/media/music'
+      path: "http://192.168.1.5:8500/media/music"
       key: "{{ secret_restic_repo_password }}"
       rest:
         user: "{{ secret_restic_rest_user }}"
         password: "{{ secret_restic_rest_password }}"
     local_audiobooks:
       type: rest
-      path: 'http://192.168.1.5:8500/media/audiobooks'
+      path: "http://192.168.1.5:8500/media/audiobooks"
       key: "{{ secret_restic_repo_password }}"
       rest:
         user: "{{ secret_restic_rest_user }}"
         password: "{{ secret_restic_rest_password }}"
     local_ebooks:
       type: rest
-      path: 'http://192.168.1.5:8500/media/ebooks'
+      path: "http://192.168.1.5:8500/media/ebooks"
       key: "{{ secret_restic_repo_password }}"
       rest:
         user: "{{ secret_restic_rest_user }}"
         password: "{{ secret_restic_rest_password }}"
     local_files:
       type: rest
-      path: 'http://192.168.1.5:8500/media/files'
+      path: "http://192.168.1.5:8500/media/files"
       key: "{{ secret_restic_repo_password }}"
       rest:
         user: "{{ secret_restic_rest_user }}"
@@ -311,19 +314,19 @@ autorestic_config_yaml:
       options:
         backup:
           exclude:
-            - '*.iso'
-            - '*.rvz'
-            - '*.nsp'
-            - '*.xci'
-            - '.mp4'
-            - '.mpeg'
-            - '.wmv'
-            - '.avi'
-            - '.mkv'
+            - "*.iso"
+            - "*.rvz"
+            - "*.nsp"
+            - "*.xci"
+            - ".mp4"
+            - ".mpeg"
+            - ".wmv"
+            - ".avi"
+            - ".mkv"
 
   locations:
     docker:
-      from: '/home/{{ main_username }}/docker'
+      from: "/home/{{ main_username }}/docker"
       to:
         - local_docker
         - b2_docker
@@ -334,9 +337,9 @@ autorestic_config_yaml:
           keep-monthly: 3
         backup:
           exclude:
-            - 'model_cache'
+            - "model_cache"
     photos:
-      from: '/mnt/Media/Photos'
+      from: "/mnt/Media/Photos"
       to:
         - local_photos
         - b2_photos
@@ -346,7 +349,7 @@ autorestic_config_yaml:
           keep-weekly: 8
           keep-monthly: 3
     immich:
-      from: '/mnt/Media/Immich'
+      from: "/mnt/Media/Immich"
       to:
         - local_immich
       options:
@@ -355,7 +358,7 @@ autorestic_config_yaml:
           keep-weekly: 8
           keep-monthly: 3
     music:
-      from: '/mnt/Media/Music'
+      from: "/mnt/Media/Music"
       to:
         - local_music
         - b2_music
@@ -365,7 +368,7 @@ autorestic_config_yaml:
           keep-weekly: 8
           keep-monthly: 3
     audiobooks:
-      from: '/mnt/Media/Audiobooks'
+      from: "/mnt/Media/Audiobooks"
       to:
         - local_audiobooks
         - b2_audiobooks
@@ -375,7 +378,7 @@ autorestic_config_yaml:
           keep-weekly: 8
           keep-monthly: 3
     ebooks:
-      from: '/mnt/Media/Ebooks'
+      from: "/mnt/Media/Ebooks"
       to:
         - local_ebooks
         - b2_ebooks
@@ -385,15 +388,15 @@ autorestic_config_yaml:
           keep-weekly: 8
           keep-monthly: 3
     files:
-      from: '/mnt/Media/Files'
+      from: "/mnt/Media/Files"
       to:
         - local_files
         - b2_files
       options:
         backup:
           exclude:
-            - 'Takeout'
-            - 'arch'
+            - "Takeout"
+            - "arch"
             - "1-Processing"
         forget:
           keep-daily: 1
@@ -434,16 +437,16 @@ snapraid_config_excludes:
   - ".Trash*"
 
 ### Snapraid Daemon Config
-snapraidd_net_port: "7627"
-snapraidd_maintenance_schedule: "04:00"
-snapraidd_sync_threshold_deletes: 500
-snapraidd_sync_threshold_updates: 250
-snapraidd_touch_zero_subseconds: 0
-snapraidd_scrub_percentage: 15
-snapraidd_scrub_older_than: 10
-snapraidd_healthchecks_url: "{{ secret_hc_ping_url }}/{{ secret_hc_adonalsium_snapraid }}"
-snapraidd_mail_from: "{{ secret_snapraid_email_from }}"
-snapraidd_mail_to: "{{ secret_snapraid_email_to }}"
-snapraidd_smtp_host: "{{ secret_snapraid_smtp_host }}"
-snapraidd_smtp_user: "{{ secret_snapraid_email_address }}"
-snapraidd_smtp_password: "{{ secret_snapraid_email_pass }}"
+snapraid_daemon_net_port: "7627"
+snapraid_daemon_maintenance_schedule: "04:00"
+snapraid_daemon_sync_threshold_deletes: 500
+snapraid_daemon_sync_threshold_updates: 250
+snapraid_daemon_touch_zero_subseconds: 0
+snapraid_daemon_scrub_percentage: 15
+snapraid_daemon_scrub_older_than: 10
+snapraid_daemon_healthchecks_url: "{{ secret_hc_ping_url }}/{{ secret_hc_adonalsium_snapraid }}"
+snapraid_daemon_mail_from: "{{ secret_snapraid_email_from }}"
+snapraid_daemon_mail_to: "{{ secret_snapraid_email_to }}"
+snapraid_daemon_smtp_host: "{{ secret_snapraid_smtp_host }}"
+snapraid_daemon_smtp_user: "{{ secret_snapraid_email_address }}"
+snapraid_daemon_smtp_password: "{{ secret_snapraid_email_pass }}"

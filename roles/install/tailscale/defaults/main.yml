@@ -1,12 +1,12 @@
 ---
 
-apt_dependencies:
+tailscale_apt_dependencies:
   - gnupg2
   - gnupg-agent
   - apt-transport-https
   - python3-apt
+  - python3-debian
 
-apt_deb: deb https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }} main
-apt_signkey: https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }}/{{ ansible_distribution_release | lower }}.noarmor.gpg
+tailscale_apt_signkey: https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }}/{{ ansible_distribution_release | lower }}.noarmor.gpg
 
 tailscale_package: tailscale

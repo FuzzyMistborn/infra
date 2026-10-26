@@ -1,6 +1,6 @@
 ---
-- name: create config directories
-  file:
+- name: Create config directories
+  ansible.builtin.file:
     path: /home/{{ main_username }}/{{ item }}
     state: directory
     owner: "{{ main_username }}"
@@ -13,7 +13,7 @@
 #### Scripts
 
 - name: Generate weather cast bash file
-  copy:
+  ansible.builtin.copy:
     dest: /home/{{ main_username }}/scripts/cast_weather.sh
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
@@ -21,7 +21,7 @@
     content: "{{ secret_catt_weather }}"
 
 - name: Create traffic cast bash file
-  copy:
+  ansible.builtin.copy:
     dest: /home/{{ main_username }}/scripts/cast_traffic.sh
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
@@ -29,24 +29,24 @@
     content: "{{ secret_catt_traffic }}"
 
 - name: Copy script templates
-  template:
+  ansible.builtin.template:
     src: "{{ item.src }}"
     dest: /home/{{ main_username }}/scripts/{{ item.dest }}
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
     mode: +x
   loop:
-    - {src: 'cast_frontdoor.sh.j2', dest: 'cast_frontdoor.sh'}
-    - {src: 'docker.sh.j2', dest: 'docker.sh'}
-    - {src: 'update_ha.sh.j2', dest: 'update_ha.sh'}
-    - {src: 'google_traffic.py.j2', dest: 'google_traffic.py'}
-    - {src: 'waze_home.py.j2', dest: 'waze_home.py'}
-    - {src: 'waze_live.py.j2', dest: 'waze_live.py'}
+    - { src: "cast_frontdoor.sh.j2", dest: "cast_frontdoor.sh" }
+    - { src: "docker.sh.j2", dest: "docker.sh" }
+    - { src: "update_ha.sh.j2", dest: "update_ha.sh" }
+    - { src: "google_traffic.py.j2", dest: "google_traffic.py" }
+    - { src: "waze_home.py.j2", dest: "waze_home.py" }
+    - { src: "waze_live.py.j2", dest: "waze_live.py" }
 
 #### HA Git
 
 - name: Clone HA GitHub Repo
-  git:
+  ansible.builtin.git:
     repo: git@github.com:FuzzyMistborn/hass-docker.git
     dest: /home/{{ main_username }}/hass_docker
     accept_hostkey: true
@@ -55,7 +55,7 @@
 
 ### Backup Restore
 - name: Create restore script
-  copy:
+  ansible.builtin.copy:
     dest: /home/{{ main_username }}/restore.sh
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
@@ -67,12 +67,12 @@
       /usr/local/bin/autorestic restore -f -l hass_docker_beta --from local_hass_docker_beta --to /
   when: pull_backup == true
 - name: Run restore script
-  command: /bin/bash ./restore.sh
+  ansible.builtin.command: /bin/bash ./restore.sh
   args:
     chdir: "/home/{{ main_username }}"
   when: pull_backup == true
 - name: Remove restore script
-  file:
+  ansible.builtin.file:
     path: /home/{{ main_username }}/restore.sh
     state: absent
   when: pull_backup == true

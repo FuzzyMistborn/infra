@@ -1,3 +1,4 @@
+---
 services:
   dockhand:
     image: fnsys/dockhand:v1.0.54

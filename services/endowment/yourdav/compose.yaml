@@ -1,3 +1,4 @@
+---
 services:
   yourdav:
     image: ghcr.io/fuzzymistborn/yourdav:0.7.1

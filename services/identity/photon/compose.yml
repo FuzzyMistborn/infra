@@ -1,3 +1,4 @@
+---
 services:
   photon:
     image: ghcr.io/rtuszik/photon-docker:2.4.0

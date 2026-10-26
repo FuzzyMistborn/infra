@@ -1,3 +1,4 @@
+---
 services:
   minecraft:
     image: 05jchambers/legendary-minecraft-geyser-floodgate:latest

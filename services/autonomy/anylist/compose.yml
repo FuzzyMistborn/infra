@@ -1,3 +1,4 @@
+---
 services:
   anylist:
     image: kevdliu/anylist:v1.7.3

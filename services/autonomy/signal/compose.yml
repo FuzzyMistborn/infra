@@ -1,3 +1,4 @@
+---
 services:
   signal-api:
     image: bbernhard/signal-cli-rest-api:0.101

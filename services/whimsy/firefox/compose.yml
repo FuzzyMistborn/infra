@@ -1,3 +1,4 @@
+---
 services:
   firefox:
     image: lscr.io/linuxserver/firefox:1155.0.1

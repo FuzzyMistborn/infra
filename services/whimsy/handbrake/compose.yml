@@ -1,3 +1,4 @@
+---
 services:
   handbrake:
     image: ghcr.io/jlesage/handbrake:v26.09.1

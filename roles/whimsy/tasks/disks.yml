@@ -1,33 +1,32 @@
 ---
-
-- name: make sure disks unmounted
-  mount:
+- name: Make sure disks unmounted
+  ansible.posix.mount:
     path: "{{ item.path }}"
     state: unmounted
   loop: "{{ smb_mountpoints }}"
 
-- name: create /mnt points
-  file:
+- name: Create /mnt points
+  ansible.builtin.file:
     dest: "{{ item.path }}"
     state: directory
     owner: nobody
     group: nogroup
-    mode: '0777'
+    mode: "0777"
   loop: "{{ smb_mountpoints }}"
 
 - name: Add smbcredentials
-  copy:
+  ansible.builtin.copy:
     dest: /home/{{ main_username }}/.smbcredentials
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-    mode: '0600'
+    mode: "0600"
     content: |
       user=samba
       password={{ secret_samba_pass }}
       domain=cosmere
 
-- name: mount disks
-  mount:
+- name: Mount disks
+  ansible.posix.mount:
     path: "{{ item.path }}"
     src: "{{ item.source }}"
     fstype: "{{ item.fs }}"

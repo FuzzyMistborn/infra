@@ -1,3 +1,4 @@
+---
 services:
   outline:
     image: outlinewiki/outline:1.11.0

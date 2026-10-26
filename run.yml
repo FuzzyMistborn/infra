@@ -1,14 +1,15 @@
 ---
-- hosts: all
+- name: Ubuntu Cleanup
+  hosts: all
   become: true
   tasks:
-# Ubuntu
+    # Ubuntu
     - name: Set timezone
-      timezone:
+      community.general.timezone:
         name: "{{ ntp_timezone }}"
       when: ansible_distribution == 'Ubuntu'
     - name: Remove Ubuntu motd spam
-      file:
+      ansible.builtin.file:
         path: "/etc/update-motd.d/{{ item }}"
         state: absent
       loop:
@@ -20,25 +21,25 @@
         - 91-contract-ua-esm-status
       when: ansible_distribution == 'Ubuntu'
     - name: Remove Ubuntu Snap
-      apt:
+      ansible.builtin.apt:
         name: snapd
         state: absent
         purge: true
       when: ansible_distribution == 'Ubuntu'
-# Fedora
+    # Fedora
     - name: Install the rpmfusion and fonts repo packages
-      dnf:
+      ansible.builtin.dnf:
         state: present
-        disable_gpg_check: yes
+        disable_gpg_check: true
         name:
           - https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_facts.distribution_version }}.noarch.rpm
           - https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_facts.distribution_version }}.noarch.rpm
-      become: yes
+      become: true
       when: ansible_distribution == 'Fedora'
     - name: Improve DNF Performances
-      blockinfile:
+      ansible.builtin.blockinfile:
         path: /etc/dnf/dnf.conf
-        create: yes
+        create: true
         block: |
           [main]
           gpgcheck=1
@@ -49,31 +50,52 @@
           fastestmirror=1
           max_parallel_downloads=10
           deltarpm=true
-      become: yes
+      become: true
       when: ansible_distribution == 'Fedora'
     - name: Upgrade all packages
-      ansible.builtin.dnf:
+      ansible.builtin.dnf: # noqa: package-latest
         name: "*"
         state: latest
       when: ansible_distribution == 'Fedora'
 
-- hosts: adonalsium
+- name: Adonalsium Install
+  hosts: adonalsium
   become: true
   vars_files:
-    - 'vars/vault.yaml'
+    - "vars/vault.yaml"
   pre_tasks:
     - name: Remove enterprise repo
-      file:
+      ansible.builtin.file:
         state: absent
         path: /etc/apt/sources.list.d/pve-enterprise.list
-    - name: Switch to community repo
-      apt_repository:
-        repo: 'deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription'
+    - name: Install python3-debian for deb822_repository
+      ansible.builtin.apt:
+        name: python3-debian
         state: present
+    - name: Find old community repo list files
+      ansible.builtin.find:
+        paths: /etc/apt/sources.list.d
+        patterns: "*.list"
+        contains: 'download\.proxmox\.com/debian/pve\s+\S+\s+pve-no-subscription'
+        use_regex: false
+      register: run_old_pve_repo_lists
+    - name: Remove old community repo list files
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: absent
+      loop: "{{ run_old_pve_repo_lists.files }}"
+      loop_control:
+        label: "{{ item.path }}"
+    - name: Switch to community repo
+      ansible.builtin.deb822_repository:
+        name: pve-no-subscription
+        uris: http://download.proxmox.com/debian/pve
+        suites: bookworm
+        components: pve-no-subscription
     - name: Apt update
-      apt:
-        upgrade: 'yes'
-        update_cache: yes
+      ansible.builtin.apt:
+        upgrade: "yes"
+        update_cache: true
         cache_valid_time: 3600
   roles:
     - role: install/nag_removal
@@ -90,28 +112,49 @@
     - role: geerlingguy.docker
     - role: geerlingguy.ntp
     - role: install/lnxlink
-    - role: install/docker-patch
+    - role: install/docker_patch
     - role: docker-compose-generator
     - role: install/chezmoi
     - role: install/snapraid
 
-- hosts: ishap
+- name: Ishap Install
+  hosts: ishap
   become: true
   vars_files:
-    - 'vars/vault.yaml'
+    - "vars/vault.yaml"
   pre_tasks:
     - name: Remove enterprise repo
-      file:
+      ansible.builtin.file:
         state: absent
         path: /etc/apt/sources.list.d/pve-enterprise.list
-    - name: Switch to community repo
-      apt_repository:
-        repo: 'deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription'
+    - name: Install python3-debian for deb822_repository
+      ansible.builtin.apt:
+        name: python3-debian
         state: present
+    - name: Find old community repo list files
+      ansible.builtin.find:
+        paths: /etc/apt/sources.list.d
+        patterns: "*.list"
+        contains: 'download\.proxmox\.com/debian/pve\s+\S+\s+pve-no-subscription'
+        use_regex: false
+      register: run_old_pve_repo_lists
+    - name: Remove old community repo list files
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: absent
+      loop: "{{ run_old_pve_repo_lists.files }}"
+      loop_control:
+        label: "{{ item.path }}"
+    - name: Switch to community repo
+      ansible.builtin.deb822_repository:
+        name: pve-no-subscription
+        uris: http://download.proxmox.com/debian/pve
+        suites: bookworm
+        components: pve-no-subscription
     - name: Apt update
-      apt:
-        upgrade: 'yes'
-        update_cache: yes
+      ansible.builtin.apt:
+        upgrade: "yes"
+        update_cache: true
         cache_valid_time: 3600
   roles:
     - role: install/nag_removal
@@ -127,15 +170,16 @@
     - role: cronjobs
     - role: geerlingguy.docker
     - role: geerlingguy.ntp
-    - role: install/docker-patch
+    - role: install/docker_patch
     - role: docker-compose-generator
     - role: install/chezmoi
 
 ### LXCs/VMs/VPS
-- hosts: dominion
+- name: Install Dominion
+  hosts: dominion
   become: true
   vars_files:
-    - 'vars/vault.yaml'
+    - "vars/vault.yaml"
   roles:
     - role: grog.package
     - role: geerlingguy.pip
@@ -148,10 +192,11 @@
     - role: install/chezmoi
     - role: install/lazygit
 
-- hosts: endowment
+- name: Install Endowment
+  hosts: endowment
   become: true
   vars_files:
-    - 'vars/vault.yaml'
+    - "vars/vault.yaml"
   roles:
     - role: grog.package
     - role: geerlingguy.samba
@@ -162,14 +207,15 @@
     - role: install/runitor
     - role: endowment
     - role: cronjobs
-    - role: install/docker-patch
+    - role: install/docker_patch
     - role: docker-compose-generator
     - role: install/chezmoi
 
-- hosts: autonomy
+- name: Install Autonomy
+  hosts: autonomy
   become: true
   vars_files:
-    - 'vars/vault.yaml'
+    - "vars/vault.yaml"
   roles:
     - role: grog.package
     - role: github
@@ -181,15 +227,16 @@
     - role: autonomy
     - role: cronjobs
     - role: install/lnxlink
-    - role: install/docker-patch
+    - role: install/docker_patch
     - role: docker-compose-generator
     - role: install/chezmoi
     - role: install/lazygit
 
-- hosts: unity
+- name: Install Unity
+  hosts: unity
   become: true
   vars_files:
-    - 'vars/vault.yaml'
+    - "vars/vault.yaml"
   roles:
     - role: grog.package
     - role: geerlingguy.docker
@@ -200,14 +247,15 @@
     - role: install/tailscale
     - role: install/lnxlink
     - role: cronjobs
-    - role: install/docker-patch
+    - role: install/docker_patch
     - role: docker-compose-generator
     - role: install/chezmoi
 
-- hosts: virtuosity
+- name: Install Virtuosity
+  hosts: virtuosity
   become: true
   vars_files:
-    - 'vars/vault.yaml'
+    - "vars/vault.yaml"
   roles:
     - role: grog.package
     - role: geerlingguy.docker
@@ -219,15 +267,16 @@
     - role: cronjobs
     - role: github
     - role: install/lnxlink
-    - role: install/docker-patch
+    - role: install/docker_patch
     - role: docker-compose-generator
     - role: install/chezmoi
     - role: install/lazygit
 
-- hosts: whimsy
+- name: Install Whimsy
+  hosts: whimsy
   become: true
   vars_files:
-    - 'vars/vault.yaml'
+    - "vars/vault.yaml"
   roles:
     - role: grog.package
     - role: geerlingguy.samba
@@ -237,14 +286,15 @@
     - role: install/runitor
     - role: whimsy
     - role: cronjobs
-    - role: install/docker-patch
+    - role: install/docker_patch
     - role: docker-compose-generator
     - role: install/chezmoi
 
-- hosts: cultivation
+- name: Install Cultivation
+  hosts: cultivation
   become: true
   vars_files:
-    - 'vars/vault.yaml'
+    - "vars/vault.yaml"
   roles:
     - role: grog.package
     - role: geerlingguy.docker
@@ -254,14 +304,15 @@
     - role: install/runitor
     - role: cultivation
     - role: cronjobs
-    - role: install/docker-patch
+    - role: install/docker_patch
     - role: docker-compose-generator
     - role: install/chezmoi
 
-- hosts: preservation
+- name: Install Preservation
+  hosts: preservation
   become: true
   vars_files:
-    - 'vars/vault.yaml'
+    - "vars/vault.yaml"
   roles:
     - role: grog.package
     - role: geerlingguy.docker
@@ -269,16 +320,17 @@
     - role: install/autorestic
     - role: install/lnxlink
     - role: install/runitor
-    - role: install/docker-patch
+    - role: install/docker_patch
     - role: docker-compose-generator
     - role: preservation
     - role: cronjobs
     - role: install/chezmoi
 
-- hosts: honor
+- name: Install Honor
+  hosts: honor
   become: true
   vars_files:
-    - 'vars/vault.yaml'
+    - "vars/vault.yaml"
   roles:
     - role: grog.package
     - role: geerlingguy.pip
@@ -289,15 +341,16 @@
     - role: caddy_ansible.caddy_ansible
     - role: honor
     - role: cronjobs
-    - role: install/docker-patch
+    - role: install/docker_patch
     - role: docker-compose-generator
     - role: install/crowdsec_bouncer
     - role: install/chezmoi
 
-- hosts: omada
+- name: Install Omada
+  hosts: omada
   become: true
   vars_files:
-    - 'vars/vault.yaml'
+    - "vars/vault.yaml"
   roles:
     - role: grog.package
     - role: geerlingguy.pip
@@ -306,14 +359,15 @@
     - role: install/runitor
     - role: omada
     - role: cronjobs
-    - role: install/docker-patch
+    - role: install/docker_patch
     - role: docker-compose-generator
     - role: install/chezmoi
 
-- hosts: invention
+- name: Install Invention
+  hosts: invention
   become: true
   vars_files:
-    - 'vars/vault.yaml'
+    - "vars/vault.yaml"
   roles:
     - role: grog.package
     - role: geerlingguy.pip
@@ -321,14 +375,15 @@
     - role: invention
     - role: install/autorestic
     - role: install/runitor
-    - role: install/docker-patch
+    - role: install/docker_patch
     - role: docker-compose-generator
     - role: install/chezmoi
 
-- hosts: identity
+- name: Install Identity
+  hosts: identity
   become: true
   vars_files:
-    - 'vars/vault.yaml'
+    - "vars/vault.yaml"
   roles:
     - role: grog.package
     - role: geerlingguy.pip
@@ -337,28 +392,30 @@
     - role: install/autorestic
     - role: install/runitor
     - role: install/lnxlink
-    - role: install/docker-patch
+    - role: install/docker_patch
     - role: docker-compose-generator
     - role: install/chezmoi
 
-- hosts: investiture
+- name: Install Investiture
+  hosts: investiture
   become: true
   vars_files:
-    - 'vars/vault.yaml'
+    - "vars/vault.yaml"
   roles:
     - role: grog.package
     - role: geerlingguy.pip
     - role: geerlingguy.docker
     - role: install/runitor
-    - role: install/docker-patch
+    - role: install/docker_patch
     - role: docker-compose-generator
     - role: cronjobs
     - role: install/chezmoi
 
-- hosts: ambition
+- name: Install Ambition
+  hosts: ambition
   become: true
   vars_files:
-    - 'vars/vault.yaml'
+    - "vars/vault.yaml"
   roles:
     - role: grog.package
     - role: geerlingguy.pip
@@ -367,7 +424,7 @@
     - role: install/tailscale
     - role: install/autorestic
     - role: install/runitor
-    - role: install/docker-patch
+    - role: install/docker_patch
     - role: docker-compose-generator
     - role: ambition
     - role: caddy_ansible.caddy_ansible

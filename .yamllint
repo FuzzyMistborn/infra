@@ -29,8 +29,7 @@ rules:
     forbid-implicit-octal: true
     forbid-explicit-octal: true
   truthy:
-    allowed-values: ['true', 'false', 'yes', 'no']
-
+    allowed-values: ["true", "false", "yes", "no"]
 ignore: |
   galaxy_roles/
   roles/docker-compose-generator

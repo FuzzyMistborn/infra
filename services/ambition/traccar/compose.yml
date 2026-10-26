@@ -1,3 +1,4 @@
+---
 services:
   traccar:
     image: traccar/traccar:6.16.0

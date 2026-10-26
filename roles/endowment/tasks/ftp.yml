@@ -1,5 +1,4 @@
 ---
-
 - name: Ensure ftpscanner system user exists
   ansible.builtin.user:
     name: ftpscanner
@@ -23,12 +22,12 @@
     mode: "0775"
 
 - name: Install vsftpd config
-  template:
+  ansible.builtin.template:
     src: vsftpd.conf.j2
     dest: /etc/vsftpd.conf
     owner: root
     group: root
-    mode: '0644'
+    mode: "0644"
 
 - name: Ensure vsftpd is enabled and running
   ansible.builtin.service:

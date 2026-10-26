@@ -1,41 +1,41 @@
 ---
 - name: Clone Ansible GitHub Repo
-  git:
+  ansible.builtin.git:
     repo: git@github.com:FuzzyMistborn/infra.git
     dest: /home/{{ main_username }}/infra
     accept_hostkey: true
     key_file: /home/{{ main_username }}/.ssh/github
 
 - name: Add Ambition SSH Key
-  copy:
+  ansible.builtin.copy:
     dest: /home/{{ main_username }}/.ssh/ambition
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-    mode: '0600'
+    mode: "0600"
     content: "{{ secret_ambition_ssh }}"
 
 - name: Add Gitea SSH Key
-  copy:
+  ansible.builtin.copy:
     dest: /home/{{ main_username }}/.ssh/gitea
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-    mode: '0600'
+    mode: "0600"
     content: "{{ secret_gitea_ssh }}"
 
 - name: Add ansible SSH Key
-  copy:
+  ansible.builtin.copy:
     dest: /home/{{ main_username }}/.ssh/ansible_user
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-    mode: '0600'
+    mode: "0600"
     content: "{{ secret_ansible_key }}"
 
 - name: Add ssh config
-  copy:
+  ansible.builtin.copy:
     dest: /home/{{ main_username }}/.ssh/config
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-    mode: '0664'
+    mode: "0664"
     content: |
       Host github.com
         IdentityFile ~/.ssh/github
@@ -49,17 +49,17 @@
         IdentityFile ~/.ssh/ambition
 
 - name: Copy update template script
-  template:
+  ansible.builtin.template:
     src: "{{ item.src }}"
     dest: /home/{{ main_username }}/{{ item.dest }}
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
     mode: +x
   loop:
-    - {src: 'update.sh.j2', dest: 'update.sh'}
+    - { src: "update.sh.j2", dest: "update.sh" }
 
 - name: Create update script
-  copy:
+  ansible.builtin.copy:
     dest: /home/{{ main_username }}/update.sh
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
@@ -71,19 +71,19 @@
       /usr/local/bin/ansible-playbook update.yml --tags "install"
 
 - name: Set BW CLI version
-  shell: "bw --version"
+  ansible.builtin.shell: "bw --version"
   changed_when: false
-  register: bw_ver
+  register: dominion_bw_ver
 
 - name: Set BW CLI Config
-  copy:
+  ansible.builtin.copy:
     dest: "/home/{{ main_username }}/.config/Bitwarden CLI/data.json"
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
-    mode: '0644'
+    mode: "0644"
     content: |
       {
-        "installedVersion": "{{ bw_ver.stdout }}",
+        "installedVersion": "{{ dominion_bw_ver.stdout }}",
         "environmentUrls": {
           "base": "{{ secret_bitwarden_url }}",
           "api": null,

@@ -1,10 +1,9 @@
 ---
-
-- name: create /mnt points
-  file:
+- name: Create /mnt points
+  ansible.builtin.file:
     dest: "{{ item.path }}"
     state: directory
     owner: nobody
     group: nogroup
-    mode: '0777'
+    mode: "0777"
   loop: "{{ zfs_mount + external_mount }}"

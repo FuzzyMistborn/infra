@@ -1,8 +1,8 @@
 ---
 - name: Install Pip Packages
-  pip:
+  ansible.builtin.pip:
     name: "{{ item }}"
-    extra_args:  --break-system-packages
+    extra_args: --break-system-packages
   loop: "{{ pip_packages }}"
   when: pip_packages is defined
 

@@ -1,72 +1,74 @@
 ---
-- name: get status of runitor_install_path
-  stat:
+- name: Get status of runitor_install_path
+  ansible.builtin.stat:
     path: "{{ runitor_install_path }}"
-  register: is_installed
+  register: runitor_stat
 
-- name: set runitor installed
-  set_fact:
-    runitor_is_installed: "{{ is_installed.stat.exists }}"
+- name: Set runitor installed
+  ansible.builtin.set_fact:
+    runitor_is_installed: "{{ runitor_stat.stat.exists }}"
 
-- name: check runitor version
-  shell: "{{ runitor_install_path }} --version | awk '{ print $2 }' | cut -c 2-"
+- name: Check runitor version
+  ansible.builtin.shell: "{{ runitor_install_path }} --version | awk '{ print $2 }' | cut -c 2-"
   changed_when: false
-  register: installed_version_registered
+  register: runitor_installed_version_registered
   when: runitor_is_installed == True
 
-- name: get latest release
-  uri:
+- name: Get latest release
+  ansible.builtin.uri:
     url: https://api.github.com/repos/bdd/runitor/releases/latest
-    url_username: "{{ github_api_user | default (omit) }}"
-    url_password: "{{ github_api_pass | default (omit) }}"
+    url_username: "{{ github_api_user | default(omit) }}"
+    url_password: "{{ github_api_pass | default(omit) }}"
     return_content: true
-    force_basic_auth: "{{ github_api_auth | default (omit) }}"
-  register: release_version_registered
+    force_basic_auth: "{{ github_api_auth | default(omit) }}"
+  register: runitor_release_registered
   when: runitor_download_latest_ver == True
 
-- name: set runitor version (latest)
-  set_fact:
-    runitor_ver: "{{ release_version_registered.json.tag_name|regex_replace('v') }}"
+- name: Set runitor version (latest)
+  ansible.builtin.set_fact:
+    runitor_ver: "{{ runitor_release_registered.json.tag_name | regex_replace('v') }}"
   when: runitor_download_latest_ver == True
 
-- name: set runitor version (pinned)
-  set_fact:
+- name: Set runitor version (pinned)
+  ansible.builtin.set_fact:
     runitor_ver: "{{ runitor_pinned_ver }}"
   when: runitor_download_latest_ver == False
 
-- block:
-    - name: ensure runitor_download_directory does not exist
-      file:
+- name: Install runitor
+  when: runitor_is_installed == False or ( runitor_is_installed == True and runitor_download_latest_ver == True and runitor_installed_version_registered.stdout !=
+    runitor_ver ) or ( runitor_is_installed == True and runitor_download_latest_ver == False and runitor_installed_version_registered.stdout != runitor_pinned_ver )
+
+  block:
+    - name: Ensure runitor_download_directory does not exist
+      ansible.builtin.file:
         path: "{{ runitor_download_directory }}"
         state: absent
 
-    - name: create runitor_download_directory
-      file:
+    - name: Create runitor_download_directory
+      ansible.builtin.file:
         path: "{{ runitor_download_directory }}"
         state: directory
-        mode: '0755'
+        mode: "0755"
 
-    - name: download runitor
-      get_url:
+    - name: Download runitor
+      ansible.builtin.get_url:
         url: "{{ runitor_gh_url }}/v{{ runitor_ver }}/runitor-v{{ runitor_ver }}-{{ runitor_distro }}"
         dest: "{{ runitor_download_directory }}"
-        force: yes
+        force: true
         owner: root
         group: root
         mode: +x
 
-    - name: move to /usr/local/bin
-      shell: "mv {{ runitor_download_directory }}/runitor-v{{ runitor_ver }}-{{ runitor_distro }} {{ runitor_install_path }}"
+    - name: Move to /usr/local/bin
+      ansible.builtin.shell: "mv {{ runitor_download_directory }}/runitor-v{{ runitor_ver }}-{{ runitor_distro }} {{ runitor_install_path }}"
 
     - name: Fedora - SELinux Fix
       ansible.builtin.command: restorecon -Rv /usr/local/bin
       become: true
       when: ansible_distribution == 'Fedora'
 
-  when: runitor_is_installed == False or ( runitor_is_installed == True and runitor_download_latest_ver == True and installed_version_registered.stdout != runitor_ver ) or ( runitor_is_installed == True and runitor_download_latest_ver == False and installed_version_registered.stdout != runitor_pinned_ver )
-
-- name: populate /etc/environment
-  lineinfile:
+- name: Populate /etc/environment
+  ansible.builtin.lineinfile:
     dest: "/etc/environment"
     state: present
     regexp: "^HC_API_URL="

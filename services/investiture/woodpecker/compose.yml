@@ -1,3 +1,4 @@
+---
 services:
   woodpecker-agent-github:
     image: quay.io/woodpeckerci/woodpecker-agent:v3.19.0

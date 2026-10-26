@@ -13,51 +13,51 @@ snapraid_config_hidden_files_enabled: false
 snapraid_config_hidden_files: nohidden
 
 # snapraidd.conf - System
-snapraidd_config_path: /etc/snapraidd.conf
-snapraidd_log_directory: /var/log/snapraid
-snapraidd_log_retention_days: 120
+snapraid_daemon_config_path: /etc/snapraidd.conf
+snapraid_daemon_log_directory: /var/log/snapraid
+snapraid_daemon_log_retention_days: 120
 
 # snapraidd.conf - Network & REST API
-snapraidd_net_enabled: 1
-snapraidd_net_port: "127.0.0.1:7627"
-snapraidd_net_acl: ""
-snapraidd_net_web_root: commander.zip
+snapraid_daemon_net_enabled: 1
+snapraid_daemon_net_port: "127.0.0.1:7627"
+snapraid_daemon_net_acl: ""
+snapraid_daemon_net_web_root: commander.zip
 
 # snapraidd.conf - Automation & Maintenance
-snapraidd_maintenance_schedule: "02:00"
-snapraidd_sync_threshold_deletes: 50
-snapraidd_sync_threshold_updates: 100
-snapraidd_touch_zero_subseconds: 1
-snapraidd_scrub_percentage: 0.7
-snapraidd_scrub_older_than: 10
+snapraid_daemon_maintenance_schedule: "02:00"
+snapraid_daemon_sync_threshold_deletes: 50
+snapraid_daemon_sync_threshold_updates: 100
+snapraid_daemon_touch_zero_subseconds: 1
+snapraid_daemon_scrub_percentage: 0.7
+snapraid_daemon_scrub_older_than: 10
 
 # snapraidd.conf - Disk Monitoring & Power
-snapraidd_probe_interval_minutes: 3
-snapraidd_spindown_idle_minutes: 15
+snapraid_daemon_probe_interval_minutes: 3
+snapraid_daemon_spindown_idle_minutes: 15
 
 # snapraidd.conf - Notifications
-snapraidd_notify_syslog_enabled: 1
-snapraidd_notify_syslog_level: info
-snapraidd_notify_differences: 1
-snapraidd_notify_result_level: info
+snapraid_daemon_notify_syslog_enabled: 1
+snapraid_daemon_notify_syslog_level: info
+snapraid_daemon_notify_differences: 1
+snapraid_daemon_notify_result_level: info
 
 # Healthchecks.io-style ping base URL (no /start or /fail suffix).
 # When set, the hook script pings /start on task-begin and /fail on
 # task-error, and the notify script pings success (or /fail) with the
 # task report attached as the ping body - mirroring runitor's behavior.
-snapraidd_healthchecks_url: ""
+snapraid_daemon_healthchecks_url: ""
 
 # Email is only forwarded by the notify script for these report levels
 # (comma-separated, no spaces). Matches the old snapraid-runner
 # "sendon: error" behavior.
-snapraidd_notify_email_levels: "error,critical"
-snapraidd_mail_from: ""
-snapraidd_mail_to: ""
+snapraid_daemon_notify_email_levels: "error,critical"
+snapraid_daemon_mail_from: ""
+snapraid_daemon_mail_to: ""
 
-snapraidd_hook_script_path: /usr/local/bin/snapraid-hook.sh
-snapraidd_notify_script_path: /usr/local/bin/snapraid-notify.sh
+snapraid_daemon_hook_script_path: /usr/local/bin/snapraid-hook.sh
+snapraid_daemon_notify_script_path: /usr/local/bin/snapraid-notify.sh
 
-# SMTP credentials - if snapraidd_smtp_host is set, manages /root/.netrc
-snapraidd_smtp_host: ""
-snapraidd_smtp_user: ""
-snapraidd_smtp_password: ""
+# SMTP credentials - if snapraid_daemon_smtp_host is set, manages /root/.netrc
+snapraid_daemon_smtp_host: ""
+snapraid_daemon_smtp_user: ""
+snapraid_daemon_smtp_password: ""

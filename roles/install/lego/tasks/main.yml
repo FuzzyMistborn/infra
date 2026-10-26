@@ -1,71 +1,72 @@
 ---
-
-- name: get status of lego_install_path
-  stat:
+- name: Get status of lego_install_path
+  ansible.builtin.stat:
     path: "{{ lego_install_path }}"
-  register: is_installed
+  register: lego_stat
 
-- name: set lego installed
-  set_fact:
-    lego_is_installed: "{{ is_installed.stat.exists }}"
+- name: Set lego installed
+  ansible.builtin.set_fact:
+    lego_is_installed: "{{ lego_stat.stat.exists }}"
 
-- name: check lego version
-  shell: "{{ lego_install_path }} --version | awk '{ print $3 }' | cut -c 1-"
+- name: Check lego version
+  ansible.builtin.shell: "{{ lego_install_path }} --version | awk '{ print $3 }' | cut -c 1-"
   changed_when: false
-  register: installed_version_registered
+  register: lego_installed_version_registered
   when: lego_is_installed == True
 
-- name: get latest release
-  uri:
+- name: Get latest release
+  ansible.builtin.uri:
     url: https://api.github.com/repos/go-acme/lego/releases/latest
-    url_username: "{{ github_api_user | default (omit) }}"
-    url_password: "{{ github_api_pass | default (omit) }}"
+    url_username: "{{ github_api_user | default(omit) }}"
+    url_password: "{{ github_api_pass | default(omit) }}"
     return_content: true
-    force_basic_auth: "{{ github_api_auth | default (omit) }}"
-  register: release_version_registered
+    force_basic_auth: "{{ github_api_auth | default(omit) }}"
+  register: lego_release_registered
   when: lego_download_latest_ver == True
 
-- name: set lego version (latest)
-  set_fact:
-    lego_ver: "{{ release_version_registered.json.tag_name|regex_replace('v') }}"
+- name: Set lego version (latest)
+  ansible.builtin.set_fact:
+    lego_ver: "{{ lego_release_registered.json.tag_name | regex_replace('v') }}"
   when: lego_download_latest_ver == True
 
-- name: set lego version (pinned)
-  set_fact:
+- name: Set lego version (pinned)
+  ansible.builtin.set_fact:
     lego_ver: "{{ lego_pinned_ver }}"
   when: lego_download_latest_ver == False
 
-- block:
-    - name: ensure lego_download_directory does not exist
-      file:
+- name: Install Lego
+  when: lego_is_installed == False or ( lego_is_installed == True and lego_download_latest_ver == True and lego_installed_version_registered.stdout != lego_ver ) or
+    ( lego_is_installed == True and lego_download_latest_ver == False and lego_installed_version_registered.stdout != lego_pinned_ver )
+
+  block:
+    - name: Ensure lego_download_directory does not exist
+      ansible.builtin.file:
         path: "{{ lego_download_directory }}"
         state: absent
 
-    - name: create lego_download_directory
-      file:
+    - name: Create lego_download_directory
+      ansible.builtin.file:
         path: "{{ lego_download_directory }}"
         state: directory
-        mode: '0755'
+        mode: "0755"
 
-    - name: download lego
-      unarchive:
+    - name: Download lego
+      ansible.builtin.unarchive:
         src: "{{ lego_gh_url }}/v{{ lego_ver }}/lego_v{{ lego_ver }}_{{ lego_distro }}.tar.gz"
         dest: "{{ lego_download_directory }}"
-        remote_src: yes
+        remote_src: true
         owner: root
         group: root
         mode: +x
 
-    - name: move to lego path
-      copy:
+    - name: Move to lego path
+      ansible.builtin.copy:
         src: "{{ lego_download_directory }}/lego"
         dest: "{{ lego_install_directory }}"
-        remote_src: yes
+        remote_src: true
         mode: +x
-  when: lego_is_installed == False or ( lego_is_installed == True and lego_download_latest_ver == True and installed_version_registered.stdout != lego_ver ) or ( lego_is_installed == True and lego_download_latest_ver == False and installed_version_registered.stdout != lego_pinned_ver )
-
-- name: populate /etc/environment
-  lineinfile:
+- name: Populate /etc/environment
+  ansible.builtin.lineinfile:
     dest: "/etc/environment"
     state: present
     regexp: "^LEGO_DISABLE_CNAME_SUPPORT="

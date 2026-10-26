@@ -1,40 +1,43 @@
 ---
-- name: check whether package is installed
-  shell: "dpkg-query -W 'pve-fake-subscription'"
+- name: Check whether package is installed
+  ansible.builtin.shell: "dpkg-query -W 'pve-fake-subscription'"
   ignore_errors: true
-  register: is_installed
-  changed_when: "is_installed.rc != 0"
+  register: nag_removal_package_check
+  changed_when: "nag_removal_package_check.rc != 0"
 
-- name: install package?
-  set_fact:
-    force_install: "{{ nag_force_install == true or is_installed.failed == true }}"
+- name: Install package?
+  ansible.builtin.set_fact:
+    nag_removal_needs_install: "{{ nag_removal_force_install == true or nag_removal_package_check.failed == true }}"
 
-- name: get latest release
-  uri:
+- name: Get latest release
+  ansible.builtin.uri:
     url: https://api.github.com/repos/Jamesits/pve-fake-subscription/releases/latest
-    url_username: "{{ github_api_user | default (omit) }}"
-    url_password: "{{ github_api_pass | default (omit) }}"
+    url_username: "{{ github_api_user | default(omit) }}"
+    url_password: "{{ github_api_pass | default(omit) }}"
     return_content: true
-    force_basic_auth: "{{ github_api_auth | default (omit) }}"
-  register: release_latest
-  when: nag_ver is undefined and force_install == True
+    force_basic_auth: "{{ github_api_auth | default(omit) }}"
+  register: nag_removal_release_latest
+  when: nag_removal_ver is undefined and nag_removal_needs_install == True
 
-- name: set version if not already
-  set_fact: nag_ver="{{ release_latest.json.tag_name }}"
-  when: nag_ver is undefined and force_install == True
+- name: Set version if not already
+  ansible.builtin.set_fact:
+    nag_removal_ver: "{{ nag_removal_release_latest.json.tag_name }}"
+  when: nag_removal_ver is undefined and nag_removal_needs_install == True
 
-- name: download release
-  when: force_install == True
-  get_url:
-    url: https://github.com/Jamesits/pve-fake-subscription/releases/download/{{ nag_ver }}/pve-fake-subscription_{{ nag_ver | regex_replace('v') }}+git-1_all.deb
+- name: Download release
+  when: nag_removal_needs_install == True
+  ansible.builtin.get_url:
+    url: https://github.com/Jamesits/pve-fake-subscription/releases/download/{{ nag_removal_ver }}/pve-fake-subscription_{{ nag_removal_ver | regex_replace('v')
+      }}+git-1_all.deb
     dest: /tmp
 
-- name: set filename
-  set_fact: file_name="pve-fake-subscription_{{ nag_ver | regex_replace('v') }}+git-1_all.deb"
-  when: force_install == True
+- name: Set filename
+  ansible.builtin.set_fact:
+    nag_removal_file_name: "pve-fake-subscription_{{ nag_removal_ver | regex_replace('v') }}+git-1_all.deb"
+  when: nag_removal_needs_install == True
 
-- name: install deb
-  apt:
-    deb: /tmp/{{ file_name }}
+- name: Install deb
+  ansible.builtin.apt:
+    deb: /tmp/{{ nag_removal_file_name }}
     state: present
-  when: force_install == True
+  when: nag_removal_needs_install == True

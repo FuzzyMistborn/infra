@@ -1,11 +1,12 @@
+---
 services:
   esphome-builder:
     image: ghcr.io/esphome/esphome:2026.9.1
     container_name: esphome-builder
     restart: unless-stopped
     ports:
-      - "6055:6055"   # remote build port
-#      - "6052:6052" # optional: web UI, handy for approving pairing
+      - "6055:6055" # remote build port
+    #      - "6052:6052" # optional: web UI, handy for approving pairing
     volumes:
       - "{{ appdata_path }}/esphome/config:/config"
       - /etc/localtime:/etc/localtime:ro

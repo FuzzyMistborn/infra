@@ -1,3 +1,4 @@
+---
 services:
   diun:
     image: ghcr.io/crazy-max/diun:4.33.0

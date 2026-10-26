@@ -1,3 +1,4 @@
+---
 services:
   mxroute:
     image: registry.gitlab.com/tomhello56/mxroute-alias-manager:latest

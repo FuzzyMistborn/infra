@@ -1,3 +1,4 @@
+---
 services:
   nextcloud:
     image: ghcr.io/fuzzymistborn/nextcloud-docker:35.0.2

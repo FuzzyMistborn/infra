@@ -35,7 +35,7 @@ lxc_vlans:
     gw: 192.168.10.1
     ip: 192.168.10.50
     tag: 10
-    disk: 'local-lvm:20'
+    disk: "local-lvm:25"
     cores: 2
     memory: 512
   - name: Drone
@@ -44,7 +44,7 @@ lxc_vlans:
     gw: 192.168.50.1
     ip: 192.168.50.15
     tag: 50
-    disk: 'local-lvm:25'
+    disk: "local-lvm:25"
     cores: 12
     memory: 2048
     nesting: 1
@@ -55,7 +55,7 @@ lxc_vlans:
     gw: 192.168.50.1
     ip: 192.168.50.23
     tag: 50
-    disk: 'local-lvm:50'
+    disk: "local-lvm:50"
     cores: 6
     memory: 6144
     nesting: 1
@@ -69,7 +69,7 @@ vm_uefi:
     memory: 6144
     balloon: 2048
     onboot: true
-    pcie: '0000:03:00.0'
+    pcie: "0000:03:00.0"
 
 lxc_main:
   - name: Omada
@@ -77,7 +77,7 @@ lxc_main:
     privileged: false
     gw: 192.168.1.1
     ip: 192.168.1.10
-    disk: 'local-lvm:15'
+    disk: "local-lvm:15"
     cores: 2
     memory: 2048
     nesting: 1
@@ -94,7 +94,7 @@ lnxlink_shutdown: true
 pull_backup: false
 infrastructure: false
 # mergerfs_ver: 2.32.4
-# nag_ver: 0.0.7
+# nag_removal_ver: 0.0.7
 
 ### Cronjobs
 cronjobs:
@@ -102,7 +102,7 @@ cronjobs:
     job: /usr/local/bin/runitor -uuid {{ secret_hc_ishap_scrutiny }} -- docker exec scrutiny /opt/scrutiny/bin/scrutiny-collector-metrics run > /dev/null 2>&1
     user: "{{ main_username }}"
     minute: 0
-    hour: '*/6'
+    hour: "*/6"
   - name: Email Backup
     job: /usr/local/bin/runitor -uuid {{ secret_hc_ishap_email_backup }} -- docker compose run --rm imap-backup
     user: "{{ main_username }}"
@@ -121,12 +121,14 @@ cronjobs:
     hour: 3
     day: 1
   - name: Media Backup (Docker)
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_backup_ishap_docker }} -- /usr/local/bin/autorestic backup -l docker -c /home/{{ main_username }}/.autorestic.yml
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_backup_ishap_docker }} -- /usr/local/bin/autorestic backup -l docker -c /home/{{ main_username
+      }}/.autorestic.yml
     user: root
     minute: 45
     hour: 23
   - name: Media Backup (Everything Else)
-    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_backup_ishap_all }} -- /usr/local/bin/autorestic backup -l config -l nvr -c /home/{{ main_username }}/.autorestic.yml
+    job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_backup_ishap_all }} -- /usr/local/bin/autorestic backup -l config -l nvr -c /home/{{ main_username
+      }}/.autorestic.yml
     user: root
     minute: 15
     hour: 1
@@ -148,29 +150,29 @@ cronjobs:
     special_time: reboot
 
 ### Autorestic Config
-autorestic_config_user: "{{ main_username}}"
-autorestic_config_directory: "/home/{{ main_username}}"
+autorestic_config_user: "{{ main_username }}"
+autorestic_config_directory: "/home/{{ main_username }}"
 autorestic_run_check: false
 autorestic_config_yaml:
   version: 2
   backends:
     local_docker:
       type: rest
-      path: 'http://192.168.1.5:8500/ishap'
+      path: "http://192.168.1.5:8500/ishap"
       key: "{{ secret_restic_repo_password }}"
       rest:
         user: "{{ secret_restic_rest_user }}"
         password: "{{ secret_restic_rest_password }}"
     local_config:
       type: rest
-      path: 'http://192.168.1.5:8500/config_files'
+      path: "http://192.168.1.5:8500/config_files"
       key: "{{ secret_restic_repo_password }}"
       rest:
         user: "{{ secret_restic_rest_user }}"
         password: "{{ secret_restic_rest_password }}"
     local_nvr:
       type: rest
-      path: 'http://192.168.1.5:8500/nvr'
+      path: "http://192.168.1.5:8500/nvr"
       key: "{{ secret_restic_repo_password }}"
       rest:
         user: "{{ secret_restic_rest_user }}"
@@ -192,9 +194,9 @@ autorestic_config_yaml:
       options:
         backup:
           exclude:
-            - '*.iso'
-            - '*.bin'
-            - '*.img'
+            - "*.iso"
+            - "*.bin"
+            - "*.img"
     b2_nvr:
       type: b2
       path: "{{ secret_restic_b2_bucket }}:/nvr"
@@ -204,7 +206,7 @@ autorestic_config_yaml:
         - B2_ACCOUNT_KEY: "{{ secret_restic_b2_account_key }}"
   locations:
     docker:
-      from: '/home/{{ main_username }}/docker'
+      from: "/home/{{ main_username }}/docker"
       to:
         - local_docker
         - b2_docker
@@ -214,7 +216,7 @@ autorestic_config_yaml:
           keep-weekly: 8
           keep-monthly: 3
     config:
-      from: '/mnt/Backup/config'
+      from: "/mnt/Backup/config"
       to:
         - local_config
         - b2_config
@@ -224,7 +226,7 @@ autorestic_config_yaml:
           keep-weekly: 8
           keep-monthly: 3
     nvr:
-      from: '/mnt/Backup/NVR'
+      from: "/mnt/Backup/NVR"
       to:
         - local_nvr
         - b2_nvr

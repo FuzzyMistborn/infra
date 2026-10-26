@@ -1,11 +1,10 @@
 ---
-
 - name: Set a hostname
   ansible.builtin.hostname:
     name: "{{ hostname }}"
 
-- name: create directories
-  file:
+- name: Create directories
+  ansible.builtin.file:
     path: "/home/{{ main_username }}/{{ item }}"
     state: directory
     owner: "{{ main_username }}"
@@ -15,11 +14,11 @@
 
 #### Mount disks
 - name: Set up disks/mounts
-  include_tasks: disks.yml
+  ansible.builtin.include_tasks: disks.yml
 
 ### Backup Restore
 - name: Create restore script
-  copy:
+  ansible.builtin.copy:
     dest: /home/{{ main_username }}/restore.sh
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
@@ -29,12 +28,12 @@
       /usr/local/bin/autorestic restore -f -l docker --from local_docker --to /
   when: pull_backup == true
 - name: Run restore script
-  command: /bin/bash ./restore.sh
+  ansible.builtin.command: /bin/bash ./restore.sh
   args:
     chdir: "/home/{{ main_username }}"
   when: pull_backup == true
 - name: Remove restore script
-  file:
+  ansible.builtin.file:
     path: /home/{{ main_username }}/restore.sh
     state: absent
   when: pull_backup == true

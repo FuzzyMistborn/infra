@@ -1,6 +1,6 @@
 ---
-- name: create main user directories
-  file:
+- name: Create main user directories
+  ansible.builtin.file:
     path: /home/{{ main_username }}/{{ item }}
     state: directory
     owner: "{{ main_username }}"
@@ -11,7 +11,7 @@
 
 ### Backup Restore
 - name: Create restore script
-  copy:
+  ansible.builtin.copy:
     dest: /home/{{ main_username }}/restore.sh
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
@@ -21,12 +21,12 @@
       /usr/local/bin/autorestic restore -f -l docker --from local_docker --to /
   when: pull_backup == true
 - name: Run restore script
-  command: /bin/bash ./restore.sh
+  ansible.builtin.command: /bin/bash ./restore.sh
   args:
     chdir: "/home/{{ main_username }}"
   when: pull_backup == true
 - name: Remove restore script
-  file:
+  ansible.builtin.file:
     path: /home/{{ main_username }}/restore.sh
     state: absent
   when: pull_backup == true

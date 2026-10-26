@@ -61,42 +61,42 @@ cronjobs:
 
 ### UFW Rules
 ufw:
-  - comment: 'ssh'
-    rule: 'allow'
-    port: '22'
-    proto: 'any'
-    route: 'no'
-  - comment: 'reverse proxy'
-    rule: 'allow'
-    port: '80'
-    proto: 'tcp'
-    route: 'no'
-  - comment: 'reverse proxy'
-    rule: 'allow'
-    port: '443'
-    proto: 'tcp'
-    route: 'no'
-  - comment: 'iperf'
-    rule: 'allow'
-    port: '5201'
-    proto: 'tcp'
-    route: 'no'
-  - comment: 'wireguard tunnel'
-    rule: 'allow'
-    port: '51282'
-    proto: 'udp'
-    route: 'no'
-  - comment: 'gitea'
-    rule: 'allow'
-    port: '222'
-    proto: 'tcp'
-    route: 'no'
-  - comment: 'tailscale adapter'
-    rule: 'allow'
+  - comment: "ssh"
+    rule: "allow"
+    port: "22"
+    proto: "any"
+    route: "no"
+  - comment: "reverse proxy"
+    rule: "allow"
+    port: "80"
+    proto: "tcp"
+    route: "no"
+  - comment: "reverse proxy"
+    rule: "allow"
+    port: "443"
+    proto: "tcp"
+    route: "no"
+  - comment: "iperf"
+    rule: "allow"
+    port: "5201"
+    proto: "tcp"
+    route: "no"
+  - comment: "wireguard tunnel"
+    rule: "allow"
+    port: "51282"
+    proto: "udp"
+    route: "no"
+  - comment: "gitea"
+    rule: "allow"
+    port: "222"
+    proto: "tcp"
+    route: "no"
+  - comment: "tailscale adapter"
+    rule: "allow"
     interface: tailscale0
     direction: in
-    proto: 'any'
-    route: 'no'
+    proto: "any"
+    route: "no"
 
 ### Caddy Config
 caddy_systemd_capabilities_enabled: true
@@ -109,8 +109,8 @@ caddy_conf_dir: /home/{{ main_username }}/caddy
 caddy_config: "{{ lookup('template', 'roles/ambition/templates/Caddyfile.j2') }}"
 
 ### Autorestic Config
-autorestic_config_user: "{{ main_username}}"
-autorestic_config_directory: "/home/{{ main_username}}"
+autorestic_config_user: "{{ main_username }}"
+autorestic_config_directory: "/home/{{ main_username }}"
 autorestic_run_check: false
 autorestic_config_yaml:
   version: 2
@@ -138,20 +138,20 @@ autorestic_config_yaml:
         - B2_ACCOUNT_KEY: "{{ secret_restic_b2_account_key }}"
   locations:
     docker:
-      from: '/home/{{ main_username }}/docker'
+      from: "/home/{{ main_username }}/docker"
       to:
         - b2_docker
       options:
         backup:
           exclude:
-            - '/home/{{ main_username }}/docker/umami'
-            - '/home/{{ main_username }}/docker/gitea/mariadb'
+            - "/home/{{ main_username }}/docker/umami"
+            - "/home/{{ main_username }}/docker/gitea/mariadb"
         forget:
           keep-daily: 1
           keep-weekly: 6
           keep-monthly: 3
     db:
-      from: '/home/{{ main_username }}/db_backups'
+      from: "/home/{{ main_username }}/db_backups"
       to:
         - b2_db
       options:
@@ -160,7 +160,7 @@ autorestic_config_yaml:
           keep-weekly: 6
           keep-monthly: 3
     certs:
-      from: '/home/{{ main_username }}/lego'
+      from: "/home/{{ main_username }}/lego"
       to:
         - b2_certs
       options:

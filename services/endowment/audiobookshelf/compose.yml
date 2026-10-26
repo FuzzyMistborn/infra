@@ -1,3 +1,4 @@
+---
 services:
   audiobookshelf:
     image: ghcr.io/advplyr/audiobookshelf:2.37.1

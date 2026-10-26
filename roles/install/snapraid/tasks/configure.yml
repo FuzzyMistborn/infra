@@ -1,57 +1,59 @@
 ---
-- name: validate snapraid configuration
+- name: Validate snapraid configuration
   block:
-    - fail:
+    - name: Define Data Disks
+      ansible.builtin.fail:
         msg: No data disks defined
       when: snapraid_data_disks | length == 0
-    - fail:
+    - name: Define Parity Disks
+      ansible.builtin.fail:
         msg: No parity disks defined
       when: snapraid_parity_disks | length == 0
 
-- name: install snapraid.conf
-  template:
+- name: Install snapraid.conf
+  ansible.builtin.template:
     src: snapraid.conf.j2
     dest: "{{ snapraid_config_path }}"
     owner: root
     group: root
     mode: "0644"
 
-- name: install snapraid notify script
-  template:
+- name: Install snapraid notify script
+  ansible.builtin.template:
     src: snapraid-notify.sh.j2
-    dest: "{{ snapraidd_notify_script_path }}"
+    dest: "{{ snapraid_daemon_notify_script_path }}"
     owner: root
     group: root
     mode: "0750"
 
-- name: install snapraid hook script
-  template:
+- name: Install snapraid hook script
+  ansible.builtin.template:
     src: snapraid-hook.sh.j2
-    dest: "{{ snapraidd_hook_script_path }}"
+    dest: "{{ snapraid_daemon_hook_script_path }}"
     owner: root
     group: root
     mode: "0750"
 
-- name: install snapraidd.conf
-  template:
+- name: Install snapraidd.conf
+  ansible.builtin.template:
     src: snapraidd.conf.j2
-    dest: "{{ snapraidd_config_path }}"
+    dest: "{{ snapraid_daemon_config_path }}"
     owner: root
     group: root
     mode: "0640"
-  notify: reload snapraidd
+  notify: Reload snapraidd
 
-- name: manage /root/.netrc for SMTP credentials
-  template:
+- name: Manage /root/.netrc for SMTP credentials
+  ansible.builtin.template:
     src: netrc.j2
     dest: /root/.netrc
     owner: root
     group: root
     mode: "0600"
-  when: snapraidd_smtp_host != ""
+  when: snapraid_daemon_smtp_host != ""
 
-- name: enable and start snapraidd
-  systemd:
+- name: Enable and start snapraidd
+  ansible.builtin.systemd:
     name: snapraidd
     enabled: true
     state: started

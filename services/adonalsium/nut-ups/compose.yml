@@ -1,3 +1,4 @@
+---
 services:
   nut-ups:
     image: fuzzymistborn/nut-upsd:2.8.5

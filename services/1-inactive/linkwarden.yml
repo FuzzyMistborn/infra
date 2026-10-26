@@ -1,3 +1,4 @@
+---
 services:
   linkwarden:
     image: ghcr.io/linkwarden/linkwarden:v2.14.1
@@ -18,8 +19,8 @@ services:
       - CUSTOM_OPENAI_BASE_URL=192.168.50.25:8080/v1
       - OPENAI_MODEL=emma-4-e4b
       - OPENAI_API_KEY=
-#      - ANTHROPIC_API_KEY={{ secret_linkwarden_anthropic_api_key }}
-#      - ANTHROPIC_MODEL=claude-3-5-haiku-latest
+    #      - ANTHROPIC_API_KEY={{ secret_linkwarden_anthropic_api_key }}
+    #      - ANTHROPIC_MODEL=claude-3-5-haiku-latest
     volumes:
       - "{{ appdata_path }}/linkwarden/data:/data/data"
     networks:

@@ -1,3 +1,4 @@
+---
 services:
   scrutiny:
     image: ghcr.io/analogj/scrutiny:v0.9.5-omnibus

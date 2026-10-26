@@ -1,3 +1,4 @@
+---
 services:
   baikal:
     image: ghcr.io/aalmenar/baikal:0.13.0-nginx

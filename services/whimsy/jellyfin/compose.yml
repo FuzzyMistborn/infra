@@ -1,3 +1,4 @@
+---
 services:
   jellyfin:
     image: ghcr.io/linuxserver/jellyfin:version-12.2ubu2604

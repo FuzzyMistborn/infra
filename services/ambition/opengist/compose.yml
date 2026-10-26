@@ -1,3 +1,4 @@
+---
 services:
   opengist:
     image: ghcr.io/thomiceli/opengist:1.15

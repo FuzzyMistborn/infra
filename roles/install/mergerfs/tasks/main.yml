@@ -1,59 +1,61 @@
 ---
-- name: check whether mergerfs is installed
-  shell: "dpkg-query -W 'mergerfs'"
+- name: Check whether mergerfs is installed
+  ansible.builtin.shell: "dpkg-query -W 'mergerfs'"
   ignore_errors: true
-  register: is_installed
-  changed_when: "is_installed.rc != 0"
+  register: mergerfs_stat
+  changed_when: "mergerfs_stat.rc != 0"
 
-- name: set mergerfs installed
-  set_fact:
-    mergerfs_is_installed: "{{ is_installed.failed == false }}"
+- name: Set mergerfs installed
+  ansible.builtin.set_fact:
+    mergerfs_is_installed: "{{ mergerfs_stat.failed == false }}"
 
-- name: check mergerfs version
-  shell: "/usr/bin/mergerfs --version | awk '{ print $3 }' | cut -c 1-"
+- name: Check mergerfs version
+  ansible.builtin.shell: "/usr/bin/mergerfs --version | awk '{ print $3 }' | cut -c 1-"
   changed_when: false
-  register: installed_version_registered
+  register: mergerfs_installed_version_registered
   when: mergerfs_is_installed == True
 
-- name: get latest release
-  uri:
+- name: Get latest release
+  ansible.builtin.uri:
     url: https://api.github.com/repos/trapexit/mergerfs/releases/latest
-    url_username: "{{ github_api_user | default (omit) }}"
-    url_password: "{{ github_api_pass | default (omit) }}"
+    url_username: "{{ github_api_user | default(omit) }}"
+    url_password: "{{ github_api_pass | default(omit) }}"
     return_content: true
-    force_basic_auth: "{{ github_api_auth | default (omit) }}"
-  register: release_version_registered
+    force_basic_auth: "{{ github_api_auth | default(omit) }}"
+  register: mergerfs_release_registered
   when: mergerfs_download_latest_ver == True
 
-- name: set mergerfs version (latest)
-  set_fact:
-    mergerfs_ver: "{{ release_version_registered.json.tag_name|regex_replace('v') }}"
+- name: Set mergerfs version (latest)
+  ansible.builtin.set_fact:
+    mergerfs_ver: "{{ mergerfs_release_registered.json.tag_name | regex_replace('v') }}"
   when: mergerfs_download_latest_ver == True
 
-- name: set mergerfs version (pinned)
-  set_fact:
+- name: Set mergerfs version (pinned)
+  ansible.builtin.set_fact:
     mergerfs_ver: "{{ mergerfs_pinned_ver }}"
   when: mergerfs_download_latest_ver == False
 
-- block:
-    - name: ensure mergerfs_download_directory does not exist
-      file:
+- name: Install mergerfs
+  when: mergerfs_is_installed == False or ( mergerfs_is_installed == True and mergerfs_download_latest_ver == True and mergerfs_installed_version_registered.stdout !=
+    mergerfs_ver ) or ( mergerfs_is_installed == True and mergerfs_download_latest_ver == False and mergerfs_installed_version_registered.stdout != mergerfs_pinned_ver )
+  block:
+    - name: Ensure mergerfs_download_directory does not exist
+      ansible.builtin.file:
         path: "{{ mergerfs_download_directory }}"
         state: absent
 
-    - name: create mergerfs_download_directory
-      file:
+    - name: Create mergerfs_download_directory
+      ansible.builtin.file:
         path: "{{ mergerfs_download_directory }}"
         state: directory
-        mode: '0755'
+        mode: "0755"
 
-    - name: download mergerfs
-      get_url:
+    - name: Download mergerfs
+      ansible.builtin.get_url:
         url: "{{ mergerfs_gh_url }}/{{ mergerfs_ver }}/mergerfs_{{ mergerfs_ver }}.{{ mergerfs_distro }}.deb"
         dest: "{{ mergerfs_download_directory }}"
 
-    - name: install deb
-      apt:
+    - name: Install deb
+      ansible.builtin.apt:
         deb: "{{ mergerfs_download_directory }}/mergerfs_{{ mergerfs_ver }}.{{ mergerfs_distro }}.deb"
         state: present
-  when: mergerfs_is_installed == False or ( mergerfs_is_installed == True and mergerfs_download_latest_ver == True and installed_version_registered.stdout != mergerfs_ver ) or ( mergerfs_is_installed == True and mergerfs_download_latest_ver == False and installed_version_registered.stdout != mergerfs_pinned_ver )

@@ -1,3 +1,4 @@
+---
 services:
   freshrss:
     image: freshrss/freshrss:1.30.4

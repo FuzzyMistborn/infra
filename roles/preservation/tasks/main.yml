@@ -1,7 +1,6 @@
 ---
-
-- name: create config directories
-  file:
+- name: Create config directories
+  ansible.builtin.file:
     path: "/home/{{ main_username }}/{{ item }}"
     state: directory
     owner: "{{ main_username }}"
@@ -17,20 +16,20 @@
     - scripts
 
 - name: Copy db backup script template
-  template:
+  ansible.builtin.template:
     src: "{{ item.src }}"
     dest: /home/{{ main_username }}/scripts/{{ item.dest }}
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
     mode: +x
   loop:
-    - {src: 'db_backup.sh.j2', dest: 'db_backup.sh'}
-    - {src: 'db_restore.sh.j2', dest: 'db_restore.sh'}
-    - {src: 'postgres_cleanup.sh.j2', dest: 'postgres_cleanup.sh'}
+    - { src: "db_backup.sh.j2", dest: "db_backup.sh" }
+    - { src: "db_restore.sh.j2", dest: "db_restore.sh" }
+    - { src: "postgres_cleanup.sh.j2", dest: "postgres_cleanup.sh" }
 
 ### Backup Restore
 - name: Create restore script
-  copy:
+  ansible.builtin.copy:
     dest: /home/{{ main_username }}/restore.sh
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
@@ -40,19 +39,19 @@
       /usr/local/bin/autorestic restore -f -l db_backups --from local_db --to /
   when: pull_backup == true
 - name: Run restore script
-  command: /bin/bash ./restore.sh
+  ansible.builtin.command: /bin/bash ./restore.sh
   args:
     chdir: "/home/{{ main_username }}"
   when: pull_backup == true
 - name: Remove restore script
-  file:
+  ansible.builtin.file:
     path: /home/{{ main_username }}/restore.sh
     state: absent
   when: pull_backup == true
 
 #### Restore Databases
 - name: Run DB Restore Script
-  command: /bin/bash ./db_restore.sh
+  ansible.builtin.command: /bin/bash ./db_restore.sh
   args:
     chdir: "/home/{{ main_username }}/scripts"
   when: pull_backup == true

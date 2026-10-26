@@ -1,13 +1,14 @@
 ---
 roles:
-- src: caddy_ansible.caddy_ansible
-- src: grog.package
-- src: geerlingguy.docker
-- src: geerlingguy.ntp
-- src: geerlingguy.nfs
-- src: geerlingguy.pip
-- src: geerlingguy.samba
+  - src: caddy_ansible.caddy_ansible
+  - src: grog.package
+  - src: geerlingguy.docker
+  - src: geerlingguy.ntp
+  - src: geerlingguy.nfs
+  - src: geerlingguy.pip
+  - src: geerlingguy.samba
 
 collections:
-- community.docker
-- ansible.posix
+  - community.docker
+  - ansible.posix
+  - community.general

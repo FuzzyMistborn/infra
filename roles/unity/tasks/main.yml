@@ -1,22 +1,22 @@
 ---
 ### udev Rules
 - name: Add udev rules
-  copy:
+  ansible.builtin.copy:
     dest: /etc/udev/rules.d/99-usb-serial.rules
     owner: root
     group: root
-    mode: '0644'
+    mode: "0644"
     content: |
       SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", SYMLINK+="zwave"
       SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="55d4", SYMLINK+="zigbee"
       SUBSYSTEM=="tty", ATTRS{idVendor}=="051d", ATTRS{idProduct}=="0002", SYMLINK+="upsd"
 
 - name: Update udev
-  shell: "sudo udevadm control --reload-rules && sudo udevadm trigger"
+  ansible.builtin.shell: "sudo udevadm control --reload-rules && sudo udevadm trigger"
 
 #### DIUN
-- name: create config directories
-  file:
+- name: Create config directories
+  ansible.builtin.file:
     path: /home/{{ main_username }}/{{ item }}
     state: directory
     owner: "{{ main_username }}"
@@ -27,15 +27,15 @@
 
 ### Networking
 - name: Enable IPv4 forwarding
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.ip_forward
     value: 1
-    reload: yes
+    reload: true
 - name: Enable IPv6 forwarding
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv6.conf.all.forwarding
     value: 1
-    reload: yes
+    reload: true
 
 # - name: Stop resolved
 #   service:

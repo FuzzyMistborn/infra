@@ -1,3 +1,4 @@
+---
 services:
   zwavejs:
     image: ghcr.io/zwave-js/zwave-js-ui:11.24.3

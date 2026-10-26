@@ -1,3 +1,4 @@
+---
 services:
   crowdsec:
     image: ghcr.io/crowdsecurity/crowdsec:v1.8.1
@@ -12,7 +13,8 @@ services:
     ports:
       - 8080:8080
     environment:
-      - COLLECTIONS=crowdsecurity/caddy crowdsecurity/http-cve crowdsecurity/whitelist-good-actors LePresidente/gitea timokoessler/uptime-kuma crowdsecurity/sshd
+      - COLLECTIONS=crowdsecurity/caddy crowdsecurity/http-cve crowdsecurity/whitelist-good-actors LePresidente/gitea timokoessler/uptime-kuma
+        crowdsecurity/sshd
       - BOUNCER_KEY_CADDY={{secret_crowdsec_api}}
       - GID=1000
       - USE_WAL=true

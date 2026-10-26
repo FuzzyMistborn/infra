@@ -10,37 +10,31 @@
 - name: Read existing daemon.json if present
   ansible.builtin.slurp:
     src: /etc/docker/daemon.json
-  register: existing_daemon_json
+  register: docker_patch_existing_daemon_json
   ignore_errors: true
 
 - name: Parse existing daemon.json
   ansible.builtin.set_fact:
-    existing_daemon_config: "{{ existing_daemon_json.content | b64decode | from_json }}"
+    docker_patch_existing_daemon_config: "{{ docker_patch_existing_daemon_json.content | b64decode | from_json }}"
   when:
-    - existing_daemon_json is succeeded
-    - existing_daemon_json.content | b64decode | trim | length > 0
+    - docker_patch_existing_daemon_json is succeeded
+    - docker_patch_existing_daemon_json.content | b64decode | trim | length > 0
 
 - name: Default to empty config if daemon.json is missing or empty
   ansible.builtin.set_fact:
-    existing_daemon_config: {}
+    docker_patch_existing_daemon_config: {}
   when: >
-    existing_daemon_json is failed or
-    (existing_daemon_json.content | b64decode | trim | length == 0)
+    docker_patch_existing_daemon_json is failed or
+    (docker_patch_existing_daemon_json.content | b64decode | trim | length == 0)
 
 - name: Merge address pool config into existing daemon.json
   ansible.builtin.set_fact:
-    merged_daemon_config: "{{ existing_daemon_config | combine({
-      'default-address-pools': [
-        {
-          'base': docker_address_pool_base,
-          'size': docker_address_pool_size
-        }
-      ]
-    }, recursive=True) }}"
+    docker_patch_merged_daemon_config: "{{ docker_patch_existing_daemon_config | combine({'default-address-pools': [{'base': docker_patch_address_pool_base, 'size': docker_patch_address_pool_size}]},
+      recursive=True) }}"
 
 - name: Write daemon.json
   ansible.builtin.copy:
-    content: "{{ merged_daemon_config | to_nice_json }}"
+    content: "{{ docker_patch_merged_daemon_config | to_nice_json }}"
     dest: /etc/docker/daemon.json
     owner: root
     group: root

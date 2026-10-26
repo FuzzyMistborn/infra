@@ -1,3 +1,4 @@
+---
 services:
   trilium:
     image: triliumnext/trilium:v0.103.0

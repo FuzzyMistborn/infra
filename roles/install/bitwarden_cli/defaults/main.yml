@@ -1,6 +1,6 @@
 ---
 
-bw_download_latest_ver: true
-bw_pinned_ver: ""  # Set to a specific version when bw_download_latest_ver is false
+bitwarden_cli_download_latest_ver: true
+bitwarden_cli_pinned_ver: "" # Set to a specific version when bitwarden_cli_download_latest_ver is false
 
-nodejs_major_version: 22
+bitwarden_cli_nodejs_major_version: 22

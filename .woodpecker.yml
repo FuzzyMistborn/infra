@@ -1,3 +1,4 @@
+---
 steps:
   - name: ansible-lint and yamllint
     image: fuzzymistborn/docker-linting:latest
@@ -11,7 +12,8 @@ steps:
       - echo $ansible_vault_password > .vault-password
       - ANSIBLE_VAULT_PASSWORD_FILE=.vault-password ansible-lint .
       - yamllint .
-      - find . -maxdepth 1 -name '*.yml' | grep -v '.woodpecker.yml' | grep -v 'FUNDING.yml' | xargs ansible-playbook --syntax-check --list-tasks --vault-password-file .vault-password
+      - find . -maxdepth 1 -name '*.yml' | grep -v '.woodpecker.yml' | grep -v 'FUNDING.yml' | xargs ansible-playbook --syntax-check --list-tasks
+        --vault-password-file .vault-password
     when:
       - event: push
 

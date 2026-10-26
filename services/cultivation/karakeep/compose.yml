@@ -1,3 +1,4 @@
+---
 services:
   karakeep:
     image: ghcr.io/karakeep-app/karakeep:0.34.0

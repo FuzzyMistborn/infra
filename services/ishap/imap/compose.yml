@@ -1,3 +1,4 @@
+---
 services:
   imap-backup:
     image: ghcr.io/joeyates/imap-backup:v16.6.0

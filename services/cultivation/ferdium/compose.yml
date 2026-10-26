@@ -1,3 +1,4 @@
+---
 services:
   ferdium-server:
     image: ghcr.io/ferdium/ferdium-server:2.0.13

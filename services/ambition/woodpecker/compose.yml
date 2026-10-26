@@ -1,3 +1,4 @@
+---
 services:
   woodpecker-github:
     image: quay.io/woodpeckerci/woodpecker-server:v3.19.0

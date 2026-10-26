@@ -1,3 +1,4 @@
+---
 services:
   paperless-redis:
     image: redis:8.10.2
@@ -26,7 +27,8 @@ services:
       - USERMAP_UID={{ main_uid }}
       - USERMAP_GID={{ main_gid }}
       - PAPERLESS_APPS=allauth.socialaccount.providers.openid_connect
-      - PAPERLESS_SOCIALACCOUNT_PROVIDERS={"openid_connect":{"SCOPE":["openid","profile","email"],"OAUTH_PKCE_ENABLED":true,"APPS":[{"provider_id":"pocket-id","name":"Pocket-ID","client_id":"{{ secret_paperless_pocket_id_user }}","secret":"{{ secret_paperless_pocket_id_key }}","settings":{"server_url":"https://id.{{ secret_personal_url }}"}}]}}
+      - PAPERLESS_SOCIALACCOUNT_PROVIDERS={"openid_connect":{"SCOPE":["openid","profile","email"],"OAUTH_PKCE_ENABLED":true,"APPS":[{"provider_id":"pocket-id","name":"Pocket-ID","client_id":"{{
+        secret_paperless_pocket_id_user }}","secret":"{{ secret_paperless_pocket_id_key }}","settings":{"server_url":"https://id.{{ secret_personal_url }}"}}]}}
     networks:
       - paperless-net
     security_opt:

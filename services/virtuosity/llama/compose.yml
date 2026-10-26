@@ -1,3 +1,4 @@
+---
 services:
   llama-swap:
     image: ghcr.io/mostlygeek/llama-swap:v265-cuda-b11718
