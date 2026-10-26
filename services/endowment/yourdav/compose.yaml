@@ -1,7 +1,7 @@
 ---
 services:
   yourdav:
-    image: ghcr.io/fuzzymistborn/yourdav:0.7.1
+    image: ghcr.io/fuzzymistborn/yourdav:0.7.2
     container_name: yourdav
     ports:
       - 3000:3000
