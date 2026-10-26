@@ -1,7 +1,7 @@
 ---
 services:
   collabora:
-    image: collabora/code:26.04.5.1.1
+    image: collabora/code:26.04.5.2.1
     container_name: collabora
     cap_add:
       - SYS_ADMIN
