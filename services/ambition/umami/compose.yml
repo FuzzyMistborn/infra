@@ -1,7 +1,7 @@
 ---
 services:
   umami:
-    image: ghcr.io/umami-software/umami:3.4.0
+    image: ghcr.io/umami-software/umami:3.4.1
     container_name: umami
     ports:
       - 127.0.0.1:3500:3000
