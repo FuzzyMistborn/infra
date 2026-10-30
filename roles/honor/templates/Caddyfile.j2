@@ -486,15 +486,3 @@ zwavejs.{{ secret_personal_internal_url }} {
 	tls /home/{{ main_username }}/lego/certificates/internal.crt /home/{{ main_username }}/lego/certificates/internal.key
 	import headers
 }
-
-# Nextcloud (to be removed shortly)
-calendar.{{ secret_personal_url }} {
-	redir /* https://cloud.{{ secret_personal_url }}/apps/calendar/ 301
-}
-cloud.{{ secret_personal_url }} {
-	reverse_proxy http://192.168.50.20:3491
-	tls /home/{{ main_username }}/lego/certificates/external.crt /home/{{ main_username }}/lego/certificates/external.key
-	import headers
-	redir /.well-known/carddav /remote.php/dav 301
-	redir /.well-known/caldav /remote.php/dav 301
-}

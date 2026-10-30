@@ -8,7 +8,6 @@
   loop:
     - docker
     - docker/bitwarden_db
-    - docker/nextcloud_db
     - docker/hass_db
     - docker/influx_db
     - docker/invidious

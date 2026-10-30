@@ -30,10 +30,6 @@ lnxlink_diskuse: true
 
 ### Cronjobs
 cronjobs:
-  - name: Nextcloud
-    job: /home/{{ main_username }}/scripts/nextcloud_cron.sh
-    user: "{{ main_username }}"
-    minute: "*/5"
   - name: Restic Prune
     job: /usr/local/bin/runitor -uuid {{ secret_hc_restic_prune_endowment }} -- /usr/local/bin/autorestic forget -a --prune
     user: "{{ main_username }}"

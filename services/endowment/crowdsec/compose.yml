@@ -5,12 +5,11 @@ services:
     container_name: crowdsec
     volumes:
       - "{{ appdata_path }}/crowdsec/data/acquis.yaml:/etc/crowdsec/acquis.yaml"
-      - "{{ appdata_path }}/nextcloud_docker/html/data:/var/log/nextcloud:ro"
       - "{{ appdata_path }}/sonarr/logs:/var/log/sonarr:ro"
       - "{{ appdata_path }}/radarr/logs:/var/log/radarr:ro"
       - "{{ appdata_path }}/crowdsec/db:/var/lib/crowdsec/data/"
     environment:
-      - COLLECTIONS=schiz0phr3ne/sonarr schiz0phr3ne/radarr crowdsecurity/nextcloud
+      - COLLECTIONS=schiz0phr3ne/sonarr schiz0phr3ne/radarr
       - GID=1000
       - DISABLE_LOCAL_API=true
       - AGENT_USERNAME={{ hostname }}

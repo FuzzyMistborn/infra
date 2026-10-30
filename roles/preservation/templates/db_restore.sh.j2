@@ -2,13 +2,9 @@
 set -o pipefail
 
 cd /home/{{ main_username }}
-docker compose up -d nextcloud-db vaultwarden-db ha-db romm-db invidious-db booklore-db influx-db outline-db
+docker compose up -d vaultwarden-db ha-db romm-db invidious-db booklore-db influx-db outline-db
 
 sleep 30s
-echo Restoring Nextcloud DB
-cd /home/{{ main_username }}/db_backups/nextcloud
-LAST_NEXTCLOUD=$(ls -t | head -n 1)
-zstd -dc /home/{{ main_username }}/db_backups/nextcloud/$LAST_NEXTCLOUD | docker exec -i nextcloud-db psql -U nextcloud -d nextcloud
 
 echo Restoring Vaultwarden DB
 cd /home/{{ main_username }}/db_backups/vaultwarden

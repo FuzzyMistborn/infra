@@ -9,16 +9,6 @@
     - docker
     - scripts
 
-- name: Copy scripts
-  ansible.builtin.copy:
-    src: "{{ item.path }}"
-    dest: /home/{{ main_username }}/scripts/{{ item.path }}
-    owner: "{{ main_username }}"
-    group: "{{ main_username }}"
-    mode: "{{ item.mode }}"
-  loop:
-    - { path: "nextcloud_cron.sh", mode: "+x" }
-
 - name: Copy photos script templates
   ansible.builtin.template:
     src: "{{ item.src }}"

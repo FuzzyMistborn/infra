@@ -2,11 +2,6 @@
 set -o pipefail
 rc=0
 
-# Nextcloud DB Backup
-echo Backing up Nextcloud DB
-today=$(date +"%Y_%m_%d")
-docker exec nextcloud-db sh -c 'pg_dumpall -U nextcloud' | zstd -q -f -T0 -o /home/{{ main_username }}/db_backups/nextcloud/nextcloudDB_$today.sql.zst || rc=1
-
 #### Vaultwarden DB Backup
 echo Backing up Vaultwarden DB
 today=$(date +"%Y_%m_%d")
