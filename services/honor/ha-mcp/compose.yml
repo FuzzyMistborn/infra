@@ -1,7 +1,7 @@
 ---
 services:
   ha-mcp:
-    image: ghcr.io/homeassistant-ai/ha-mcp:8.7.0
+    image: ghcr.io/homeassistant-ai/ha-mcp:9.0.0
     container_name: ha-mcp
     ports:
       - 8086:8086
