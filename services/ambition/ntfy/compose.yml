@@ -1,7 +1,7 @@
 ---
 services:
   ntfy:
-    image: binwiederhier/ntfy:v2.34.0
+    image: binwiederhier/ntfy:v2.35.0
     container_name: ntfy
     volumes:
       - "{{ appdata_path }}/ntfy/cache:/var/cache/ntfy"
