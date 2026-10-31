@@ -1,0 +1,11 @@
+---
+- name: Rebuild font cache
+  ansible.builtin.command: fc-cache -f
+  changed_when: true
+
+# Container may not exist yet on a fresh host
+- name: Restart Collabora
+  ansible.builtin.command: docker restart collabora
+  register: cultivation_collabora_restart
+  changed_when: cultivation_collabora_restart.rc == 0
+  failed_when: cultivation_collabora_restart.rc != 0 and 'No such container' not in cultivation_collabora_restart.stderr

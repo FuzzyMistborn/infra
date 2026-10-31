@@ -58,6 +58,10 @@ mountpoints:
     source: "//192.168.1.10/Media/Photos"
     fs: cifs
     opts: "defaults,uid=1000,gid=1000,credentials=/home/{{ main_username }}/.smbcredentials"
+  - path: "/mnt/Media"
+    source: "//192.168.1.10/Media"
+    fs: cifs
+    opts: "defaults,uid=1000,gid=1000,credentials=/home/{{ main_username }}/.smbcredentials"
 
 ### Autorestic Config
 autorestic_config_user: "{{ main_username }}"
@@ -73,7 +77,7 @@ autorestic_config_yaml:
       rest:
         user: "{{ secret_restic_rest_user }}"
         password: "{{ secret_restic_rest_password }}"
-    b2_ddocker:
+    b2_docker:
       type: b2
       path: "{{ secret_restic_b2_bucket }}:/virtuosity"
       key: "{{ secret_restic_repo_password }}"

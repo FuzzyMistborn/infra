@@ -18,6 +18,31 @@
     owner: "{{ main_username }}"
     group: "{{ main_username }}"
 
+### Microsoft fonts (mounted into Collabora)
+- name: Accept MS core fonts EULA
+  ansible.builtin.debconf:
+    name: ttf-mscorefonts-installer
+    question: msttcorefonts/accepted-mscorefonts-eula
+    vtype: select
+    value: "true"
+
+- name: Install MS core fonts
+  ansible.builtin.apt:
+    name: ttf-mscorefonts-installer
+    state: present
+    update_cache: true
+  register: mscorefonts
+
+- name: Rebuild font cache
+  ansible.builtin.command: fc-cache -f
+  when: mscorefonts is changed
+
+- name: Restart Collabora to pick up fonts
+  ansible.builtin.command: docker restart collabora
+  register: collabora_restart
+  failed_when: collabora_restart.rc != 0 and 'No such container' not in collabora_restart.stderr
+  when: mscorefonts is changed
+
 ### Backup Restore
 - name: Create restore script
   ansible.builtin.copy:

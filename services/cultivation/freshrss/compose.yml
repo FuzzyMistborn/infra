@@ -15,6 +15,7 @@ services:
       - PGID={{ main_gid }}
       - TZ={{ ntp_timezone }}
       - CRON_MIN=*/20
+      - INTERNAL_HOST_ALLOWLIST=192.168.50.10/32
       - OIDC_ENABLED=1
       - OIDC_CLIENT_ID={{ secret_freshrss_pocket_id_user }}
       - OIDC_CLIENT_SECRET={{ secret_freshrss_pocket_id_key }}
@@ -43,7 +44,7 @@ services:
       - SMTP_HOST={{ secret_snapraid_smtp_host }}
       - SMTP_PORT=587
       - SMTP_USER={{ secret_snapraid_email_from }}
-      - SMTP_PASS=Economy.Pushup.Untold7
+      - SMTP_PASS={{ secret_snapraid_email_pass }}
       - SMTP_FROM={{ secret_snapraid_email_from }}
       - SMTP_TO={{ secret_email }}
       - SMTP_USE_TLS=false

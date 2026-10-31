@@ -1,0 +1,36 @@
+---
+services:
+  press:
+    image: ghcr.io/fuzzymistborn/jellyjar/press:0.9.1
+    container_name: press
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities:
+                - gpu
+                - video
+    volumes:
+      - /mnt/Media/Files/1-Processing/Press:/output
+      - /mnt/Media/Movies:/mnt/movies
+      - /mnt/Media/UHD:/mnt/UHD
+      - /mnt/Media/TV Shows:/mnt/tv
+      - /mnt/Media/Kids Movies:/mnt/kids
+      - /mnt/Media/Kids TV:/mnt/kids_tv
+    ports:
+      - 8090:8090
+    environment:
+      - PRESS_ROLE=worker
+      - WORKER_NAME=virtuosity
+      - COORDINATOR_URL=http://192.168.50.24:8090
+      - MEDIA_ROOT=/mnt
+      - OUTPUT_ROOT=/output
+      - CONFIG_ROOT=/config
+      - ENCODER=h264_nvenc
+      - MAX_WORKERS=1
+      - CLEANUP_AFTER_DAYS=5
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
