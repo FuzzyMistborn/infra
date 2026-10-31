@@ -68,7 +68,7 @@ services:
       - no-new-privileges:true
 
   tika:
-    image: apache/tika:4.1.0
+    image: apache/tika:4.2.0
     container_name: tika
     restart: unless-stopped
     environment:
