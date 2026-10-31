@@ -1,7 +1,7 @@
 ---
 services:
   esphome-builder:
-    image: ghcr.io/esphome/esphome:2026.10.0
+    image: ghcr.io/esphome/esphome:2026.10.1
     container_name: esphome-builder
     restart: unless-stopped
     ports:
