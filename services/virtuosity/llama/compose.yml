@@ -1,7 +1,7 @@
 ---
 services:
   llama-swap:
-    image: ghcr.io/mostlygeek/llama-swap:v266-cuda-b11870
+    image: ghcr.io/mostlygeek/llama-swap:v268-cuda-b12019
     container_name: llama-swap
     volumes:
       - /mnt/llms/models:/models:ro
