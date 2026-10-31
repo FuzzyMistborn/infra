@@ -31,17 +31,9 @@
     name: ttf-mscorefonts-installer
     state: present
     update_cache: true
-  register: mscorefonts
-
-- name: Rebuild font cache
-  ansible.builtin.command: fc-cache -f
-  when: mscorefonts is changed
-
-- name: Restart Collabora to pick up fonts
-  ansible.builtin.command: docker restart collabora
-  register: collabora_restart
-  failed_when: collabora_restart.rc != 0 and 'No such container' not in collabora_restart.stderr
-  when: mscorefonts is changed
+  notify:
+    - Rebuild font cache
+    - Restart Collabora
 
 ### Backup Restore
 - name: Create restore script

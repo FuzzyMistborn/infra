@@ -44,7 +44,7 @@ services:
     ports:
       - 8090:8090
     environment:
-      - PRESS_ROLE=coordinator 
+      - PRESS_ROLE=coordinator
       - MEDIA_ROOT=/mnt
       - OUTPUT_ROOT=/output
       - CONFIG_ROOT=/config
