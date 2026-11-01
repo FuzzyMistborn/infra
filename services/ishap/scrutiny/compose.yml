@@ -1,7 +1,7 @@
 ---
 services:
   scrutiny:
-    image: ghcr.io/analogj/scrutiny:v0.9.5-omnibus
+    image: ghcr.io/analogj/scrutiny:v0.10.0-omnibus
     container_name: scrutiny
     cap_add:
       - SYS_RAWIO
