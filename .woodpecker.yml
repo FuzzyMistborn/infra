@@ -24,8 +24,13 @@ steps:
         from_secret: tg_token
       to:
         from_secret: tg_id
-      format: markdown
-      message: "✅  Build for `${CI_REPO_NAME}` was *successful*!\n🌐  [Output](${CI_PIPELINE_URL})\n👤 Author: ${CI_COMMIT_AUTHOR}\n📝  Commit: ${CI_COMMIT_MESSAGE}"
+      format: Markdown
+      # Block scalar on purpose: Woodpecker substitutes multi-line values as a quoted string before parsing the YAML.
+      message: |
+        ✅  Build for `${CI_REPO_NAME}` was *successful*!
+        🌐  [Output](${CI_PIPELINE_URL})
+        👤 Author: ${CI_COMMIT_AUTHOR}
+        📝  Commit: ${CI_COMMIT_MESSAGE%%\\n*}
     when:
       - event: push
         status: [success]
@@ -37,8 +42,13 @@ steps:
         from_secret: tg_token
       to:
         from_secret: tg_id
-      format: markdown
-      message: "❌  Build for `${CI_REPO_NAME}` has *FAILED*!\n🌐  [Output](${CI_PIPELINE_URL})\n👤 Author: ${CI_COMMIT_AUTHOR}\n📝  Commit: ${CI_COMMIT_MESSAGE}"
+      format: Markdown
+      # Block scalar on purpose: Woodpecker substitutes multi-line values as a quoted string before parsing the YAML.
+      message: |
+        ❌  Build for `${CI_REPO_NAME}` has *FAILED*!
+        🌐  [Output](${CI_PIPELINE_URL})
+        👤 Author: ${CI_COMMIT_AUTHOR}
+        📝  Commit: ${CI_COMMIT_MESSAGE%%\\n*}
     when:
       - event: push
         status: [failure]
