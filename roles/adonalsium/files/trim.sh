@@ -3,9 +3,6 @@
 echo "Trimming Honor"
 sudo pct fstrim 201
 
-echo "Trimming Invention"
-sudo pct fstrim 210
-
 echo "Trimming Endowment"
 sudo pct fstrim 250 --ignore-mountpoint true
 

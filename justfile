@@ -37,7 +37,7 @@ docker-changes HOST:
 docker-changes-all:
     #!/usr/bin/env bash
     echo "Checking all docker hosts..."
-    for host in adonalsium endowment autonomy cultivation preservation omada honor unity ambition investiture invention identity virtuosity whimsy; do
+    for host in adonalsium endowment autonomy cultivation preservation omada honor unity ambition investiture identity virtuosity whimsy; do
         echo ""
         echo "========================================"
         echo "HOST: $host"

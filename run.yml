@@ -363,22 +363,6 @@
     - role: docker-compose-generator
     - role: install/chezmoi
 
-- name: Install Invention
-  hosts: invention
-  become: true
-  vars_files:
-    - "vars/vault.yaml"
-  roles:
-    - role: grog.package
-    - role: geerlingguy.pip
-    - role: geerlingguy.docker
-    - role: invention
-    - role: install/autorestic
-    - role: install/runitor
-    - role: install/docker_patch
-    - role: docker-compose-generator
-    - role: install/chezmoi
-
 - name: Install Identity
   hosts: identity
   become: true

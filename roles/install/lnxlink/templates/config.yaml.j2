@@ -75,17 +75,6 @@ settings:
     include_disks: []
     exclude_disks: []
 {% endif %}
-{% if ansible_hostname == "ishap" %}
-  bash:
-    expose:
-    - name: Start Trell
-      command: /usr/sbin/qm start 300
-    - name: Stop Trell
-      command: /usr/sbin/qm stop 300
-    - name: Start Invention
-      command: /usr/sbin/pct start 210
-    - name: Stop Invention
-      command: /usr/sbin/pct stop 210
 {% elif ansible_hostname == "Autonomy" %}
   bash:
     expose:
