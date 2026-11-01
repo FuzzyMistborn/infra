@@ -1,7 +1,7 @@
 ---
 services:
   woodpecker-agent-github:
-    image: quay.io/woodpeckerci/woodpecker-agent:v3.19.0
+    image: quay.io/woodpeckerci/woodpecker-agent:v3.20.1
     container_name: woodpecker-agent-github
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -21,7 +21,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   woodpecker-agent-gitea:
-    image: quay.io/woodpeckerci/woodpecker-agent:v3.19.0
+    image: quay.io/woodpeckerci/woodpecker-agent:v3.20.1
     container_name: woodpecker-agent-gitea
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
