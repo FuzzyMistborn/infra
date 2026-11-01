@@ -1,7 +1,7 @@
 ---
 services:
   opencloud:
-    image: opencloudeu/opencloud-rolling:8.1.0
+    image: opencloudeu/opencloud-rolling:9.0.0
     container_name: opencloud
     user: "1000:1000"
     restart: unless-stopped
