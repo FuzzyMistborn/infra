@@ -1,7 +1,7 @@
 ---
 services:
   press:
-    image: ghcr.io/fuzzymistborn/jellyjar/press:0.9.1
+    image: ghcr.io/fuzzymistborn/jellyjar/press:0.10.0
     container_name: press
     deploy:
       resources:
