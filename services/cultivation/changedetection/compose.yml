@@ -17,7 +17,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   sockpuppetbrowser:
-    image: dgtlmoon/sockpuppetbrowser:0.0.3
+    image: dgtlmoon/sockpuppetbrowser:0.0.4
     container_name: sockpuppetbrowser
     restart: unless-stopped
     cap_add:
