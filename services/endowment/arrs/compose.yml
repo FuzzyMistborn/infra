@@ -1,7 +1,7 @@
 ---
 services:
   radarr:
-    image: ghcr.io/linuxserver/radarr:6.4.4
+    image: ghcr.io/linuxserver/radarr:7.0.3
     container_name: radarr
     volumes:
       - "{{ appdata_path }}/radarr:/config"
@@ -23,7 +23,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   radarr_uhd:
-    image: ghcr.io/linuxserver/radarr:6.4.4
+    image: ghcr.io/linuxserver/radarr:7.0.3
     container_name: radarr_uhd
     volumes:
       - "{{ appdata_path }}/radarr_uhd:/config"
