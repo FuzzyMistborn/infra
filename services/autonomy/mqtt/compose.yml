@@ -1,7 +1,7 @@
 ---
 services:
   mqtt:
-    image: eclipse-mosquitto:2.0.22
+    image: eclipse-mosquitto:2.0.23
     container_name: MQTT
     volumes:
       - "{{ appdata_path }}/mqtt/config:/mosquitto/config/"
