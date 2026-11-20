@@ -1,7 +1,7 @@
 ---
 services:
   influx-db:
-    image: influxdb:2.9.1
+    image: influxdb:2.10.1
     container_name: influx-db
     volumes:
       - /home/{{ main_username }}/db_backups/influxdb:/media/backup
