@@ -1,7 +1,7 @@
 ---
 services:
   manyfold:
-    image: ghcr.io/manyfold3d/manyfold-solo:0.154.1
+    image: ghcr.io/manyfold3d/manyfold-solo:0.154.3
     container_name: manyfold
     volumes:
       - "{{ appdata_path }}/manyfold:/config"
