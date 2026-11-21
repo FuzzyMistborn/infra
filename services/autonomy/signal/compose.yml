@@ -1,7 +1,7 @@
 ---
 services:
   signal-api:
-    image: bbernhard/signal-cli-rest-api:0.101
+    image: bbernhard/signal-cli-rest-api:0.102
     container_name: signal-api
     user: "0:0"
     volumes:
