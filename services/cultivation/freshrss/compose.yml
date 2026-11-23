@@ -1,7 +1,7 @@
 ---
 services:
   freshrss:
-    image: freshrss/freshrss:1.30.4
+    image: freshrss/freshrss:1.31.0
     container_name: freshrss
     volumes:
       - "{{ appdata_path }}/freshrss/data:/var/www/FreshRSS/data"
