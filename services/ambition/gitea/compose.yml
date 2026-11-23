@@ -26,7 +26,7 @@ services:
       - no-new-privileges:true
     restart: unless-stopped
   gitea-db:
-    image: pgautoupgrade/pgautoupgrade:18.6-alpine
+    image: pgautoupgrade/pgautoupgrade:18.7-alpine
     container_name: gitea-db
     volumes:
       - "{{ appdata_path }}/gitea/postgres:/var/lib/postgresql"
