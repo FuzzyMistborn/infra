@@ -41,7 +41,7 @@ services:
     security_opt:
       - no-new-privileges:true
   karakeep-browser:
-    image: ghcr.io/karakeep-app/karakeep-chrome:157.0.8103.78-r1
+    image: ghcr.io/karakeep-app/karakeep-chrome:158.0.8127.88-r1
     container_name: karakeep-browser
     restart: unless-stopped
     command:
