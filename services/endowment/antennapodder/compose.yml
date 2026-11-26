@@ -1,7 +1,7 @@
 ---
 services:
   antennapodder:
-    image: ghcr.io/bladewdr/antennapodder:0.1.9
+    image: ghcr.io/bladewdr/antennapodder:1.0.0
     container_name: antennapodder
     restart: unless-stopped
     ports:
