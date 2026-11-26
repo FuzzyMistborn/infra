@@ -1,7 +1,7 @@
 ---
 services:
   opengist:
-    image: ghcr.io/thomiceli/opengist:1.15
+    image: ghcr.io/thomiceli/opengist:1.16
     container_name: opengist
     volumes:
       - "{{ appdata_path }}/opengist:/opengist"
