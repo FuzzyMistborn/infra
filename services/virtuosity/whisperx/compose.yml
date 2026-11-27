@@ -20,7 +20,7 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
-  
+
   whisperx-ts:
     image: ghcr.io/tailscale/tailscale:v1.104.7
     container_name: whisperx-ts
@@ -41,4 +41,3 @@ services:
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_USERSPACE=false
     restart: unless-stopped
-
