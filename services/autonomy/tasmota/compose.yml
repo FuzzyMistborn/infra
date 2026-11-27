@@ -1,7 +1,7 @@
 ---
 services:
   tasmota:
-    image: ghcr.io/tasmoadmin/tasmoadmin:v5.0.0
+    image: ghcr.io/tasmoadmin/tasmoadmin:v5.1.0
     container_name: tasmota
     volumes:
       - "{{ appdata_path }}/tasmota:/data"
