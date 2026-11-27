@@ -1,0 +1,22 @@
+---
+services:
+  poster-manager:
+    image: ghcr.io/thecommishdeuce/jellyfin-poster-manager:latest
+    container_name: poster-manager
+    volumes:
+      - "{{ appdata_path }}/poster-manager/data:/app/data"
+      - "{{ appdata_path }}/poster-manager/cache:/app/cache"
+      - "{{ appdata_path }}/poster-manager/logs:/app/logs"
+    ports:
+      - 5001:5001
+    environment:
+      - PUID=1001
+      - PGID=1001
+      - JELLYFIN_URL=http://192.168.50.24:8096
+      - JELLYFIN_API_KEY=2ac28669a6754f32aafd8d499a6dab86
+      - TPDB_EMAIL=geoff@weyl.me
+      - TPDB_PASSWORD=ofyY5qFbeAt58eOiZzF^
+      - SECRET_KEY=f29d78cce161db4a330462cbe68994dc0523544cdb40771ece7a0d678ceb4391
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped

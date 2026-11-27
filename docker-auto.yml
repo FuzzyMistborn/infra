@@ -12,7 +12,7 @@
     - name: Get changed images from git
       ansible.builtin.shell: |
         cd {{ playbook_dir }}
-        git diff HEAD@{1} HEAD -- services/*/*/compose.yaml services/*/*/compose.yml 2>/dev/null | \
+        git diff {{ diff_base | default('HEAD@{1}') }} HEAD -- services/*/*/compose.yaml services/*/*/compose.yml 2>/dev/null | \
         grep -E '^\+.*image:' | \
         sed 's/^+.*image: //' | \
         sed 's/\"//g' | \

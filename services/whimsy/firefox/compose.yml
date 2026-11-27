@@ -20,9 +20,10 @@ services:
     security_opt:
       - no-new-privileges:true
     restart: unless-stopped
-  tailscale:
+
+  firefox-ts:
     image: ghcr.io/tailscale/tailscale:v1.104.7
-    container_name: tailscale
+    container_name: firefox-ts
     network_mode: service:firefox
     privileged: true
     cap_add:
@@ -31,8 +32,8 @@ services:
     devices:
       - /dev/net/tun:/dev/net/tun
     volumes:
-      - "{{ appdata_path }}/tailscale/config:/config"
-      - "{{ appdata_path }}/tailscale/state:/var/lib/tailscale"
+      - "{{ appdata_path }}/firefox-ts/config:/config"
+      - "{{ appdata_path }}/firefox-ts/state:/var/lib/tailscale"
     environment:
       - TS_HOSTNAME=whimsy
       - TS_EXTRA_ARGS= --accept-routes

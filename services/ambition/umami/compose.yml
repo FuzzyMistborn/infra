@@ -8,6 +8,7 @@ services:
     environment:
       - DATABASE_URL={{ secret_umami_db_url }}
       - HASH_SALT={{ secret_umami_hash }}
+      - APP_SECRET={{ secret_umami_app_secret }}
     depends_on:
       - umami-db
     networks:

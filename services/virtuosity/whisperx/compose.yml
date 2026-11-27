@@ -18,10 +18,27 @@ services:
       - DIARIZATION_MODEL=pyannote/speaker-diarization-community-1
       - LOCAL_ONLY_MODELS=0
     restart: unless-stopped
-    networks:
-      - whisperx-net
     security_opt:
       - no-new-privileges:true
+  
+  whisperx-ts:
+    image: ghcr.io/tailscale/tailscale:v1.104.7
+    container_name: whisperx-ts
+    network_mode: service:whisperx
+    privileged: true
+    cap_add:
+      - net_admin
+      - sys_module
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    volumes:
+      - "{{ appdata_path }}/whisperx-ts/config:/config"
+      - "{{ appdata_path }}/whisperx-ts/state:/var/lib/tailscale"
+    environment:
+      - TS_HOSTNAME=whisperx-pa
+      - TS_EXTRA_ARGS= --accept-routes
+      - TS_ACCEPT_DNS=true
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_USERSPACE=false
+    restart: unless-stopped
 
-networks:
-  whisperx-net:
